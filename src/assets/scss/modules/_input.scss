@@ -1,0 +1,50 @@
+.input-item-outline {
+    @extend %input-grey;
+    height: 4rem;
+    border-radius: 5px;
+    font-size: 1.2rem;
+}
+
+.input-item-search {
+    @extend %input-grey;
+    height: 3.5rem;
+    border-radius: 10px;
+    font-size: 1.3rem;
+}
+
+.input-item-search-dark {
+    background: $blue-bg-color !important;
+    border-radius: 40px;
+    height: 3.5rem;
+    border: none;
+
+    .ant-input-prefix {
+        margin-right: 10px;
+    }
+    
+    input {
+        @extend %input;    
+        background: none;
+        font-size: 1.3rem;
+        color: $white-color;
+    }
+}
+
+.input-item-search-light {
+    @extend %input-grey;
+    border-radius: 10px;
+    height: 3.5rem;
+    border: none;
+
+    .ant-input-prefix {
+        margin-right: 10px;
+        margin-right: 18px;
+    }
+    
+    input {
+        @extend %input;    
+        background: none;
+        font-size: 1.3rem;
+        color: $black-color;
+    }
+}

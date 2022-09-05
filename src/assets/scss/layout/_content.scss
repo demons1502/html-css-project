@@ -1,0 +1,13 @@
+.container {
+    padding: 0 20px 50px 20px;
+
+    .title {
+        padding: 15px 0;
+    }
+
+    .content-box {
+        background: $white-color;
+        box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.05);
+        border-radius: 25px;
+    }
+}

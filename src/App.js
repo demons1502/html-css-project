@@ -5,11 +5,11 @@ import AuthWrapper from './wrappers/AuthWrapper';
 
 function App() {
   return (
-    <ConfigProvider locale={locale} autoInsertSpaceInButton={false}>
-      <BrowserRouter>
-        <AuthWrapper />
-      </BrowserRouter>
-    </ConfigProvider>
+      <ConfigProvider locale={locale} autoInsertSpaceInButton={false}>
+        <BrowserRouter>
+          <AuthWrapper />
+        </BrowserRouter>
+      </ConfigProvider>
   );
 }
 

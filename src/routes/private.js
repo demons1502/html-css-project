@@ -1,4 +1,4 @@
-import {lazy} from 'react';
+import React, {lazy} from 'react';
 import Dashboard from '../assets/images/icons/dashboard.svg';
 import Users from '../assets/images/icons/users.svg';
 import Calendar from '../assets/images/icons/calendar.svg';

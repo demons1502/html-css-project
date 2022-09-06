@@ -1,6 +1,6 @@
-import Axios from 'axios'
+import Axios from 'axios';
 // import Cookies from 'js-cookie'
-import configs from '../config'
+import configs from '../config';
 
 const axiosInstance = Axios.create({
   timeout: 3 * 60 * 1000,

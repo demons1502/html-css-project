@@ -1,4 +1,4 @@
-import {sendGet, sendPost, sendPut, sendDelete} from './axios'
+import {sendGet, sendPost, sendPut, sendDelete} from './axios';
 
 export const create = (payload) => sendPost('api/create', payload)
 export const getAll = (payload) => sendGet('api/get-all', payload)

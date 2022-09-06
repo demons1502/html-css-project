@@ -1,8 +1,8 @@
-import React, {Fragment, Suspense} from 'react'
-import {Routes, Route} from 'react-router-dom'
-import {PrivateRoutes} from '../../routes'
-import Header from '../../components/Header'
-import Nav from '../../components/Nav'
+import React, {Fragment, Suspense} from 'react';
+import {Routes, Route} from 'react-router-dom';
+import {PrivateRoutes} from '../../routes';
+import Header from '../../components/Header';
+import Nav from '../../components/Nav';
 
 export default function App() {
   return (

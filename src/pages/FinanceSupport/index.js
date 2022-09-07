@@ -4,7 +4,7 @@ import { finances } from '../../assets/fake-data/data';
 import FinanceSupportCard from '../../components/FinanceSupportCard/';
 import Title from '../../components/Title';
 
-import leftArrow from '../../assets/images/icons/message.svg';
+import messageIcon from '../../assets/images/icons/message.svg';
 import ManageFinanceSupport from '../ManageFinanceSupport';
 
 const index = () => {
@@ -21,7 +21,10 @@ const index = () => {
 
   return (
     <Layout className='financeSupport'>
-      <Title title='Bài viết truy cập nhiều nhất trong tuần' icon={leftArrow} />
+      <Title
+        title='Bài viết truy cập nhiều nhất trong tuần'
+        icon={messageIcon}
+      />
       <Layout.Content>
         <Row gutter={[10, 10]} align='middle'>
           <Col lg={8} md={24} sm={24}>
@@ -46,7 +49,7 @@ const index = () => {
       </Layout.Content>
 
       <Layout.Content>
-        <Title title='Các tin cũ hơn' icon={leftArrow} />
+        <Title title='Các tin cũ hơn' icon={messageIcon} />
         <Row justify='start' align='middle'>
           <Col span={24}>
             <Row gutter={[17, 13]}>

@@ -1,0 +1,42 @@
+.financeSupport {
+  padding: 0 35px 35px 35px;
+  .gutter-row {
+    .ant-typography {
+      color: $black-color;
+      margin-bottom: unset;
+      &.text {
+        color: $grey-dark-color;
+        font-size: $font-size-base;
+        line-height: 16.25px;
+        margin-top: 6px;
+      }
+    }
+    .content {
+      padding: 10px;
+      border-radius: 10px;
+      background-color: $white-color;
+    }
+    .ant-image-img {
+      object-fit: cover;
+      border-radius: 10px;
+      max-height: 250px;
+    }
+    .icon {
+      color: $grey-dark-color;
+      font-size: $font-size-base;
+    }
+
+    .line {
+      padding: 0 13px;
+      color: $primary-bg-color;
+      font-size: $font-size-base;
+    }
+    hr {
+      color: $grey-border-color;
+    }
+    .row_wrap {
+      padding: 10px 0;
+      border-bottom: 1px solid $primary-bg-color;
+    }
+  }
+}

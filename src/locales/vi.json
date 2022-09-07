@@ -6,6 +6,9 @@
     "filter": "Bộ lọc"
   },
   "validate": {
+  },
+  "customer care": {
+    "title": "Danh sách khách hàng"
   }
 }
   

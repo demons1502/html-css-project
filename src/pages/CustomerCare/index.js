@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import Title from '../../components/Title';
-import TableCommon from '../../components/TableCommon';
-import FilterCommon from '../../components/FilterCommon';
-import ProgressBar from '../../components/ProgressBar';
-import PaginationCommon from '../../components/PaginationCommon';
+import {useTranslation} from 'react-i18next';
+import {Row, Col} from 'antd';
 import {createData, retrieveData} from '../../slices/customerCare';
+import InputSearch from "../../components/InputSearch";
+import FilterCommon from "../../components/FilterCommon";
+import ListCommon from "../../components/ListCommon";
+import {TYPE_LIST_CUSTOMERS} from '../../ultis/constant';
 
 const dataSource = [
   {
@@ -20,38 +21,16 @@ const dataSource = [
     age: 42,
     address: '10 Downing Street',
   },
-];
-
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-];
-
-const options = [
-  {label: 'Apple', value: 'Apple'},
-  {label: 'Pear', value: 'Pear'},
-  {label: 'Orange', value: 'Orange'},
-];
+]
 
 export default function CustomerCare() {
+  const {t} = useTranslation();
   const customerCare = useSelector((state) => state.customerCare);
   const [customer] = useState({
     id: 1,
     title: 'user'
   });
+  const [selectId, setSelectId] = useState(0);
   const dispatch = useDispatch();
 
   const saveTutorial = (e) => {
@@ -74,15 +53,23 @@ export default function CustomerCare() {
     console.log(customerCare);
   }, [customerCare]);
 
+  useEffect(() => {
+    // get id
+    console.log(selectId)
+  }, [selectId])
+
   return (
-    <div>
-      <Title title="Title"/>
-      <FilterCommon options={options}/>
-      <ProgressBar percent={100}/>
-      <input type="text" onChange={saveTutorial}/>
-      <div className="content-box">
-        <TableCommon dataSource={dataSource} columnTable={columns}/>
-      </div>
+    <div className="content-box customer-care">
+      <h3>{t('customer care.title')}</h3>
+      <Row>
+        <Col span={3} className="customer-care__left">
+          <InputSearch></InputSearch>
+          <FilterCommon></FilterCommon>
+          <ListCommon type={TYPE_LIST_CUSTOMERS} dataList={dataSource} selectId={selectId} setSelectId={setSelectId}></ListCommon>
+        </Col>
+        <Col span={10}>col-4</Col>
+        <Col span={11}>col-4</Col>
+      </Row>
     </div>
   );
 }

@@ -1,0 +1,19 @@
+
+.customer-care {
+  h3 {
+    padding: 13px 20px 15px 20px;
+    border-bottom: 1px solid $grey-border-color;
+  }
+  &__left {
+    padding: 12px 15px 0 15px;
+    border-right: 1px solid $grey-border-color;
+
+    .input-item-search {
+      margin-bottom: 8px;
+    }
+
+    .filter {
+      margin-bottom: 13px;
+    }
+  }
+}

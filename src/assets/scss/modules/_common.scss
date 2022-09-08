@@ -38,7 +38,6 @@
     color: $black-color !important;
     border-radius: 10px;
     font-size: 1.2rem;
-    font-weight: $font-weight-bold;
     height: 35px;
     width: 100%;
     text-align: left;
@@ -66,8 +65,31 @@
       flex: 1;
       @extend %align-items-center;
       padding: 8px 0 8px 0;
-      font-weight: $font-weight-bold;
       font-size: 1.2rem;
     }
+  }
+}
+
+.ant-progress {
+  @extend %flex-centered;
+  flex: 1;
+
+  .ant-progress-bg {
+    background: $green-color;
+    height: 4px !important;
+
+    &:after {
+      content: "";
+    }
+  }
+
+  .ant-progress-inner {
+    border-radius: 20px;
+    background: $bg-grey;
+  }
+
+  .ant-progress-text {
+    color: $green-color;
+    font-size: 1.3rem;
   }
 }

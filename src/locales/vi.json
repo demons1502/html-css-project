@@ -3,12 +3,22 @@
     "login": "Đăng nhập",
     "manulife": "Manulife",
     "slogan": "“ Nhiệm vụ của tôi là giúp khách hàng xây dựng nền tảng của sự giàu có và chuyển giao sự thịnh vượng cho thế hệ tiếp theo! ”",
-    "filter": "Bộ lọc"
+    "filter": "Bộ lọc",
+    "progress": "Quy trình",
+    "save": "Lưu",
+    "stt": "STT",
+    "date": "Ngày",
+    "content": "Nội dung"
   },
   "validate": {
   },
   "customer care": {
-    "title": "Danh sách khách hàng"
+    "title": "Danh sách khách hàng",
+    "event title": "Các event sắp tới",
+    "history title": "Lịch sử chăm sóc",
+    "add event": "Thêm event",
+    "sms": "SMS",
+    "email": "Email"
   }
 }
   

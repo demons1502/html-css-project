@@ -1,9 +1,27 @@
+%border {
+  border-bottom: 1px solid $grey-border-color;
+}
+%style-title {
+  @extend %flex-row-wrap;
+  @extend %item-center;
+  @extend %border;
+  padding: 16px 20px;
+
+  h5 {
+    font-size: 1.6rem;
+  }
+
+  button {
+    margin-left: auto;
+  }
+}
 
 .customer-care {
   h3 {
     padding: 13px 20px 15px 20px;
-    border-bottom: 1px solid $grey-border-color;
+    @extend %border;
   }
+
   &__left {
     padding: 12px 15px 0 15px;
     border-right: 1px solid $grey-border-color;
@@ -14,6 +32,54 @@
 
     .filter {
       margin-bottom: 13px;
+    }
+  }
+
+  &__center {
+    border-right: 1px solid $grey-border-color;
+
+    &--progress {
+      background: $green-light-color;
+      padding: 12px 80px 12px 20px;
+      @extend %flex-centered;
+
+      span {
+        margin-right: 10px;
+      }
+    }
+
+    &--event {
+      @extend %style-title
+    }
+
+    &--list {
+      .ant-table-tbody {
+        tr {
+          &:last-child {
+            td {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &__right {
+    border-right: 1px solid $grey-border-color;
+
+    &--top {
+      background: $green-light-color;
+      padding: 12px 15px 12px 0;
+      @extend %flex-end;
+      @extend %item-center;
+    }
+
+    &--event {
+      @extend %style-title
+    }
+
+    &--list {
     }
   }
 }

@@ -7,7 +7,6 @@ export default function TableCommon(props) {
     dataSource,
     columnTable,
     nameTable,
-    widthTable = 1300,
     isSelection = false
   } = props;
   const [columns, setColumns] = useState([]);
@@ -48,7 +47,7 @@ export default function TableCommon(props) {
       className='table-common'
       bordered={false}
       key={nameTable}
-      scroll={{x: widthTable, scrollToFirstRowOnChange: false}}>
+      scroll={{scrollToFirstRowOnChange: false}}>
       {props.children}
     </Table>
   );

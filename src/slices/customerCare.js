@@ -3,6 +3,14 @@ import {create, getAll, update, remove} from "../services/customerCare";
 
 const initialState = [];
 
+export const searchData = createAsyncThunk(
+  "customerCare/create",
+  async () => {
+    const res = await getAll();
+    return res.data;
+  }
+);
+
 export const createData = createAsyncThunk(
   "customerCare/create",
   async (payload) => {

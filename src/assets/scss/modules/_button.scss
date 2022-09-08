@@ -22,3 +22,15 @@
     color: $black-color;
     padding: 0;
 }
+.btn-bgWhite-textGreen-borGreen {
+    background-color: #ffffff;
+    border:1px solid $green-color;
+    border-radius: 10px;
+    height: 25px;
+    color: $green-color;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 16px;
+    padding: 5px 8px 4px 11px;
+    cursor: pointer;
+}

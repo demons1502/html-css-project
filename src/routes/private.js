@@ -1,4 +1,4 @@
-import React, {lazy} from 'react';
+import React, { lazy } from 'react';
 import Dashboard from '../assets/images/icons/dashboard.svg';
 import Users from '../assets/images/icons/users.svg';
 import Calendar from '../assets/images/icons/calendar.svg';
@@ -8,6 +8,7 @@ import QA from '../assets/images/icons/q&a.svg';
 import Book from '../assets/images/icons/book.svg';
 
 const CustomerCare = lazy(() => import('../pages/CustomerCare'));
+const Admin = lazy(() => import('../pages/Admin'))
 
 const PrivateRoutes = [
   {
@@ -15,21 +16,21 @@ const PrivateRoutes = [
     key: 'dashboard',
     label: 'Dashboard',
     icon: Dashboard,
-    page: <CustomerCare/>
+    page: <CustomerCare />
   },
   {
     path: '/potential-customers',
     key: 'potential-customers',
     label: 'Khách hàng tiềm năng',
     icon: Users,
-    page: <CustomerCare/>
+    page: <CustomerCare />
   },
   {
     path: '/appointment-management',
     key: 'appointment-management',
     label: 'Quản lý lịch hẹn',
     icon: Calendar,
-    page: <CustomerCare/>
+    page: <CustomerCare />
   },
   {
     path: '/advise',
@@ -41,25 +42,25 @@ const PrivateRoutes = [
         path: '/advise/survey',
         key: 'survey',
         label: 'Khảo sát',
-        page: <CustomerCare/>
+        page: <CustomerCare />
       },
       {
         path: '/advise/finance-support',
         key: 'advise-finance-support',
         label: 'Tư vấn tài chính',
-        page: <CustomerCare/>
+        page: <CustomerCare />
       },
       {
         path: '/advise/financial-solutions',
         key: 'financial-solutions',
         label: 'Giải pháp tài chính',
-        page: <CustomerCare/>
+        page: <CustomerCare />
       },
       {
         path: '/advise/contract-management',
         key: 'contract-management',
         label: 'Quản lý hợp đồng',
-        page: <CustomerCare/>
+        page: <CustomerCare />
       }
     ],
   },
@@ -68,21 +69,28 @@ const PrivateRoutes = [
     key: 'customer-care',
     label: 'Chăm sóc',
     icon: Care,
-    page: <CustomerCare/>
+    page: <CustomerCare />
   },
   {
     path: '/q&a',
     key: 'q&a',
     label: 'Hỏi đáp',
     icon: QA,
-    page: <CustomerCare/>
+    page: <CustomerCare />
   },
   {
     path: '/finance-support',
     key: 'finance-support',
     label: 'Kiến thức tư vấn tài chính',
     icon: Book,
-    page: <CustomerCare/>
+    page: <CustomerCare />
+  },
+  {
+    path: '/admin',
+    key: 'admin',
+    label: 'Quản lý khách hàng',
+    icon: Users,
+    page: <Admin />
   }
 ];
 

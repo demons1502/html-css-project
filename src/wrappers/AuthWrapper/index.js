@@ -3,12 +3,19 @@ import {Routes, Route} from 'react-router-dom';
 import {PrivateRoutes} from '../../routes';
 import Header from '../../components/Header';
 import Nav from '../../components/Nav';
+import { useLocation } from "react-router-dom";
 
 export default function App() {
+  const currentPath = useLocation();
+  const noNav = ['/admin'];
   return (
     <Fragment>
       <Header/>
-      <Nav/>
+      {noNav.includes(currentPath.pathname) ? (
+        <></>
+      ) : 
+        <Nav/>
+      }
       <div className="container">
         <Suspense fallback={null}>
           <Routes>

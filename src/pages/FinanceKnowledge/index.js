@@ -1,11 +1,11 @@
 import { Col, Layout, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { finances } from '../../assets/fake-data/data';
-import FinanceSupportCard from '../../components/FinanceSupportCard/';
+import FinanceKnowledgeCard from '../../components/FinanceKnowledgeCard';
 import Title from '../../components/Title';
 
 import messageIcon from '../../assets/images/icons/message.svg';
-import ManageFinanceSupport from '../ManageFinanceSupport';
+import ManageFinanceKnowledge from '../ManageFinanceKnowledge';
 
 const index = () => {
   const [topViews, setTopViews] = useState([]);
@@ -29,13 +29,13 @@ const index = () => {
         <Row gutter={[10, 10]} align='middle'>
           <Col lg={8} md={24} sm={24}>
             <Row>
-              <FinanceSupportCard {...finances[0]} wrap image lg={24} />
+              <FinanceKnowledgeCard {...finances[0]} wrap image lg={24} />
             </Row>
           </Col>
           <Col lg={16} md={24} sm={24}>
             <Row gutter={[10, 10]}>
               {topViews.map((item) => (
-                <FinanceSupportCard
+                <FinanceKnowledgeCard
                   {...item}
                   image
                   key={item.id}
@@ -54,13 +54,13 @@ const index = () => {
           <Col span={24}>
             <Row gutter={[17, 13]}>
               {finances.map((item) => (
-                <FinanceSupportCard {...item} key={item.id} lg={8} md={12} />
+                <FinanceKnowledgeCard {...item} key={item.id} lg={8} md={12} />
               ))}
             </Row>
           </Col>
         </Row>
       </Layout.Content>
-      <ManageFinanceSupport />
+      <ManageFinanceKnowledge />
     </Layout>
   );
 };

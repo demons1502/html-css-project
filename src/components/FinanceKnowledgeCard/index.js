@@ -1,7 +1,6 @@
-import { Col, Layout, Row, Typography, Image } from 'antd';
-import React from 'react';
 import { EyeOutlined, FieldTimeOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Col, Image, Layout, Row, Typography } from 'antd';
+import React from 'react';
 
 const FinanceSupportCard = (props) => {
   return (
@@ -12,7 +11,7 @@ const FinanceSupportCard = (props) => {
       lg={props.lg || 8}
     >
       <Layout.Content className='content'>
-        <a href={props.link} target='_blank' rel='noreferrer'>
+        <a href={props.link} target={props.target || '_blank'} rel='noreferrer'>
           <Row gutter={[10, 0]} align='stretch'>
             {props.image && (
               <Col lg={props.wrap ? 24 : 8} md={24} sm={24} xs={24}>

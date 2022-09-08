@@ -8,7 +8,7 @@ import QA from '../assets/images/icons/q&a.svg';
 import Book from '../assets/images/icons/book.svg';
 
 const CustomerCare = lazy(() => import('../pages/CustomerCare'));
-const FinanceSupport = lazy(() => import('../pages/FinanceSupport'));
+const FinanceKnowledge = lazy(() => import('../pages/FinanceKnowledge'));
 
 const PrivateRoutes = [
   {
@@ -83,7 +83,7 @@ const PrivateRoutes = [
     key: 'finance-support',
     label: 'Kiến thức tư vấn tài chính',
     icon: Book,
-    page: <FinanceSupport />,
+    page: <FinanceKnowledge />,
   },
 ];
 

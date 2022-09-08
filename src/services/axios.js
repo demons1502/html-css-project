@@ -4,11 +4,7 @@ import configs from '../config';
 
 const axiosInstance = Axios.create({
   timeout: 3 * 60 * 1000,
-  baseURL: configs.API_DOMAIN,
-  headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
-  }
+  baseURL: configs.API_DOMAIN
 })
 
 axiosInstance.interceptors.request.use(

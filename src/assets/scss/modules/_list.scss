@@ -1,0 +1,28 @@
+.list-item {
+  .ant-list-item {
+    padding-left: 3rem;
+    border-bottom: 1px solid $grey-border-color;
+    padding: 8px 0 8px 3rem;
+    font-size: 1.3rem;
+    cursor: pointer;
+  }
+
+  .active {
+    background: $primary-color;
+    border-radius: 1rem;
+    color: $white-color;
+    padding: 7px 25px;
+    min-width: 90%;
+  }
+
+  .list-customer {
+    background: $white-color;
+    border: 1px solid $list-border;
+    border-radius: 5px;
+    margin-bottom: 6px;
+
+    &__content {
+      padding: 10px;
+    }
+  }
+}

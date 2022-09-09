@@ -3,17 +3,37 @@ import { Input, Upload } from 'antd';
 import React from 'react';
 
 const ManageContentInput = (props) => {
-  const { input = true, onChange, title, name } = props;
+  const {
+    input = true,
+    onChange,
+    title,
+    name,
+    type = 'text',
+    textarea = false,
+    value,
+  } = props;
 
   return (
     <>
-      {input ? (
+      {input && !textarea ? (
         <Input
           name={name}
           placeholder='Nhập nội dung tiêu đề'
           bordered={false}
           onChange={onChange}
-          prefix='Tiêu đề: '
+          prefix={`${title}: `}
+          value={value}
+          type={type}
+        />
+      ) : !input && textarea ? (
+        <Input.TextArea
+          name={name}
+          placeholder='Nhập nội dung tiêu đề'
+          bordered={false}
+          onChange={onChange}
+          prefix={`${title}: `}
+          value={value}
+          type={type}
         />
       ) : (
         <div className='manageContentInput-upload'>

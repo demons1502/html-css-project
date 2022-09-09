@@ -1,4 +1,4 @@
-.manageFinanceSupport {
+.manageFinanceKnowledge {
   width: 100%;
   .list-option {
     padding: 17px 18px;
@@ -89,62 +89,68 @@
       height: 19px;
       width: 19px !important;
       min-width: unset;
+      border-radius: 50%;
+      padding: unset;
     }
     &.ant-btn-primary {
       @extend .btn-primary;
-      border-radius: 50%;
-      padding: unset;
       span {
         font-size: 1.3rem;
         font-weight: 600;
       }
     }
   }
-
-  .manageContent-container {
-    min-height: 70vh;
-    .title {
-      padding: unset;
+  .manageContent {
+    &-container {
+      min-height: 50vh;
+      .title {
+        padding: unset;
+      }
+      .ant-input-affix-wrapper,
+      .manageContentInput-upload {
+        padding: 13px 17px;
+        border-bottom: 1px dashed $grey-border-color;
+        border-radius: unset;
+      }
+      .ant-input {
+        font-size: $font-size-base;
+      }
+      .ant-input-prefix {
+        font-size: $font-size-base;
+        color: $black-color;
+      }
+      .manageContentInput-upload {
+        .ant-upload {
+          border: unset;
+        }
+        .upload-content {
+          width: 100%;
+          height: 100%;
+          color: $gray-light-color;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          border: unset;
+          cursor: pointer;
+        }
+        .avatar-title {
+          display: block;
+          color: $black-color;
+          font-size: $font-size-base;
+          margin-bottom: 10px;
+        }
+      }
     }
     &-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .ant-input-affix-wrapper,
-    .manageContentInput-upload {
-      padding: 13px 17px;
-      border-bottom: 1px dashed $grey-border-color;
-      border-radius: unset;
-    }
-    .ant-input {
-      font-size: $font-size-base;
-    }
-    .ant-input-prefix {
-      font-size: $font-size-base;
-      color: $black-color;
-    }
-    .manageContentInput-upload {
-      .ant-upload {
-        border: unset;
-      }
-      .upload-content {
-        width: 100%;
-        height: 100%;
-        color: $gray-light-color;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        border: unset;
-        cursor: pointer;
-      }
-      .avatar-title {
-        display: block;
-        color: $black-color;
-        font-size: $font-size-base;
-        margin-bottom: 10px;
-      }
+    &-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   }
 }

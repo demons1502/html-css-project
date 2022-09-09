@@ -13,12 +13,24 @@
     &-item {
       border-radius: 10px;
       padding: 8px 23px;
-      font-size: 14px;
       text-transform: capitalize;
       font-weight: $font-weight-bold;
+      &-label {
+        font-size: $font-size-base;
+        font-weight: $font-weight-bold;
+        color: $black-color;
+        padding: unset;
+        line-height: 1.8rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
       &.ant-segmented-item-selected {
         background-color: $green-color;
-        color: $white-color;
+
+        .ant-segmented-item-label {
+          color: $white-color;
+        }
       }
     }
     &-thumb {
@@ -48,7 +60,8 @@
     }
     &-item {
       border-bottom: 1px solid $grey-border-color;
-      padding: 0 17px;
+      /*  padding: 0 17px; */
+      padding: 0;
       cursor: pointer;
       &:last-child {
         border-bottom: unset !important;
@@ -56,20 +69,19 @@
       .ant-typography {
         width: 100%;
         padding: 10px 16px;
-        font-weight: $font-weight-bold;
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
         border-radius: 10px;
       }
       &:hover {
         .ant-typography {
           background-color: $green-color;
           color: $white-color;
-          color: $white-color;
         }
       }
       &.active {
         .ant-typography {
           background-color: $green-color;
-          color: $white-color;
           color: $white-color;
         }
       }
@@ -79,28 +91,36 @@
   .ant-layout-content {
     width: 100%;
     background-color: $white-color;
-    box-shadow: 0px 4px 30px rgba($color: $black-color, $alpha: 0.05);
+    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.05);
     border-radius: 20px;
     overflow: hidden;
   }
-
   .ant-btn {
     &.ant-btn-circle {
-      height: 19px;
-      width: 19px !important;
-      min-width: unset;
-      border-radius: 50%;
-      padding: unset;
-    }
-    &.ant-btn-primary {
-      @extend .btn-primary;
-      span {
-        font-size: 1.3rem;
-        font-weight: 600;
-      }
+      @extend .btn-add-new;
+      margin-right: unset;
+      margin-top: unset;
     }
   }
   .manageContent {
+    .ant-input {
+      font-size: $font-size-base;
+      padding: 10px 13px;
+      font-weight: $font-weight-bold;
+    }
+    .textarea {
+      padding: 13px 17px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      &-title {
+        min-width: 80px;
+      }
+      &-input {
+        min-height: 100px;
+        padding: unset;
+      }
+    }
     &-container {
       min-height: 50vh;
       .title {
@@ -108,18 +128,24 @@
       }
       .ant-input-affix-wrapper,
       .manageContentInput-upload {
-        padding: 13px 17px;
         border-bottom: 1px dashed $grey-border-color;
         border-radius: unset;
+        padding: 0 17px;
       }
-      .ant-input {
-        font-size: $font-size-base;
+      .ant-input-affix-wrapper {
+        &.color-green {
+          .ant-input {
+            color: $green-color;
+          }
+        }
       }
       .ant-input-prefix {
         font-size: $font-size-base;
         color: $black-color;
       }
+
       .manageContentInput-upload {
+        padding: 12px 17px;
         .ant-upload {
           border: unset;
         }
@@ -140,8 +166,17 @@
           font-size: $font-size-base;
           margin-bottom: 10px;
         }
+        .ant-tooltip-inner {
+          background-color: $green-color;
+          border-radius: 10px;
+        }
+        .ant-tooltip-arrow-content {
+          background-color: $green-color;
+          color: $red-color;
+        }
       }
     }
+
     &-header {
       display: flex;
       justify-content: space-between;
@@ -151,6 +186,50 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      .ant-input {
+        font-size: $font-size-base;
+        width: 460px;
+        background-color: $secondary-color;
+        border-radius: 5px;
+      }
+      &-button {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        align-content: flex-end;
+        .btn-cancer {
+          padding: 10px 50px;
+          margin-right: 4px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 10px;
+        }
+        .btn-save {
+          @extend .btn-cancer;
+          margin-right: unset;
+          background-color: $green-color;
+          border-color: $green-color;
+          &:disabled {
+            cursor: no-drop;
+            opacity: 0.7;
+            color: $white-color;
+            /*  background-color: $gray-light-color;
+            border-color: $gray-light-color;
+            color: $green-color; */
+          }
+        }
+      }
+    }
+    .ant-input-prefix,
+    .avatar-title,
+    .textarea-title {
+      font-weight: $font-weight-bold;
+    }
+    .questionAnswerContent {
+      .ant-input-prefix {
+        min-width: 80px;
+      }
     }
   }
 }

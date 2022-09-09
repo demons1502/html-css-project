@@ -1,6 +1,7 @@
-import { EyeOutlined, FieldTimeOutlined } from '@ant-design/icons';
 import { Col, Image, Layout, Row, Typography } from 'antd';
 import React from 'react';
+import eyeIcon from '../../assets/images/icons/eyeIcon.svg';
+import timeIcon from '../../assets/images/icons/timeIcon.svg';
 
 const FinanceSupportCard = (props) => {
   return (
@@ -34,10 +35,11 @@ const FinanceSupportCard = (props) => {
               <Row
                 gutter={[10, 3]}
                 align='middle'
-                className={`${props.wrap ? 'row_wrap' : ''}`}
+                className={`${props.wrap ? 'row_wrap' : null}`}
               >
                 <Col
                   lg={props.wrap ? 12 : 24}
+                  md={props.wrap ? 12 : 24}
                   sm={props.wrap ? 12 : 24}
                   xs={24}
                 >
@@ -55,15 +57,19 @@ const FinanceSupportCard = (props) => {
                   sm={props.wrap ? 12 : 24}
                   xs={24}
                 >
-                  {props.wrap && (
-                    <Typography.Text className='icon'>
-                      <EyeOutlined /> {props.views}
+                  <div className={`card-content ${props.wrap && 'wrap'}`}>
+                    {props.wrap && (
+                      <Typography.Text className='card-item'>
+                        <img src={eyeIcon} alt={props.views} />
+                        <span>{props.views}</span>
+                      </Typography.Text>
+                    )}
+                    {props.wrap && <span className='line'>|</span>}
+                    <Typography.Text className='card-item'>
+                      <img src={timeIcon} alt={props.date} />
+                      <span>{props.date}</span>
                     </Typography.Text>
-                  )}
-                  {props.wrap && <span className='line'>|</span>}
-                  <Typography.Text className='icon'>
-                    <FieldTimeOutlined /> {props.date}
-                  </Typography.Text>
+                  </div>
                 </Col>
               </Row>
               <Typography.Paragraph ellipsis={{ rows: 2 }} className='text'>

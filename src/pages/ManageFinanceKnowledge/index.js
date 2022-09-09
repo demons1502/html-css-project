@@ -1,25 +1,56 @@
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Layout, List, Row, Segmented, Typography } from 'antd';
+import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { finances, requests } from '../../assets/fake-data/data';
-import ManageContentInput from '../../components/ManageContentInput';
+import { finances, options } from '../../assets/fake-data/data';
+import IconPlus from '../../assets/images/icons/plus.svg';
 import Title from '../../components/Title';
+import FinanceKnowledgeContent from './FinanceKnowledgeContent';
+import QuestionAnswerContent from './QuestionAnswerContent';
 
 const ManageFinanceKnowledge = () => {
   const [itemContent, setItemContent] = useState({});
-  const [option, setOption] = useState('kiến thức tài chính');
-
-  const lists = finances.slice(0, 5);
-  console.log(itemContent);
+  const [option, setOption] = useState(options[0].value);
+  const [buttonState, setButtonState] = useState(true);
+  const [lists, setLists] = useState(finances);
+  const [fileList, setFileList] = useState([
+    {
+      uid: '-1',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+  ]);
   const handleChange = (e) => {
+    setButtonState(false);
     let values;
-    if (!e.file) {
-      const name = e.target.name;
-      values = { ...itemContent, [name]: e.target.value };
-    } else {
-      values = { ...itemContent, image: e.file.name };
-    }
+    const name = e.target.name;
+    values = { ...itemContent, [name]: e.target.value };
     setItemContent(values);
+  };
+
+  const handleFileList = ({ fileList: newFile }) => {
+    setFileList(newFile);
+    setItemContent({ ...itemContent, image: newFile });
+  };
+
+  const addList = () => {
+    const itemData = {
+      id: 0,
+      title: '',
+      img: '',
+      date: '20/09/2012',
+      desc: 'asd',
+      views: 0,
+      link: 'link',
+    };
+    let lastId = _.last(lists);
+    itemData.id = lastId.id + 1;
+    setLists([...lists, itemData]);
+  };
+
+  const handleIndex = (index) => {
+    const indexS = index >= 10 ? `${index}` : `0${index}`;
+    return indexS;
   };
 
   useEffect(() => {
@@ -29,91 +60,104 @@ const ManageFinanceKnowledge = () => {
   return (
     <Layout className='manageFinanceKnowledge'>
       <Row gutter={[16, 10]} justify='start' align='stretch'>
-        <Col lg={6} md={24} sm={24} xs={24}>
+        <Col lg={7} md={24} sm={24} xs={24}>
           <Layout.Content>
             <div className='list-option'>
               <Segmented
-                options={['kiến thức tài chính', 'hỏi đáp']}
+                options={options}
                 onChange={(e) => setOption(e)}
-                defaultValue='kiến thức tài chính'
+                defaultValue={option}
                 value={option}
               />
             </div>
-            {option !== 'hỏi đáp' ? (
-              <List
-                size='small'
-                header={<Title title='Danh sách bài viết' />}
-                footer={
-                  <Button
-                    type='primary'
-                    shape='circle'
-                    icon={<PlusOutlined />}
-                  />
-                }
-                dataSource={lists}
-                renderItem={(item) => (
-                  <List.Item
-                    onClick={() => setItemContent(item)}
-                    className={`${item === itemContent ? 'active' : ''}`}
-                  >
-                    <Typography.Text ellipsis>{item.title}</Typography.Text>
-                  </List.Item>
-                )}
-              />
-            ) : (
-              <List
-                size='small'
-                header={<Title title='Danh sách câu hỏi' />}
-                footer={
-                  <Button
-                    type='primary'
-                    shape='circle'
-                    icon={<PlusOutlined />}
-                  />
-                }
-                dataSource={requests}
-                renderItem={(item) => (
-                  <List.Item
-                    onClick={() => setItemContent(item)}
-                    className={`${item === itemContent ? 'active' : ''}`}
-                  >
-                    <Typography.Text ellipsis>{item.title}</Typography.Text>
-                  </List.Item>
-                )}
-              />
-            )}
+
+            <List
+              size='small'
+              header={
+                <Title
+                  title={
+                    option !== 'q&a'
+                      ? 'Danh sách bài viết'
+                      : 'Danh sách câu hỏi'
+                  }
+                />
+              }
+              footer={
+                <Button
+                  type='primary'
+                  shape='circle'
+                  icon={<img src={IconPlus} alt='' />}
+                  onClick={addList}
+                >
+                  Thêm mới
+                </Button>
+              }
+              dataSource={lists}
+              renderItem={(item, index) => (
+                <List.Item
+                  onClick={() => setItemContent(item)}
+                  className={`${item === itemContent ? 'active' : ''}`}
+                >
+                  <Typography.Text ellipsis>
+                    {option !== 'q&a'
+                      ? `Bài viết ${handleIndex(index + 1)}: ${item.title}`
+                      : `Câu hỏi ${handleIndex(index + 1)}: ${item.title}`}
+                  </Typography.Text>
+                </List.Item>
+              )}
+            />
           </Layout.Content>
         </Col>
 
-        <Col lg={18} flex={1}>
+        <Col lg={17} flex={1}>
           <Layout.Content className='manageContent'>
-            <List
+            {option !== 'q&a' ? (
+              <FinanceKnowledgeContent
+                content={itemContent}
+                onChange={handleChange}
+                onUpload={handleFileList}
+                fileList={fileList}
+              />
+            ) : (
+              <QuestionAnswerContent
+                onChange={handleChange}
+                content={itemContent}
+              />
+            )}
+
+            {/* <List
               size='small'
               header={
                 <div className='manageContent-header'>
                   <Title title='Nội dung' />
-                  {option === 'hỏi đáp' ? (
-                    <div className='manageContent-nav'>
-                      <EditOutlined />
-                      <DeleteOutlined />
-                    </div>
+                  {option === 'q&a' ? (
+                    
                   ) : null}
                 </div>
               }
               footer={
                 <div className='manageContent-footer'>
-                  {option !== 'hỏi đáp' && (
+                  {option !== 'q&a' && (
                     <ManageContentInput
                       onChange={handleChange}
                       name='link'
                       title='Link'
+                      value={itemContent.link}
+                      placeholder='Nhập link'
                     />
                   )}
-                  <div className='manageContent-button'>
-                    <Button type='' danger>
+                  <div className='manageContent-footer-button'>
+                    <Button danger className='btn-cancer'>
                       Hủy
                     </Button>
-                    <Button type='primary'>Lưu</Button>
+                    <Button
+                      type='primary'
+                      className='btn-save'
+                      onClick={() => console.log(itemContent)}
+                      disabled={buttonState}
+                    >
+                      Lưu
+                    </Button>
                   </div>
                 </div>
               }
@@ -124,23 +168,26 @@ const ManageFinanceKnowledge = () => {
                   name='title'
                   value={itemContent.title}
                   title='Tiêu đề'
+                  placeholder='Nhập nội dung tiêu đề'
                 />
                 <ManageContentInput
                   input={false}
                   title='Ảnh đại diện: '
                   type='file'
-                  onChange={handleChange}
+                  onChange={handleFileList}
+                  fileList={fileList}
                 />
                 <ManageContentInput
                   onChange={handleChange}
-                  name='content'
+                  name='desc'
                   value={itemContent.desc}
                   title='Nội dung'
                   textarea
                   input={false}
+                  placeholder='HTML Editer'
                 />
               </div>
-            </List>
+            </List> */}
           </Layout.Content>
         </Col>
       </Row>

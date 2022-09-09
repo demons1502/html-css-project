@@ -2,10 +2,9 @@ import { Col, Layout, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { finances } from '../../assets/fake-data/data';
 import FinanceKnowledgeCard from '../../components/FinanceKnowledgeCard';
-import Title from '../../components/Title';
+import ManageFinanceKnowledge from '../ManageFinanceKnowledge';
 
 import messageIcon from '../../assets/images/icons/message.svg';
-import ManageFinanceKnowledge from '../ManageFinanceKnowledge';
 
 const index = () => {
   const [topViews, setTopViews] = useState([]);
@@ -21,10 +20,10 @@ const index = () => {
 
   return (
     <Layout className='financeSupport'>
-      <Title
-        title='Bài viết truy cập nhiều nhất trong tuần'
-        icon={messageIcon}
-      />
+      <div className='financeSupport-title'>
+        <img src={messageIcon} alt='title' />
+        <h3>Bài viết truy cập nhiều nhất trong tuần</h3>
+      </div>
       <Layout.Content>
         <Row gutter={[10, 10]} align='middle'>
           <Col lg={8} md={24} sm={24}>
@@ -33,7 +32,7 @@ const index = () => {
             </Row>
           </Col>
           <Col lg={16} md={24} sm={24}>
-            <Row gutter={[10, 10]}>
+            <Row gutter={[10, 10]} align='stretch'>
               {topViews.map((item) => (
                 <FinanceKnowledgeCard
                   {...item}
@@ -49,7 +48,11 @@ const index = () => {
       </Layout.Content>
 
       <Layout.Content>
-        <Title title='Các tin cũ hơn' icon={messageIcon} />
+        <div className='financeSupport-title'>
+          <img src={messageIcon} alt='title' />
+          <h3>Các tin cũ hơn</h3>
+        </div>
+
         <Row justify='start' align='middle'>
           <Col span={24}>
             <Row gutter={[17, 13]}>
@@ -60,7 +63,7 @@ const index = () => {
           </Col>
         </Row>
       </Layout.Content>
-      <ManageFinanceKnowledge />
+      {/* <ManageFinanceKnowledge /> */}
     </Layout>
   );
 };

@@ -11,6 +11,9 @@ const ManageContentInput = (props) => {
     type = 'text',
     textarea = false,
     value,
+    fileList,
+    placeholder,
+    color = false,
   } = props;
 
   return (
@@ -18,23 +21,28 @@ const ManageContentInput = (props) => {
       {input && !textarea ? (
         <Input
           name={name}
-          placeholder='Nhập nội dung tiêu đề'
+          placeholder={placeholder}
           bordered={false}
           onChange={onChange}
           prefix={`${title}: `}
           value={value}
           type={type}
+          className={color && 'color-green'}
         />
       ) : !input && textarea ? (
-        <Input.TextArea
-          name={name}
-          placeholder='Nhập nội dung tiêu đề'
-          bordered={false}
-          onChange={onChange}
-          prefix={`${title}: `}
-          value={value}
-          type={type}
-        />
+        <div className='textarea'>
+          <span className='textarea-title'>{`${title}: `}</span>
+          <Input.TextArea
+            name={name}
+            placeholder={placeholder}
+            bordered={false}
+            onChange={onChange}
+            value={value}
+            type={type}
+            autoSize
+            className='textarea-input'
+          />
+        </div>
       ) : (
         <div className='manageContentInput-upload'>
           <span className=' avatar-title'>{title}</span>
@@ -45,7 +53,7 @@ const ManageContentInput = (props) => {
             showUploadList={true}
             action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
             onChange={onChange}
-            onPreview
+            fileList={fileList}
           >
             <div className='upload-content'>
               <CameraOutlined />

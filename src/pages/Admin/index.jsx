@@ -13,7 +13,7 @@ const dataSource = [
     email: 'nguyenasvnhanh@gmail.com',
     ID_login: 'ABG1930a0',
     isProduct: true,
-    isPayment: true,
+    isPayment: false,
     isAdmin: true,
     idActive: true,
   }
@@ -45,34 +45,34 @@ const columns = [
     align: 'center',
     dataIndex: 'isProduct',
     className: 'checkbox_cell',
-    render: () => <Checkbox />
+    render: (dataIndex) => <Checkbox checked={dataIndex}/>
   },
   {
     title: 'Thanh toán',
     dataIndex: 'isPayment',
     align: 'center',
     className: 'checkbox_cell',
-    render: () => <Checkbox />
+    render: (dataIndex) => <Checkbox checked={dataIndex}/>
   },
   {
     title: 'Admin',
     dataIndex: 'isAdmin',
     align: 'center',
     className: 'checkbox_cell',
-    render: () => <Checkbox />
+    render: (dataIndex) => <Checkbox checked={dataIndex}/>
   },
   {
     title: 'Active',
     dataIndex: 'idActive',
     align: 'center',
     className: 'checkbox_cell',
-    render: () => <Checkbox />
+    render: (dataIndex) => <Checkbox checked={dataIndex}/>
   },
   {
     title: '',
     dataIndex: '',
     align: 'center',
-    render: () => <button className='btn-bgWhite-textGreen-borGreen'>Khởi tạo lại</button>,
+    render: () => <button className='btn_reset-user btn-bgWhite-textGreen-borGreen'>Khởi tạo lại</button>,
   },
   {
     title: '',
@@ -94,10 +94,16 @@ export default function UserManagement() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isCreateUser, setIsCreateUser] = useState(false)
   const [isSettingLog, setIssettingLog] = useState(false)
+  const [checked, setChecked] = useState(false)
 
   useEffect(() => {
     input_file.current.style.display = 'none'
   }, [])
+
+  var onChangeChecked = (e) => {
+    console.log('checked = ', e.target.checked);
+    setChecked(e.target.checked);
+  };
 
   const onSelectChange = (e) => {
     console.log('selectedRowKeys changed: ', e);

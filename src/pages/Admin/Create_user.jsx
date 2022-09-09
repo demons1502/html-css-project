@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Row, Checkbox } from 'antd';
+import { Col, Row, Checkbox, Button, Form, Input } from 'antd';
 import "../../assets/scss/Admin/create-user.scss"
 
 function Create_user(props) {
@@ -7,74 +7,132 @@ function Create_user(props) {
   const handleClose = () => {
     props.closeCreateUser()
   }
+  const onFinish = (values) => {
+    console.log('Success:', values);
+  };
 
-  const handleCallCreateUser = () => {
-    //call api create user
-  }
-
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
   return (
     <div className='container_create-user'>
       <div className="creater_user-title">
         <h3>Tạo mới nhân sự</h3>
       </div>
       <div className="line"></div>
-      <div className="create_user-form">
+      <Form name="create_user-form"
+        initialValues={{
+          remember: true,
+        }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off"
+      >
         <Row gutter={[8, 16]}>
           <Col span={8} >
-            <label>ID</label>
-            <input type="text" placeholder='Gen tự động' disabled />
+            <Form.Item
+              label="ID"
+            >
+              <Input type="text" placeholder='Gen tự động' disabled />
+            </Form.Item>
           </Col>
           <Col span={8}>
-            <div className="label_required">
-              <label>Họ và tên </label>
-              <label className='label_required_warning'> *</label>
-            </div>
-            <input type="text" placeholder='Nhập' />
+            <Form.Item
+              label="Họ và tên"
+              name="username"
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập Họ và tên.',
+                },
+              ]}
+            >
+              <Input type="text" placeholder='Nhập' />
+            </Form.Item>
           </Col>
           <Col span={8}>
-            <div className="label_required">
-              <label>Sô điện thoại</label>
-              <label className='label_required_warning'> *</label>
-            </div>
-            <input type="text" placeholder='Nhập' />
+            <Form.Item
+              label="Sô điện thoại"
+              name="number"
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập số điện thoai.',
+                },
+              ]}
+            >
+              <Input type="number" placeholder='Nhập' />
+            </Form.Item>
           </Col>
 
           <Col span={8}>
-            <label>ID login</label>
-            <input type="text" placeholder='Nhập' />
+            <Form.Item
+              label="ID login"
+              name="idLogin">
+              <Input type="text" placeholder='Nhập' />
+            </Form.Item>
           </Col>
           <Col span={16}>
-            <label>Email</label>
-            <input type="text" placeholder='Nhập' />
+            <Form.Item
+              label="Email"
+              name="email"
+            >
+              <Input type="text" placeholder='Nhập' />
+            </Form.Item>
           </Col>
         </Row>
         <Row justify="start" className='group_checkbox'>
           <Col span={5}>
-            <Checkbox>Admin</Checkbox>
+            <Form.Item
+              name="isAdmin"
+              valuePropName="checked"
+            >
+              <Checkbox>Admin</Checkbox>
+            </Form.Item>
           </Col>
           <Col span={5}>
-            <Checkbox>Hỏi đáp</Checkbox>
+            <Form.Item
+              name="isQuestion"
+              valuePropName="checked"
+            >
+              <Checkbox>Hỏi đáp</Checkbox>
+            </Form.Item>
           </Col>
           <Col span={5}>
-            <Checkbox>Thanh toán</Checkbox>
+            <Form.Item
+              name="isPayment"
+              valuePropName="checked"
+            >
+              <Checkbox>Thanh toán</Checkbox>
+            </Form.Item>
           </Col>
         </Row>
         <Row gutter={[8, 16]}>
           <Col span={16}>
-            <label>Vùng hoạt động</label>
-            <input type="text" placeholder='Nhập' />
+            <Form.Item
+              label="Vùng hoạt động"
+              name="area"
+            >
+              <Input type="text" placeholder='Nhập' />
+            </Form.Item>
           </Col>
           <Col span={8}>
-            <label>ID login người quản lý</label>
-            <input type="text" placeholder='Nhập' />
+            <Form.Item
+              name="idLoginUser"
+              label="ID login người quản lý"
+            >
+              <Input type="text" placeholder='Nhập' />
+            </Form.Item>
           </Col>
         </Row>
-      </div>
-      <div className="line"></div>
-      <div className="group_btn">
-        <button className='btn-danger' onClick={handleClose}>Huỷ tạo</button>
-        <button className='btn-primary' onClick={handleCallCreateUser}>Tạo mới</button>
-      </div>
+        <div className="line line_bottom"></div>
+        <div className="group_btn">
+          <button className='btn-danger' onClick={handleClose}>Huỷ tạo</button>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" className='btn-primary'>Tạo mới</Button>
+          </Form.Item>
+        </div>
+      </Form>
     </div>
   )
 }

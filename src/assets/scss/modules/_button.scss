@@ -66,3 +66,27 @@
     opacity: 0.7;
   }
 }
+
+.btn-table {
+  @extend %flex-end;
+
+  &__btn {
+    @extend %flex-centered;
+    font-size: 1.4rem;
+    color: $grey-dark-color;
+    border: none;
+    box-shadow: none;
+    background: none;
+    padding: 0;
+    height: 2rem;
+    font-weight: $font-weight-semibold;
+
+    img {
+      padding-right: 7px;
+    }
+    &:hover {
+      color: $grey-dark-color;
+      opacity: 0.7;
+    }
+  }
+}

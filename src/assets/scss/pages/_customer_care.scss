@@ -23,7 +23,7 @@
   }
 
   &__left {
-    padding: 12px 15px 0 15px;
+    padding: 12px 10px 0 15px;
     border-right: 1px solid $grey-border-color;
 
     .input-item-search {
@@ -76,7 +76,15 @@
     }
 
     &--event {
-      @extend %style-title
+      @extend %style-title;
+
+      &--left {
+        @extend %inline-center;
+
+        h5 {
+          margin-right: 18px;
+        }
+      }
     }
 
     &--list {

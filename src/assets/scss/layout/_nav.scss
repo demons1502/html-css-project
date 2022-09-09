@@ -6,8 +6,7 @@
   }
 
   li {
-    // max-width: calc(100%/8);
-    flex: 1;
+    padding-left: 30px !important;
 
     .ant-menu-title-content {
       color: $grey-dark-color;

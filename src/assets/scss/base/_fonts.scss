@@ -4,22 +4,17 @@
    src: url("../../fonts/Quicksand-Light.ttf") format("truetype");
 }
 @font-face {
-   font-family: "Quicksand-Medium";
+   font-family: "Quicksand";
    font-weight: $font-weight-normal;
    src: url("../../fonts/Quicksand-Medium.ttf") format("truetype");
 }
 @font-face {
-   font-family: "Quicksand-Regular";
-   font-weight: $font-weight-normal;
-   src: url("../../fonts/Quicksand-Regular.ttf") format("truetype");
-}
-@font-face {
-   font-family: "Quicksand-SemiBold";
-   font-weight: $font-weight-normal;
+   font-family: "Quicksand";
+   font-weight: $font-weight-semibold;
    src: url("../../fonts/Quicksand-SemiBold.ttf") format("truetype");
 }
 @font-face {
    font-family: "Quicksand-Bold";
-   font-weight: $font-weight-normal;
+   font-weight: $font-weight-bold;
    src: url("../../fonts/Quicksand-Bold.ttf") format("truetype");
 }

@@ -1,23 +1,3 @@
-%font-light {
-  font-family: $font-body-light;
-}
-
-%font-regular {
-  font-family: $font-body-regular;
-}
-
-%font-medium {
-  font-family: $font-body-medium;
-}
-
-%font-bold {
-  font-family: $font-body-bold;
-}
-
-%font-semibold {
-  font-family: $font-body-semibold;
-}
-
 %tex-center {
   text-align: center;
 }
@@ -76,9 +56,15 @@
   align-items: center;
 }
 
+%inline-center {
+  display: inline-flex;
+  align-items: center;
+}
+
+
 %btn {
   @extend %flex-centered;
-  @extend %font-bold;
+  font-weight: $font-weight-bold;
   font-size: 1.4rem;
   border-radius: 10px;
   line-height: 1.4rem;
@@ -92,7 +78,6 @@
 
 %btn-bg-grey {
   @extend %btn;
-  font-weight: $font-weight-bold;
   background-color: $secondary-color;
 }
 
@@ -109,7 +94,7 @@
 %input {
   border: none;
   padding: 0 1.3rem;
-  @extend %font-medium;
+  font-weight: $font-weight-normal;
 }
 
 %input-grey {
@@ -164,4 +149,8 @@
 
 .row-center {
   @extend %row-center
+}
+
+.m-r-10 {
+  margin-right: 10px;
 }

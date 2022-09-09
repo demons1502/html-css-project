@@ -8,7 +8,12 @@
     "save": "Lưu",
     "stt": "STT",
     "date": "Ngày",
-    "content": "Nội dung"
+    "content": "Nội dung",
+    "type info": "Loại thông tin",
+    "gender": "Giới tính:",
+    "old": "Tuổi:",
+    "contract": "Hợp đồng:",
+    "sign date": "Ngày ký:"
   },
   "validate": {
   },
@@ -18,7 +23,9 @@
     "history title": "Lịch sử chăm sóc",
     "add event": "Thêm event",
     "sms": "SMS",
-    "email": "Email"
+    "email": "Email",
+    "no more potential" : "Không còn tiềm năng",
+    "sync info": "Tổng hợp thông tin"
   }
 }
   

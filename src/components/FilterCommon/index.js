@@ -1,36 +1,50 @@
-import React, {Button, Checkbox} from 'antd';
+import React, {Button, Checkbox, Row, Col, Popover} from 'antd';
 import {useTranslation} from 'react-i18next';
-import {useState} from 'react';
+import {useMemo, useState} from 'react';
 import FilterIcon from '../../assets/images/icons/filter.svg';
 
 export default function FilterCommon(props) {
   const {t} = useTranslation();
   const {options, setPayload} = props;
-  const [isShowFilter, setIsShowFilter] = useState(false);
-
-  const showListFilter = () => {
-    setIsShowFilter(!isShowFilter);
-  };
+  const [open, setOpen] = useState(false);
 
   const checkFilter = (checkedValues) => {
     setPayload(checkedValues);
   };
 
+  const handleOpenChange = (newOpen) => {
+    setOpen(newOpen);
+  };
+
+  const checkboxRender = useMemo(() => {
+    return (
+      <Checkbox.Group style={{'maxWidth': '400px'}} onChange={checkFilter} className="checkbox-item">
+        <Row>
+          {
+            options.map((val, index) => {
+              return <Col key={index} span={24}>
+                <Checkbox value={val?.value}>{val?.label}</Checkbox>
+              </Col>
+            })
+          }
+        </Row>
+      </Checkbox.Group>
+    )
+  });
+
   return (
     <div className="filter">
-      <Button onClick={showListFilter} className={`filter__btn ${isShowFilter && 'filter__btn--active'}`}>
-        {t('common.filter')}
-        <img src={FilterIcon} alt=""/>
-      </Button>
-      {
-        isShowFilter && (
-          <div className="filter__list">
-            <div>
-              <Checkbox.Group options={options} defaultValue={['Apple']} onChange={checkFilter} className="checkbox-item"/>
-            </div>
-          </div>
-        )
-      }
+      <Popover
+        content={checkboxRender}
+        trigger="click"
+        placement="bottomLeft"
+        onOpenChange={handleOpenChange}
+      >
+        <Button className={`filter__btn ${open && 'filter__btn--active'}`}>
+          {t('common.filter')}
+          <img src={FilterIcon} alt=""/>
+        </Button>
+      </Popover>
     </div>
   );
 }

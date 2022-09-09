@@ -22,6 +22,16 @@ const dataSource = [
   },
 ]
 
+const options = [
+  { label: 'Chưa gọi điện', value: 'Apple' },
+  { label: 'Chưa gọi điện', value: 'Pear' },
+  { label: 'Chưa gọi điện', value: 'Orange' },
+  { label: 'Chưa gọi điện', value: 'Orange' },
+  { label: 'Chưa gọi điện', value: 'Orange' },
+  { label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 'Orange' },
+];
+
+
 export default function ListSearch() {
   const [selectId, setSelectId] = useState(0);
   const [payload, setPayload] = useState('');
@@ -38,9 +48,9 @@ export default function ListSearch() {
   }, [selectId])
 
   return (
-    <Col span={3} className="customer-care__left">
+    <Col span={4} className="customer-care__left">
       <InputSearch setPayload={setPayload}></InputSearch>
-      <FilterCommon></FilterCommon>
+      <FilterCommon options={options}></FilterCommon>
       <ListCommon type={TYPE_LIST_CUSTOMERS} dataList={dataSource} selectId={selectId} setSelectId={setSelectId}></ListCommon>
     </Col>
   );

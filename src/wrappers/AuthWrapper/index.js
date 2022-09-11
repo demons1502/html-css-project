@@ -9,7 +9,7 @@ export default function App() {
     <Fragment>
       <Header/>
       <Nav/>
-      <div className="container">
+      <div className="main-wrapper">
         <Suspense fallback={null}>
           <Routes>
             {PrivateRoutes?.map((item) => (

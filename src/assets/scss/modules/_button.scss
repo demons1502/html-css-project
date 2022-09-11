@@ -1,24 +1,92 @@
 .btn-primary {
+  @extend %btn-bg-green;
+  color: $white-color;
+
+  &:hover {
     @extend %btn-bg-green;
-    color: $white-color;
+    opacity: 0.7;
+  }
 }
+
 .btn-danger {
+  @extend %btn-bg-white;
+  color: $red-color;
+  border: 1px solid $red-color;
+
+  &:hover {
     @extend %btn-bg-white;
-    color: $red-color;
-    border: 1px solid $red-color
+    opacity: 0.7;
+  }
 }
+
 .btn-next-prev {
+  @extend %btn-bg-grey;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 8px;
+
+  &:hover {
     @extend %btn-bg-grey;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 8px;
+    opacity: 0.7;
+  }
 }
+
 .btn-circle {
+  @extend %btn-bg-grey;
+  width: 2.4rem;
+  height: 2.4rem;
+  background-color: $green-light-color;
+  border-radius: 50%;
+  color: $black-color;
+  padding: 0;
+
+  &:hover {
     @extend %btn-bg-grey;
-    width: 2.4rem;
-    height: 2.4rem;
-    background-color: $green-light-color;
+    opacity: 0.7;
+  }
+}
+
+.btn-add-new {
+  @extend %btn-bg-white;
+  color: $green-color;
+  padding: 0;
+  column-gap: 11px;
+  margin-left: auto;
+  margin-right: 20px;
+  margin-top: 20px;
+
+  img {
+    background: $green-color;
+    padding: 4px;
     border-radius: 50%;
-    color: $black-color;
+  }
+
+  &:hover {
+    color: $green-color;
+    opacity: 0.7;
+  }
+}
+
+.btn-table {
+  @extend %flex-end;
+
+  &__btn {
+    @extend %flex-centered;
+    font-size: 1.4rem;
+    color: $grey-dark-color;
+    border: none;
+    box-shadow: none;
+    background: none;
     padding: 0;
+    height: 2rem;
+    font-weight: $font-weight-semibold;
+
+    img {
+      padding-right: 7px;
+    }
+    &:hover {
+      color: $grey-dark-color;
+      opacity: 0.7;
+    }
+  }
 }

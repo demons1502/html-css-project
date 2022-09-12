@@ -8,6 +8,7 @@ import QA from '../assets/images/icons/q&a.svg';
 import Book from '../assets/images/icons/book.svg';
 
 const CustomerCare = lazy(() => import('../pages/CustomerCare'));
+const FinanceConsultant = lazy(() => import('../pages/FinanceConsultant'));
 
 const PrivateRoutes = [
   {
@@ -44,10 +45,10 @@ const PrivateRoutes = [
         page: <CustomerCare/>
       },
       {
-        path: '/advise/finance-support',
-        key: 'advise-finance-support',
+        path: '/advise/finance-consultant',
+        key: 'advise-finance-consultant',
         label: 'Tư vấn tài chính',
-        page: <CustomerCare/>
+        page: <FinanceConsultant/>
       },
       {
         path: '/advise/financial-solutions',

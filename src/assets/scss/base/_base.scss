@@ -5,7 +5,8 @@ html {
 body {
   background-color: $primary-bg-color;
   font-size: 1.3rem;
-  font-family: $font-body-semibold;
+  font-family: $font-body;
+  font-weight: $font-weight-semibold;
   letter-spacing: 0.1rem;
 }
 
@@ -20,7 +21,6 @@ h1, h2, h3, h4, h5 {
   font-size: 1.8rem;
   font-weight: $font-weight-bold;
   color: $black-color;
-  font-family: $font-body-bold;
 }
 
 ::-webkit-scrollbar {

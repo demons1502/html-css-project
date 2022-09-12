@@ -9,6 +9,7 @@ import Book from '../assets/images/icons/book.svg';
 
 const CustomerCare = lazy(() => import('../pages/CustomerCare'));
 const Admin = lazy(() => import('../pages/Admin'))
+const Contract_management = lazy(() => import('../pages/ContractManagement'))
 
 const PrivateRoutes = [
   {
@@ -60,7 +61,7 @@ const PrivateRoutes = [
         path: '/advise/contract-management',
         key: 'contract-management',
         label: 'Quản lý hợp đồng',
-        page: <CustomerCare />
+        page: <Contract_management />
       }
     ],
   },

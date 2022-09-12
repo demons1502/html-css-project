@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Title from '../../components/Title';
 import { Table, Button, Checkbox } from 'antd';
-import "../../assets/scss/Admin/styles.scss"
+import "../../assets/scss/Admin/stylesAdmin.scss"
 import InputSearch from '../../components/InputSearch';
 import Create_user from './Create_user';
 
@@ -27,7 +27,7 @@ const columns = [
   {
     title: 'ID',
     dataIndex: 'id',
-    className:'id-user',
+    className: 'id-user',
   },
   {
     title: 'Họ và tên',
@@ -50,28 +50,28 @@ const columns = [
     align: 'center',
     dataIndex: 'isProduct',
     className: 'checkbox_cell',
-    render: (dataIndex) => <Checkbox id='isProduct' defaultChecked={dataIndex} onChange={handleCheckboxChange}/>
+    render: (dataIndex) => <Checkbox id='isProduct' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
   },
   {
     title: 'Thanh toán',
     dataIndex: 'isPayment',
     align: 'center',
     className: 'checkbox_cell',
-    render: (dataIndex) => <Checkbox id='isPayment' defaultChecked={dataIndex} onChange={handleCheckboxChange}/>
+    render: (dataIndex) => <Checkbox id='isPayment' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
   },
   {
     title: 'Admin',
     dataIndex: 'isAdmin',
     align: 'center',
     className: 'checkbox_cell',
-    render: (dataIndex) => <Checkbox id='isAdmin' defaultChecked={dataIndex} onChange={handleCheckboxChange}/>
+    render: (dataIndex) => <Checkbox id='isAdmin' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
   },
   {
     title: 'Active',
     dataIndex: 'idActive',
     align: 'center',
     className: 'checkbox_cell',
-    render: (dataIndex) => <Checkbox id='idActive' defaultChecked={dataIndex} onChange={handleCheckboxChange}/>
+    render: (dataIndex) => <Checkbox id='idActive' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
   },
   {
     title: '',
@@ -105,9 +105,9 @@ export default function UserManagement() {
     input_file.current.style.display = 'none'
   }, [])
 
-  handleDeleteUser=(e)=>{
+  handleDeleteUser = (e) => {
     const rowOfElement = e.target.parentNode.parentNode
-    const idUser=rowOfElement.querySelector('.id-user').innerHTML
+    const idUser = rowOfElement.querySelector('.id-user').innerHTML
     //call api to delete
   }
 
@@ -123,7 +123,7 @@ export default function UserManagement() {
     setSelectedRowKeys(e);
   };
 
-  handelResetUser=(e)=>{
+  handelResetUser = (e) => {
     const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
     const id = rowHover[1].innerHTML
     //call api
@@ -137,6 +137,15 @@ export default function UserManagement() {
   const input_file = useRef(null)
   const handleImport = () => {
     input_file.current.click()
+    const inputElement = input_file.current
+    inputElement.addEventListener("change", handleFiles, false);
+    function handleFiles() {
+      const fileList = this.files;
+      if(fileList){
+        console.log(fileList);
+        // call api import file
+      }
+    }
   }
 
   const handleCreateUser = () => {
@@ -151,8 +160,8 @@ export default function UserManagement() {
   }
 
   const handleDeleteUsers = () => {
-    selectedRowKeys.map(selectedRowKey=>{
-      console.log('data ID:',data[selectedRowKey].id);
+    selectedRowKeys.map(selectedRowKey => {
+      console.log('data ID:', data[selectedRowKey].id);
     })
     //call api delete users
   }
@@ -204,7 +213,7 @@ export default function UserManagement() {
         </div>
         <Table rowSelection={rowSelection} columns={columns} dataSource={data}
           pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '30'] }}
-          
+
         >
         </Table>
         {isCreateUser ? (

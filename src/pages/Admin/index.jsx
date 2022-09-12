@@ -19,10 +19,15 @@ const dataSource = [
   }
 ];
 
+var handleDeleteUser
+var handleCheckboxChange
+var handelResetUser
+
 const columns = [
   {
     title: 'ID',
     dataIndex: 'id',
+    className:'id-user',
   },
   {
     title: 'Họ và tên',
@@ -45,40 +50,40 @@ const columns = [
     align: 'center',
     dataIndex: 'isProduct',
     className: 'checkbox_cell',
-    render: (dataIndex) => <Checkbox checked={dataIndex}/>
+    render: (dataIndex) => <Checkbox id='isProduct' defaultChecked={dataIndex} onChange={handleCheckboxChange}/>
   },
   {
     title: 'Thanh toán',
     dataIndex: 'isPayment',
     align: 'center',
     className: 'checkbox_cell',
-    render: (dataIndex) => <Checkbox checked={dataIndex}/>
+    render: (dataIndex) => <Checkbox id='isPayment' defaultChecked={dataIndex} onChange={handleCheckboxChange}/>
   },
   {
     title: 'Admin',
     dataIndex: 'isAdmin',
     align: 'center',
     className: 'checkbox_cell',
-    render: (dataIndex) => <Checkbox checked={dataIndex}/>
+    render: (dataIndex) => <Checkbox id='isAdmin' defaultChecked={dataIndex} onChange={handleCheckboxChange}/>
   },
   {
     title: 'Active',
     dataIndex: 'idActive',
     align: 'center',
     className: 'checkbox_cell',
-    render: (dataIndex) => <Checkbox checked={dataIndex}/>
+    render: (dataIndex) => <Checkbox id='idActive' defaultChecked={dataIndex} onChange={handleCheckboxChange}/>
   },
   {
     title: '',
     dataIndex: '',
     align: 'center',
-    render: () => <button className='btn_reset-user btn-bgWhite-textGreen-borGreen'>Khởi tạo lại</button>,
+    render: () => <button className='btn_reset-user btn-bgWhite-textGreen-borGreen' onClick={handelResetUser}>Khởi tạo lại</button>,
   },
   {
     title: '',
     dataIndex: '',
     align: 'center',
-    render: () => <img className='dustbin_icon' src='./images/dustbin.svg' />,
+    render: () => <img className='dustbin_icon' src='./images/dustbin.svg' onClick={handleDeleteUser} />,
   }
 ];
 
@@ -94,21 +99,35 @@ export default function UserManagement() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isCreateUser, setIsCreateUser] = useState(false)
   const [isSettingLog, setIssettingLog] = useState(false)
-  const [checked, setChecked] = useState(false)
+
 
   useEffect(() => {
     input_file.current.style.display = 'none'
   }, [])
 
-  var onChangeChecked = (e) => {
-    console.log('checked = ', e.target.checked);
-    setChecked(e.target.checked);
+  handleDeleteUser=(e)=>{
+    const rowOfElement = e.target.parentNode.parentNode
+    const idUser=rowOfElement.querySelector('.id-user').innerHTML
+    //call api to delete
+  }
+
+  handleCheckboxChange = (e) => {
+    const data = e.target.id
+    const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
+    const idCheckboxChange = rowHover[1].innerHTML
+    //call api when click checkbox
   };
 
   const onSelectChange = (e) => {
     console.log('selectedRowKeys changed: ', e);
     setSelectedRowKeys(e);
   };
+
+  handelResetUser=(e)=>{
+    const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
+    const id = rowHover[1].innerHTML
+    //call api
+  }
 
   const rowSelection = {
     selectedRowKeys,
@@ -131,12 +150,20 @@ export default function UserManagement() {
     setIssettingLog(!isSettingLog)
   }
 
+  const handleDeleteUsers = () => {
+    selectedRowKeys.map(selectedRowKey=>{
+      console.log('data ID:',data[selectedRowKey].id);
+    })
+    //call api delete users
+  }
+
   return (
     <>
       <div className="admin_header">
         <h3>Admin quản lý khách hàng Manulife</h3>
         <div className="admin_header_func">
-          <button className="func_delete-user btn-bgWhite-textGreen-borGreen">
+          <button className="func_delete-user btn-bgWhite-textGreen-borGreen"
+            onClick={handleDeleteUsers}>
             Xoá
           </button>
           <button className="func_reset-user btn-bgWhite-textGreen-borGreen">
@@ -177,6 +204,7 @@ export default function UserManagement() {
         </div>
         <Table rowSelection={rowSelection} columns={columns} dataSource={data}
           pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '30'] }}
+          
         >
         </Table>
         {isCreateUser ? (

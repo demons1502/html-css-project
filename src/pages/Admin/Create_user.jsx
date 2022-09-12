@@ -9,6 +9,7 @@ function Create_user(props) {
   }
   const onFinish = (values) => {
     console.log('Success:', values);
+    //call api create user
   };
 
   const onFinishFailed = (errorInfo) => {

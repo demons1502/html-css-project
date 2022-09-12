@@ -6,7 +6,7 @@
     height: 60px;
     align-items: center;
     justify-content: space-between;
-    margin: 0px -20px 13px;
+    margin: 0px -30px 13px;
     padding: 0px 32px;
 
     .admin_header_func {
@@ -88,6 +88,9 @@
 
     .btn_reset-user{
         min-width: 90px;
+    }
+    .dustbin_icon{
+        cursor: pointer;
     }
 }
 

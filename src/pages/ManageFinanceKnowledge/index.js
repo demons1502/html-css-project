@@ -20,6 +20,7 @@ const ManageFinanceKnowledge = () => {
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
     },
   ]);
+
   const handleChange = (e) => {
     setButtonState(false);
     let values;
@@ -44,8 +45,9 @@ const ManageFinanceKnowledge = () => {
       link: 'link',
     };
     let lastId = _.last(lists);
-    itemData.id = lastId.id + 1;
+    itemData.id = lastId?.id ? lastId.id + 1 : 1;
     setLists([...lists, itemData]);
+    setItemContent(itemData);
   };
 
   const handleIndex = (index) => {
@@ -53,145 +55,99 @@ const ManageFinanceKnowledge = () => {
     return indexS;
   };
 
-  useEffect(() => {
+  const handleDelete = (id) => {
+    const newData = lists.filter((e) => e.id !== id);
+    setLists(newData);
     setItemContent({});
+  };
+
+  const handleSave = (id) => {
+    console.log(id);
+  };
+
+  useEffect(() => {
+    setItemContent(lists[0]);
   }, [option]);
 
   return (
-    <Layout className='manageFinanceKnowledge'>
-      <Row gutter={[16, 10]} justify='start' align='stretch'>
-        <Col lg={7} md={24} sm={24} xs={24}>
-          <Layout.Content>
-            <div className='list-option'>
-              <Segmented
-                options={options}
-                onChange={(e) => setOption(e)}
-                defaultValue={option}
-                value={option}
-              />
-            </div>
-
-            <List
-              size='small'
-              header={
-                <Title
-                  title={
-                    option !== 'q&a'
-                      ? 'Danh sách bài viết'
-                      : 'Danh sách câu hỏi'
-                  }
-                />
-              }
-              footer={
-                <Button
-                  type='primary'
-                  shape='circle'
-                  icon={<img src={IconPlus} alt='' />}
-                  onClick={addList}
-                >
-                  Thêm mới
-                </Button>
-              }
-              dataSource={lists}
-              renderItem={(item, index) => (
-                <List.Item
-                  onClick={() => setItemContent(item)}
-                  className={`${item === itemContent ? 'active' : ''}`}
-                >
-                  <Typography.Text ellipsis>
-                    {option !== 'q&a'
-                      ? `Bài viết ${handleIndex(index + 1)}: ${item.title}`
-                      : `Câu hỏi ${handleIndex(index + 1)}: ${item.title}`}
-                  </Typography.Text>
-                </List.Item>
-              )}
-            />
-          </Layout.Content>
-        </Col>
-
-        <Col lg={17} flex={1}>
-          <Layout.Content className='manageContent'>
-            {option !== 'q&a' ? (
-              <FinanceKnowledgeContent
-                content={itemContent}
-                onChange={handleChange}
-                onUpload={handleFileList}
-                fileList={fileList}
-              />
-            ) : (
-              <QuestionAnswerContent
-                onChange={handleChange}
-                content={itemContent}
-              />
-            )}
-
-            {/* <List
-              size='small'
-              header={
-                <div className='manageContent-header'>
-                  <Title title='Nội dung' />
-                  {option === 'q&a' ? (
-                    
-                  ) : null}
-                </div>
-              }
-              footer={
-                <div className='manageContent-footer'>
-                  {option !== 'q&a' && (
-                    <ManageContentInput
-                      onChange={handleChange}
-                      name='link'
-                      title='Link'
-                      value={itemContent.link}
-                      placeholder='Nhập link'
-                    />
-                  )}
-                  <div className='manageContent-footer-button'>
-                    <Button danger className='btn-cancer'>
-                      Hủy
-                    </Button>
-                    <Button
-                      type='primary'
-                      className='btn-save'
-                      onClick={() => console.log(itemContent)}
-                      disabled={buttonState}
-                    >
-                      Lưu
-                    </Button>
-                  </div>
-                </div>
-              }
-            >
-              <div className='manageContent-container'>
-                <ManageContentInput
-                  onChange={handleChange}
-                  name='title'
-                  value={itemContent.title}
-                  title='Tiêu đề'
-                  placeholder='Nhập nội dung tiêu đề'
-                />
-                <ManageContentInput
-                  input={false}
-                  title='Ảnh đại diện: '
-                  type='file'
-                  onChange={handleFileList}
-                  fileList={fileList}
-                />
-                <ManageContentInput
-                  onChange={handleChange}
-                  name='desc'
-                  value={itemContent.desc}
-                  title='Nội dung'
-                  textarea
-                  input={false}
-                  placeholder='HTML Editer'
+    <div className='manageFinanceKnowledge'>
+      <div className='manageFinanceKnowledge-nav'>
+        <h3>Quản lý nội dung</h3>
+      </div>
+      <Layout className='manageFinanceKnowledge-container'>
+        <Row gutter={[16, 10]} justify='start' align='stretch'>
+          <Col lg={6} md={24} sm={24} xs={24}>
+            <Layout.Content>
+              <div className='list-option'>
+                <Segmented
+                  options={options}
+                  onChange={(e) => setOption(e)}
+                  defaultValue={option}
+                  value={option}
                 />
               </div>
-            </List> */}
-          </Layout.Content>
-        </Col>
-      </Row>
-    </Layout>
+
+              <List
+                size='small'
+                header={
+                  <Title
+                    title={
+                      option !== 'q&a'
+                        ? 'Danh sách bài viết'
+                        : 'Danh sách câu hỏi'
+                    }
+                  />
+                }
+                footer={
+                  <Button
+                    type='primary'
+                    shape='circle'
+                    icon={<img src={IconPlus} alt='' />}
+                    onClick={addList}
+                  >
+                    Thêm mới
+                  </Button>
+                }
+                dataSource={lists}
+                renderItem={(item, index) => (
+                  <List.Item
+                    onClick={() => setItemContent(item)}
+                    className={`${item === itemContent ? 'active' : ''}`}
+                  >
+                    <Typography.Text ellipsis>
+                      {option !== 'q&a'
+                        ? `Bài viết ${handleIndex(index + 1)}: ${item.title}`
+                        : `Câu hỏi ${handleIndex(index + 1)}: ${item.title}`}
+                    </Typography.Text>
+                  </List.Item>
+                )}
+              />
+            </Layout.Content>
+          </Col>
+
+          <Col lg={18} flex={1}>
+            <Layout.Content className='manageContent'>
+              {option !== 'q&a' ? (
+                <FinanceKnowledgeContent
+                  content={itemContent}
+                  onChange={handleChange}
+                  onUpload={handleFileList}
+                  fileList={fileList}
+                  onClick={handleSave}
+                />
+              ) : (
+                <QuestionAnswerContent
+                  onChange={handleChange}
+                  content={itemContent}
+                  onDelete={handleDelete}
+                  onSave={handleSave}
+                />
+              )}
+            </Layout.Content>
+          </Col>
+        </Row>
+      </Layout>
+    </div>
   );
 };
 

@@ -4,7 +4,7 @@ import ManageContentInput from '../../components/ManageContentInput';
 import Title from '../../components/Title';
 
 const FinanceKnowledgeContent = (props) => {
-  const { content, onChange, onUpload, fileList } = props;
+  const { content, onChange, onUpload, fileList, onClick } = props;
 
   return (
     <div className='financeKnowledgeContent'>
@@ -21,7 +21,7 @@ const FinanceKnowledgeContent = (props) => {
               onChange={onChange}
               name='link'
               title='Link'
-              value={content.link}
+              value={content?.link}
               placeholder='Nhập link'
             />
             <div className='manageContent-footer-button'>
@@ -31,7 +31,7 @@ const FinanceKnowledgeContent = (props) => {
               <Button
                 type='primary'
                 className='btn-save'
-                onClick={() => console.log(content)}
+                onClick={() => onClick(content.id)}
                 /* disabled={buttonState} */
               >
                 Lưu
@@ -44,7 +44,7 @@ const FinanceKnowledgeContent = (props) => {
           <ManageContentInput
             onChange={onChange}
             name='title'
-            value={content.title}
+            value={content?.title}
             title='Tiêu đề'
             placeholder='Nhập nội dung tiêu đề'
           />
@@ -58,7 +58,7 @@ const FinanceKnowledgeContent = (props) => {
           <ManageContentInput
             onChange={onChange}
             name='desc'
-            value={content.desc}
+            value={content?.desc}
             title='Nội dung'
             textarea
             input={false}

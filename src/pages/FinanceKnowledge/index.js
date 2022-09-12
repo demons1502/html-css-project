@@ -5,14 +5,15 @@ import FinanceKnowledgeCard from '../../components/FinanceKnowledgeCard';
 import ManageFinanceKnowledge from '../ManageFinanceKnowledge';
 
 import messageIcon from '../../assets/images/icons/message.svg';
+import PaymentManagement from '../PaymentManagement';
 
 const index = () => {
   const [topViews, setTopViews] = useState([]);
 
   useEffect(() => {
     const getTop = () => {
-      const dataSort = finances.sort((a, b) => b.views - a.views);
-      const top = dataSort.slice(0, 4);
+      /* const dataSort = finances.sort((a, b) => b.views - a.views); */
+      const top = finances.slice(0, 4);
       setTopViews(top);
     };
     getTop();
@@ -64,6 +65,7 @@ const index = () => {
         </Row>
       </Layout.Content>
       {/* <ManageFinanceKnowledge /> */}
+      <PaymentManagement />
     </Layout>
   );
 };

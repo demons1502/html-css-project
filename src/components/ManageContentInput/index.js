@@ -10,6 +10,7 @@ const ManageContentInput = (props) => {
     name,
     type = 'text',
     textarea = false,
+    background = false,
     value,
     fileList,
     placeholder,
@@ -31,7 +32,7 @@ const ManageContentInput = (props) => {
         />
       ) : !input && textarea ? (
         <div className='textarea'>
-          <span className='textarea-title'>{`${title}: `}</span>
+          {title && <span className='textarea-title'>{`${title}: `}</span>}
           <Input.TextArea
             name={name}
             placeholder={placeholder}

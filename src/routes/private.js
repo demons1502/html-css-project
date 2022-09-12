@@ -6,6 +6,7 @@ import Support from '../assets/images/icons/support.svg';
 import Care from '../assets/images/icons/care.svg';
 import QA from '../assets/images/icons/q&a.svg';
 import Book from '../assets/images/icons/book.svg';
+import ManageFinanceKnowledge from '../pages/ManageFinanceKnowledge';
 
 const CustomerCare = lazy(() => import('../pages/CustomerCare'));
 const FinanceKnowledge = lazy(() => import('../pages/FinanceKnowledge'));
@@ -76,7 +77,7 @@ const PrivateRoutes = [
     key: 'q&a',
     label: 'Hỏi đáp',
     icon: QA,
-    page: <CustomerCare />,
+    page: <ManageFinanceKnowledge />,
   },
   {
     path: '/finance-support',

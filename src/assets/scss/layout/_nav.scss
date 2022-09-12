@@ -1,5 +1,5 @@
 .nav {
-  margin-bottom: 16px;
+  /*  margin-bottom: 16px; */
 
   .ant-menu-submenu-open {
     color: $green-color !important;
@@ -26,7 +26,8 @@
         }
 
         img {
-          filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg) brightness(97%) contrast(99%);
+          filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg)
+            brightness(97%) contrast(99%);
         }
       }
     }
@@ -45,7 +46,8 @@
           color: $green-color !important;
 
           img {
-            filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg) brightness(97%) contrast(99%);
+            filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg)
+              brightness(97%) contrast(99%);
           }
         }
       }
@@ -61,7 +63,8 @@
       color: $green-color !important;
 
       img {
-        filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg) brightness(97%) contrast(99%);
+        filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg)
+          brightness(97%) contrast(99%);
       }
     }
   }
@@ -72,7 +75,8 @@
     }
 
     img {
-      filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg) brightness(97%) contrast(99%);
+      filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg)
+        brightness(97%) contrast(99%);
     }
   }
 }

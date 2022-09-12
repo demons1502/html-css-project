@@ -4,10 +4,20 @@ import { useDispatch } from "react-redux";
 import { login } from "../../../slices/auth";
 import powered from "../../../assets/images/powered.png";
 import logo from "../../../assets/images/manulife-logo.png";
+import ForgotPassword from "./ForgotPassword";
 
 const FormLogin = () => {
   const dispatch = useDispatch();
   const [messageError, setMessageError] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   const onFinish = (values) => {
     if (values.username && values.password) {
       dispatch(
@@ -59,7 +69,11 @@ const FormLogin = () => {
               </Checkbox>
             </Form.Item>
 
-            <Button className="login__forgotPassword" type="text">
+            <Button
+              className="login__forgotPassword"
+              type="text"
+              onClick={showModal}
+            >
               Quên mật khẩu?
             </Button>
           </Form.Item>
@@ -84,6 +98,7 @@ const FormLogin = () => {
           Powered by 1Way
         </Typography>
       </div>
+      <ForgotPassword open={isModalOpen} handleCancel={handleCancel} />
     </>
   );
 };

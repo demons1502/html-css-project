@@ -1,23 +1,40 @@
 import React, { useState } from "react";
-import { Button, Checkbox, Form, Input, Typography } from "antd";
 import { useDispatch } from "react-redux";
+import { Button, Checkbox, Form, Input, Typography } from "antd";
 import { login } from "../../../slices/auth";
+import ForgotPassword from "./ForgotPassword";
+import UpdatePassword from "./UpdatePassword";
 import powered from "../../../assets/images/powered.png";
 import logo from "../../../assets/images/manulife-logo.png";
-import ForgotPassword from "./ForgotPassword";
 
 const FormLogin = () => {
   const dispatch = useDispatch();
+  const [loginId, setLoginId] = useState("");
   const [messageError, setMessageError] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenForgot, setIsModalOpenForgot] = useState(false);
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
 
-  const showModal = () => {
-    setIsModalOpen(true);
+  const handleLoginId = (value) => {
+    setLoginId(value);
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  const showModalForgot = () => {
+    setIsModalOpenForgot(true);
   };
+
+  const handleCancelForgot = () => {
+    setIsModalOpenForgot(false);
+  };
+
+  const showModalUpdate = () => {
+    setIsModalOpenUpdate(true);
+  };
+
+  const handleCancelUpdate = () => {
+    setIsModalOpenUpdate(false);
+    setIsModalOpenForgot(true);
+  };
+
   const onFinish = (values) => {
     if (values.username && values.password) {
       dispatch(
@@ -42,7 +59,6 @@ const FormLogin = () => {
           className="login__left__form"
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinish}
           autoComplete="off"
         >
           <Form.Item
@@ -72,7 +88,7 @@ const FormLogin = () => {
             <Button
               className="login__forgotPassword"
               type="text"
-              onClick={showModal}
+              onClick={showModalForgot}
             >
               Quên mật khẩu?
             </Button>
@@ -98,7 +114,20 @@ const FormLogin = () => {
           Powered by 1Way
         </Typography>
       </div>
-      <ForgotPassword open={isModalOpen} handleCancel={handleCancel} />
+      <ForgotPassword
+        open={isModalOpenForgot}
+        handleCancel={handleCancelForgot}
+        handleOpenUpdate={showModalUpdate}
+        id={loginId}
+        handleLoginId={handleLoginId}
+      />
+      <UpdatePassword
+        open={isModalOpenUpdate}
+        handleCancel={handleCancelUpdate}
+        handleCancelForgot={handleCancelForgot}
+        loginId={loginId}
+        handleLoginId={handleLoginId}
+      />
     </>
   );
 };

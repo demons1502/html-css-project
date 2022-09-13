@@ -13,7 +13,12 @@
     "gender": "Giới tính:",
     "old": "Tuổi:",
     "contract": "Hợp đồng:",
-    "sign date": "Ngày ký:"
+    "sign date": "Ngày ký:",
+    "history": "Lịch sử",
+    "solution": "Giải pháp",
+    "consultant": "Tư vấn",
+    "booking": "Đặt lịch hẹn",
+    "no more potential": "Không còn tiềm năng"
   },
   "validate": {
   },
@@ -26,6 +31,9 @@
     "email": "Email",
     "no more potential" : "Không còn tiềm năng",
     "sync info": "Tổng hợp thông tin"
+  },
+  "survey": {
+    "save": "Lưu thông tin",
+    "process": "Quy trình khảo sát"
   }
 }
-  

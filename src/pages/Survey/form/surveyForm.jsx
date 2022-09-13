@@ -13,7 +13,7 @@ const content = (
 );
 
 export default function SurveyForm() {
-  // const {t} = useTranslation();
+  const {t} = useTranslation();
   const rowData = [...Array(10)].map((v, i) => {
     return {
       key: i + 1,
@@ -159,12 +159,12 @@ export default function SurveyForm() {
       <Col span={18} className="survey__center">
         <div className="survey__center--top">
           <div className="survey__center--top--left">
-            <Button type="primary" className="btn-primary" onClick={clickHandler}>{('common.history')}</Button>
+            <Button type="primary" className="btn-primary" onClick={clickHandler}>{t('common.history')}</Button>
           </div>
           <div className="survey__center--top--right">
-            <Button type="primary" className="btn-primary" onClick={clickHandler}>{('common.solution')}</Button>
-            <Button type="primary" className="btn-primary" onClick={clickHandler}>{('common.consultant')}</Button>
-            <Button type="primary" className="btn-primary" onClick={clickHandler}>{('common.booking')}</Button>
+            <Button type="primary" className="btn-primary" onClick={clickHandler}>{t('common.solution')}</Button>
+            <Button type="primary" className="btn-primary" onClick={clickHandler}>{t('common.consultant')}</Button>
+            <Button type="primary" className="btn-primary" onClick={clickHandler}>{t('common.booking')}</Button>
           </div>
         </div>
         <div className="survey__center--list">
@@ -172,10 +172,10 @@ export default function SurveyForm() {
         </div>
         <div className="survey__center--action">
           <div className="survey__center--action--left">
-            <Button type="primary" className="btn-primary" onClick={clickHandler}>{('common.no more potential')}</Button>
+            <Checkbox className="checkbox-item">{t('customer care.no more potential')}</Checkbox>
           </div>
           <div className="survey__center--action--right">
-            <Button type="primary" className="btn-primary" onClick={clickHandler}>{('common.save')}</Button>
+            <Button type="primary" className="btn-primary" onClick={clickHandler}>{t('survey.save')}</Button>
           </div>
         </div>
       </Col>

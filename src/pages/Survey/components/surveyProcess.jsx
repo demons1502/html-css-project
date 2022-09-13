@@ -11,11 +11,11 @@ export default function SurveyProcess() {
   return (
     <>
       <Col span={8} className="survey__right">
-          <Title title="survey process"></Title>
+          <Title title={t("survey.process")}></Title>
 
           <div className="survey__right--content">
             <Button type="primary" className="btn-primary">{t('Lời thoại 1')}</Button>
-            <p className='survey__right--content--text'>survey process</p>
+            <p className='survey__right--content--text'>{t("survey.process")}</p>
           </div>
           <div className="survey__right--action">
             <div className="survey__right--action--right">

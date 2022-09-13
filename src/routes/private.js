@@ -8,7 +8,8 @@ import QA from '../assets/images/icons/q&a.svg';
 import Book from '../assets/images/icons/book.svg';
 
 const CustomerCare = lazy(() => import('../pages/CustomerCare'));
-const FinancialSolution = lazy(() => import('../pages/FinancialSolution'));
+const FinanceConsultant = lazy(() => import('../pages/FinanceConsultant'));
+const Survey = lazy(() => import('../pages/Survey'));
 
 const PrivateRoutes = [
   {
@@ -42,13 +43,13 @@ const PrivateRoutes = [
         path: '/advise/survey',
         key: 'survey',
         label: 'Khảo sát',
-        page: <CustomerCare/>
+        page: <Survey/>
       },
       {
-        path: '/advise/finance-support',
-        key: 'advise-finance-support',
+        path: '/advise/finance-consultant',
+        key: 'advise-finance-consultant',
         label: 'Tư vấn tài chính',
-        page: <CustomerCare/>
+        page: <FinanceConsultant/>
       },
       {
         path: '/advise/financial-solutions',

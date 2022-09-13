@@ -1,24 +1,23 @@
-
-import React, { Fragment, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { PrivateRoutes } from '../../routes';
+import React, {Suspense} from 'react';
+import {Routes, Route} from 'react-router-dom';
+import {PrivateRoutes} from '../../routes';
 import Header from '../../components/Header';
 import Nav from '../../components/Nav';
-import { useLocation } from "react-router-dom";
+import {useLocation} from "react-router-dom";
 
 export default function App() {
   const currentPath = useLocation();
-  const noNav = ['/admin'];
-  return (
+  const noNav = ['/admin', '/q&a'];
 
-    <Fragment>
-      <Header />
-      <div className="container">
-        {noNav.includes(currentPath.pathname) ? (
+  return (
+    <Suspense fallback={null}>
+      <Header/>
+      {noNav.includes(currentPath.pathname) ? (
           <></>
         ) :
-          <Nav />
-        }
+        <Nav/>
+      }
+      <div className="container">
         <div className="main-wrapper">
           <Suspense fallback={null}>
             <Routes>
@@ -43,6 +42,6 @@ export default function App() {
           </Suspense>
         </div>
       </div>
-    </Fragment>
+    </Suspense>
   )
 }

@@ -1,19 +1,7 @@
 .financeSupport {
-  padding: 0 30px 30px 30px;
-  &-title {
-    padding-top: 24px;
-    padding-bottom: 10px;
-    font-size: 1.8rem;
-    font-weight: $font-weight-bold;
-    line-height: 2.2rem;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    img {
-      margin-right: 10px;
-    }
+  .title {
+    padding: 2.4rem 0 1.2rem 0;
   }
-
   .gutter-row {
     .ant-typography {
       color: $black-color;

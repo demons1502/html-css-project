@@ -4,6 +4,8 @@ import { Table, Button, Checkbox, Modal } from 'antd';
 import "../../assets/scss/Admin/stylesAdmin.scss"
 import InputSearch from '../../components/InputSearch';
 import Create_user from './Create_user';
+import TableCommon from "../../components/TableCommon";
+import PaginationCommon from "../../components/PaginationCommon";
 
 const dataSource = [
   {
@@ -89,7 +91,7 @@ const columns = [
 
 const data = [];
 
-for (let i = 0; i < 600; i++) {
+for (let i = 0; i < 30; i++) {
   data.push({
     key: i,
     ...dataSource[0],
@@ -211,12 +213,10 @@ export default function UserManagement() {
             <InputSearch />
           </div>
         </div>
-        <Table rowSelection={rowSelection} columns={columns} dataSource={data}
-          pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '30'] }}
 
-        >
-        </Table>
-        {isCreateUser ?
+        <TableCommon dataSource={data} columnTable={columns} isSelection={true} isScroll={true}></TableCommon>
+        <PaginationCommon></PaginationCommon>
+        {isCreateUser &&
           <Modal centered width={589}
             footer={null}
             open={() => setIsCreateUser(true)}
@@ -225,7 +225,7 @@ export default function UserManagement() {
           >
             <Create_user closeCreateUser={closeCreateUser} />
           </Modal>
-          : <></>}
+        }
       </div>
     </>
   );

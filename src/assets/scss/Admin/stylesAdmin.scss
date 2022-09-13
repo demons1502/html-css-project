@@ -1,7 +1,5 @@
 @import '../styles.scss';
 
-
-
 .admin_header {
     background-color: #fff;
     display: flex;
@@ -87,112 +85,6 @@
 
     .dustbin_icon {
         cursor: pointer;
-    }
-}
-
-.ant-table-thead {
-    font-weight: 600;
-}
-
-.ant-pagination-options {
-    position: absolute;
-    left: 0px;
-    margin-left: 13px !important;
-
-    &::before {
-        content: 'Hiển thị ';
-        color: $gray-light-color;
-        font-size: 12px;
-    }
-
-    &::after {
-        content: ' trên 1 trang ';
-        color: $gray-light-color;
-        font-size: 12px;
-    }
-
-    .ant-pagination-options-size-changer {
-        .ant-select-selector {
-            border: none;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
-        }
-    }
-}
-
-.ant-table-pagination {
-    position: relative;
-
-    .ant-pagination-item {
-        border: none;
-        border-radius: 50%;
-        padding: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        &-active {
-            background-color: $green-color;
-
-            a {
-                color: white;
-            }
-        }
-    }
-
-    li {
-        margin: 0px;
-    }
-
-    .ant-pagination-prev,
-    .ant-pagination-next {
-        button {
-            border: none;
-        }
-    }
-}
-
-//check box color
-.ant-checkbox-checked .ant-checkbox-inner {
-    background-color: $green-color  !important;
-    border-color: $green-color  !important;
-}
-
-.ant-checkbox-indeterminate .ant-checkbox-inner::after {
-    background-color: $green-color  !important;
-}
-
-.ant-checkbox:hover .ant-checkbox-inner {
-    border-color: $green-color  !important;
-}
-
-.ant-checkbox-checked:after {
-    border-color: $green-color  !important;
-}
-
-.ant-checkbox-input:focus+.ant-checkbox-inner {
-    border-color: $green-color  !important;
-}
-
-.checkbox_cell {
-    .ant-checkbox:hover .ant-checkbox-inner {
-        border-color: $yellow-light-checkbox  !important;
-    }
-
-    .ant-checkbox-checked .ant-checkbox-inner {
-        background-color: $yellow-light-checkbox  !important;
-        border-color: $yellow-light-checkbox  !important;
-    }
-
-    .ant-checkbox-indeterminate .ant-checkbox-inner::after {
-        background-color: $yellow-light-checkbox  !important;
-    }
-
-    .ant-checkbox-input:focus+.ant-checkbox-inner {
-        border-color: $yellow-light-checkbox  !important;
-    }
-
-    .ant-checkbox-checked:after {
-        border-color: $yellow-light-checkbox  !important;
     }
 }
 

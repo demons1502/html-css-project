@@ -11,20 +11,20 @@ export default function SurveyProcess() {
   return (
     <>
       <Col span={8} className="survey__right">
-          <Title title={t("survey.process")}></Title>
+        <Title title={t("survey.process")}></Title>
 
-          <div className="survey__right--content">
-            <Button type="primary" className="btn-primary">{t('Lời thoại 1')}</Button>
-            <p className='survey__right--content--text'>{t("survey.process")}</p>
+        <div className="survey__right--content">
+          <Button type="primary" className="btn-primary">{t('Lời thoại 1')}</Button>
+          <p className='survey__right--content--text'>{t("survey.process")}</p>
+        </div>
+        <div className="survey__right--action">
+          <div className="survey__right--action--right">
+            <span>Trước</span>
+            <span><Button icon={<img src={LeftArrow} alt=""/>}></Button></span>
+            <span><Button icon={<img src={RightArrow} alt=""/>}></Button></span>
+            <span>Tiếp</span>
           </div>
-          <div className="survey__right--action">
-            <div className="survey__right--action--right">
-              <span>Trước</span>
-              <span><Button icon={<img src={LeftArrow} alt=""/>}></Button></span>
-              <span><Button icon={<img src={RightArrow} alt=""/>}></Button></span>
-              <span>Tiếp</span>
-            </div>
-          </div>
+        </div>
       </Col>
     </>
   );

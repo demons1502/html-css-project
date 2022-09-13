@@ -7,6 +7,8 @@ import TableCommon from '../../components/TableCommon';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconFiles from '../../assets/images/icons/files.svg';
 import FilterCommon from "../../components/FilterCommon";
+import SendSmsContent from "../../components/ModalCommon/SendSmsContent";
+import ModalCommon from "../../components/ModalCommon";
 
 const dataSource = [
   {
@@ -49,7 +51,7 @@ export default function History() {
   const customerCare = useSelector((state) => state.customerCare);
   const [dataTable, setDataTable] = useState(dataSource);
   const [payload, setPayload] = useState('');
-  const [count, setCount] = useState(4);
+  const [sendSms, setSendSms] = useState(false);
   const dispatch = useDispatch();
 
   const columns = [
@@ -88,14 +90,7 @@ export default function History() {
   }, [customerCare]);
 
   const addRow = () => {
-    const rowData = {
-      key: count,
-      date: '12/04/2022',
-      info: 'Thông tin thu nhập',
-      content: '10 Downing Street'
-    }
-    setDataTable([rowData, ...dataTable]);
-    setCount(count + 1);
+    setSendSms(true);
   }
 
   const saveData = (e) => {
@@ -114,28 +109,34 @@ export default function History() {
   }, [dataTable])
 
   return (
-    <Col span={11} className="customer-care__right">
-      <div className="customer-care__right--top">
-        <Checkbox className="checkbox-item">{t('customer care.no more potential')}</Checkbox>
-      </div>
-      <div className="customer-care__right--event">
-        <div className="customer-care__right--event--left">
-          <h5>{t('customer care.history title')}</h5>
-          <FilterCommon options={options} setPayload={setPayload}></FilterCommon>
+    <>
+      <Col span={11} className="customer-care__right">
+        <div className="customer-care__right--top">
+          <Checkbox className="checkbox-item">{t('customer care.no more potential')}</Checkbox>
         </div>
-        <Button type="primary" className="btn-primary" onClick={saveData}>{t('common.save')}</Button>
-      </div>
-      <div className="customer-care__right--list">
-        {table}
-        <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={addRow}>{t('customer care.add event')}</Button>
-      </div>
-      <div className="customer-care__right--info">
-        <h3><img src={IconFiles} alt=""/>{t('customer care.sync info')}</h3>
-        <ul>
-          <li>27 tuổi, 1 vợ, 2 con, chưa có nhà, đang làm nghề môi giới chứng khóa</li>
-          <li>Thu nhập 62 triệu</li>
-        </ul>
-      </div>
-    </Col>
+        <div className="customer-care__right--event">
+          <div className="customer-care__right--event--left">
+            <h5>{t('customer care.history title')}</h5>
+            <FilterCommon options={options} setPayload={setPayload}></FilterCommon>
+          </div>
+          <Button type="primary" className="btn-primary" onClick={saveData}>{t('common.save')}</Button>
+        </div>
+        <div className="customer-care__right--list">
+          {table}
+          <div className="customer-care__right--list-footer">
+            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={addRow}>{t('customer care.add event')}</Button>
+          </div>
+        </div>
+        <div className="customer-care__right--info">
+          <h3><img src={IconFiles} alt=""/>{t('customer care.sync info')}</h3>
+          <ul>
+            <li>27 tuổi, 1 vợ, 2 con, chưa có nhà, đang làm nghề môi giới chứng khóa</li>
+            <li>Thu nhập 62 triệu</li>
+          </ul>
+        </div>
+      </Col>
+      <ModalCommon isVisible={sendSms} setIsVisible={setSendSms} title="Gửi SMS/Email" content={<SendSmsContent />}></ModalCommon>
+    </>
+
   );
 }

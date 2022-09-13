@@ -9,6 +9,9 @@ export default function TableCommon(props) {
     nameTable,
     isSelection = false,
     bordered = false,
+    heightMargin = 340,
+    isScroll = false,
+    scroll = isScroll ? {y: `calc(100vh - ${heightMargin}px)`, scrollToFirstRowOnChange: false} : {}
   } = props;
   const [columns, setColumns] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -48,7 +51,7 @@ export default function TableCommon(props) {
       className='table-common '
       bordered={bordered}
       key={nameTable}
-      scroll={{scrollToFirstRowOnChange: false}}>
+      scroll={scroll}>
       {props.children}
     </Table>
   );

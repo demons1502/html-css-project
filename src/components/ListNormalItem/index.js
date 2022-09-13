@@ -11,7 +11,7 @@ export default function ListNormalItem(props) {
 
   return (
     <div className={`normal-item ${selectId === data.key ? 'normal-item-active' : ''}`} onClick={selectItem}>
-      <p className="normal-item--name">{data?.name}</p>
+      <p className="list-item-name">{data?.name}</p>
     </div>
   );
 }

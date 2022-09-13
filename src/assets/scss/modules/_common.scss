@@ -42,6 +42,10 @@
     text-align: left;
     font-weight: $font-weight-semibold;
 
+    span {
+      margin-right: auto;
+    }
+
     img {
       margin-left: 8px;
     }
@@ -57,12 +61,24 @@
   @extend %flex-centered;
   flex: 1;
 
-  .ant-progress-bg {
-    background: $green-color;
-    height: 4px !important;
+  .ant-progress-inner {
+    overflow: initial;
+    .ant-progress-bg {
+      background: $green-color;
+      height: 4px !important;
 
-    &:after {
-      content: "";
+      &:after {
+        content: "";
+        width: 17px;
+        height: 17px;
+        background: $white-color;
+        position: absolute;
+        right: -5px;
+        top: -6px;
+        z-index: 9;
+        border-radius: 50%;
+        border: 3px solid $green-color;
+      }
     }
   }
 
@@ -70,7 +86,6 @@
     border-radius: 20px;
     background: $bg-grey;
   }
-
   .ant-progress-text {
     color: $green-color;
     font-size: 1.3rem;

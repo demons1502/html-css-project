@@ -1,4 +1,4 @@
-FROM node:14.17.1-stretch
+FROM node:16.17.0
 
 ARG USERID=1000
 ARG GROUPID=1000

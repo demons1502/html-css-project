@@ -7,7 +7,8 @@ export default function TableCommon(props) {
     dataSource,
     columnTable,
     nameTable,
-    isSelection = false
+    isSelection = false,
+    bordered = false,
   } = props;
   const [columns, setColumns] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -44,8 +45,8 @@ export default function TableCommon(props) {
       dataSource={dataSource}
       columns={columns}
       pagination={false}
-      className='table-common'
-      bordered={false}
+      className='table-common '
+      bordered={bordered}
       key={nameTable}
       scroll={{scrollToFirstRowOnChange: false}}>
       {props.children}

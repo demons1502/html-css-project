@@ -9,6 +9,7 @@ import Book from '../assets/images/icons/book.svg';
 
 const CustomerCare = lazy(() => import('../pages/CustomerCare'));
 const FinanceConsultant = lazy(() => import('../pages/FinanceConsultant'));
+const Survey = lazy(() => import('../pages/Survey'));
 
 const PrivateRoutes = [
   {
@@ -42,7 +43,7 @@ const PrivateRoutes = [
         path: '/advise/survey',
         key: 'survey',
         label: 'Khảo sát',
-        page: <CustomerCare/>
+        page: <Survey/>
       },
       {
         path: '/advise/finance-consultant',

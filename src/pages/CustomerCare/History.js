@@ -2,49 +2,73 @@ import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {Col, Checkbox, Button, Empty} from 'antd';
-import {createData, retrieveData} from '../../slices/customerCare';
+import {createData, retrieveData, searchData} from '../../slices/customerCare';
 import TableCommon from '../../components/TableCommon';
 import IconPlus from '../../assets/images/icons/plus.svg';
-import _ from 'lodash';
+import IconFiles from '../../assets/images/icons/files.svg';
+import FilterCommon from "../../components/FilterCommon";
 
 const dataSource = [
   {
+    key: 0,
+    date: '12/04/2022',
+    info: 'Thông tin thu nhập',
+    content: '10 Downing Street'
+  },
+  {
     key: 1,
-    name: 'Mike',
-    age: 32,
-    address: '10 Downing Street',
+    date: '12/04/2022',
+    info: 'Thông tin thu nhập',
+    content: '10 Downing Street'
   },
   {
     key: 2,
-    name: 'John',
-    age: 42,
-    address: '10 Downing Street',
+    date: '12/04/2022',
+    info: 'Thông tin thu nhập',
+    content: '10 Downing Street'
+  },
+  {
+    key: 3,
+    date: '12/04/2022',
+    info: 'Thông tin thu nhập',
+    content: '10 Downing Street'
   },
 ]
 
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: '',
-    dataIndex: 'address',
-    key: 'address',
-  },
+const options = [
+  { label: 'Chưa gọi điện', value: 1 },
+  { label: 'Đã gọi điện lần 1, cần gọi lần 2', value: 2 },
+  { label: 'Đã gọi điện từ 2 lần', value: 3 },
+  { label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 4 },
+  { label: 'Đã tư vấn giải pháp, chờ chốt kết quả', value: 5 },
+  { label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 6 },
 ];
 
 export default function History() {
   const {t} = useTranslation();
   const customerCare = useSelector((state) => state.customerCare);
   const [dataTable, setDataTable] = useState(dataSource);
+  const [payload, setPayload] = useState('');
+  const [count, setCount] = useState(4);
   const dispatch = useDispatch();
+
+  const columns = [
+    {
+      title: t('common.date'),
+      dataIndex: 'date',
+      key: 'stt',
+    },
+    {
+      title: t('common.type info'),
+      dataIndex: 'info',
+      key: 'date',
+    },
+    {
+      title: t('common.content'),
+      dataIndex: 'content',
+      key: 'content',
+    }
+  ];
 
   const initFetch = useCallback(() => {
     dispatch(retrieveData());
@@ -55,20 +79,23 @@ export default function History() {
   }, [initFetch]);
 
   useEffect(() => {
+    console.log(payload)
+    dispatch(searchData())
+  }, [payload])
+
+  useEffect(() => {
     //re render
   }, [customerCare]);
 
   const addRow = () => {
     const rowData = {
-      key: 0,
-      name: '',
-      age: 42,
-      address: '10 Downing Street',
+      key: count,
+      date: '12/04/2022',
+      info: 'Thông tin thu nhập',
+      content: '10 Downing Street'
     }
-
-    let lastValue = _.last(dataTable);
-    rowData.key = lastValue.key + 1;
     setDataTable([rowData, ...dataTable]);
+    setCount(count + 1);
   }
 
   const saveData = (e) => {
@@ -89,15 +116,25 @@ export default function History() {
   return (
     <Col span={11} className="customer-care__right">
       <div className="customer-care__right--top">
-        <Checkbox className="checkbox-item">Không còn tiềm năng</Checkbox>
+        <Checkbox className="checkbox-item">{t('customer care.no more potential')}</Checkbox>
       </div>
       <div className="customer-care__right--event">
-        <h5>{t('customer care.history title')}</h5>
+        <div className="customer-care__right--event--left">
+          <h5>{t('customer care.history title')}</h5>
+          <FilterCommon options={options} setPayload={setPayload}></FilterCommon>
+        </div>
         <Button type="primary" className="btn-primary" onClick={saveData}>{t('common.save')}</Button>
       </div>
       <div className="customer-care__right--list">
         {table}
         <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={addRow}>{t('customer care.add event')}</Button>
+      </div>
+      <div className="customer-care__right--info">
+        <h3><img src={IconFiles} alt=""/>{t('customer care.sync info')}</h3>
+        <ul>
+          <li>27 tuổi, 1 vợ, 2 con, chưa có nhà, đang làm nghề môi giới chứng khóa</li>
+          <li>Thu nhập 62 triệu</li>
+        </ul>
       </div>
     </Col>
   );

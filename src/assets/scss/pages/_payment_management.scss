@@ -1,4 +1,5 @@
 .paymentManagement {
+  position: relative;
   width: 100%;
   &-nav {
     background-color: $white-color;
@@ -42,7 +43,7 @@
     &-row {
       &:hover {
         .ant-table-cell-row-hover {
-          /* color: $white-color;
+          /*  color: $white-color;
           background-color: rgba($color: $green-table-bg, $alpha: 0.7); */
 
           background-color: unset;
@@ -62,8 +63,11 @@
       }
     }
     &-cell {
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
       padding: 10px 13px;
       color: $black-color;
+
       &::before {
         display: none;
       }
@@ -80,6 +84,8 @@
     align-items: center;
     .ant-btn {
       border-radius: 10px;
+      font-size: 1.2rem;
+      font-weight: $font-weight-bold;
       border: 1px solid $green-color;
       padding: 10px 24px;
       display: flex;
@@ -169,6 +175,67 @@
         font-size: $font-size-base;
         color: $black-color;
         font-weight: $font-weight-bold;
+      }
+    }
+  }
+  &-modal {
+    width: 700px !important;
+    .ant-modal-content {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .ant-modal-body {
+      padding: 20px;
+    }
+    .ant-form-item {
+      margin-bottom: 10px;
+      &:last-child {
+        margin: unset;
+      }
+      .ant-row {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+        .ant-form-item-control,
+        .ant-picker {
+          width: 100%;
+          input,
+          textarea,
+          .ant-select-selection-item {
+            font-size: $font-size-base;
+            font-weight: $font-weight-semibold;
+            color: $black-color;
+            /* &:hover {
+              border-color: $green-color;
+            } */
+          }
+          textarea {
+            min-height: 100px;
+          }
+        }
+        /*  .ant-picker-focused,
+        .ant-picker:hover {
+          border-color: $green-color;
+        } */
+        .ant-picker-focused {
+          box-shadow: 0 0 0 2px rgba($color: $green-color, $alpha: 0.2);
+        }
+        /* .ant-form-item-control-input {
+          width: 100%;
+        } */
+      }
+      .ant-btn {
+        width: 150px;
+        font-size: $font-size-base;
+        color: $white-color;
+        font-size: $font-size-base;
+        font-weight: $font-weight-bold;
+        border: 1px solid $green-color;
+        border-radius: 999px;
+        &.ant-btn-primary {
+          background-color: $green-table-bg;
+        }
       }
     }
   }

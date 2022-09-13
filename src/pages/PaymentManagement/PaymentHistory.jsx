@@ -16,15 +16,6 @@ const columns = [
 ];
 
 const PaymentHistory = ({ customer }) => {
-  const data = [];
-  for (let i = 0; i <= 2; i++) {
-    data.push({
-      id: i,
-      date: '01/09/2022',
-      content: 'Thanh toán 3 tháng từ 1/3 đến 31/12/2022 ',
-    });
-  }
-
   return (
     <div className='paymentHistory'>
       <div className='paymentHistory-customer'>
@@ -68,7 +59,7 @@ const PaymentHistory = ({ customer }) => {
       </div>
       <div className='paymentHistory-group'>
         <Table
-          dataSource={data}
+          dataSource={customer.histories}
           columns={columns}
           pagination={false}
           rowKey={(record) => record.id}

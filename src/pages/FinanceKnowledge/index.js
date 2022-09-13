@@ -4,7 +4,7 @@ import { finances } from '../../assets/fake-data/data';
 import FinanceKnowledgeCard from '../../components/FinanceKnowledgeCard';
 import ManageFinanceKnowledge from '../ManageFinanceKnowledge';
 
-import messageIcon from '../../assets/images/icons/message.svg';
+import commentIcon from '../../assets/images/icons/comment.svg';
 import PaymentManagement from '../PaymentManagement';
 
 const index = () => {
@@ -22,7 +22,7 @@ const index = () => {
   return (
     <Layout className='financeSupport'>
       <div className='financeSupport-title'>
-        <img src={messageIcon} alt='title' />
+        <img src={commentIcon} alt='title' />
         <h3>Bài viết truy cập nhiều nhất trong tuần</h3>
       </div>
       <Layout.Content>
@@ -50,7 +50,7 @@ const index = () => {
 
       <Layout.Content>
         <div className='financeSupport-title'>
-          <img src={messageIcon} alt='title' />
+          <img src={commentIcon} alt='title' />
           <h3>Các tin cũ hơn</h3>
         </div>
 
@@ -64,8 +64,8 @@ const index = () => {
           </Col>
         </Row>
       </Layout.Content>
-      {/* <ManageFinanceKnowledge /> */}
-      <PaymentManagement />
+
+      {/* <PaymentManagement /> */}
     </Layout>
   );
 };

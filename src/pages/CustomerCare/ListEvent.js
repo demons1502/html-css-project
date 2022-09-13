@@ -5,25 +5,27 @@ import {Col, Progress, Button, Empty} from 'antd';
 import {createData, retrieveData} from '../../slices/customerCare';
 import TableCommon from '../../components/TableCommon';
 import IconPlus from '../../assets/images/icons/plus.svg';
-import _ from 'lodash';
+import IconSms from '../../assets/images/icons/sms.svg';
+import IconMessage from '../../assets/images/icons/message.svg';
 
 const dataSource = [
   {
-    key: 1,
+    key: 0,
     date: 'Mike',
     content: 32,
   },
   {
-    key: 2,
+    key: 1,
     date: 'Mike',
-    content: 32,
-  },
+    content: 32
+  }
 ]
 
 export default function ListEvent() {
   const {t} = useTranslation();
   const customerCare = useSelector((state) => state.customerCare);
   const [dataTable, setDataTable] = useState(dataSource);
+  const [count, setCount] = useState(2);
   const dispatch = useDispatch();
 
   const columns = [
@@ -45,13 +47,12 @@ export default function ListEvent() {
     {
       title: '',
       key: 'action',
-      width:'20%',
       render: () => {
         return (
-          <>
-            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={sendSms}>{t('customer care.sms')}</Button>
-            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={sendEmail}>{t('customer care.email')}</Button>
-          </>
+          <div className="btn-table">
+            <Button className="btn-table__btn m-r-10" icon={<img src={IconSms} alt=""/>} onClick={sendSms}>{t('customer care.sms')}</Button>
+            <Button className="btn-table__btn" icon={<img src={IconMessage} alt=""/>} onClick={sendEmail}>{t('customer care.email')}</Button>
+          </div>
         )
       },
     },
@@ -71,15 +72,13 @@ export default function ListEvent() {
 
   const addRow = () => {
     const rowData = {
-      key: 0,
+      key: count,
       name: '',
       age: 42,
       address: '10 Downing Street',
     }
-
-    let lastValue = _.last(dataTable);
-    rowData.key = lastValue.key + 1;
     setDataTable([rowData, ...dataTable]);
+    setCount(count + 1);
   }
 
   const saveData = (e) => {
@@ -106,7 +105,7 @@ export default function ListEvent() {
   }, [dataTable])
 
   return (
-    <Col span={10} className="customer-care__center">
+    <Col span={9} className="customer-care__center">
       <div className="customer-care__center--progress">
         <span>{t('common.progress')}</span>
         <Progress percent={60}/>

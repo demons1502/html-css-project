@@ -1,12 +1,12 @@
 import { Button, Col, Row, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
-import PaymentManagementHeader from './PaymentManagementHeader';
 import deleteIcon from '../../assets/images/icons/deleteIcon.svg';
-import plusIcon from '../../assets/images/icons/plus.svg';
 import importIcon from '../../assets/images/icons/importIcon.svg';
-import { customers } from '../../assets/fake-data/data';
+import plusIcon from '../../assets/images/icons/plus.svg';
+import CreatePayment from './CreatePayment';
+import { customers } from './data';
 import PaymentHistory from './PaymentHistory';
-import { LoadingOutlined } from '@ant-design/icons';
+import PaymentManagementHeader from './PaymentManagementHeader';
 
 const PaymentManagement = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -14,14 +14,11 @@ const PaymentManagement = () => {
   const [rowActive, setRowActive] = useState({});
   const [searchPayload, setSearchPayload] = useState(null);
   const [historyItem, setHistoryItem] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onSelectChange = (newSelectedRowKeys) => {
     /* console.log('selectedRowKeys changed: ', selectedRowKeys); */
     setSelectedRowKeys(newSelectedRowKeys);
-  };
-
-  const handleRow = (item) => {
-    setHistoryItem(item);
   };
 
   const handleDeleteOne = (id) => {
@@ -29,10 +26,15 @@ const PaymentManagement = () => {
     setData(newData);
     setHistoryItem({});
   };
+
   const handleDelete = () => {
-    const newData = data.filter((item) => !selectedRowKeys.includes(item.id));
-    setData(newData);
-    setHistoryItem({});
+    if (selectedRowKeys.length > 0) {
+      const newData = data.filter((item) => !selectedRowKeys.includes(item.id));
+      setHistoryItem({});
+      setData(newData);
+    } else {
+      alert('not selection');
+    }
   };
 
   const columns = [
@@ -76,7 +78,7 @@ const PaymentManagement = () => {
   ];
 
   useEffect(() => {
-    setRowActive(data[0].id);
+    setRowActive(data[0]?.id);
     setHistoryItem(data[0]);
   }, []);
 
@@ -87,9 +89,7 @@ const PaymentManagement = () => {
           <h3>Quản lý thanh toán khách hàng Manulife</h3>
         </div>
         <div className='paymentManagement-option'>
-          <Button icon={<LoadingOutlined />} onClick={handleDelete}>
-            Xóa
-          </Button>
+          <Button onClick={handleDelete}>Xóa</Button>
           <Button type='primary'>
             <label htmlFor='import'>
               <img src={importIcon} alt='' />
@@ -97,7 +97,11 @@ const PaymentManagement = () => {
               Import
             </label>
           </Button>
-          <Button type='primary' icon={<img src={plusIcon} alt='' />}>
+          <Button
+            type='primary'
+            icon={<img src={plusIcon} alt='' />}
+            onClick={() => setIsModalOpen(!isModalOpen)}
+          >
             Thanh toán mới
           </Button>
         </div>
@@ -130,12 +134,14 @@ const PaymentManagement = () => {
                   selectedRowKeys,
                   onChange: onSelectChange,
                 }}
+                rowClassName={(record) =>
+                  rowActive === record.id ? 'active' : ''
+                }
                 onRow={(record) => {
                   return {
                     onClick: () => {
-                      setRowActive(record.id), handleRow(record);
+                      setRowActive(record.id);
                     },
-                    className: `${rowActive === record.id ? 'active' : ''}`,
                   };
                 }}
                 rowKey={(record) => record.id}
@@ -156,6 +162,11 @@ const PaymentManagement = () => {
             </div>
           </Col>
         </Row>
+        <CreatePayment
+          users={data}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
       </div>
     </div>
   );

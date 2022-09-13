@@ -27,7 +27,6 @@
       &-item {
         border-radius: 10px;
         padding: 8px 23px;
-        text-transform: capitalize;
         font-weight: $font-weight-bold;
         &-label {
           font-size: $font-size-base;
@@ -147,9 +146,9 @@
         .manageContentInput-upload {
           border-bottom: 1px dashed $grey-border-color;
           border-radius: unset;
-          padding: 0 17px;
         }
         .ant-input-affix-wrapper {
+          padding: 0 17px;
           &.color-green {
             .ant-input {
               color: $green-color;
@@ -195,6 +194,11 @@
             flex-direction: column;
             border: unset;
             cursor: pointer;
+          }
+          .ant-upload-list-item-actions {
+            .ant-btn:hover {
+              border-color: transparent;
+            }
           }
           .avatar-title {
             display: block;
@@ -248,7 +252,9 @@
           justify-content: flex-start;
           align-items: center;
           margin-left: auto;
-          .btn-cancer {
+          .ant-btn {
+            font-size: $font-size-base;
+            font-weight: $font-weight-bold;
             padding: 10px 50px;
             margin-right: 4px;
             display: flex;
@@ -256,11 +262,22 @@
             align-items: center;
             border-radius: 10px;
           }
+          .btn-cancer {
+            &:hover {
+              border-color: unset;
+            }
+            &:focus {
+              border-color: $red-color;
+              color: $red-color;
+            }
+          }
+
           .btn-save {
-            @extend .btn-cancer;
+            font-size: 1.2rem;
             margin-right: unset;
             background-color: $green-color;
             border-color: $green-color;
+
             &:disabled {
               cursor: no-drop;
               opacity: 0.7;

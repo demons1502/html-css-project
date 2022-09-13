@@ -2,9 +2,10 @@
   .ant-table-thead tr {
     th {
       background: $secondary-color;
-      padding: 11.5px 13px;
+      padding: 11.5px 20px;
       font-size: 1.4rem;
       border-bottom: none;
+      font-weight: $font-weight-semibold;
 
       &::before {
         display: none;
@@ -21,6 +22,8 @@
       td {
         font-size: 1.4rem;
         border-bottom: 1px solid $grey-table-boder;
+        padding: 10px 20px;
+        vertical-align: middle;
       }
     }
   }

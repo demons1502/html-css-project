@@ -1,9 +1,7 @@
-$font-body-light: "Quicksand-Light", sans-serif !default;
-$font-body-bold: "Quicksand-Bold", sans-serif !default;
-$font-body-regular: "Quicksand-Regular", sans-serif !default;
-$font-body-medium: "Quicksand-Medium", sans-serif !default;
-$font-body-semibold: "Quicksand-SemiBold", sans-serif !default;
+$font-body: "Quicksand", sans-serif !default;
+$font-weight-light: 300 !default;
 $font-weight-normal: 400 !default;
+$font-weight-medium: 500 !default;
 $font-weight-semibold: 600 !default;
 $font-weight-bold: 700 !default;
 
@@ -24,7 +22,8 @@ $blue-bg-color: #393E50;
 $grey-table-boder: #CCCCCC;
 $green-table-bg: #35B46F;
 $list-border: #EEEEEE;
-$bg-grey: #D9D9D9;;
+$bg-grey: #D9D9D9;
+$gray-1: #FCFCFC;
 
 $font-size-base: 1.4rem;
 

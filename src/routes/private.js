@@ -8,6 +8,7 @@ import QA from '../assets/images/icons/q&a.svg';
 import Book from '../assets/images/icons/book.svg';
 
 const CustomerCare = lazy(() => import('../pages/CustomerCare'));
+const FinancialSolution = lazy(() => import('../pages/FinancialSolution'));
 
 const PrivateRoutes = [
   {
@@ -53,7 +54,7 @@ const PrivateRoutes = [
         path: '/advise/financial-solutions',
         key: 'financial-solutions',
         label: 'Giải pháp tài chính',
-        page: <CustomerCare/>
+        page: <FinancialSolution />
       },
       {
         path: '/advise/contract-management',

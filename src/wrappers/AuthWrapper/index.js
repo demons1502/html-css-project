@@ -1,3 +1,4 @@
+
 import React, { Fragment, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { PrivateRoutes } from '../../routes';
@@ -9,6 +10,7 @@ export default function App() {
   const currentPath = useLocation();
   const noNav = ['/admin'];
   return (
+
     <Fragment>
       <Header />
       <div className="container">

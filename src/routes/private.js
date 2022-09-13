@@ -14,6 +14,7 @@ const Survey = lazy(() => import('../pages/Survey'));
 const Admin = lazy(() => import('../pages/Admin'));
 const Contract_management = lazy(() => import('../pages/ContractManagement'));
 const FinanceKnowledge = lazy(() => import('../pages/FinanceKnowledge'));
+const Login = lazy(() => import("../pages/Auth/views/Login"));
 
 const PrivateRoutes = [
   {
@@ -21,7 +22,7 @@ const PrivateRoutes = [
     key: 'dashboard',
     label: 'Dashboard',
     icon: Dashboard,
-    page: <CustomerCare />
+    page: <Login />,
   },
   {
     path: '/potential-customers',

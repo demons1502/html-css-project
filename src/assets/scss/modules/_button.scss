@@ -6,6 +6,16 @@
     @extend %btn-bg-green;
     opacity: 0.7;
   }
+
+  &:active {
+    @extend %btn-bg-green;
+    opacity: 0.7;
+  }
+
+  &:focus {
+    @extend %btn-bg-green;
+    opacity: 0.7;
+  }
 }
 
 .btn-danger {
@@ -14,6 +24,16 @@
   border: 1px solid $red-color;
 
   &:hover {
+    @extend %btn-bg-white;
+    opacity: 0.7;
+  }
+
+  &:active {
+    @extend %btn-bg-white;
+    opacity: 0.7;
+  }
+
+  &:focus {
     @extend %btn-bg-white;
     opacity: 0.7;
   }

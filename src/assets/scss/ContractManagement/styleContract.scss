@@ -104,3 +104,20 @@
         }
     }
 }
+.ant-modal-content{
+    border-radius: 20px;
+    .ant-modal-body{
+        padding: 0px 24px;
+    }
+    .ant-modal-close{
+        display: none;
+    }
+}
+.ant-btn:focus,
+.ant-btn-primary:focus,
+.ant-btn:focus,
+.btn-primary:focus {
+    background-color: $green-color  !important;
+    background: $green-color  !important;
+
+}

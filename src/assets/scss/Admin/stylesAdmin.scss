@@ -1,5 +1,7 @@
 @import '../styles.scss';
 
+
+
 .admin_header {
     background-color: #fff;
     display: flex;
@@ -43,9 +45,11 @@
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
-                &:hover > label {
+
+                &:hover>label {
                     color: $green-color;
                 }
+
                 img {
                     margin-right: 9px;
                 }
@@ -77,19 +81,11 @@
         justify-content: space-between;
     }
 
-    .create_user {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background-color: rgba(255, 255, 255, 0.6);
-    }
-
-    .btn_reset-user{
+    .btn_reset-user {
         min-width: 90px;
     }
-    .dustbin_icon{
+
+    .dustbin_icon {
         cursor: pointer;
     }
 }
@@ -198,4 +194,25 @@
     .ant-checkbox-checked:after {
         border-color: $yellow-light-checkbox  !important;
     }
+}
+
+.ant-modal-content {
+    border-radius: 20px;
+
+    .ant-modal-body {
+        padding: 0px 24px;
+    }
+
+    .ant-modal-close {
+        display: none;
+    }
+}
+
+.ant-btn:focus,
+.ant-btn-primary:focus,
+.ant-btn:focus,
+.btn-primary:focus {
+    background-color: $green-color  !important;
+    background: $green-color  !important;
+
 }

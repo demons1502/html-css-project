@@ -1,7 +1,7 @@
-import {React, useState} from 'react'
+import { React, useState } from 'react'
 import InputSearch from '../../components/InputSearch'
 import "../../assets/scss/ContractManagement/styleContract.scss"
-import { Button, Table } from 'antd'
+import { Button, Table, Modal } from 'antd'
 import CreateContract from './CreateContract';
 import EditContract from './EditContract';
 
@@ -82,18 +82,31 @@ for (let i = 0; i < 600; i++) {
   });
 }
 export default function ContractManagement() {
-  const [modalCreateContract, setModalCreateContract] = useState(false) 
-  const [modalEditContract, setModalEditContract] = useState(false) 
-  const [dataEdit, setDataEdit]= useState(null)
+  const [modalCreateContract, setModalCreateContract] = useState(false)
+  const [modalEditContract, setModalEditContract] = useState(false)
+  const [dataEdit, setDataEdit] = useState(null)
 
-  const handleCloseModalCreate=()=>{
+  const handleCloseModalCreate = () => {
     setModalCreateContract(false)
+    setModalEditContract(false)
   }
-  handleEditUser=(e)=>{
+  handleEditUser = (e) => {
     const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
     const id = rowHover[0].innerHTML
     //call api
-    // setDataEdit(response)
+    setDataEdit({
+      title: 'Thay đổi nội dung hợp đồng',
+      id_contract: '213654451',
+      name_payment: 'Brooklyn Simmons2',
+      beneficiary: 'Guy hawking',
+      price: 65000000,
+      effective_date: '01/01/2001',
+      year_payment: '20 năm',
+      submission_cycle: 'Năm',
+      last_time_payment: '01/01/2002',
+      last_day_payment: '01/01/2003',
+      btn_submit_text: 'Lưu thay đổi'
+    })
     setModalEditContract(true)
   }
   return (
@@ -102,8 +115,8 @@ export default function ContractManagement() {
         <h3>Quản lý hợp đồng</h3>
         <div className="header_right">
           <InputSearch />
-          <Button className='btn-primary' onClick={()=>setModalCreateContract(true)}>
-            <img src="../images/plus_icon.svg"/>
+          <Button className='btn-primary' onClick={() => setModalCreateContract(true)}>
+            <img src="../images/plus_icon.svg" />
             <p>Thêm hợp đồng</p>
           </Button>
         </div>
@@ -115,15 +128,25 @@ export default function ContractManagement() {
       </div>
       {
         modalCreateContract ? (
-        <CreateContract handleCloseModalCreate={handleCloseModalCreate}/>
-        ) : 
-        <></>
+          <Modal width='800px' centered footer={null}
+            open={() => setModalCreateContract(true)} 
+            onOk={() => setModalCreateContract(false)} 
+            onCancel={() => setModalCreateContract(false)}>
+            <CreateContract handleCloseModalCreate={handleCloseModalCreate} />
+          </Modal>
+        ) :
+          <></>
       }
       {
         modalEditContract ? (
-          <EditContract />
-        ) : 
-        <></>
+          <Modal width='800px' centered footer={null}
+            open={() => setModalEditContract(true)} 
+            onOk={() => setModalEditContract(false)} 
+            onCancel={() => setModalEditContract(false)}>
+            <CreateContract handleCloseModalCreate={handleCloseModalCreate} data={dataEdit} />
+          </Modal>
+        ) :
+          <></>
       }
     </div>
   )

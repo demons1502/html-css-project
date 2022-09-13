@@ -18,8 +18,12 @@
 
 .customer-care {
   h3 {
-    padding: 13px 20px 15px 20px;
+    padding: 15px 20px 15px 20px;
     @extend %border;
+  }
+
+  .ant-row {
+    height: calc(100% - 50px);
   }
 
   &__left {
@@ -88,6 +92,31 @@
     }
 
     &--list {
+      background: $gray-1;
+
+      .btn-add-new {
+        background: $gray-1;
+      }
+    }
+    &--info {
+      h3 {
+        @extend %align-items-center;
+        column-gap: 10px;
+        color: $green-color;
+        margin-bottom: 1.5rem;
+        border-bottom: none;
+        font-size: 1.6rem;
+        font-weight: $font-weight-semibold;
+      }
+      ul {
+        padding-left: 40px;
+        li {
+          font-size: 1.4rem;
+          line-height: 1.8rem;
+          color: $black-color;
+          list-style: disc;
+        }
+      }
     }
   }
 }

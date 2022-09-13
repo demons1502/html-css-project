@@ -1,18 +1,26 @@
 .list-item {
-  .ant-list-item {
-    padding-left: 3rem;
-    border-bottom: 1px solid $grey-border-color;
-    padding: 8px 0 8px 3rem;
-    font-size: 1.3rem;
+  .normal-item {
+    border-bottom: 1px dashed $grey-border-color;
+    padding: 8px 0 8px 0;
     cursor: pointer;
+
+    .list-item-name {
+      font-size: 1.4rem;
+      line-height: 1.8rem;
+      color: $black-color;
+      font-weight: $font-weight-bold;
+      padding-left: 3rem;
+    }
   }
 
-  .active {
-    background: $primary-color;
-    border-radius: 1rem;
-    color: $white-color;
-    padding: 7px 25px;
-    min-width: 90%;
+  .normal-item-active {
+    .list-item-name {
+      background: $primary-color;
+      border-radius: 1rem;
+      color: $white-color;
+      padding: 8px 0 8px 3rem;
+      min-width: 90%;
+    }
   }
 
   .list-customer {

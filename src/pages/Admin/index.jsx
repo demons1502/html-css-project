@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Title from '../../components/Title';
-import { Table, Button, Checkbox } from 'antd';
+import { Table, Button, Checkbox, Modal } from 'antd';
 import "../../assets/scss/Admin/stylesAdmin.scss"
 import InputSearch from '../../components/InputSearch';
 import Create_user from './Create_user';
@@ -103,7 +103,7 @@ export default function UserManagement() {
 
   useEffect(() => {
     input_file.current.style.display = 'none'
-  }, [])
+  })
 
   handleDeleteUser = (e) => {
     const rowOfElement = e.target.parentNode.parentNode
@@ -141,7 +141,7 @@ export default function UserManagement() {
     inputElement.addEventListener("change", handleFiles, false);
     function handleFiles() {
       const fileList = this.files;
-      if(fileList){
+      if (fileList) {
         console.log(fileList);
         // call api import file
       }
@@ -216,11 +216,16 @@ export default function UserManagement() {
 
         >
         </Table>
-        {isCreateUser ? (
-          <div className="create_user">
+        {isCreateUser ?
+          <Modal centered width={589}
+            footer={null}
+            open={() => setIsCreateUser(true)}
+            onOk={() => setIsCreateUser(false)}
+            onCancel={() => setIsCreateUser(false)}
+          >
             <Create_user closeCreateUser={closeCreateUser} />
-          </div>
-        ) : <></>}
+          </Modal>
+          : <></>}
       </div>
     </>
   );

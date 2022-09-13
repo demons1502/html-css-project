@@ -1,0 +1,218 @@
+@import '../styles.scss';
+
+
+
+.admin_header {
+    background-color: #fff;
+    display: flex;
+    height: 60px;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0px -30px 13px;
+    padding: 0px 32px;
+
+    .admin_header_func {
+        display: flex;
+        align-items: center;
+
+        button {
+            padding: 0px 24px;
+            margin-right: 7px;
+            height: 35px;
+
+            img {
+                margin-right: 10px;
+            }
+        }
+
+        .icon_setting {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .setting_modal {
+            position: absolute;
+            right: 10px;
+            top: 50px;
+            z-index: 10;
+            background-color: #fff;
+            border: 1px solid $gray-light-color;
+            box-shadow: -8px 4px 50px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+
+            div {
+                padding: 17px 13px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+
+                &:hover>label {
+                    color: $green-color;
+                }
+
+                img {
+                    margin-right: 9px;
+                }
+
+                label {
+                    color: $grey-dark-color;
+                    font-weight: 600;
+                    font-size: 12px;
+                    line-height: 15px;
+                }
+            }
+
+            div,
+            label {
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.container_admin {
+    font-weight: 600;
+    position: relative;
+
+    .admin_title {
+        padding: 13px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .btn_reset-user {
+        min-width: 90px;
+    }
+
+    .dustbin_icon {
+        cursor: pointer;
+    }
+}
+
+.ant-table-thead {
+    font-weight: 600;
+}
+
+.ant-pagination-options {
+    position: absolute;
+    left: 0px;
+    margin-left: 13px !important;
+
+    &::before {
+        content: 'Hiển thị ';
+        color: $gray-light-color;
+        font-size: 12px;
+    }
+
+    &::after {
+        content: ' trên 1 trang ';
+        color: $gray-light-color;
+        font-size: 12px;
+    }
+
+    .ant-pagination-options-size-changer {
+        .ant-select-selector {
+            border: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+        }
+    }
+}
+
+.ant-table-pagination {
+    position: relative;
+
+    .ant-pagination-item {
+        border: none;
+        border-radius: 50%;
+        padding: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &-active {
+            background-color: $green-color;
+
+            a {
+                color: white;
+            }
+        }
+    }
+
+    li {
+        margin: 0px;
+    }
+
+    .ant-pagination-prev,
+    .ant-pagination-next {
+        button {
+            border: none;
+        }
+    }
+}
+
+//check box color
+.ant-checkbox-checked .ant-checkbox-inner {
+    background-color: $green-color  !important;
+    border-color: $green-color  !important;
+}
+
+.ant-checkbox-indeterminate .ant-checkbox-inner::after {
+    background-color: $green-color  !important;
+}
+
+.ant-checkbox:hover .ant-checkbox-inner {
+    border-color: $green-color  !important;
+}
+
+.ant-checkbox-checked:after {
+    border-color: $green-color  !important;
+}
+
+.ant-checkbox-input:focus+.ant-checkbox-inner {
+    border-color: $green-color  !important;
+}
+
+.checkbox_cell {
+    .ant-checkbox:hover .ant-checkbox-inner {
+        border-color: $yellow-light-checkbox  !important;
+    }
+
+    .ant-checkbox-checked .ant-checkbox-inner {
+        background-color: $yellow-light-checkbox  !important;
+        border-color: $yellow-light-checkbox  !important;
+    }
+
+    .ant-checkbox-indeterminate .ant-checkbox-inner::after {
+        background-color: $yellow-light-checkbox  !important;
+    }
+
+    .ant-checkbox-input:focus+.ant-checkbox-inner {
+        border-color: $yellow-light-checkbox  !important;
+    }
+
+    .ant-checkbox-checked:after {
+        border-color: $yellow-light-checkbox  !important;
+    }
+}
+
+.ant-modal-content {
+    border-radius: 20px;
+
+    .ant-modal-body {
+        padding: 0px 24px;
+    }
+
+    .ant-modal-close {
+        display: none;
+    }
+}
+
+.ant-btn:focus,
+.ant-btn-primary:focus,
+.ant-btn:focus,
+.btn-primary:focus {
+    background-color: $green-color  !important;
+    background: $green-color  !important;
+
+}

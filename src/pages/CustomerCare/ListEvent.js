@@ -7,25 +7,25 @@ import TableCommon from '../../components/TableCommon';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconSms from '../../assets/images/icons/sms.svg';
 import IconMessage from '../../assets/images/icons/message.svg';
-import _ from 'lodash';
 
 const dataSource = [
   {
-    key: 1,
+    key: 0,
     date: 'Mike',
     content: 32,
   },
   {
-    key: 2,
+    key: 1,
     date: 'Mike',
-    content: 32,
-  },
+    content: 32
+  }
 ]
 
 export default function ListEvent() {
   const {t} = useTranslation();
   const customerCare = useSelector((state) => state.customerCare);
   const [dataTable, setDataTable] = useState(dataSource);
+  const [count, setCount] = useState(2);
   const dispatch = useDispatch();
 
   const columns = [
@@ -72,15 +72,13 @@ export default function ListEvent() {
 
   const addRow = () => {
     const rowData = {
-      key: 0,
+      key: count,
       name: '',
       age: 42,
       address: '10 Downing Street',
     }
-
-    let lastValue = _.last(dataTable);
-    rowData.key = lastValue.key + 1;
     setDataTable([rowData, ...dataTable]);
+    setCount(count + 1);
   }
 
   const saveData = (e) => {

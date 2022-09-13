@@ -23,14 +23,13 @@ const dataSource = [
 ]
 
 const options = [
-  { label: 'Chưa gọi điện', value: 'Apple' },
-  { label: 'Chưa gọi điện', value: 'Pear' },
-  { label: 'Chưa gọi điện', value: 'Orange' },
-  { label: 'Chưa gọi điện', value: 'Orange' },
-  { label: 'Chưa gọi điện', value: 'Orange' },
-  { label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 'Orange' },
+  { label: 'Chưa gọi điện', value: 1 },
+  { label: 'Đã gọi điện lần 1, cần gọi lần 2', value: 2 },
+  { label: 'Đã gọi điện từ 2 lần', value: 3 },
+  { label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 4 },
+  { label: 'Đã tư vấn giải pháp, chờ chốt kết quả', value: 5 },
+  { label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 6 },
 ];
-
 
 export default function ListSearch() {
   const [selectId, setSelectId] = useState(0);
@@ -50,7 +49,7 @@ export default function ListSearch() {
   return (
     <Col span={4} className="customer-care__left">
       <InputSearch setPayload={setPayload}></InputSearch>
-      <FilterCommon options={options}></FilterCommon>
+      <FilterCommon options={options} setPayload={setPayload}></FilterCommon>
       <ListCommon type={TYPE_LIST_CUSTOMERS} dataList={dataSource} selectId={selectId} setSelectId={setSelectId}></ListCommon>
     </Col>
   );

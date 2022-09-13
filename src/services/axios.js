@@ -1,5 +1,4 @@
 import Axios from 'axios';
-// import Cookies from 'js-cookie'
 import configs from '../config';
 
 const axiosInstance = Axios.create({
@@ -18,12 +17,6 @@ axiosInstance.interceptors.request.use(
   },
   (error) => Promise.resolve(error)
 )
-
-const logout = () => {
-  // Cookies.remove('token');
-  localStorage.clear()
-}
-
 axiosInstance.interceptors.response.use(
   (response) => {
     return response

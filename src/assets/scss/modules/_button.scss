@@ -39,7 +39,6 @@
   border-radius: 50%;
   color: $black-color;
   padding: 0;
-
   &:hover {
     @extend %btn-bg-grey;
     opacity: 0.7;
@@ -97,11 +96,13 @@
       padding-right: 7px;
     }
 
-    &:focus, &:hover {
+    &:focus,
+    &:hover {
       color: $green-color;
 
       img {
-        filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg) brightness(97%) contrast(99%);
+        filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg)
+          brightness(97%) contrast(99%);
       }
     }
   }

@@ -6,12 +6,14 @@ import Support from '../assets/images/icons/support.svg';
 import Care from '../assets/images/icons/care.svg';
 import QA from '../assets/images/icons/q&a.svg';
 import Book from '../assets/images/icons/book.svg';
+import ManageFinanceKnowledge from '../pages/ManageFinanceKnowledge';
 
 const CustomerCare = lazy(() => import('../pages/CustomerCare'));
 const FinanceConsultant = lazy(() => import('../pages/FinanceConsultant'));
 const Survey = lazy(() => import('../pages/Survey'));
 const Admin = lazy(() => import('../pages/Admin'));
 const Contract_management = lazy(() => import('../pages/ContractManagement'));
+const FinanceKnowledge = lazy(() => import('../pages/FinanceKnowledge'));
 
 const PrivateRoutes = [
   {
@@ -73,20 +75,21 @@ const PrivateRoutes = [
     label: 'Chăm sóc',
     icon: Care,
     page: <CustomerCare />
+
   },
   {
     path: '/q&a',
     key: 'q&a',
     label: 'Hỏi đáp',
     icon: QA,
-    page: <CustomerCare />
+    page: <ManageFinanceKnowledge />,
   },
   {
     path: '/finance-support',
     key: 'finance-support',
     label: 'Kiến thức tư vấn tài chính',
     icon: Book,
-    page: <CustomerCare />
+    page: <FinanceKnowledge />,
   },
   {
     path: '/admin',

@@ -1,7 +1,7 @@
 .checkbox-item {
   color: $black-color;
 
-  input[type=checkbox] {
+  input[type="checkbox"] {
     width: 20px !important;
     height: 20px !important;
   }
@@ -20,7 +20,7 @@
 
   .ant-checkbox-inner:after {
     border: none;
-    background-image: url('../../images/icons/vector-grey.svg');
+    background-image: url("../../images/icons/vector-grey.svg");
     top: 5px;
     display: table;
     width: 100%;
@@ -31,18 +31,20 @@
     opacity: 1;
   }
 
-
   .ant-checkbox-checked .ant-checkbox-inner {
     background: $green-color;
     border: 1.5px solid $green-color;
     border-color: $green-color !important;
-
     &:after {
-      background-image: url('../../images/icons/vector-white.svg');
+      background-image: url("../../images/icons/vector-white.svg");
     }
   }
 
   .ant-checkbox-checked:after {
     border: none;
+  }
+
+  .ant-checkbox {
+    top: 0.35em;
   }
 }

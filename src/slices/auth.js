@@ -3,6 +3,7 @@ import { loginApi } from "../services/auth";
 
 const initialState = {
   accessToken: "",
+  isAuth: false,
 };
 
 export const login = createAsyncThunk("auth/login", async (data) => {
@@ -21,6 +22,7 @@ const authSlice = createSlice({
   extraReducers: {
     [login.fulfilled]: (state, action) => {
       state.accessToken = action.payload.access_token;
+      state.isAuth = true;
     },
   },
 });

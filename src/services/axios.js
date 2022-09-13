@@ -1,33 +1,45 @@
-import Axios from 'axios';
-import configs from '../config';
+import Axios from "axios";
+import configs from "../config";
 
-const axiosInstance = Axios.create({
-  timeout: 3 * 60 * 1000,
-  baseURL: configs.API_DOMAIN
-})
-
-axiosInstance.interceptors.request.use(
-  (config) => {
-    // eslint-disable-next-line no-param-reassign
-    // const token = Cookies.get('token');
-    // if (token) {
-    //     config.headers.Authorization = `Bearer ${token}`;
-    // }
-    return config;
+const baseApiConfig = {
+  baseURL: configs.API_DOMAIN,
+  headers: {
+    "content-type": "application/json",
   },
-  (error) => Promise.resolve(error)
-)
-axiosInstance.interceptors.response.use(
+  timeout: 3 * 60 * 1000,
+};
+
+const baseApiClient = Axios.create(baseApiConfig);
+
+baseApiClient.interceptors.response.use(
   (response) => {
-    return response
+    return response;
   },
   (error) => {
-    return Promise.reject(error)
-  },
-)
+    return Promise.reject(error);
+  }
+);
 
-export const sendGet = (url, params) => axiosInstance.get(url, {params}).then((res) => res)
-export const sendPost = (url, params) => axiosInstance.post(url, params).then((res) => res)
-export const sendPut = (url, params) => axiosInstance.put(url, params).then((res) => res)
-export const sendPatch = (url, params) => axiosInstance.patch(url, params).then((res) => res)
-export const sendDelete = (url, params) => axiosInstance.delete(url, {params}).then((res) => res)
+export const setupInterceptor = (_store) => {
+  baseApiClient.interceptors.request.use(
+    (config) => {
+      const { accessToken } = _store.getState().auth;
+      if (config.headers && accessToken) {
+        config.headers["Authorization"] = `Bearer ${accessToken}`;
+      }
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
+};
+
+export const sendGet = (url, params) =>
+  baseApiClient.get(url, { params }).then((res) => res);
+export const sendPost = (url, params) =>
+  baseApiClient.post(url, params).then((res) => res);
+export const sendPut = (url, params) =>
+  baseApiClient.put(url, params).then((res) => res);
+export const sendPatch = (url, params) =>
+  baseApiClient.patch(url, params).then((res) => res);
+export const sendDelete = (url, params) =>
+  baseApiClient.delete(url, { params }).then((res) => res);

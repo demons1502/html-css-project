@@ -6,9 +6,11 @@ import ForgotPassword from "./ForgotPassword";
 import UpdatePassword from "./UpdatePassword";
 import powered from "../../../assets/images/powered.png";
 import logo from "../../../assets/images/manulife-logo.png";
+import { useNavigate } from "react-router-dom";
 
 const FormLogin = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [loginId, setLoginId] = useState("");
   const [messageError, setMessageError] = useState(false);
   const [isModalOpenForgot, setIsModalOpenForgot] = useState(false);
@@ -43,6 +45,7 @@ const FormLogin = () => {
           password: values.password,
         })
       );
+      navigate("/");
     } else {
       setMessageError(true);
     }

@@ -1,5 +1,9 @@
-import PrivateRoutes from './private'
+import { useRoutes } from "react-router-dom";
+import { routes } from "./routes";
 
-export {
-  PrivateRoutes
-}
+const Router = () => {
+  const routing = useRoutes(routes());
+  return routing;
+};
+
+export default Router;

@@ -1,19 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import 'antd/dist/antd.min.css';
-import './helper/i18n';
-import './assets/scss/styles.scss';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import {Provider} from 'react-redux';
-import store from './store';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "antd/dist/antd.min.css";
+import "./helper/i18n";
+import "./assets/scss/styles.scss";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import store, { persistor } from "./store";
+import { PersistGate } from "redux-persist/integration/react";
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root')
-);
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <App/>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>
 );
 

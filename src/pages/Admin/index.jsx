@@ -225,7 +225,7 @@ export default function UserManagement() {
           >
             <Create_user closeCreateUser={closeCreateUser} />
           </Modal>
-        }
+        } 
       </div>
     </>
   );

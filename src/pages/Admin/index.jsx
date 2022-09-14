@@ -11,7 +11,7 @@ const dataSource = [
   {
     id: '213654451',
     name: 'Brooklyn Simmons2',
-    number: 1234567897891,
+    number: 4567897891,
     email: 'nguyenasvnhanh@gmail.com',
     ID_login: 'ABG1930a0',
     isProduct: true,
@@ -29,34 +29,41 @@ const columns = [
   {
     title: 'ID',
     dataIndex: 'id',
+    width: '95px',
     className: 'id-user',
   },
   {
     title: 'Họ và tên',
+    width: '180px',
     dataIndex: 'name',
   },
   {
     title: 'Số điện thoại',
+    width: '120px',
     dataIndex: 'number',
   },
   {
     title: 'Email',
+    width: '245px',
     dataIndex: 'email',
   },
   {
+    width: '105px',
     title: 'ID login',
     dataIndex: 'ID_login',
   },
   {
     title: 'Hỏi đáp',
     align: 'center',
+    width: '79px',
     dataIndex: 'isProduct',
-    className: 'checkbox_cell',
+    className: 'checkbox_cell ',
     render: (dataIndex) => <Checkbox id='isProduct' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
   },
   {
     title: 'Thanh toán',
     dataIndex: 'isPayment',
+    width: '110px',
     align: 'center',
     className: 'checkbox_cell',
     render: (dataIndex) => <Checkbox id='isPayment' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
@@ -64,6 +71,7 @@ const columns = [
   {
     title: 'Admin',
     dataIndex: 'isAdmin',
+    width: '108px',
     align: 'center',
     className: 'checkbox_cell',
     render: (dataIndex) => <Checkbox id='isAdmin' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
@@ -71,6 +79,7 @@ const columns = [
   {
     title: 'Active',
     dataIndex: 'idActive',
+    width: '69px',
     align: 'center',
     className: 'checkbox_cell',
     render: (dataIndex) => <Checkbox id='idActive' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
@@ -78,12 +87,14 @@ const columns = [
   {
     title: '',
     dataIndex: '',
+    width: '110px',
     align: 'center',
     render: () => <button className='btn_reset-user btn-bgWhite-textGreen-borGreen' onClick={handelResetUser}>Khởi tạo lại</button>,
   },
   {
     title: '',
     dataIndex: '',
+    width: '30px',
     align: 'center',
     render: () => <img className='dustbin_icon' src='./images/dustbin.svg' onClick={handleDeleteUser} />,
   }
@@ -120,10 +131,10 @@ export default function UserManagement() {
     //call api when click checkbox
   };
 
-  const onSelectChange = (e) => {
-    console.log('selectedRowKeys changed: ', e);
-    setSelectedRowKeys(e);
-  };
+  // const onSelectChange = (e) => {
+  //   console.log('selectedRowKeys changed: ', e);
+  //   setSelectedRowKeys(e);
+  // };
 
   handelResetUser = (e) => {
     const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
@@ -131,10 +142,10 @@ export default function UserManagement() {
     //call api
   }
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
+  // const rowSelection = {
+  //   selectedRowKeys,
+  //   onChange: onSelectChange,
+  // };
 
   const input_file = useRef(null)
   const handleImport = () => {
@@ -168,6 +179,11 @@ export default function UserManagement() {
     //call api delete users
   }
 
+  useEffect(()=>{
+    const pageTitle= document.querySelector('.ant-select-selection-item').innerHTML
+    const pageText= pageTitle.slice(0,2)
+    document.querySelector('.ant-select-selection-item').innerHTML= pageText
+  },[])
   return (
     <>
       <div className="admin_header">
@@ -225,7 +241,7 @@ export default function UserManagement() {
           >
             <Create_user closeCreateUser={closeCreateUser} />
           </Modal>
-        } 
+        }
       </div>
     </>
   );

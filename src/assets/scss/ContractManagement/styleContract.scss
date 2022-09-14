@@ -6,6 +6,9 @@
     .contract_list{
         th, td{
             font-weight: 600;
+            &::before{
+                display: none;
+            }
         }
     }
     .table_price{
@@ -107,7 +110,7 @@
 .ant-modal-content{
     border-radius: 20px;
     .ant-modal-body{
-        padding: 0px 24px;
+        padding: 0px 30px;
     }
     .ant-modal-close{
         display: none;

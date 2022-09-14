@@ -86,6 +86,11 @@
     .dustbin_icon {
         cursor: pointer;
     }
+    .ant-checkbox-input{
+        border-radius: 5px;
+        width: 20px;
+        height: 20px;
+    }
 }
 
 .ant-modal-content {
@@ -108,3 +113,4 @@
     background: $green-color  !important;
 
 }
+

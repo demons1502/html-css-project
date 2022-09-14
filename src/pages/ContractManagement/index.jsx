@@ -3,7 +3,6 @@ import InputSearch from '../../components/InputSearch'
 import "../../assets/scss/ContractManagement/styleContract.scss"
 import { Button, Table, Modal } from 'antd'
 import CreateContract from './CreateContract';
-import EditContract from './EditContract';
 
 const dataSource = [
   {
@@ -25,45 +24,55 @@ const columns = [
   {
     title: 'Mã số',
     dataIndex: 'id_contract',
+    width:'74px',
     className: 'id-contract',
   },
   {
     title: 'Người mua',
+    width:'168px',
     dataIndex: 'name_payment',
   },
   {
     title: 'Người hưởng',
+    width:'134px',
     dataIndex: 'beneficiary',
   },
   {
     title: 'Giá trị',
     className: 'table_price',
+    width:'120px',
     dataIndex: 'price',
   },
   {
     title: 'Ngày hiệu lực',
+    width:'120px',
     dataIndex: 'effective_date',
   },
   {
     title: 'Số năm nộp phí',
+    width:'138px',
     dataIndex: 'year_payment',
   },
   {
     title: 'Chu kì nộp phí',
+    width:'129px',
     dataIndex: 'submission_cycle',
   },
   {
     title: 'Lần cuối nộp phí',
+    width:'151px', 
     dataIndex: 'last_time_payment',
   },
   {
     title: 'Hạn nộp phí tiếp theo',
     dataIndex: 'last_day_payment',
+    width:'182px',
     align: 'center',
   },
   {
     title: '',
     dataIndex: '',
+    width:'74px',
     render: () => <button className='btn_modal_example btn-bgWhite-textGreen-borGreen'>Bảng minh hoạ</button>
   },
   {

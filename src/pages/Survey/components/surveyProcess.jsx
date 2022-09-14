@@ -12,7 +12,6 @@ export default function SurveyProcess() {
     <>
       <Col span={8} className='survey__right'>
         <Title title={t('survey.process')}></Title>
-
         <div className='survey__right--content'>
           <Button type='primary' className='btn-primary'>
             {t('Lời thoại 1')}

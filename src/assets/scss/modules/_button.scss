@@ -25,6 +25,7 @@
 
   &:hover {
     @extend %btn-bg-white;
+    border: 1px solid $red-color;
     opacity: 0.7;
   }
 
@@ -83,6 +84,9 @@
   &:hover {
     color: $green-color;
     opacity: 0.7;
+  }
+  &:focus {
+    color: $green-color;
   }
 }
 

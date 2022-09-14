@@ -30,5 +30,5 @@ export default function Nav() {
             </Menu.Item>);
           })}
         </Menu.SubMenu>))}
-    </Menu>);
+    </Menu>)
 }

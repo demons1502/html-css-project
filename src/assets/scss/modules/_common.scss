@@ -5,12 +5,18 @@
 
   .ant-modal-header {
     border-radius: 20px 20px 0 0;
-    padding: 17px 30px;
+    padding: 26px 30px 17px 30px;
     border-bottom: 1px solid $grey-border-color;
+
+    .ant-modal-title {
+      font-weight: $font-weight-bold;
+      font-size: 2rem;
+      line-height: 2.5rem;
+    }
   }
 
   .ant-modal-body {
-    padding: 10px 30px;
+    padding: 10px 30px 17px 30px;
   }
 
   .ant-modal-footer {
@@ -33,21 +39,32 @@
 .filter {
   &__btn {
     @extend %btn-bg-grey;
-    padding: 0 20px;
+    padding: 0 11px 0 7px;
     color: $black-color !important;
     border-radius: 10px;
     font-size: 1.2rem;
     height: 35px;
     width: 100%;
+    min-width: 100px;
     text-align: left;
     font-weight: $font-weight-semibold;
 
-    span {
+    div {
+      @extend %flex-centered;
       margin-right: auto;
-    }
+      column-gap: 5px;
 
-    img {
-      margin-left: 8px;
+      .filter__btn--count {
+        width: 18px;
+        height: 18px;
+        background: #F6CF47;
+        color: $white-color;
+        font-weight: $font-weight-semibold;
+        font-size: 1.2rem;
+        line-height: 1.5rem;
+        border-radius: 50%;
+        text-align: center;
+      }
     }
   }
 
@@ -63,6 +80,7 @@
 
   .ant-progress-inner {
     overflow: initial;
+
     .ant-progress-bg {
       background: $green-color;
       height: 4px !important;
@@ -86,6 +104,7 @@
     border-radius: 20px;
     background: $bg-grey;
   }
+
   .ant-progress-text {
     color: $green-color;
     font-size: 1.3rem;
@@ -110,6 +129,13 @@
         .ant-row {
           .ant-col {
             padding-bottom: 10px;
+
+            .ant-checkbox-wrapper {
+              font-weight: $font-weight-semibold;
+              font-size: 1.4rem;
+              line-height: 1.8rem;
+              color: $black-color;
+            }
 
             &:last-child {
               padding-bottom: 0;

@@ -41,7 +41,10 @@ export default function FilterCommon(props) {
         onOpenChange={handleOpenChange}
       >
         <Button className={`filter__btn ${open && 'filter__btn--active'}`}>
-          {t('common.filter')}
+          <div>
+            <span className="filter__btn--count">2</span>
+            {t('common.filter')}
+          </div>
           <img src={FilterIcon} alt=""/>
         </Button>
       </Popover>

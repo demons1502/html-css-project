@@ -12,7 +12,7 @@ export default function Header() {
   }, [payload]);
 
   return (
-    <div className="header">
+    <header className="header">
       <div className="header__left">
         <img src={Logo} alt=""/>
         <span>{t('common.manulife')}</span>
@@ -27,6 +27,6 @@ export default function Header() {
           <img src={Logo} alt=""/>
         </div>
       </div>
-    </div>
+    </header>
   );
 }

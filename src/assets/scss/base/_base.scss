@@ -10,13 +10,6 @@ body {
   letter-spacing: 0.1rem;
 }
 
-#root {
-  display: flex;
-  height: 100%;
-  margin: 0;
-  flex-direction: column;
-}
-
 h1, h2, h3, h4, h5 {
   font-size: 1.8rem;
   font-weight: $font-weight-bold;
@@ -52,4 +45,12 @@ h1, h2, h3, h4, h5 {
 
 .ant-input-affix-wrapper-focused, .ant-input-affix-wrapper:focus {
   box-shadow: 0 0 0 2px #3dbd7840;
+}
+
+.ant-form-item {
+  margin: 0;
+}
+
+.ant-form-vertical .ant-form-item-label {
+  padding: 0 0 6px;
 }

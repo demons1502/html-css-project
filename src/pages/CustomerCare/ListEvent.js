@@ -7,6 +7,8 @@ import TableCommon from '../../components/TableCommon';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconSms from '../../assets/images/icons/sms.svg';
 import IconMessage from '../../assets/images/icons/message.svg';
+import ModalCommon from "../../components/ModalCommon";
+import AddEventContent from "../../components/ModalCommon/AddEventContent";
 
 const dataSource = [
   {
@@ -25,7 +27,7 @@ export default function ListEvent() {
   const {t} = useTranslation();
   const customerCare = useSelector((state) => state.customerCare);
   const [dataTable, setDataTable] = useState(dataSource);
-  const [count, setCount] = useState(2);
+  const [addNew, setAddNew] = useState(false);
   const dispatch = useDispatch();
 
   const columns = [
@@ -71,14 +73,7 @@ export default function ListEvent() {
   }, [customerCare]);
 
   const addRow = () => {
-    const rowData = {
-      key: count,
-      name: '',
-      age: 42,
-      address: '10 Downing Street',
-    }
-    setDataTable([rowData, ...dataTable]);
-    setCount(count + 1);
+    setAddNew(true);
   }
 
   const saveData = (e) => {
@@ -105,19 +100,21 @@ export default function ListEvent() {
   }, [dataTable])
 
   return (
-    <Col span={9} className="customer-care__center">
-      <div className="customer-care__center--progress">
-        <span>{t('common.progress')}</span>
-        <Progress percent={60}/>
-      </div>
-      <div className="customer-care__center--event">
-        <h5>{t('customer care.event title')}</h5>
-        <Button type="primary" className="btn-primary" onClick={saveData}>{t('common.save')}</Button>
-      </div>
-      <div className="customer-care__center--list">
-        {table}
-        <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={addRow}>{t('customer care.add event')}</Button>
-      </div>
-    </Col>
+    <>
+      <Col span={9} className="customer-care__center">
+        <div className="customer-care__center--progress">
+          <span>{t('common.progress')}</span>
+          <Progress percent={60}/>
+        </div>
+        <div className="customer-care__center--event">
+          <h5>{t('customer care.event title')}</h5>
+        </div>
+        <div className="customer-care__center--list">
+          {table}
+          <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={addRow}>{t('customer care.add event')}</Button>
+        </div>
+      </Col>
+      <ModalCommon isVisible={addNew} setIsVisible={setAddNew} title="Thêm mới event" content={<AddEventContent />}></ModalCommon>
+    </>
   );
 }

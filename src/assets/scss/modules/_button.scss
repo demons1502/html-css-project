@@ -25,6 +25,7 @@
 
   &:hover {
     @extend %btn-bg-white;
+    border: 1px solid $red-color;
     opacity: 0.7;
   }
 
@@ -59,7 +60,6 @@
   border-radius: 50%;
   color: $black-color;
   padding: 0;
-
   &:hover {
     @extend %btn-bg-grey;
     opacity: 0.7;
@@ -85,6 +85,21 @@
     color: $green-color;
     opacity: 0.7;
   }
+  &:focus {
+    color: $green-color;
+  }
+}
+
+.btn-bgWhite-textGreen-borGreen {
+  background-color: #ffffff;
+  border: 1px solid $green-color;
+  border-radius: 10px;
+  height: 25px;
+  color: $green-color;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  cursor: pointer;
 }
 
 .btn-table {
@@ -105,11 +120,13 @@
       padding-right: 7px;
     }
 
-    &:focus, &:hover {
+    &:focus,
+    &:hover {
       color: $green-color;
 
       img {
-        filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg) brightness(97%) contrast(99%);
+        filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg)
+          brightness(97%) contrast(99%);
       }
     }
   }

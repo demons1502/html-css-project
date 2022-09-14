@@ -2,7 +2,7 @@
   .ant-table-thead tr {
     th {
       background: $secondary-color;
-      padding: 11.5px 20px;
+      padding: 9px 10px;
       font-size: 1.4rem;
       border-bottom: none;
       font-weight: $font-weight-semibold;
@@ -22,7 +22,7 @@
       td {
         font-size: 1.4rem;
         border-bottom: 1px solid $grey-table-boder;
-        padding: 10px 20px;
+        padding: 9px 10px;
         vertical-align: middle;
       }
     }
@@ -33,6 +33,51 @@
       background: $green-table-bg !important;
       border-bottom: 1px solid $white-color !important;
       color: $white-color;
+    }
+  }
+
+  //check box color
+  .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: $green-color  !important;
+    border-color: $green-color  !important;
+  }
+
+  .ant-checkbox-indeterminate .ant-checkbox-inner::after {
+    background-color: $green-color  !important;
+  }
+
+  .ant-checkbox:hover .ant-checkbox-inner {
+    border-color: $green-color  !important;
+  }
+
+  .ant-checkbox-checked:after {
+    border-color: $green-color  !important;
+  }
+
+  .ant-checkbox-input:focus+.ant-checkbox-inner {
+    border-color: $green-color  !important;
+  }
+
+  .checkbox_cell {
+    .ant-checkbox:hover .ant-checkbox-inner {
+      border-color: $yellow-light-checkbox  !important;
+    }
+
+    .ant-checkbox-checked .ant-checkbox-inner {
+      background-color: $yellow-light-checkbox  !important;
+      border-color: $yellow-light-checkbox  !important;
+    }
+
+    .ant-checkbox-indeterminate .ant-checkbox-inner::after {
+      background-color: $yellow-light-checkbox  !important;
+    }
+
+    .ant-checkbox-input:focus+.ant-checkbox-inner {
+      border-color: $yellow-light-checkbox  !important;
+    }
+
+    .ant-checkbox-checked:after {
+      border-color: $yellow-light-checkbox  !important;
     }
   }
 }

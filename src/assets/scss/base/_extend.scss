@@ -94,13 +94,13 @@
 %input {
   border: none;
   padding: 0 1.3rem;
-  font-weight: $font-weight-normal;
+  font-weight: $font-weight-bold;
 }
 
 %input-grey {
   @extend %input;
   background: $secondary-color !important;
-  color: $gray-light-color;
+  color: $black-color;
 }
 
 .border {
@@ -153,4 +153,8 @@
 
 .m-r-10 {
   margin-right: 10px;
+}
+
+.m-t-30 {
+  margin-top: 30px !important;
 }

@@ -1,11 +1,17 @@
 %border {
   border-bottom: 1px solid $grey-border-color;
 }
+%top-content {
+  background: $green-light-color;
+  padding: 11px 80px 11px 20px;
+  @extend %flex-centered;
+}
 %style-title {
   @extend %flex-row-wrap;
   @extend %item-center;
   @extend %border;
-  padding: 16px 20px;
+  padding: 9px 20px !important;
+  min-height: 49px;
 
   h5 {
     font-size: 1.6rem;
@@ -17,6 +23,7 @@
 }
 
 .customer-care {
+  margin-top: 16px;
   h3 {
     padding: 15px 20px 15px 20px;
     @extend %border;
@@ -43,9 +50,7 @@
     border-right: 1px solid $grey-border-color;
 
     &--progress {
-      background: $green-light-color;
-      padding: 12px 80px 12px 20px;
-      @extend %flex-centered;
+      @extend %top-content;
 
       span {
         margin-right: 10px;
@@ -53,7 +58,10 @@
     }
 
     &--event {
-      @extend %style-title
+      @extend %style-title;
+      .btn-primary {
+        height: 3rem;
+      }
     }
 
     &--list {
@@ -70,21 +78,29 @@
   }
 
   &__right {
-    border-right: 1px solid $grey-border-color;
-
     &--top {
-      background: $green-light-color;
-      padding: 12px 15px 12px 0;
+      @extend %top-content;
       @extend %flex-end;
-      @extend %item-center;
+      background: $green-light-color;
+      padding: 11px 15px 11px 0;
     }
 
     &--event {
       @extend %style-title;
 
+      .btn-primary {
+        height: 3rem;
+      }
+
       &--left {
         @extend %inline-center;
+        .filter {
+          height: 3rem;
 
+          &__btn {
+            height: 3rem;
+          }
+        }
         h5 {
           margin-right: 18px;
         }
@@ -94,17 +110,22 @@
     &--list {
       background: $gray-1;
 
-      .btn-add-new {
+      &-footer {
+        padding: 0 20px 26px 0;
         background: $gray-1;
+
+        .btn-add-new {
+          background: $gray-1;
+        }
       }
     }
     &--info {
+      margin-bottom: 30px;
       h3 {
         @extend %align-items-center;
         column-gap: 10px;
         color: $green-color;
-        margin-bottom: 1.5rem;
-        border-bottom: none;
+        border-bottom: none !important;
         font-size: 1.6rem;
         font-weight: $font-weight-semibold;
       }

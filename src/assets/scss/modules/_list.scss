@@ -1,3 +1,14 @@
+%list-style {
+  color: $black-color;
+  font-size: 1.2rem;
+  font-weight: $font-weight-semibold;
+  .before {
+    color: $gray-light-color;
+    font-size: 1rem;
+    padding-right: 4px;
+    font-weight: $font-weight-medium;
+  }
+}
 .list-item {
   .normal-item {
     border-bottom: 1px dashed $grey-border-color;
@@ -35,6 +46,7 @@
 
       &-name {
         padding: 8px 7px;
+        font-weight: $font-weight-semibold;
         .dot {
           background: $green-color;
           border-radius: 50%;
@@ -62,25 +74,13 @@
         }
 
         &--right, &--left {
-          color: $black-color;
-          font-size: 1.2rem;
-          .before {
-            color: $gray-light-color;
-            font-size: 1rem;
-            padding-right: 4px;
-          }
+          @extend %list-style;
         }
       }
 
       &-contract, &-date {
-        font-size: 1.2rem;
+        @extend %list-style;
         padding: 4px 0 4px 10px;
-        color: $black-color;
-        .before {
-          font-size: 1rem;
-          color: $gray-light-color;
-          padding-right: 4px;
-        }
       }
 
       &-date {

@@ -1,15 +1,25 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginApi } from "../services/auth";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getMeApi, loginApi } from '../services/auth';
 
 const initialState = {
-  accessToken: "",
+  accessToken: '',
   isAuth: false,
+  status: '',
+  me: {},
 };
 
-export const login = createAsyncThunk("auth/login", async (data) => {
+export const login = createAsyncThunk('auth/login', async (data) => {
   try {
     const res = await loginApi(data);
+    return res.data;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
 
+export const getMe = createAsyncThunk('auth/user/Me', async (data) => {
+  try {
+    const res = await getMeApi(data);
     return res.data;
   } catch (error) {
     return Promise.reject(error.data);
@@ -17,13 +27,41 @@ export const login = createAsyncThunk("auth/login", async (data) => {
 });
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
-  extraReducers: {
-    [login.fulfilled]: (state, action) => {
+  reducers: {
+    logout: (state) => {
+      state.isAuth = false;
+      state.accessToken = '';
+      state.me = {};
+    },
+  },
+  extraReducers: (builder) => {
+    // LOGIN REDUCER
+    builder.addCase(login.pending, (state) => {
+      state.status = 'pending';
+    });
+    builder.addCase(login.fulfilled, (state, action) => {
+      state.status = 'success';
       state.accessToken = action.payload.access_token;
       state.isAuth = true;
-    },
+    });
+    builder.addCase(login.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.errorMessage = action.error.message;
+    });
+    // GET ME REDUCER
+    builder.addCase(getMe.pending, (state) => {
+      state.status = 'pending';
+    });
+    builder.addCase(getMe.fulfilled, (state, action) => {
+      state.status = 'success';
+      state.me = action.payload;
+    });
+    builder.addCase(getMe.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.errorMessage = action.error.message;
+    });
   },
 });
 

@@ -1,14 +1,12 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Navigate, Outlet } from "react-router-dom";
+import React, { Suspense } from 'react';
+import { Outlet } from 'react-router-dom';
 
-const Layout = () => {
-  const { isAuth } = useSelector((state) => state.auth);
-  if (isAuth) {
-    return <Navigate to="/" />;
-  }
-
-  return <Outlet />;
+export const AuthLayout = () => {
+  return (
+    <Suspense fallback={null}>
+      <Outlet />;
+    </Suspense>
+  );
 };
 
-export default Layout;
+export default AuthLayout;

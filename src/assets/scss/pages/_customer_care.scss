@@ -11,6 +11,7 @@
   @extend %item-center;
   @extend %border;
   padding: 9px 20px !important;
+  min-height: 49px;
 
   h5 {
     font-size: 1.6rem;
@@ -58,7 +59,6 @@
 
     &--event {
       @extend %style-title;
-
       .btn-primary {
         height: 3rem;
       }

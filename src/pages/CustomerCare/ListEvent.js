@@ -108,7 +108,6 @@ export default function ListEvent() {
         </div>
         <div className="customer-care__center--event">
           <h5>{t('customer care.event title')}</h5>
-          <Button type="primary" className="btn-primary" onClick={saveData}>{t('common.save')}</Button>
         </div>
         <div className="customer-care__center--list">
           {table}

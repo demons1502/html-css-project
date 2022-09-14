@@ -119,7 +119,6 @@ export default function History() {
             <h5>{t('customer care.history title')}</h5>
             <FilterCommon options={options} setPayload={setPayload}></FilterCommon>
           </div>
-          <Button type="primary" className="btn-primary" onClick={saveData}>{t('common.save')}</Button>
         </div>
         <div className="customer-care__right--list">
           {table}

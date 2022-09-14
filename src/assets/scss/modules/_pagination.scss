@@ -58,6 +58,19 @@
       border: none;
     }
   }
+
+  .ant-pagination-disabled {
+    button {
+      color: $gray-light-color !important;
+    }
+  }
+  /* &.payment-pagination {
+    .ant-pagination-item {
+      width: 27px;
+      height: 27px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  } */
 }
-
-

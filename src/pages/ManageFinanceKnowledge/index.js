@@ -6,6 +6,7 @@ import IconPlus from '../../assets/images/icons/plus.svg';
 import Title from '../../components/Title';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
+import PaymentManagement from '../PaymentManagement';
 
 const ManageFinanceKnowledge = () => {
   const [itemContent, setItemContent] = useState({});
@@ -147,6 +148,7 @@ const ManageFinanceKnowledge = () => {
           </Col>
         </Row>
       </Layout>
+      <PaymentManagement />
     </div>
   );
 };

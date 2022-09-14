@@ -20,6 +20,10 @@ const PaymentManagement = () => {
     /* console.log('selectedRowKeys changed: ', selectedRowKeys); */
     setSelectedRowKeys(newSelectedRowKeys);
   };
+  const dataSource = [];
+  for (let i = 0; i < 100; i++) {
+    dataSource.push({ ...data[0], id: i });
+  }
 
   const handleDeleteOne = (id) => {
     const newData = data.filter((item) => item.id !== id);
@@ -62,6 +66,7 @@ const PaymentManagement = () => {
       title: 'Số tiền',
       dataIndex: 'money',
       key: 'money',
+      className: 'green-color',
     },
     {
       title: '',
@@ -76,6 +81,25 @@ const PaymentManagement = () => {
       ),
     },
   ];
+
+  const handleAdd = (values) => {
+    const payment = values.payment;
+    const newPayment = {
+      ...payment,
+      dateOfPayment: payment.dateOfPayment?._d,
+      effectiveDate: payment.dateOfPayment?._d,
+      endDate: payment.endDate?._d,
+      money: +payment.money,
+      histories: [
+        {
+          id: '1-1',
+          date: payment.dateOfPayment?._d,
+          content: payment.content,
+        },
+      ],
+    };
+    console.log(newPayment);
+  };
 
   useEffect(() => {
     setRowActive(data[0]?.id);
@@ -127,9 +151,10 @@ const PaymentManagement = () => {
                 setPayload={setSearchPayload}
               />
               <Table
-                dataSource={data}
+                className='table-common'
+                dataSource={dataSource}
                 columns={columns}
-                pagination={false}
+                pagination={{ className: 'payment-pagination' }}
                 rowSelection={{
                   selectedRowKeys,
                   onChange: onSelectChange,
@@ -140,11 +165,13 @@ const PaymentManagement = () => {
                 onRow={(record) => {
                   return {
                     onClick: () => {
-                      setRowActive(record.id);
+                      setRowActive(record.id), setHistoryItem(record);
                     },
                   };
                 }}
                 rowKey={(record) => record.id}
+                size='middle'
+                bordered={false}
               />
             </div>
           </Col>
@@ -166,6 +193,7 @@ const PaymentManagement = () => {
           users={data}
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
+          onClick={handleAdd}
         />
       </div>
     </div>

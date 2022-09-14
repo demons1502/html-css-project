@@ -59,6 +59,8 @@ const PaymentHistory = ({ customer }) => {
       </div>
       <div className='paymentHistory-group'>
         <Table
+          className='table-common'
+          size='middle'
           dataSource={customer.histories}
           columns={columns}
           pagination={false}

@@ -1,15 +1,15 @@
 import React from 'react';
-import {useTranslation} from 'react-i18next';
-import {Button, Row} from 'antd';
+import { useTranslation } from 'react-i18next';
+import { Button, Row } from 'antd';
 import Participant from './components/participant';
 import ConsultantProcess from './components/consultantProcess';
 import HistorySelect from './components/historySelect';
 
 export default function FinanceConsultant() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
-    <div className="content-box finance-consultant">
+    <div className='content-box finance-consultant'>
       <h3>{t('finance consultant.title')}</h3>
       <Row>
         <Participant />
@@ -23,7 +23,7 @@ export default function FinanceConsultant() {
               <Button>Đặt Lịch Hẹn</Button>
             </div>
           </div>
-          <SpendingForm />
+          {/* <SpendingForm /> */}
         </div>
         <ConsultantProcess />
       </Row>

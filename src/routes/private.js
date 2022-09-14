@@ -14,7 +14,8 @@ const Survey = lazy(() => import('../pages/Survey'));
 const Admin = lazy(() => import('../pages/Admin'));
 const Contract_management = lazy(() => import('../pages/ContractManagement'));
 const FinanceKnowledge = lazy(() => import('../pages/FinanceKnowledge'));
-const Login = lazy(() => import("../pages/Auth/views/Login"));
+const Login = lazy(() => import('../pages/Auth/views/Login'));
+const FinancialSolution = lazy(() => import('../pages/FinancialSolution'));
 
 const PrivateRoutes = [
   {
@@ -29,14 +30,14 @@ const PrivateRoutes = [
     key: 'potential-customers',
     label: 'Khách hàng tiềm năng',
     icon: Users,
-    page: <CustomerCare />
+    page: <CustomerCare />,
   },
   {
     path: '/appointment-management',
     key: 'appointment-management',
     label: 'Quản lý lịch hẹn',
     icon: Calendar,
-    page: <CustomerCare />
+    page: <CustomerCare />,
   },
   {
     path: '/advise',
@@ -48,26 +49,26 @@ const PrivateRoutes = [
         path: '/advise/survey',
         key: 'survey',
         label: 'Khảo sát',
-        page: <Survey/>
+        page: <Survey />,
       },
       {
         path: '/advise/finance-consultant',
         key: 'advise-finance-consultant',
         label: 'Tư vấn tài chính',
-        page: <FinanceConsultant/>
+        page: <FinanceConsultant />,
       },
       {
         path: '/advise/financial-solutions',
         key: 'financial-solutions',
         label: 'Giải pháp tài chính',
-        page: <FinancialSolution />
+        page: <FinancialSolution />,
       },
       {
         path: '/advise/contract-management',
         key: 'contract-management',
         label: 'Quản lý hợp đồng',
-        page: <Contract_management />
-      }
+        page: <Contract_management />,
+      },
     ],
   },
   {
@@ -75,8 +76,7 @@ const PrivateRoutes = [
     key: 'customer-care',
     label: 'Chăm sóc',
     icon: Care,
-    page: <CustomerCare />
-
+    page: <CustomerCare />,
   },
   {
     path: '/q&a',
@@ -97,8 +97,8 @@ const PrivateRoutes = [
     key: 'admin',
     label: 'Quản lý khách hàng',
     icon: Users,
-    page: <Admin />
-  }
+    page: <Admin />,
+  },
 ];
 
 export default PrivateRoutes;

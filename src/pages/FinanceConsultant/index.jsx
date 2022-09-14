@@ -4,6 +4,7 @@ import {Button, Row} from 'antd';
 import Participant from './components/participant';
 import ConsultantProcess from './components/consultantProcess';
 import HistorySelect from './components/historySelect';
+import SpendingForm from './form/spendingForm';
 
 export default function FinanceConsultant() {
   const {t} = useTranslation();

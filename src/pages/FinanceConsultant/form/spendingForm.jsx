@@ -2,11 +2,11 @@ import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {Col, Checkbox, Button, Empty, Popover} from 'antd';
-import {createData, retrieveData} from '../../slices/customerCare';
-import TableCommon from '../../components/TableCommon';
-import IconPlus from '../../assets/images/icons/plus.svg';
+import {createData, retrieveData} from '../../../slices/customerCare';
+import TableCommon from '../../../components/TableCommon';
+import IconPlus from '../../../assets/images/icons/plus.svg';
 import _ from 'lodash';
-import FilterCommon from "../../components/FilterCommon";
+import FilterCommon from "../../../components/FilterCommon";
 
 const content = (
   <div>

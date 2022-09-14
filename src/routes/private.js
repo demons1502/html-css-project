@@ -16,6 +16,7 @@ const Contract_management = lazy(() => import('../pages/ContractManagement'));
 const FinanceKnowledge = lazy(() => import('../pages/FinanceKnowledge'));
 const FinancialSolution = lazy(() => import('../pages/FinancialSolution'));
 const Login = lazy(() => import("../pages/Auth/views/Login"));
+const FinancialSolution = lazy(() => import("../pages/FinancialSolution"));
 
 const PrivateRoutes = [
   {

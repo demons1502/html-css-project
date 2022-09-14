@@ -5,7 +5,7 @@ const initialState = [];
 
 export const retrieveData = createAsyncThunk(
   'manageContent/getAll',
-  async (option, params) => {
+  async ({ option, params }) => {
     const res = await getAll(option, params);
     return res.data;
   }
@@ -13,14 +13,14 @@ export const retrieveData = createAsyncThunk(
 
 export const createContent = createAsyncThunk(
   'manageContent/create',
-  async (option, payload) => {
+  async ({ option, payload }) => {
     const res = await create(option, payload);
     return res.data;
   }
 );
 export const updateContent = createAsyncThunk(
   'manageContent/update',
-  async (option, id, payload) => {
+  async ({ option, id, payload }) => {
     const res = await update(option, id, payload);
     return res.data;
   }
@@ -28,7 +28,7 @@ export const updateContent = createAsyncThunk(
 
 export const deleteContent = createAsyncThunk(
   'manageContent/delete',
-  async (option, id) => {
+  async ({ option, id }) => {
     const res = await remove(option, id);
     return res.data;
   }

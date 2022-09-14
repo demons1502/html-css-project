@@ -28,7 +28,7 @@ const financeKnowledgeSlice = createSlice({
       state.articles.push(action.payload);
     },
     [mostViewArticles.fulfilled]: (state, action) => {
-      state.mostView = action.payload;
+      state.mostView.push(action.payload);
     },
   },
 });

@@ -15,6 +15,7 @@ import {
   updateContent,
   deleteContent,
 } from '../../slices/managementContent';
+import PaymentManagement from '../PaymentManagement';
 
 const ManageFinanceKnowledge = () => {
   const [itemContent, setItemContent] = useState({});
@@ -175,7 +176,7 @@ const ManageFinanceKnowledge = () => {
           </Col>
         </Row>
       </Layout>
-      {/*  <PaymentManagement /> */}
+      <PaymentManagement />
     </div>
   );
 };

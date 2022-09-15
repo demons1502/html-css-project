@@ -151,7 +151,7 @@ const PaymentManagement = () => {
                 setPayload={setSearchPayload}
               />
               <Table
-                className='table-common'
+                className='table-common paymentManagement-table'
                 dataSource={dataSource}
                 columns={columns}
                 pagination={{ className: 'payment-pagination' }}

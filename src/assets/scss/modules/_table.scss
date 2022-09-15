@@ -27,30 +27,22 @@
 
         &.green-color {
           color: $green-color;
+          .ant-checkbox-checked:after {
+            border: none !important;
+            border-color: none !important;
+          }
         }
       }
     }
-  }
 
-  .ant-table-row-selected {
-    td {
-      background: $green-table-bg !important;
-      border-bottom: 1px solid $white-color !important;
-      color: $white-color;
-      &.green-color {
-        color: $white-color !important;
-      }
-    }
+    // .ant-table-row-selected {
+    //   td {
+    //     background: $green-table-bg  !important;
+    //     border-bottom: 1px solid $white-color  !important;
+    //     color: $white-color;
+    //   }
+    // }
   }
-  .ant-table-row {
-    &.active {
-      .ant-table-cell {
-        background: $green-color;
-        color: $white-color;
-      }
-    }
-  }
-
   //check box color
   .ant-checkbox-checked .ant-checkbox-inner {
     background-color: $green-color !important;
@@ -74,25 +66,66 @@
   }
 
   .checkbox_cell {
+    .ant-checkbox-inner {
+      border-color: $grey-bg-color !important;
+      background-color: $white-color !important;
+      width: 20px;
+      height: 20px;
+      border: 2px solid;
+    }
+
     .ant-checkbox:hover .ant-checkbox-inner {
       border-color: $yellow-light-checkbox !important;
     }
 
-    .ant-checkbox-checked .ant-checkbox-inner {
-      background-color: $yellow-light-checkbox !important;
+    .ant-checkbox-checked {
+      background-color: $white-color !important;
       border-color: $yellow-light-checkbox !important;
+      width: 20px;
+      height: 20px;
     }
 
-    .ant-checkbox-indeterminate .ant-checkbox-inner::after {
-      background-color: $yellow-light-checkbox !important;
+    .ant-checkbox-checked:after {
+      border: none !important;
+      border-color: none !important;
     }
 
     .ant-checkbox-input:focus + .ant-checkbox-inner {
       border-color: $yellow-light-checkbox !important;
     }
 
-    .ant-checkbox-checked:after {
+    .ant-checkbox-checked > .ant-checkbox-inner {
       border-color: $yellow-light-checkbox !important;
+    }
+
+    .ant-checkbox-checked .ant-checkbox-inner:after {
+      border-color: $yellow-light-checkbox !important;
+      border: 2.5px solid #fff;
+      border-top: 0;
+      border-left: 0;
+      top: 45% !important;
+    }
+  }
+  &.paymentManagement-table {
+    .ant-table-tbody {
+      .ant-table-row-selected {
+        td {
+          background: $green-table-bg !important;
+          border-bottom: 1px solid $white-color !important;
+          color: $white-color;
+          &.green-color {
+            color: $white-color !important;
+          }
+        }
+      }
+      .ant-table-row {
+        &.active {
+          .ant-table-cell {
+            background: $green-color;
+            color: $white-color;
+          }
+        }
+      }
     }
   }
 }

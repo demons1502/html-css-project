@@ -16,6 +16,10 @@ export default function TableCommon(props) {
   const [columns, setColumns] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
+  useEffect(()=>{
+    props.getSelectedRowKeys(selectedRowKeys)
+  }),[selectedRowKeys]
+  
   useEffect(() => {
     if (dataSource.length > 0) {
       const tempColumns = [];

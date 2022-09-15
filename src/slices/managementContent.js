@@ -48,7 +48,7 @@ const manageContentSlice = createSlice({
     },
     [retrieveData.fulfilled]: (state, action) => {
       console.log('success');
-      /*  return [...action.payload]; */
+      return [...action.payload];
     },
     [updateContent.fulfilled]: (state, action) => {
       const index = state.findIndex((data) => data.id === action.payload.id);

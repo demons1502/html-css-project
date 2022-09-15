@@ -7,15 +7,14 @@ import Title from '../../components/Title';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
 // import PaymentManagement from '../PaymentManagement';
-import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   createContent,
+  deleteContent,
   retrieveData,
   updateContent,
-  deleteContent,
 } from '../../slices/managementContent';
-import PaymentManagement from '../PaymentManagement';
 
 const ManageFinanceKnowledge = () => {
   const [itemContent, setItemContent] = useState({});
@@ -176,7 +175,6 @@ const ManageFinanceKnowledge = () => {
           </Col>
         </Row>
       </Layout>
-      <PaymentManagement />
     </div>
   );
 };

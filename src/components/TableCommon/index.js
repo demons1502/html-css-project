@@ -24,7 +24,6 @@ export default function TableCommon(props) {
     if (dataSource.length > 0) {
       const tempColumns = [];
       columnTable.forEach((item) => {
-        console.log(item);
         const tempItem = {
           ...item,
           title: item.title ? item.title : item.name,

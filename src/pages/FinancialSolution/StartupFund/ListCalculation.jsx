@@ -21,12 +21,12 @@ const ListCalculation = () => {
       <div className="container-right-middle">
         <Form.Item
           name="name"
-          label="Tuổi hiện tại"
+          label="Ngành nghề khởi nghiệp"
           className="input-item"
           rules={[
             {
               required: true,
-              message: "Tuổi hiện tại.",
+              message: "Ngành nghề khởi nghiệp.",
             },
           ]}>
           <Input
@@ -37,11 +37,11 @@ const ListCalculation = () => {
         </Form.Item>
         <Form.Item
           name="total"
-          label="Tuổi nghỉ hưu dự kiến"
+          label="Số vốn cần thiết"
           rules={[
             {
               required: true,
-              message: "Tuổi nghỉ hưu dự kiến",
+              message: "Số vốn cần thiết",
             },
           ]}>
           <Input
@@ -50,16 +50,16 @@ const ListCalculation = () => {
             className="input-item-search-gary"
           />
         </Form.Item>
-        <Form.Item name="total" label="Thời gian đến tuổi nghỉ hưu còn">
+        {/* <Form.Item name="total" label="Thời gian đến tuổi nghỉ hưu còn">
           <span className="input-right">28 năm</span>
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           name="total"
-          label="Số tiền hằng tháng khi nghỉ hưu"
+          label="Số năm chuẩn bị"
           rules={[
             {
               required: true,
-              message: "Số tiền hằng tháng",
+              message: "Số năm chuẩn bị",
             },
           ]}>
           <Input
@@ -70,11 +70,11 @@ const ListCalculation = () => {
         </Form.Item>
         <Form.Item
           name="total"
-          label="Số tiền hằng tháng khi nghỉ hưu"
+          label="Tỷ lệ lạm phát"
           rules={[
             {
               required: true,
-              message: "Số tiền hằng tháng",
+              message: "Tỷ lệ lạm phát",
             },
           ]}>
           <Input
@@ -83,44 +83,11 @@ const ListCalculation = () => {
             className="input-item-search-gary"
           />
         </Form.Item>
-        <Form.Item
-          name="total"
-          label="Thời gian nghỉ hưu mong muốn"
-          rules={[
-            {
-              required: true,
-              message: "Thời gian nghỉ hưu",
-            },
-          ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
-        </Form.Item>
-        <Form.Item
-          name="total"
-          label="Số tiền đã có"
-          rules={[
-            {
-              required: true,
-              message: "Số tiền đã có",
-            },
-          ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
-        </Form.Item>
+         
       </div>
       <div className="container-right-bottom">
         <p>
-          Tổng số tiền cần cho tương lai:{" "}
-          <span className="total-amount">40.000.000</span>
-        </p>
-        <p>
-          Số tiền còn thiếu khi nghỉ hưu:{" "}
+        Tổng số tiền cần cho khởi nghiệp:{" "}
           <span className="total-amount">40.000.000</span>
         </p>
       </div>

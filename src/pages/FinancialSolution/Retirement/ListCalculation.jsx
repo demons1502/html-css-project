@@ -20,12 +20,12 @@ const ListCalculation = () => {
       <div className="container-right-middle">
         <Form.Item
           name="name"
-          label="Lãi suất ngân hàng"
+          label="Tuổi hiện tại"
           className="input-item"
           rules={[
             {
               required: true,
-              message: "Lãi suất ngân.",
+              message: "Tuổi hiện tại.",
             },
           ]}>
           <Input
@@ -36,11 +36,118 @@ const ListCalculation = () => {
         </Form.Item>
         <Form.Item
           name="total"
-          label="Tổng tiền chi tiêu thiết yếu/tháng"
+          label="Tuổi nghỉ hưu dự kiến"
           rules={[
             {
               required: true,
-              message: "Tổng tiền chi tiêu",
+              message: "Tuổi nghỉ hưu dự kiến",
+            },
+          ]}>
+          <Input
+            placeholder="0"
+            type="number"
+            className="input-item-search-gary"
+          />
+        </Form.Item>
+        <Form.Item
+          name="total"
+          label="Thời gian đến tuổi nghỉ hưu còn"
+          rules={[
+            {
+              required: true,
+              message: "Thời gian đến tuổi nghỉ hưu còn",
+            },
+          ]}>
+          <Input
+            placeholder="0"
+            type="number"
+            className="input-item-search-gary"
+          />
+        </Form.Item>
+        <Form.Item
+          name="total"
+          label="Số tiền hằng tháng khi nghỉ hưu"
+          rules={[
+            {
+              required: true,
+              message: "Số tiền hằng tháng khi nghỉ hưu",
+            },
+          ]}>
+          <Input
+            placeholder="0"
+            type="number"
+            className="input-item-search-gary"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="total"
+          label="Số tiền hằng năm khi nghỉ hưu"
+          rules={[
+            {
+              required: true,
+              message: "Số tiền hằng năm khi nghỉ hưu",
+            },
+          ]}>
+          <Input
+            placeholder="0"
+            type="number"
+            className="input-item-search-gary"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="total"
+          label="Thời gian nghỉ hưu mong muốn"
+          rules={[
+            {
+              required: true,
+              message: "Thời gian nghỉ hưu mong muốn",
+            },
+          ]}>
+          <Input
+            placeholder="0"
+            type="number"
+            className="input-item-search-gary"
+          />
+        </Form.Item>
+        <Form.Item
+          name="total"
+          label="Số tiền đã có"
+          rules={[
+            {
+              required: true,
+              message: "Số tiền đã có",
+            },
+          ]}>
+          <Input
+            placeholder="0"
+            type="number"
+            className="input-item-search-gary"
+          />
+        </Form.Item>
+        <Form.Item
+          name="total"
+          label="Tỷ lệ lạm phát"
+          rules={[
+            {
+              required: true,
+              message: "Tỷ lệ lạm phát",
+            },
+          ]}>
+          <Input
+            placeholder="0"
+            type="number"
+            className="input-item-search-gary"
+          />
+        </Form.Item>
+        <Form.Item
+          name="total"
+          label="Tỷ suất sinh lời hằng năm"
+          rules={[
+            {
+              required: true,
+              message: "Tỷ suất sinh lời hằng năm",
             },
           ]}>
           <Input
@@ -52,7 +159,12 @@ const ListCalculation = () => {
       </div>
       <div className="container-right-bottom">
         <p>
-          Thông tin quỹ: <span className="total-amount">40.000.000</span>
+        Tổng số tiền cần cho tương lai: <span className="total-amount">40.000.000</span>
+        </p>
+      </div>
+      <div className="container-right-bottom">
+        <p>
+        Số tiền còn thiếu khi nghỉ hưu:: <span className="total-amount">30.000.000</span>
         </p>
       </div>
 

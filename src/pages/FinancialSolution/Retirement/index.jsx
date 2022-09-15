@@ -1,6 +1,8 @@
 import { Col, Layout, List, Row, Typography } from "antd";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom'
+import PageBack from '../../../assets/images/financial/PageBack'
 import { sideBarMenuItems } from "../../../assets/fake-data/QuyDuPhongData";
 import SearchInputBox from "./SearchInputBox";
 import ListCalculation from "./ListCalculation";
@@ -31,7 +33,8 @@ const Retirement = () => {
           className="feather feather-chevron-left quyduphone-nav-icon">
           <polyline points="15 18 9 12 15 6" />
         </svg>
-        <h3>Quy du phong</h3>
+        {/* <Link to='/advise/financial-solutions'><PageBack /></Link> */}
+        <h3>Quỹ Hưu trí</h3>
       </div>
 
       {/* quyduphone-nav end  */}

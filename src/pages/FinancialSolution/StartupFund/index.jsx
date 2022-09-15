@@ -33,7 +33,7 @@ const StartupFund = () => {
           className="feather feather-chevron-left quyduphone-nav-icon">
           <polyline points="15 18 9 12 15 6" />
         </svg>
-        <h3>Quy du phong</h3>
+        <h3>Quỹ khởi nghiệp</h3>
       </div>
 
       {/* quyduphone-nav end  */}

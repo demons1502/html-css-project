@@ -104,6 +104,7 @@
 
 .btn-table {
   @extend %flex-end;
+  column-gap: 20px;
 
   &__btn {
     @extend %flex-centered;

@@ -3,8 +3,8 @@ import { getAll, getMostView } from '../services/financeKnowledge';
 
 const initialState = { articles: [], mostView: [] };
 
-export const retrieveData = createAsyncThunk(
-  'financeKnowledge/getAll',
+export const getArticlesData = createAsyncThunk(
+  'financeKnowledge/getArticles',
   async (params) => {
     const res = await getAll(params);
     return res.data;
@@ -24,11 +24,18 @@ const financeKnowledgeSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [retrieveData.fulfilled]: (state, action) => {
-      state.articles.push(action.payload);
+    [getArticlesData.fulfilled]: (state, action) => {
+      state.articles.push(...action.payload);
+    },
+    [mostViewArticles.pending]: (state, action) => {
+      console.log('pending');
     },
     [mostViewArticles.fulfilled]: (state, action) => {
-      state.mostView.push(action.payload);
+      console.log('success');
+      state.mostView.push(...action.payload);
+    },
+    [mostViewArticles.rejected]: (state, action) => {
+      console.log('error');
     },
   },
 });

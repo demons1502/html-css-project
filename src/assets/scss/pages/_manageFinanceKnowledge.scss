@@ -72,9 +72,10 @@
       &-footer {
         border-top: 1px solid $grey-border-color;
       }
+
       &-item {
-        border-bottom: 1px solid $grey-border-color;
-        /*  padding: 0 17px; */
+        border-bottom: 1px solid #ebebeb;
+        padding: 0 17px !important;
         padding: 0;
         cursor: pointer;
         &:last-child {
@@ -82,23 +83,29 @@
         }
         .ant-typography {
           width: 100%;
-          padding: 10px 16px;
+          padding: 10px 0;
           font-size: $font-size-base;
           font-weight: $font-weight-semibold;
           border-radius: 10px;
         }
-        &:hover {
+        /* &:hover {
           .ant-typography {
             background-color: $green-color;
             color: $white-color;
           }
-        }
+        } */
         &.active {
           .ant-typography {
             background-color: $green-color;
             color: $white-color;
+            padding: 10px 16px;
           }
         }
+      }
+    }
+    &_list {
+      .ant-list-footer {
+        border-top: unset;
       }
     }
 
@@ -117,11 +124,13 @@
         margin-top: unset;
       }
     }
+
     .manageContent {
       .ant-input {
         font-size: $font-size-base;
         padding: 10px 13px;
         font-weight: $font-weight-bold;
+        color: $black-color;
       }
       .textarea {
         padding: 13px 17px;
@@ -132,7 +141,7 @@
           min-width: 80px;
         }
         &-input {
-          min-height: 100px;
+          min-height: 200px;
           padding: unset;
           &.background {
             background-color: #f3f3f3;
@@ -154,6 +163,12 @@
             .ant-input {
               color: $green-color;
             }
+          }
+          &:focus {
+            box-shadow: unset;
+          }
+          &.ant-input-affix-wrapper-focused {
+            box-shadow: unset;
           }
         }
         .ant-input-prefix {
@@ -244,11 +259,25 @@
         align-items: center;
         .ant-input {
           font-size: $font-size-base;
-          width: 460px;
+          min-width: 460px;
           background-color: $secondary-color;
           border-radius: 5px;
         }
-        &-button {
+        .ant-input-affix-wrapper {
+          padding: 0 17px;
+          &.color-green {
+            .ant-input {
+              color: $green-color;
+            }
+          }
+          &:focus {
+            box-shadow: unset;
+          }
+          &.ant-input-affix-wrapper-focused {
+            box-shadow: unset;
+          }
+        }
+        &_button {
           display: flex;
           justify-content: flex-start;
           align-items: center;

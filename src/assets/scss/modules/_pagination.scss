@@ -73,4 +73,19 @@
       align-items: center;
     }
   } */
+  &.manageFinanceKnowledge-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    .ant-pagination-options {
+      display: none;
+    }
+    .ant-pagination-item {
+      width: 25px !important;
+      min-width: 25px !important;
+      height: 25px;
+      padding: unset;
+    }
+  }
 }

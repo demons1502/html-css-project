@@ -3,18 +3,19 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { finances } from '../../assets/fake-data/data';
 import commentIcon from '../../assets/images/icons/comment.svg';
-import FinanceKnowledgeCard from '../../components/FinanceKnowledgeCard';
+import FinanceKnowledgeCard from './FinanceKnowledgeCard';
 import Title from '../../components/Title';
 import {
-  createNewArticles,
   mostViewArticles,
+  getArticlesData,
 } from '../../slices/financeKnowledge';
+import { useTranslation } from 'react-i18next';
 
 const index = () => {
-  const financeData = useSelector(
+  const { t } = useTranslation();
+  const [financeData] = useSelector(
     (state) => state.financeKnowledgeReducer.mostView
   );
-  console.log(financeData);
 
   const [topViews, setTopViews] = useState([]);
   const dispatch = useDispatch();
@@ -29,15 +30,16 @@ const index = () => {
   }, []);
   useEffect(() => {
     //fetch
+    const params = { limit: 10, offset: 1 };
     dispatch(mostViewArticles());
-    /* dispatch(createNewArticles(finances[0])); */
+    dispatch(getArticlesData(params));
   }, []);
 
   return (
     <div className='financeSupport'>
       <div>
         <Title
-          title='Bài viết truy cập nhiều nhất trong tuần'
+          title={t('finance knowledge.most view')}
           icon={commentIcon}
         ></Title>
         <Row gutter={[10, 10]}>
@@ -62,7 +64,10 @@ const index = () => {
         </Row>
       </div>
       <div>
-        <Title title='Các tin cũ hơn' icon={commentIcon}></Title>
+        <Title
+          title={t('finance knowledge.old articles')}
+          icon={commentIcon}
+        ></Title>
         <Row justify='start' align='middle'>
           <Col span={24}>
             <Row gutter={[17, 13]}>

@@ -20,8 +20,7 @@
     "booking": "Đặt lịch hẹn",
     "no more potential": "Không còn tiềm năng"
   },
-  "validate": {
-  },
+  "validate": {},
   "customer care": {
     "title": "Danh sách khách hàng",
     "event title": "Các event sắp tới",
@@ -29,15 +28,22 @@
     "add event": "Thêm event",
     "sms": "SMS",
     "email": "Email",
-    "no more potential" : "Không còn tiềm năng",
+    "no more potential": "Không còn tiềm năng",
     "sync info": "Tổng hợp thông tin"
   },
 
-  "financial solution":{
+  "financial solution": {
     "title": "Giải pháp tài chính"
   },
   "survey": {
     "save": "Lưu thông tin",
     "process": "Quy trình khảo sát"
+  },
+  "finance knowledge": {
+    "most view": "Bài viết truy cập nhiều nhất trong tuần",
+    "old articles": "Các tin cũ hơn"
+  },
+  "manage content": {
+    "title": "Quản lý nội dung"
   }
 }

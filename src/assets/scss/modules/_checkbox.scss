@@ -1,18 +1,19 @@
 .checkbox-item {
   color: $black-color;
   font-weight: $font-weight-semibold;
+
   input[type="checkbox"] {
     width: 20px !important;
     height: 20px !important;
   }
 
-  .ant-checkbox-input:focus + .ant-checkbox-inner {
+  .ant-checkbox-input:focus+.ant-checkbox-inner {
     border-color: $grey-bg-color;
   }
 
   .ant-checkbox-inner {
     background: $white-color;
-    border: 2px solid $grey-bg-color;
+    border: 1.5px solid $grey-bg-color;
     border-radius: 5px;
     width: 20px !important;
     height: 20px !important;
@@ -34,7 +35,8 @@
   .ant-checkbox-checked .ant-checkbox-inner {
     background: $green-color;
     border: 1.5px solid $green-color;
-    border-color: $green-color !important;
+    border-color: $green-color  !important;
+
     &:after {
       background-image: url("../../images/icons/vector-white.svg");
     }
@@ -46,5 +48,49 @@
 
   .ant-checkbox {
     top: 0.35em;
+  }
+}
+
+.ant-checkbox {
+  width: 20px !important;
+  height: 20px !important;
+
+  input[type="checkbox"] {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .ant-checkbox-inner {
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 5px;
+  }
+}
+
+.checkbox-primary {
+  .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: $green-color  !important;
+    border-color: $green-color  !important;
+  }
+
+  .ant-checkbox-indeterminate .ant-checkbox-inner::after {
+    background-color: $green-color  !important;
+  }
+
+  .ant-checkbox:hover .ant-checkbox-inner {
+    border-color: $green-color  !important;
+  }
+
+  .ant-checkbox-checked:after {
+    border-color: $green-color  !important;
+  }
+
+  .ant-checkbox-input:focus+.ant-checkbox-inner {
+    border-color: $green-color  !important;
+  }
+
+  .ant-checkbox-checked:after {
+    border: none !important;
+    border-color: none !important;
   }
 }

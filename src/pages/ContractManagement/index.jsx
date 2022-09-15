@@ -3,12 +3,11 @@ import InputSearch from '../../components/InputSearch'
 import "../../assets/scss/ContractManagement/styleContract.scss"
 import { Button, Table, Modal } from 'antd'
 import CreateContract from './CreateContract';
-import EditContract from './EditContract';
 
 const dataSource = [
   {
     id_contract: '213654451',
-    name_payment: 'Brooklyn Simmons2',
+    name_payment: 'Brooklyn Simmo',
     beneficiary: 'Guy hawking',
     price: '65.000.000',
     effective_date: '01/01/2001',
@@ -59,11 +58,11 @@ const columns = [
   {
     title: 'Hạn nộp phí tiếp theo',
     dataIndex: 'last_day_payment',
-    align: 'center',
   },
   {
     title: '',
     dataIndex: '',
+    width:'118px',
     render: () => <button className='btn_modal_example btn-bgWhite-textGreen-borGreen'>Bảng minh hoạ</button>
   },
   {
@@ -122,13 +121,13 @@ export default function ContractManagement() {
         </div>
       </div>
       <div className="contract_list">
-        <Table dataSource={data} columns={columns} size='middle'
+        <Table dataSource={data} columns={columns} size='middle' 
           pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '30'] }}
         />
       </div>
       {
         modalCreateContract ? (
-          <Modal width='800px' centered footer={null}
+          <Modal width='800px' centered footer={null} closable={false}
             open={() => setModalCreateContract(true)} 
             onOk={() => setModalCreateContract(false)} 
             onCancel={() => setModalCreateContract(false)}>
@@ -139,7 +138,7 @@ export default function ContractManagement() {
       }
       {
         modalEditContract ? (
-          <Modal width='800px' centered footer={null}
+          <Modal width='800px' centered footer={null} closable={false}
             open={() => setModalEditContract(true)} 
             onOk={() => setModalEditContract(false)} 
             onCancel={() => setModalEditContract(false)}>

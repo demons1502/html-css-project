@@ -82,13 +82,13 @@ function Create_user(props) {
             </Form.Item>
           </Col>
         </Row>
-        <Row justify="start" className='group_checkbox'>
+        <Row justify="start" className='group_checkbox '>
           <Col span={5}>
             <Form.Item
               name="isAdmin"
               valuePropName="checked"
             >
-              <Checkbox>Admin</Checkbox>
+              <Checkbox className='checkbox-primary'>Admin</Checkbox>
             </Form.Item>
           </Col>
           <Col span={5}>
@@ -96,15 +96,15 @@ function Create_user(props) {
               name="isQuestion"
               valuePropName="checked"
             >
-              <Checkbox>Hỏi đáp</Checkbox>
+              <Checkbox className='checkbox-primary'>Hỏi đáp</Checkbox>
             </Form.Item>
           </Col>
-          <Col span={5}>
+          <Col span={6}>
             <Form.Item
               name="isPayment"
               valuePropName="checked"
             >
-              <Checkbox>Thanh toán</Checkbox>
+              <Checkbox className='checkbox-primary'>Thanh toán</Checkbox>
             </Form.Item>
           </Col>
         </Row>

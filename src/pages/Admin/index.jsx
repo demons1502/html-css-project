@@ -9,11 +9,11 @@ import PaginationCommon from "../../components/PaginationCommon";
 
 const dataSource = [
   {
-    id: '213654451',
-    name: 'Brooklyn Simmons2',
+    id: '21365441',
+    name: 'Brooklyn Simmons',
     number: 4567897891,
-    email: 'nguyenasvnhanh@gmail.com',
-    ID_login: 'ABG1930a0',
+    email: 'nguyennhanh@gmail.com',
+    ID_login: 'ABG19300',
     isProduct: true,
     isPayment: false,
     isAdmin: true,
@@ -44,7 +44,7 @@ const columns = [
   },
   {
     title: 'Email',
-    width: '245px',
+    width: '215px',
     dataIndex: 'email',
   },
   {
@@ -71,7 +71,7 @@ const columns = [
   {
     title: 'Admin',
     dataIndex: 'isAdmin',
-    width: '108px',
+    width: '70px',
     align: 'center',
     className: 'checkbox_cell',
     render: (dataIndex) => <Checkbox id='isAdmin' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
@@ -113,6 +113,9 @@ export default function UserManagement() {
   const [isCreateUser, setIsCreateUser] = useState(false)
   const [isSettingLog, setIssettingLog] = useState(false)
 
+  const getSelectedRowKeys=(rowkeys)=>{
+    setSelectedRowKeys(rowkeys);
+  }
 
   useEffect(() => {
     input_file.current.style.display = 'none'
@@ -230,14 +233,15 @@ export default function UserManagement() {
           </div>
         </div>
 
-        <TableCommon dataSource={data} columnTable={columns} isSelection={true} isScroll={true}></TableCommon>
+        <TableCommon dataSource={data} columnTable={columns} isSelection={true} isScroll={true} 
+          getSelectedRowKeys={getSelectedRowKeys}>
+        </TableCommon>
         <PaginationCommon></PaginationCommon>
         {isCreateUser &&
-          <Modal centered width={589}
+          <Modal centered width={589} closable={false}
             footer={null}
-            open={() => setIsCreateUser(true)}
-            onOk={() => setIsCreateUser(false)}
-            onCancel={() => setIsCreateUser(false)}
+            open={isCreateUser}
+            onCancel={()=>{setIsCreateUser(false)}}
           >
             <Create_user closeCreateUser={closeCreateUser} />
           </Modal>

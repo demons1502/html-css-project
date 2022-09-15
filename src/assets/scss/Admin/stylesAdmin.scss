@@ -92,16 +92,26 @@
         height: 20px;
     }
 }
-
+.ant-table-container{
+    overflow: scroll;
+    .ant-table-thead{
+        th{
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+    .ant-table-row {
+        td {
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+}
 .ant-modal-content {
     border-radius: 20px;
 
     .ant-modal-body {
         padding: 0px 24px;
-    }
-
-    .ant-modal-close {
-        display: none;
     }
 }
 

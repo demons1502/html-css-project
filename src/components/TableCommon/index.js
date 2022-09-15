@@ -16,10 +16,15 @@ export default function TableCommon(props) {
   const [columns, setColumns] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
+  useEffect(()=>{
+    props.getSelectedRowKeys(selectedRowKeys)
+  }),[selectedRowKeys]
+  
   useEffect(() => {
     if (dataSource.length > 0) {
       const tempColumns = [];
       columnTable.forEach((item) => {
+        console.log(item);
         const tempItem = {
           ...item,
           title: item.title ? item.title : item.name,

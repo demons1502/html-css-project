@@ -7,7 +7,7 @@ import CreateContract from './CreateContract';
 const dataSource = [
   {
     id_contract: '213654451',
-    name_payment: 'Brooklyn Simmons2',
+    name_payment: 'Brooklyn Simmo',
     beneficiary: 'Guy hawking',
     price: '65.000.000',
     effective_date: '01/01/2001',
@@ -24,55 +24,45 @@ const columns = [
   {
     title: 'Mã số',
     dataIndex: 'id_contract',
-    width:'74px',
     className: 'id-contract',
   },
   {
     title: 'Người mua',
-    width:'168px',
     dataIndex: 'name_payment',
   },
   {
     title: 'Người hưởng',
-    width:'134px',
     dataIndex: 'beneficiary',
   },
   {
     title: 'Giá trị',
     className: 'table_price',
-    width:'120px',
     dataIndex: 'price',
   },
   {
     title: 'Ngày hiệu lực',
-    width:'120px',
     dataIndex: 'effective_date',
   },
   {
     title: 'Số năm nộp phí',
-    width:'138px',
     dataIndex: 'year_payment',
   },
   {
     title: 'Chu kì nộp phí',
-    width:'129px',
     dataIndex: 'submission_cycle',
   },
   {
     title: 'Lần cuối nộp phí',
-    width:'151px', 
     dataIndex: 'last_time_payment',
   },
   {
     title: 'Hạn nộp phí tiếp theo',
     dataIndex: 'last_day_payment',
-    width:'182px',
-    align: 'center',
   },
   {
     title: '',
     dataIndex: '',
-    width:'74px',
+    width:'118px',
     render: () => <button className='btn_modal_example btn-bgWhite-textGreen-borGreen'>Bảng minh hoạ</button>
   },
   {
@@ -131,13 +121,13 @@ export default function ContractManagement() {
         </div>
       </div>
       <div className="contract_list">
-        <Table dataSource={data} columns={columns} size='middle'
+        <Table dataSource={data} columns={columns} size='middle' 
           pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '30'] }}
         />
       </div>
       {
         modalCreateContract ? (
-          <Modal width='800px' centered footer={null}
+          <Modal width='800px' centered footer={null} closable={false}
             open={() => setModalCreateContract(true)} 
             onOk={() => setModalCreateContract(false)} 
             onCancel={() => setModalCreateContract(false)}>
@@ -148,7 +138,7 @@ export default function ContractManagement() {
       }
       {
         modalEditContract ? (
-          <Modal width='800px' centered footer={null}
+          <Modal width='800px' centered footer={null} closable={false}
             open={() => setModalEditContract(true)} 
             onOk={() => setModalEditContract(false)} 
             onCancel={() => setModalEditContract(false)}>

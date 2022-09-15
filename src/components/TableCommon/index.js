@@ -11,14 +11,10 @@ export default function TableCommon(props) {
     bordered = false,
     heightMargin = 340,
     isScroll = false,
+    setSelectedRowKeys,
     scroll = isScroll ? {y: `calc(100vh - ${heightMargin}px)`, scrollToFirstRowOnChange: false} : {}
   } = props;
   const [columns, setColumns] = useState([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
-  useEffect(()=>{
-    props.getSelectedRowKeys(selectedRowKeys)
-  }),[selectedRowKeys]
   
   useEffect(() => {
     if (dataSource.length > 0) {

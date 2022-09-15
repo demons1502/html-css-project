@@ -229,8 +229,7 @@ export default function UserManagement() {
           </div>
         </div>
 
-        <TableCommon dataSource={data} columnTable={columns} isSelection={true} isScroll={true} 
-          getSelectedRowKeys={getSelectedRowKeys}>
+        <TableCommon dataSource={data} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={setSelectedRowKeys}>
         </TableCommon>
         <PaginationCommon></PaginationCommon>
         {isCreateUser &&

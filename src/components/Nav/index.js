@@ -20,12 +20,16 @@ export default function Nav() {
     >
       {PrivateRoutes?.map((item) =>
         !item.children ? (
-          <Menu.Item key={item.key}>
-            <Link to={item.path}>
-              <img src={item.icon} alt='' />
-              <span>{item.label}</span>
-            </Link>
-          </Menu.Item>
+          item.onMenu ? (
+            <></>
+          ) : (
+            <Menu.Item key={item.key}>
+              <Link to={item.path}>
+                <img src={item.icon} alt='' />
+                <span>{item.label}</span>
+              </Link>
+            </Menu.Item>
+          )
         ) : (
           <Menu.SubMenu
             key={item.key}

@@ -100,6 +100,7 @@ const PrivateRoutes = [
   {
     path: "/admin",
     key: "admin",
+    onMenu:true,
     label: "Quản lý khách hàng",
     icon: Users,
     page: <Admin />,

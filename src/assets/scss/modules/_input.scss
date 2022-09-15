@@ -5,7 +5,7 @@
   font-size: 1.2rem;
 }
 
-.ant-picker-input>input {
+.ant-picker-input > input {
   font-weight: $font-weight-bold;
 }
 
@@ -13,7 +13,7 @@
   .ant-select-selector {
     @extend %flex-centered;
     height: 4rem !important;
-    border: none !important;;
+    border: none !important;
     background-color: $secondary-color !important;
     font-size: 1.4rem;
   }
@@ -53,6 +53,29 @@ textarea.ant-input {
     background: none;
     font-size: 1.3rem;
     color: $white-color;
+  }
+}
+.input-item-search-gary {
+  background: $grey-light-bg-color !important;
+  border-radius: 10px;
+  height: 3.5rem;
+  border: 0px;
+
+  .ant-input-prefix {
+    margin-right: 10px;
+  }
+
+  .ant-input-prefix {
+    margin-right: 10px;
+  }
+
+  input {
+    @extend %input;
+    background: none;
+    font-size: 1.3rem;
+    color: $white-color;
+    border: 0px;
+    min-width: fit-content;
   }
 }
 

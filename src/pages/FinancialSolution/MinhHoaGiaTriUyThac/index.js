@@ -27,7 +27,7 @@ const MinhHoaGiaTriUyThac = () => {
     <>
       <div className='minh-hoa-gia'>
         <div className='minh-header'>
-          <Link to='/advise/financial-solutions/quy-du-phong'><PageBack /></Link>
+          <Link to='/advise/financial-solutions'><PageBack /></Link>
           <div className='minh-header_btns'>
             <Button icon={<Clock />} className="btn-secondary">Lịch sử</Button>
             <Button className='btn-primary'>Chốt hợp đồng</Button>

@@ -107,9 +107,16 @@
         }
     }
 }
-.ant-modal-content {
-    border-radius: 20px;
-
+.ant-modal{
+    &.ant-modal-confirm-confirm{
+        .ant-modal-body {
+            padding: 24px;
+        }
+    }
+    .ant-modal-content {
+        border-radius: 20px;
+    
+    }
     .ant-modal-body {
         padding: 0px 24px;
     }

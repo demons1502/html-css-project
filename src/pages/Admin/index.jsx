@@ -6,6 +6,7 @@ import InputSearch from '../../components/InputSearch';
 import Create_user from './Create_user';
 import TableCommon from "../../components/TableCommon";
 import PaginationCommon from "../../components/PaginationCommon";
+import ModalConfirm from '../../components/ModalConfirm';
 
 const dataSource = [
   {
@@ -125,6 +126,7 @@ export default function UserManagement() {
     const rowOfElement = e.target.parentNode.parentNode
     const idUser = rowOfElement.querySelector('.id-user').innerHTML
     //call api to delete
+    ModalConfirm()
   }
 
   handleCheckboxChange = (e) => {
@@ -134,21 +136,12 @@ export default function UserManagement() {
     //call api when click checkbox
   };
 
-  // const onSelectChange = (e) => {
-  //   console.log('selectedRowKeys changed: ', e);
-  //   setSelectedRowKeys(e);
-  // };
-
   handelResetUser = (e) => {
-    const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
-    const id = rowHover[1].innerHTML
+    ModalConfirm()
+    // const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
+    // const id = rowHover[1].innerHTML
     //call api
   }
-
-  // const rowSelection = {
-  //   selectedRowKeys,
-  //   onChange: onSelectChange,
-  // };
  
   const input_file = useRef(null)
   const handleImport = () => {
@@ -180,6 +173,7 @@ export default function UserManagement() {
       console.log('data ID:', data[selectedRowKey].id);
     })
     //call api delete users
+    ModalConfirm()
   }
 
   useEffect(()=>{
@@ -196,7 +190,9 @@ export default function UserManagement() {
             onClick={handleDeleteUsers}>
             Xoá
           </button>
-          <button className="func_reset-user btn-bgWhite-textGreen-borGreen">
+          <button className="func_reset-user btn-bgWhite-textGreen-borGreen" 
+            onClick={handelResetUser}
+          >
             Khởi tạo lại
           </button>
           <input type='file' ref={input_file} />

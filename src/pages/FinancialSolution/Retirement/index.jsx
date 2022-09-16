@@ -1,8 +1,8 @@
 import { Col, Layout, List, Row, Typography } from "antd";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom'
-import PageBack from '../../../assets/images/financial/PageBack'
+import { Link } from "react-router-dom";
+import PageBack from "../../../assets/images/financial/PageBack";
 import { sideBarMenuItems } from "../../../assets/fake-data/QuyDuPhongData";
 import SearchInputBox from "./SearchInputBox";
 import ListCalculation from "./ListCalculation";
@@ -20,21 +20,22 @@ const Retirement = () => {
     <div className="quyduphone">
       {/* quyduphone-nav start */}
       <div className="quyduphone-nav">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="42"
-          height="42"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="feather feather-chevron-left quyduphone-nav-icon">
-          <polyline points="15 18 9 12 15 6" />
-        </svg>
-        {/* <Link to='/advise/financial-solutions'><PageBack /></Link> */}
-        <h3>Quỹ Hưu trí</h3>
+        <Link className="quyduphone-nav-icon" to="/advise/financial-solutions">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="feather feather-chevron-left">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </Link>
+        <h3 className="quyduphone-nav-title">Quỹ Hưu trí</h3>
       </div>
 
       {/* quyduphone-nav end  */}

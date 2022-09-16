@@ -58,6 +58,53 @@
       border: none;
     }
   }
+
+  .ant-pagination-disabled {
+    button {
+      color: $gray-light-color !important;
+    }
+  }
+  /* &.payment-pagination {
+    .ant-pagination-item {
+      width: 27px;
+      height: 27px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  } */
+  &.manageFinanceKnowledge-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    .ant-pagination-options {
+      display: none;
+    }
+    .ant-pagination-item {
+      width: 25px !important;
+      min-width: 25px !important;
+      height: 25px;
+      padding: unset;
+    }
+  }
 }
-
-
+.ant-pagination-prev {
+  .ant-pagination-item-link:after {
+    content: 'Trước';
+    opacity: 0.7;
+    margin-right: 4px;
+  }
+}
+.ant-pagination-next {
+  .ant-pagination-item-link::before {
+    content: 'Tiếp';
+    opacity: 0.7;
+    margin-left: 4px;
+  }
+}
+.ant-pagination-disabled {
+  button {
+    color: $gray-light-color !important;
+  }
+}

@@ -10,7 +10,6 @@ const ManageContentInput = (props) => {
     name,
     type = 'text',
     textarea = false,
-    background = false,
     value,
     fileList,
     placeholder,

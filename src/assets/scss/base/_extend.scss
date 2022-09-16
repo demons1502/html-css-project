@@ -61,7 +61,6 @@
   align-items: center;
 }
 
-
 %btn {
   @extend %flex-centered;
   font-weight: $font-weight-bold;
@@ -149,12 +148,4 @@
 
 .row-center {
   @extend %row-center
-}
-
-.m-r-10 {
-  margin-right: 10px;
-}
-
-.m-t-30 {
-  margin-top: 30px !important;
 }

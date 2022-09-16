@@ -1,6 +1,6 @@
 import { Button, List } from 'antd';
 import React from 'react';
-import ManageContentInput from '../../components/ManageContentInput';
+import ManageContentInput from './ManageContentInput';
 import Title from '../../components/Title';
 
 const FinanceKnowledgeContent = (props) => {
@@ -24,14 +24,14 @@ const FinanceKnowledgeContent = (props) => {
               value={content?.link}
               placeholder='Nhập link'
             />
-            <div className='manageContent-footer-button'>
+            <div className='manageContent-footer_button'>
               <Button danger className='btn-cancer'>
                 Hủy
               </Button>
               <Button
                 type='primary'
                 className='btn-save'
-                onClick={() => onClick(content.id)}
+                onClick={() => onClick(content)}
                 /* disabled={buttonState} */
               >
                 Lưu

@@ -86,17 +86,39 @@
     .dustbin_icon {
         cursor: pointer;
     }
+    .ant-checkbox-input{
+        border-radius: 5px;
+        width: 20px;
+        height: 20px;
+    }
 }
-
-.ant-modal-content {
-    border-radius: 20px;
-
+.ant-table-container{
+    overflow: scroll;
+    .ant-table-thead{
+        th{
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+    .ant-table-row {
+        td {
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+}
+.ant-modal{
+    &.ant-modal-confirm-confirm{
+        .ant-modal-body {
+            padding: 24px;
+        }
+    }
+    .ant-modal-content {
+        border-radius: 20px;
+    
+    }
     .ant-modal-body {
         padding: 0px 24px;
-    }
-
-    .ant-modal-close {
-        display: none;
     }
 }
 
@@ -108,3 +130,4 @@
     background: $green-color  !important;
 
 }
+

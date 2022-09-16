@@ -13,7 +13,7 @@ export default function Nav() {
 
   return (
     <Menu
-      className="nav"
+      className='nav'
       onClick={(e) => setCurrent(e.key)}
       selectedKeys={[current]}
       mode="horizontal"

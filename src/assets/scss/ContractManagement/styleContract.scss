@@ -3,18 +3,28 @@
 .container_contract {
     position: relative;
     border-radius: 25px 25px 25px 25px !important;
-    .contract_list{
-        th, td{
+
+    .contract_list {
+
+        th,
+        td {
             font-weight: 600;
+
+            &::before {
+                display: none;
+            }
         }
     }
-    .table_price{
+
+    .table_price {
         color: $green-color;
     }
-    .edit_icon{
+
+    .edit_icon {
         cursor: pointer;
     }
-    .btn_modal_example{
+
+    .btn_modal_example {
         min-width: 118px;
     }
 }
@@ -44,7 +54,23 @@
         }
     }
 }
-
+.ant-table-content{
+    overflow: scroll;
+    .ant-table-thead{
+        th{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+    .ant-table-row {
+        td {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+}
 .ant-pagination-options {
     position: absolute;
     left: 0px;
@@ -104,15 +130,14 @@
         }
     }
 }
-.ant-modal-content{
+
+.ant-modal-content {
     border-radius: 20px;
-    .ant-modal-body{
-        padding: 0px 24px;
-    }
-    .ant-modal-close{
-        display: none;
+    .ant-modal-body {
+        padding: 0px 30px;
     }
 }
+
 .ant-btn:focus,
 .ant-btn-primary:focus,
 .ant-btn:focus,

@@ -11,7 +11,7 @@ axiosInstance.interceptors.request.use(
     // eslint-disable-next-line no-param-reassign
     // const token = Cookies.get('token');
     // if (token) {
-    //     config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer`;
     // }
     return config;
   },

@@ -7,8 +7,8 @@ import CreateUser from './CreateUser';
 import TableCommon from "../../components/TableCommon";
 import PaginationCommon from "../../components/PaginationCommon";
 import ModalConfirm from '../../components/ModalConfirm';
-import Axios from 'axios'
-import {getUserTest} from '../../services/user-management'
+import { useDispatch, useSelector } from 'react-redux';
+import {searchUser, createUser, getUserProfile, updateUser, removeUser, retrieveData} from '../../slices/userManagement';
 
 const dataSource = [
   {
@@ -38,12 +38,12 @@ const columns = [
   {
     title: 'Họ và tên',
     width: '180px',
-    dataIndex: 'name',
+    dataIndex: 'fullname',
   },
   {
     title: 'Số điện thoại',
     width: '120px',
-    dataIndex: 'number',
+    dataIndex: 'phone',
   },
   {
     title: 'Email',
@@ -53,23 +53,23 @@ const columns = [
   {
     width: '105px',
     title: 'ID login',
-    dataIndex: 'ID_login',
+    dataIndex: 'loginId',
   },
   {
     title: 'Hỏi đáp',
     align: 'center',
     width: '79px',
-    dataIndex: 'isProduct',
+    dataIndex: 'isPaid',
     className: 'checkbox_cell ',
-    render: (dataIndex) => <Checkbox id='isProduct' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
+    render: (dataIndex) => <Checkbox id='isPaid' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
   },
   {
     title: 'Thanh toán',
-    dataIndex: 'isPayment',
+    dataIndex: 'isPaid',
     width: '110px',
     align: 'center',
     className: 'checkbox_cell',
-    render: (dataIndex) => <Checkbox id='isPayment' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
+    render: (dataIndex) => <Checkbox id='isPaid' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
   },
   {
     title: 'Admin',
@@ -81,7 +81,7 @@ const columns = [
   },
   {
     title: 'Active',
-    dataIndex: 'idActive',
+    dataIndex: 'isActive',
     width: '69px',
     align: 'center',
     className: 'checkbox_cell',
@@ -104,7 +104,7 @@ const columns = [
 ];
 
 const data = [];
-
+ 
 for (let i = 0; i < 30; i++) {
   data.push({
     key: i,
@@ -115,22 +115,26 @@ export default function UserManagement() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isCreateUser, setIsCreateUser] = useState(false)
   const [isSettingLog, setIssettingLog] = useState(false)
-  const [dataList, setDataList]= useState(null)
-
+  const [dataTable, setDataTable]= useState(data)
+  const [inputText, setInputText]= useState(null)
+  const dispatch= useDispatch()
+  const userData=useSelector((state)=>state.userManagement)
   const getSelectedRowKeys = (rowkeys) => {
     setSelectedRowKeys(rowkeys);
   }
-
   useEffect(() => {
     input_file.current.style.display = 'none'
-    getUserTest()
-  })
-
+    dispatch(retrieveData())
+  },[])
+  useEffect(()=>{
+    setDataTable(userData)
+  },[userData])
   handleDeleteUser = (e) => {
     const rowOfElement = e.target.parentNode.parentNode
     const idUser = rowOfElement.querySelector('.id-user').innerHTML
-    //call api to delete
-    ModalConfirm()
+    console.log(idUser);
+    dispatch(reducer.removeUser(idUser))
+    // ModalConfirm()
   }
 
   handleCheckboxChange = (e) => {
@@ -179,7 +183,14 @@ export default function UserManagement() {
     //call api delete users
     ModalConfirm()
   }
-
+  useEffect(()=>{
+    if(inputText){
+      dispatch(searchUser({q: inputText,limit: 10, page: 1 }))
+    }
+    else{
+      dispatch(retrieveData())
+    }
+  },[inputText])
   useEffect(() => {
     const pageTitle = document.querySelector('.ant-select-selection-item').innerHTML
     const pageText = pageTitle.slice(0, 2)
@@ -229,11 +240,11 @@ export default function UserManagement() {
         <div className="admin_title">
           <h3>Danh sách tài khoản</h3>
           <div className="search_box">
-            <InputSearch />
+            <InputSearch setPayload={(e)=>setInputText(e)} />
           </div>
         </div>
 
-        <TableCommon dataSource={data} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={setSelectedRowKeys}>
+        <TableCommon dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={setSelectedRowKeys}>
         </TableCommon>
         <PaginationCommon></PaginationCommon>
         {isCreateUser &&

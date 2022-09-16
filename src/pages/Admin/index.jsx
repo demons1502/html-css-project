@@ -3,10 +3,12 @@ import Title from '../../components/Title';
 import { Table, Button, Checkbox, Modal } from 'antd';
 import "../../assets/scss/Admin/stylesAdmin.scss"
 import InputSearch from '../../components/InputSearch';
-import Create_user from './Create_user';
+import CreateUser from './CreateUser';
 import TableCommon from "../../components/TableCommon";
 import PaginationCommon from "../../components/PaginationCommon";
 import ModalConfirm from '../../components/ModalConfirm';
+import Axios from 'axios'
+import {getUserTest} from '../../services/user-management'
 
 const dataSource = [
   {
@@ -113,13 +115,15 @@ export default function UserManagement() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isCreateUser, setIsCreateUser] = useState(false)
   const [isSettingLog, setIssettingLog] = useState(false)
+  const [dataList, setDataList]= useState(null)
 
-  const getSelectedRowKeys=(rowkeys)=>{
+  const getSelectedRowKeys = (rowkeys) => {
     setSelectedRowKeys(rowkeys);
   }
 
   useEffect(() => {
     input_file.current.style.display = 'none'
+    getUserTest()
   })
 
   handleDeleteUser = (e) => {
@@ -142,10 +146,10 @@ export default function UserManagement() {
     // const id = rowHover[1].innerHTML
     //call api
   }
- 
+
   const input_file = useRef(null)
   const handleImport = () => {
-    input_file.current.click() 
+    input_file.current.click()
     const inputElement = input_file.current
     inputElement.addEventListener("change", handleFiles, false);
     function handleFiles() {
@@ -176,11 +180,11 @@ export default function UserManagement() {
     ModalConfirm()
   }
 
-  useEffect(()=>{
-    const pageTitle= document.querySelector('.ant-select-selection-item').innerHTML
-    const pageText= pageTitle.slice(0,2)
-    document.querySelector('.ant-select-selection-item').innerHTML= pageText
-  },[])
+  useEffect(() => {
+    const pageTitle = document.querySelector('.ant-select-selection-item').innerHTML
+    const pageText = pageTitle.slice(0, 2)
+    document.querySelector('.ant-select-selection-item').innerHTML = pageText
+  }, [])
   return (
     <>
       <div className="admin_header">
@@ -190,7 +194,7 @@ export default function UserManagement() {
             onClick={handleDeleteUsers}>
             Xoá
           </button>
-          <button className="func_reset-user btn-bgWhite-textGreen-borGreen" 
+          <button className="func_reset-user btn-bgWhite-textGreen-borGreen"
             onClick={handelResetUser}
           >
             Khởi tạo lại
@@ -201,7 +205,7 @@ export default function UserManagement() {
             Import
           </button>
           <button className="func_create-user btn-primary" onClick={handleCreateUser}>
-            <img src='./images/Plus_icon.svg' />
+            <img src='./images/plus_icon.svg' />
             Tạo mới
           </button>
           <img className='icon_setting' src='./images/setting_icon.svg' onClick={handleClickSetting} />
@@ -212,7 +216,7 @@ export default function UserManagement() {
                 <label>Xem log</label>
               </div>
               <div className="change-language">
-                <img src='./images/Global-earth_icon.svg' />
+                <img src='./images/global-earth_icon.svg' />
                 <label>Cập nhật ngôn ngữ</label>
               </div>
             </div>
@@ -236,9 +240,9 @@ export default function UserManagement() {
           <Modal centered width={589} closable={false}
             footer={null}
             open={isCreateUser}
-            onCancel={()=>{setIsCreateUser(false)}}
+            onCancel={() => { setIsCreateUser(false) }}
           >
-            <Create_user closeCreateUser={closeCreateUser} />
+            <CreateUser closeCreateUser={closeCreateUser} />
           </Modal>
         }
       </div>

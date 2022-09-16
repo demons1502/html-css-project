@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {Menu} from 'antd';
-import {Link, useLocation} from 'react-router-dom';
-import {PrivateRoutes} from '../../routes';
+import React, { useState, useEffect } from 'react';
+import { Menu } from 'antd';
+import { Link, useLocation } from 'react-router-dom';
+import { PrivateRoutes } from '../../routes';
 
 export default function Nav() {
   const location = useLocation();
@@ -49,5 +49,5 @@ export default function Nav() {
         )
       )}
     </Menu>
-  )
+  );
 }

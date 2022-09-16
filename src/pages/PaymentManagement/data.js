@@ -101,7 +101,7 @@ export const customers = [
   },
   {
     id: 6,
-    username: 'Brooklyn Simmons',
+    username: 'Simmons',
     dateOfPayment: '01/01/2022',
     effectiveDate: '01/01/2022',
     endDate: '01/11/2023',

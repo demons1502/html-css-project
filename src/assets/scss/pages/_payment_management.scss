@@ -18,7 +18,7 @@
   }
   &-content {
     width: 100%;
-    min-height: 100vh;
+    min-height: 90vh;
     background-color: $white-color;
     border-radius: 20px;
     box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.05);
@@ -31,53 +31,7 @@
     align-items: center;
     border-bottom: 1px solid $grey-border-color;
   }
-  .ant-table {
-    &-tbody {
-      .ant-table-cell {
-        &:nth-child(6) {
-          color: $green-color;
-        }
-      }
-    }
 
-    &-row {
-      &:hover {
-        .ant-table-cell-row-hover {
-          /*  color: $white-color;
-          background-color: rgba($color: $green-table-bg, $alpha: 0.7); */
-
-          background-color: unset;
-        }
-      }
-      &.ant-table-row-selected {
-        .ant-table-cell {
-          background-color: $green-table-bg;
-          color: $white-color;
-        }
-      }
-      &.active {
-        background-color: $green-table-bg;
-        .ant-table-cell {
-          color: $white-color;
-        }
-      }
-    }
-    &-cell {
-      font-size: $font-size-base;
-      font-weight: $font-weight-semibold;
-      padding: 10px 13px;
-      color: $black-color;
-
-      &::before {
-        display: none;
-      }
-    }
-
-    .btn-deleteIcon {
-      color: $green-color;
-      cursor: pointer;
-    }
-  }
   &-option {
     display: flex;
     justify-content: flex-start;

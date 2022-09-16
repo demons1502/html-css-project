@@ -2,19 +2,7 @@ import { Button, DatePicker, Form, Input, Modal, Select } from 'antd';
 import React from 'react';
 
 const CreatePayment = (props) => {
-  const { users, isModalOpen, setIsModalOpen } = props;
-
-  const onFinish = (values) => {
-    const userInfo = values.user;
-    const data = {
-      ...userInfo,
-      dateOfPayment: userInfo.dateOfPayment?._d,
-      effectiveDate: userInfo.dateOfPayment?._d,
-      endDate: userInfo.endDate?._d,
-      money: +userInfo.money,
-    };
-    console.log(data);
-  };
+  const { users, isModalOpen, setIsModalOpen, onClick } = props;
 
   return (
     <div className='createPayment'>
@@ -27,9 +15,9 @@ const CreatePayment = (props) => {
         centered
         onCancel={() => setIsModalOpen(false)}
       >
-        <Form name='nest-messages' onFinish={onFinish}>
+        <Form name='nest-messages' onFinish={onClick}>
           <Form.Item
-            name={['user', 'username']}
+            name={['payment', 'username']}
             label='Họ và tên:'
             rules={[
               {
@@ -55,7 +43,7 @@ const CreatePayment = (props) => {
             </Select>
           </Form.Item>
           <Form.Item
-            name={['user', 'dateOfPayment']}
+            name={['payment', 'dateOfPayment']}
             label='Ngày thanh toán'
             rules={[
               {
@@ -67,7 +55,7 @@ const CreatePayment = (props) => {
             <DatePicker placeholder='Chọn ngày thanh toán' />
           </Form.Item>
           <Form.Item
-            name={['user', 'endDate']}
+            name={['payment', 'endDate']}
             label='Ngày kết thúc'
             rules={[
               {
@@ -79,13 +67,13 @@ const CreatePayment = (props) => {
             <DatePicker placeholder='Chọn ngày kết thúc' />
           </Form.Item>
           <Form.Item
-            name={['user', 'money']}
+            name={['payment', 'money']}
             label='Số tiền'
             rules={[{ required: true }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item name={['user', 'content']} label='Nội dung'>
+          <Form.Item name={['payment', 'content']} label='Nội dung'>
             <Input.TextArea autoSize />
           </Form.Item>
           <Form.Item>

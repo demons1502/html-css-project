@@ -3,14 +3,13 @@ import { Button, List, Pagination } from 'antd';
 import React from 'react';
 import DeleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import EditIcon from '../../assets/images/icons/edit-green.svg';
-import IconPlus from '../../assets/images/icons/plus.svg';
 import LikeIcon from '../../assets/images/icons/likeIcon.svg';
-import ManageContentInput from '../../components/ManageContentInput';
+import IconPlus from '../../assets/images/icons/plus.svg';
 import Title from '../../components/Title';
+import ManageContentInput from './ManageContentInput';
 
 const QuestionAnswerContent = (props) => {
   const { onChange, content, onDelete, onSave } = props;
-
   const itemRender = (_, type) => {
     if (type === 'prev') {
       return (
@@ -49,14 +48,14 @@ const QuestionAnswerContent = (props) => {
         }
         footer={
           <div className='manageContent-footer'>
-            <div className='manageContent-footer-button'>
+            <div className='manageContent-footer_button'>
               <Button danger className='btn-cancer'>
                 Hủy
               </Button>
               <Button
                 type='primary'
                 className='btn-save'
-                onClick={() => onSave(content.id)}
+                onClick={() => onSave(content)}
                 /* disabled={buttonState} */
               >
                 Lưu

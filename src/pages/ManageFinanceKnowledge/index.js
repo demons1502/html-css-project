@@ -6,10 +6,20 @@ import IconPlus from '../../assets/images/icons/plus.svg';
 import Title from '../../components/Title';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
+// import PaymentManagement from '../PaymentManagement';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import {
+  createContent,
+  retrieveData,
+  updateContent,
+  deleteContent,
+} from '../../slices/managementContent';
+import PaymentManagement from '../PaymentManagement';
 
 const ManageFinanceKnowledge = () => {
   const [itemContent, setItemContent] = useState({});
-  const [option, setOption] = useState(options[0].value);
+  const [option, setOption] = useState('articles');
   const [buttonState, setButtonState] = useState(true);
   const [lists, setLists] = useState(finances);
   const [fileList, setFileList] = useState([
@@ -20,6 +30,10 @@ const ManageFinanceKnowledge = () => {
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
     },
   ]);
+  const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+  const contents = useSelector((state) => state.managementContentReducer);
 
   const handleChange = (e) => {
     setButtonState(false);
@@ -48,6 +62,7 @@ const ManageFinanceKnowledge = () => {
     itemData.id = lastId?.id ? lastId.id + 1 : 1;
     setLists([...lists, itemData]);
     setItemContent(itemData);
+    dispatch(createContent({ option: option, payload: { ...itemData } }));
   };
 
   const handleIndex = (index) => {
@@ -56,23 +71,31 @@ const ManageFinanceKnowledge = () => {
   };
 
   const handleDelete = (id) => {
-    const newData = lists.filter((e) => e.id !== id);
-    setLists(newData);
-    setItemContent({});
+    dispatch(deleteContent({ option: option, id: id }));
   };
 
-  const handleSave = (id) => {
-    console.log(id);
+  const handleSave = (item) => {
+    dispatch(updateContent({ option: option, id: item.id, payload: item }));
   };
 
+  const dataSource = [];
+  for (let i = 0; i <= 20; i++) {
+    dataSource.push({ ...finances[0], id: i });
+  }
   useEffect(() => {
-    setItemContent(lists[0]);
+    setItemContent(dataSource[0]);
+  }, [option]);
+  useEffect(() => {
+    //fetch data
+    dispatch(
+      retrieveData({ option: option, params: { limit: 10, offset: 0 } })
+    );
   }, [option]);
 
   return (
     <div className='manageFinanceKnowledge'>
       <div className='manageFinanceKnowledge-nav'>
-        <h3>Quản lý nội dung</h3>
+        <h3>{t('manage content.title')}</h3>
       </div>
       <Layout className='manageFinanceKnowledge-container'>
         <Row gutter={[16, 10]} justify='start' align='stretch'>
@@ -88,7 +111,13 @@ const ManageFinanceKnowledge = () => {
               </div>
 
               <List
+                className='manageFinanceKnowledge-container_list'
                 size='small'
+                pagination={{
+                  className: 'manageFinanceKnowledge-pagination',
+                  pageSize: 7,
+                  showLessItems: true,
+                }}
                 header={
                   <Title
                     title={
@@ -108,11 +137,11 @@ const ManageFinanceKnowledge = () => {
                     Thêm mới
                   </Button>
                 }
-                dataSource={lists}
+                dataSource={dataSource}
                 renderItem={(item, index) => (
                   <List.Item
                     onClick={() => setItemContent(item)}
-                    className={`${item === itemContent ? 'active' : ''}`}
+                    className={`${item.id === itemContent.id ? 'active' : ''}`}
                   >
                     <Typography.Text ellipsis>
                       {option !== 'q&a'
@@ -147,6 +176,7 @@ const ManageFinanceKnowledge = () => {
           </Col>
         </Row>
       </Layout>
+      <PaymentManagement />
     </div>
   );
 };

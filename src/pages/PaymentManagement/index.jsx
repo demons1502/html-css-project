@@ -1,8 +1,9 @@
-import { Button, Col, Row, Table } from 'antd';
+import { Button, Col, Pagination, Row, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import deleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import importIcon from '../../assets/images/icons/importIcon.svg';
 import plusIcon from '../../assets/images/icons/plus.svg';
+import TableCommon from '../../components/TableCommon';
 import CreatePayment from './CreatePayment';
 import { customers } from './data';
 import PaymentHistory from './PaymentHistory';
@@ -173,6 +174,12 @@ const PaymentManagement = () => {
                 size='middle'
                 bordered={false}
               />
+              {/* <TableCommon
+                dataSource={data}
+                columnTable={columns}
+                isSelection
+                setSelectedRowKeys={onSelectChange}
+              ></TableCommon> */}
             </div>
           </Col>
           <Col

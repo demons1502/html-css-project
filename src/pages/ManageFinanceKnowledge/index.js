@@ -69,7 +69,7 @@ const ManageFinanceKnowledge = () => {
     return indexS;
   };
   const handleCreate = () => {
-    dispatch(createContent({ type: option, payload: {} }));
+    dispatch(createContent({ type: option, payload: { ...itemContent } }));
   };
 
   const handleDelete = (id) => {

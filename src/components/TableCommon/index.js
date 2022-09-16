@@ -1,6 +1,6 @@
 import React from 'react';
-import {useEffect, useState} from 'react';
-import {Table} from 'antd';
+import { useEffect, useState } from 'react';
+import { Table } from 'antd';
 
 export default function TableCommon(props) {
   const {
@@ -12,10 +12,15 @@ export default function TableCommon(props) {
     heightMargin = 340,
     isScroll = false,
     setSelectedRowKeys,
-    scroll = isScroll ? {y: `calc(100vh - ${heightMargin}px)`, scrollToFirstRowOnChange: false} : {}
+    scroll = isScroll
+      ? {
+        y: `calc(100vh - ${heightMargin}px)`,
+        scrollToFirstRowOnChange: false,
+      }
+      : {},
   } = props;
   const [columns, setColumns] = useState([]);
-  
+
   useEffect(() => {
     if (dataSource.length > 0) {
       const tempColumns = [];
@@ -51,7 +56,8 @@ export default function TableCommon(props) {
       className='table-common '
       bordered={bordered}
       key={nameTable}
-      scroll={scroll}>
+      scroll={scroll}
+    >
       {props.children}
     </Table>
   );

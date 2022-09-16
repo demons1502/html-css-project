@@ -44,6 +44,7 @@ const authSlice = createSlice({
     builder.addCase(login.fulfilled, (state, action) => {
       state.status = 'success';
       state.accessToken = action.payload.access_token;
+      state.me = action.payload.user_info;
       state.isAuth = true;
     });
     builder.addCase(login.rejected, (state, action) => {
@@ -66,5 +67,5 @@ const authSlice = createSlice({
 });
 
 const { reducer } = authSlice;
-
+export const { logout } = authSlice.actions;
 export default reducer;

@@ -41,6 +41,9 @@ const PaymentManagement = () => {
       alert('not selection');
     }
   };
+  const handleImport = (e) => {
+    console.log(e.target.files[0]?.name);
+  };
 
   const columns = [
     {
@@ -118,7 +121,12 @@ const PaymentManagement = () => {
           <Button type='primary'>
             <label htmlFor='import'>
               <img src={importIcon} alt='' />
-              <input type='file' id='import' style={{ display: 'none' }} />
+              <input
+                type='file'
+                id='import'
+                style={{ display: 'none' }}
+                onChange={handleImport}
+              />
               Import
             </label>
           </Button>

@@ -5,35 +5,34 @@ const initialState = [];
 
 export const retrieveData = createAsyncThunk(
   'manageContent/getAll',
-  async ({ option = 'articles', params }) => {
-    console.log(option, '------>', params);
-    const res = await getAll(option, params);
+  async ({ type = 'articles', params }) => {
+    const res = await getAll(type, params);
     return res.data;
   }
 );
 
 export const createContent = createAsyncThunk(
   'manageContent/create',
-  async ({ option, payload }) => {
-    console.log(option, '-------', payload);
-    const res = await create(option, payload);
+  async ({ type, payload }) => {
+    console.log(type, '-------', payload);
+    const res = await create(type, payload);
     return res.data;
   }
 );
 export const updateContent = createAsyncThunk(
   'manageContent/update',
-  async ({ option, id, payload }) => {
-    console.log(option, '---', id, '---', payload);
-    const res = await update(option, id, payload);
+  async ({ type, id, payload }) => {
+    console.log(type, '---', id, '---', payload);
+    const res = await update(type, id, payload);
     return res.data;
   }
 );
 
 export const deleteContent = createAsyncThunk(
   'manageContent/delete',
-  async ({ option, id }) => {
-    console.log(option, '------------>', id);
-    const res = await remove(option, id);
+  async ({ type, id }) => {
+    console.log(type, '------------>', id);
+    const res = await remove(type, id);
     return res.data;
   }
 );
@@ -47,8 +46,8 @@ const manageContentSlice = createSlice({
       state.push(action.payload);
     },
     [retrieveData.fulfilled]: (state, action) => {
-      console.log('success');
-      return [...action.payload];
+      /* console.log(action.payload); */
+      return [...action.payload?.articles];
     },
     [updateContent.fulfilled]: (state, action) => {
       const index = state.findIndex((data) => data.id === action.payload.id);

@@ -44,6 +44,8 @@
     "old articles": "Các tin cũ hơn"
   },
   "manage content": {
-    "title": "Quản lý nội dung"
+    "title": "Quản lý nội dung",
+    "articles list title": "Danh sách bài viết",
+    "q&a list title": "Danh sách câu hỏi"
   }
 }

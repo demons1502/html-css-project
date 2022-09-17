@@ -18,9 +18,16 @@
     "solution": "Giải pháp",
     "consultant": "Tư vấn",
     "booking": "Đặt lịch hẹn",
-    "no more potential": "Không còn tiềm năng"
+    "no more potential": "Không còn tiềm năng",
+    "cancel": "Hủy",
+    "create": "Tạo",
+    "delete": "Xóa",
+    "delete title": "Bạn chắc chắn muốn xóa"
   },
   "validate": {},
+  "message": {
+    "create event success": "Thêm sự kiện thành công"
+  },
   "customer care": {
     "title": "Danh sách khách hàng",
     "event title": "Các event sắp tới",

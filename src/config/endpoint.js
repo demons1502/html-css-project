@@ -5,13 +5,7 @@ export const ENDPOINT = {
     login: 'login',
     resetPassword: 'reset-password'
   },
-  customers: {
-    get: 'customers'
-  },
-  customerCare: {
-    get: 'customer-care',
-    post : 'customer-care',
-    delete : 'customer-care',
-    patch : 'customer-care'
-  }
+  customers: 'customers',
+  customerCare: 'customer-care', 
+  events: 'events'
 }

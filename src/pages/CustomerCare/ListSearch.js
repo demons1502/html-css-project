@@ -10,12 +10,17 @@ import {getData} from '../../slices/customerCare';
 import {useDispatch, useSelector} from "react-redux";
 
 const options = [
-  {label: 'Chưa gọi điện', value: 1},
-  {label: 'Đã gọi điện lần 1, cần gọi lần 2', value: 2},
-  {label: 'Đã gọi điện từ 2 lần', value: 3},
-  {label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 4},
-  {label: 'Đã tư vấn giải pháp, chờ chốt kết quả', value: 5},
-  {label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 6},
+  {label: 'Không còn tiềm năng, dừng tư vấn', value: 1},
+  {label: 'Chưa gọi điện', value: 2},
+  {label: 'Đã gọi điện lần 1, cần gọi lần 2', value: 3},
+  {label: 'Đã có lịch hẹn gặp khảo sát', value: 4},
+  {label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 5},
+  {label: 'Đã có lịch tư vấn tài chính', value: 6},
+  {label: 'Đã tư vấn tài chính, chờ lịch hẹn tư vấn  giải pháp', value: 7},
+  {label: 'Đã tư vấn giải pháp, chờ chốt kết quả', value: 8},
+  {label: 'Đã chốt kết quả, chờ thông tin hợp đồng', value: 9},
+  {label: 'Đã có hợp đồng', value: 10},
+  {label: 'Chăm sóc khách hàng cho hợp đồng tiếp theo', value: 11}
 ];
 
 export default function ListSearch() {

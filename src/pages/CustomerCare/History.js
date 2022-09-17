@@ -7,7 +7,7 @@ import TableCommon from '../../components/TableCommon';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconFiles from '../../assets/images/icons/files.svg';
 import FilterCommon from "../../components/FilterCommon";
-import SendSmsContent from "../../components/ModalCommon/SendSmsContent";
+import SendSmsContent from "../../components/ModalCommon/CustomerCare/SendSmsContent";
 import ModalCommon from "../../components/ModalCommon";
 
 const dataSource = [
@@ -72,24 +72,24 @@ export default function History() {
     }
   ];
 
-  const initFetch = useCallback(() => {
-    // dispatch(retrieveData());
-  }, [dispatch]);
+  // const initFetch = useCallback(() => {
+  //   // dispatch(retrieveData());
+  // }, [dispatch]);
 
-  useEffect(() => {
-    initFetch();
-  }, [initFetch]);
+  // useEffect(() => {
+  //   initFetch();
+  // }, [initFetch]);
 
 
-  useEffect(() => {
-    console.log(payload,'history payload')
-    // dispatch(searchData())
-  }, [payload])
+  // useEffect(() => {
+  //   // console.log(payload,'history payload')
+  //   // dispatch(searchData())
+  // }, [payload])
 
-  useEffect(() => {
-    //re render
-    // console.log('history')
-  }, [customerCare]);
+  // useEffect(() => {
+  //   //re render
+  //   // console.log('history')
+  // }, [customerCare]);
 
   const addRow = () => {
     setSendSms(true);
@@ -102,13 +102,13 @@ export default function History() {
     }));
   };
 
-  const table = useMemo(() => {
-    if (!!dataTable && dataTable.length > 0) {
-      return <TableCommon dataSource={dataTable} columnTable={columns}></TableCommon>
-    } else {
-      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
-    }
-  }, [dataTable])
+  // const table = useMemo(() => {
+  //   if (!!dataTable && dataTable.length > 0) {
+  //     return <TableCommon dataSource={dataTable} columnTable={columns}></TableCommon>
+  //   } else {
+  //     return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
+  //   }
+  // }, [dataTable])
 
   return (
     <>
@@ -123,7 +123,7 @@ export default function History() {
           </div>
         </div>
         <div className="customer-care__right--list">
-          {table}
+          {/* {table} */}
           <div className="customer-care__right--list-footer">
             <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={addRow}>{t('customer care.add event')}</Button>
           </div>

@@ -1,13 +1,13 @@
 import React from 'react';
-import {Button, Checkbox, Col, Form, Input, Modal, Row} from "antd";
+import {Modal} from "antd";
 
 export default function ModalCommon(props) {
   const {
     isVisible,
     setIsVisible,
     title,
-    content,
-    footer
+    width = 600,
+    content
   } = props;
 
   return <Modal
@@ -15,8 +15,9 @@ export default function ModalCommon(props) {
     title={title}
     centered
     open={isVisible}
+    width={width}
+    footer={null}
     onCancel={() => setIsVisible(false)}
-    footer={footer}
   >
     {content}
   </Modal>;

@@ -19,152 +19,96 @@ const ListCalculation = () => {
       autoComplete="off">
       <div className="container-right-middle">
         <Form.Item
-          name="name"
+          name="name1"
           label="Tuổi hiện tại"
-          className="input-item"
           rules={[
             {
-              required: true,
-              message: "Tuổi hiện tại.",
+              required: true
             },
           ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
+          <Input placeholder="0" type="number" style={{ width: 50 }} />
         </Form.Item>
         <Form.Item
-          name="total"
+          name="name2"
           label="Tuổi nghỉ hưu dự kiến"
           rules={[
             {
               required: true,
-              message: "Tuổi nghỉ hưu dự kiến",
+              
             },
           ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
+          <Input placeholder="0" type="number" style={{ width: 50 }} />
+        </Form.Item>
+        <Form.Item name="name3" label="Thời gian đến tuổi nghỉ hưu còn">
+          <p className="form-input-text">28 năm</p>
         </Form.Item>
         <Form.Item
-          name="total"
-          label="Thời gian đến tuổi nghỉ hưu còn"
-          rules={[
-            {
-              required: true,
-              message: "Thời gian đến tuổi nghỉ hưu còn",
-            },
-          ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
-        </Form.Item>
-        <Form.Item
-          name="total"
+          name="name4"
           label="Số tiền hằng tháng khi nghỉ hưu"
           rules={[
             {
               required: true,
-              message: "Số tiền hằng tháng khi nghỉ hưu",
+             
             },
           ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
+          <Input placeholder="0" type="number" style={{ width: 152 }} />
+        </Form.Item>
+
+        <Form.Item name="name5" label="Số tiền hằng năm khi nghỉ hưu">
+          <p className="form-input-text">96,000,000</p>
         </Form.Item>
 
         <Form.Item
-          name="total"
-          label="Số tiền hằng năm khi nghỉ hưu"
-          rules={[
-            {
-              required: true,
-              message: "Số tiền hằng năm khi nghỉ hưu",
-            },
-          ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="total"
+          name="name6"
           label="Thời gian nghỉ hưu mong muốn"
           rules={[
             {
               required: true,
-              message: "Thời gian nghỉ hưu mong muốn",
+             
             },
           ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
+          <Input placeholder="0" type="number" style={{ width: 152 }} />
         </Form.Item>
         <Form.Item
-          name="total"
+          name="name7"
           label="Số tiền đã có"
           rules={[
             {
               required: true,
-              message: "Số tiền đã có",
             },
           ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
+          <Input placeholder="0" type="number" style={{ width: 152 }} />
         </Form.Item>
         <Form.Item
-          name="total"
+          name="name8"
           label="Tỷ lệ lạm phát"
           rules={[
             {
               required: true,
-              message: "Tỷ lệ lạm phát",
             },
           ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
+          <Input placeholder="0" type="number" style={{ width: 50 }} />
         </Form.Item>
         <Form.Item
-          name="total"
+          name="name9"
           label="Tỷ suất sinh lời hằng năm"
           rules={[
             {
-              required: true,
-              message: "Tỷ suất sinh lời hằng năm",
+              required: true,  
             },
           ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
+          <Input placeholder="0" type="number" style={{ width: 50 }} />
         </Form.Item>
       </div>
       <div className="container-right-bottom">
-        <p>
-        Tổng số tiền cần cho tương lai: <span className="total-amount">40.000.000</span>
+        <p className="bottom-para">
+          Tổng số tiền cần cho tương lai:
+          <span className="total-amount">40.000.000</span>
         </p>
-      </div>
-      <div className="container-right-bottom">
+
         <p>
-        Số tiền còn thiếu khi nghỉ hưu:: <span className="total-amount">30.000.000</span>
+          Số tiền còn thiếu khi nghỉ hưu:
+          <span className="total-amount">30.000.000</span>
         </p>
       </div>
 

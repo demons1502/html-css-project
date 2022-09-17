@@ -13,28 +13,30 @@ const FinanceSupportCard = (props) => {
     >
       <Layout.Content className='content'>
         <a href={props.link} target={props.target || '_blank'} rel='noreferrer'>
-          <Row gutter={[10, 0]} align='stretch'>
+          <Row
+            gutter={[10, 0]}
+            align='stretch'
+            className={`content-row ${props.wrap ? 'content-row_wrap' : ''}`}
+          >
             {props.image && (
-              <Col lg={props.wrap ? 24 : 8} md={24} sm={24} xs={24}>
+              <Col lg={props.wrap ? 24 : 6} md={24} sm={24} xs={24}>
                 <Image
                   src={props.img}
                   preview={false}
-                  width={'100%'}
-                  height={props.wrap ? '143px' : '100%'}
-                  className='image'
+                  className={`image ${props.wrap ? 'image-wrap' : ''}`}
                 />
               </Col>
             )}
 
             <Col
-              lg={props.wrap ? 24 : props.image ? 16 : 24}
+              lg={props.wrap ? 24 : props.image ? 18 : 24}
               md={24}
               sm={24}
               xs={24}
             >
               <Row
                 gutter={[10, 3]}
-                align='middle'
+                align='stretch'
                 className={`${props.wrap ? 'row_wrap' : null}`}
               >
                 <Col

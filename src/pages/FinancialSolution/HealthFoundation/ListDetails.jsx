@@ -19,8 +19,7 @@ const ListDetails = () => {
           datas.map((data, i) => (
             <p key={i}>
               {" "}
-              <img src={DotImg} alt="dot" />
-              <span>{data?.content}</span>
+              <img src={DotImg} alt="dot" /> <span> {data?.content}</span>
             </p>
           ))}
       </div>

@@ -1,36 +1,25 @@
 import { Button, Col, Layout, List, Row, Segmented, Typography } from 'antd';
-import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { finances, options } from '../../assets/fake-data/data';
+import { options } from '../../assets/fake-data/data';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import Title from '../../components/Title';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
-// import PaymentManagement from '../PaymentManagement';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   createContent,
   deleteContent,
   retrieveData,
-  updateContent,
+  updateContent
 } from '../../slices/managementContent';
 
 const ManageFinanceKnowledge = () => {
   const [itemContent, setItemContent] = useState({});
   const [option, setOption] = useState('articles');
-  const [buttonState, setButtonState] = useState(true);
-  const [lists, setLists] = useState(finances);
-  const [fileList, setFileList] = useState([
-    {
-      uid: '-1',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-  ]);
-  const { t } = useTranslation();
+  const [fileList, setFileList] = useState([]);
 
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const contents = useSelector((state) => state.managementContentReducer);
 
@@ -49,27 +38,17 @@ const ManageFinanceKnowledge = () => {
 
   const addList = () => {
     const itemData = {
-      id: 0,
-      title: '',
-      img: '',
-      date: '20/09/2012',
-      desc: 'asd',
-      views: 0,
-      link: 'link',
+      title: 'new item',
+      image: '',
+      body: '',
+      url: '',
     };
-    let lastId = _.last(lists);
-    itemData.id = lastId?.id ? lastId.id + 1 : 1;
-    setLists([...lists, itemData]);
+    dispatch(createContent({ type: option, payload: itemData }))
     setItemContent(itemData);
-    dispatch(createContent({ option: option, payload: { ...itemData } }));
   };
 
-  const handleIndex = (index) => {
-    const indexS = index >= 10 ? `${index}` : `0${index}`;
-    return indexS;
-  };
   const handleCreate = () => {
-    dispatch(createContent({ type: option, payload: { ...itemContent } }));
+    dispatch(createContent({ type: option, payload: { title: 'title' } }));
   };
 
   const handleDelete = (id) => {
@@ -79,17 +58,14 @@ const ManageFinanceKnowledge = () => {
   const handleSave = (item) => {
     dispatch(updateContent({ type: option, id: item.id, payload: item }));
   };
+  /* useEffect(() => {
+    setItemContent(contents[0])
+  }, []) */
 
-  const dataSource = [];
-  for (let i = 0; i <= 20; i++) {
-    dataSource.push({ ...finances[0], id: i });
-  }
-  useEffect(() => {
-    setItemContent(dataSource[0]);
-  }, [option]);
   useEffect(() => {
     //fetch data
     dispatch(retrieveData({ type: option, params: { limit: 10, offset: 0 } }));
+
   }, [option]);
 
   return (
@@ -132,22 +108,20 @@ const ManageFinanceKnowledge = () => {
                     type='primary'
                     shape='circle'
                     icon={<img src={IconPlus} alt='' />}
-                    onClick={handleCreate}
-                    /*  onClick={addList} */
+                    onClick={addList}
+                  /*  onClick={addList} */
                   >
                     Thêm mới
                   </Button>
                 }
-                dataSource={dataSource}
-                renderItem={(item, index) => (
+                dataSource={contents}
+                renderItem={(item) => (
                   <List.Item
-                    onClick={() => setItemContent(item)}
+                    onClick={() => { setItemContent(item), setFileList(item.image) }}
                     className={`${item.id === itemContent.id ? 'active' : ''}`}
                   >
                     <Typography.Text ellipsis>
-                      {option !== 'q&a'
-                        ? `Bài viết ${handleIndex(index + 1)}: ${item.title}`
-                        : `Câu hỏi ${handleIndex(index + 1)}: ${item.title}`}
+                      {item.title}
                     </Typography.Text>
                   </List.Item>
                 )}
@@ -164,6 +138,7 @@ const ManageFinanceKnowledge = () => {
                   onUpload={handleFileList}
                   fileList={fileList}
                   onClick={handleSave}
+                  onDelete={handleDelete}
                 />
               ) : (
                 <QuestionAnswerContent

@@ -4,7 +4,7 @@ import ManageContentInput from './ManageContentInput';
 import Title from '../../components/Title';
 
 const FinanceKnowledgeContent = (props) => {
-  const { content, onChange, onUpload, fileList, onClick } = props;
+  const { content, onChange, fileList, onClick, onDelete } = props;
 
   return (
     <div className='financeKnowledgeContent'>
@@ -19,20 +19,20 @@ const FinanceKnowledgeContent = (props) => {
           <div className='manageContent-footer'>
             <ManageContentInput
               onChange={onChange}
-              name='link'
+              name='url'
               title='Link'
-              value={content?.link}
+              value={content?.url}
               placeholder='Nhập link'
             />
             <div className='manageContent-footer_button'>
-              <Button danger className='btn-cancer'>
+              <Button danger className='btn-cancer' onClick={() => onDelete(content?.id)}>
                 Hủy
               </Button>
               <Button
                 type='primary'
                 className='btn-save'
                 onClick={() => onClick(content)}
-                /* disabled={buttonState} */
+              /* disabled={buttonState} */
               >
                 Lưu
               </Button>
@@ -42,36 +42,29 @@ const FinanceKnowledgeContent = (props) => {
       >
         <div className='manageContent-container'>
           <ManageContentInput
-            onChange={onChange}
             name='title'
+            onChange={onChange}
             value={content?.title}
             title='Tiêu đề'
             placeholder='Nhập nội dung tiêu đề'
           />
           <ManageContentInput
+            name='image'
             input={false}
             title='Ảnh đại diện: '
             type='file'
-            onChange={onUpload}
+            onChange={onChange}
             fileList={fileList}
+            imgURL={content?.image}
           />
           <ManageContentInput
+            name='subTitle'
             onChange={onChange}
-            name='desc'
-            value={content?.link}
-            title='Tóm tắt'
+            value={content?.subTitle}
+            title='Nội dung vắn tắt'
             textarea
             input={false}
-            placeholder='Summary content'
-          />
-          <ManageContentInput
-            onChange={onChange}
-            name='desc'
-            value={content?.desc}
-            title='Nội dung'
-            textarea
-            input={false}
-            placeholder='HTML Editer'
+            placeholder='Nội dung'
           />
         </div>
       </List>

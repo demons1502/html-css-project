@@ -88,6 +88,21 @@
       padding: unset;
     }
   }
+  &.financeKnowledge-pagination {
+    .ant-pagination-item {
+      background-color: unset;
+      &-active {
+        background-color: $green-color;
+      }
+    }
+
+    .ant-pagination-prev,
+    .ant-pagination-next {
+      button {
+        background-color: unset;
+      }
+    }
+  }
 }
 .ant-pagination-prev {
   .ant-pagination-item-link:after {

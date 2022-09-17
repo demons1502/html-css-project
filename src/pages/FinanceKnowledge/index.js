@@ -1,20 +1,18 @@
-import { Col, List, Pagination, Row } from 'antd';
+import { Col, List, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { finances } from '../../assets/fake-data/data';
 import commentIcon from '../../assets/images/icons/comment.svg';
-import FinanceKnowledgeCard from './FinanceKnowledgeCard';
 import Title from '../../components/Title';
 import {
-  mostViewArticles,
-  getArticlesData,
+  getArticlesData, mostViewArticles
 } from '../../slices/financeKnowledge';
-import { useTranslation } from 'react-i18next';
+import FinanceKnowledgeCard from './FinanceKnowledgeCard';
 
 const index = () => {
   const { t } = useTranslation();
-  const articlesData = useSelector((state) => state.financeKnowledgeReducer);
-  console.log(articlesData);
+  const data = useSelector((state) => state.financeKnowledgeReducer.articlesData);
 
   const [topViews, setTopViews] = useState([]);
   const dispatch = useDispatch();
@@ -26,15 +24,15 @@ const index = () => {
 
   useEffect(() => {
     const getTop = () => {
-      /* const dataSort = finances.sort((a, b) => b.views - a.views); */
       const top = finances.slice(0, 4);
       setTopViews(top);
     };
     getTop();
   }, []);
+
+  //fetch data
   useEffect(() => {
-    //fetch
-    const params = { limit: 10, offset: 1 };
+    const params = { limit: 12, offset: 0 };
     dispatch(mostViewArticles());
     dispatch(getArticlesData(params));
   }, []);
@@ -46,14 +44,14 @@ const index = () => {
         <Row gutter={[10, 10]}>
           <Col lg={8} md={24} sm={24}>
             <Row>
-              <FinanceKnowledgeCard {...finances[0]} wrap image lg={24} />
+              <FinanceKnowledgeCard content={finances[0]} wrap image lg={24} />
             </Row>
           </Col>
           <Col lg={16} md={24} sm={24}>
             <Row gutter={[10, 10]} align='stretch' style={{ height: '100%' }}>
               {topViews.map((item) => (
                 <FinanceKnowledgeCard
-                  {...item}
+                  content={item}
                   image
                   key={item.id}
                   lg={12}
@@ -63,6 +61,7 @@ const index = () => {
             </Row>
           </Col>
         </Row>
+
       </div>
       <div>
         <Title title={t('finance knowledge.old articles')} icon={commentIcon} />
@@ -72,14 +71,15 @@ const index = () => {
             gutter: 10,
             column: 3,
           }}
-          dataSource={dataSource}
-          pagination={{ pageSize: 12 }}
+          dataSource={data.articles}
+          pagination={{ pageSize: 12, className: 'financeKnowledge-pagination', pageSizeOptions: true }}
           renderItem={(item) => (
             <List.Item>
-              <FinanceKnowledgeCard {...item} key={item.id} lg={24} />
+              <FinanceKnowledgeCard content={item} key={item.id} lg={24} />
             </List.Item>
           )}
         />
+
       </div>
     </div>
   );

@@ -6,7 +6,6 @@ import Support from '../assets/images/icons/support.svg';
 import Care from '../assets/images/icons/care.svg';
 import QA from '../assets/images/icons/q&a.svg';
 import Book from '../assets/images/icons/book.svg';
-import ManageFinanceKnowledge from '../pages/ManageFinanceKnowledge';
 import StartupFund from '../pages/FinancialSolution/StartupFund';
 import InheritanceFund from '../pages/FinancialSolution/InheritanceFund';
 import QuyDuPhong from '../pages/FinancialSolution/QuyDuPhong';
@@ -22,6 +21,7 @@ const Login = lazy(() => import('../pages/Auth/views/Login'));
 const FinancialSolution = lazy(() => import('../pages/FinancialSolution'));
 const Retirement = lazy(() => import('../pages/FinancialSolution/Retirement'));
 const PaymentManagement = lazy(() => import('../pages/PaymentManagement'));
+const ManagementContent = lazy(() => import('../pages/ManageFinanceKnowledge'));
 
 const PrivateRoutes = [
   {
@@ -89,7 +89,7 @@ const PrivateRoutes = [
     key: 'q&a',
     label: 'Hỏi đáp',
     icon: QA,
-    page: <ManageFinanceKnowledge />,
+    page: <CustomerCare />,
   },
   {
     path: '/finance-support',
@@ -144,8 +144,14 @@ export const RoutesWithOutMenu = [
   },
   {
     path: '/payment',
-    key: 'payment-manage',
+    key: 'payment-management',
     label: 'Quản lý thanh toán',
     page: <PaymentManagement />,
+  },
+  {
+    path: '/content-management',
+    key: 'content-management',
+    label: '',
+    page: <ManagementContent />,
   },
 ];

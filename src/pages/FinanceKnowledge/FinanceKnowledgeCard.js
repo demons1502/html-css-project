@@ -4,6 +4,9 @@ import eyeIcon from '../../assets/images/icons/eyeIcon.svg';
 import timeIcon from '../../assets/images/icons/timeIcon.svg';
 
 const FinanceSupportCard = (props) => {
+  const { wrap, target, content } = props
+  const date = content.createdAt ? content.createdAt.slice(0, 10).replace(/-/g, '/') : content.date
+
   return (
     <Col
       className='gutter-row'
@@ -12,24 +15,24 @@ const FinanceSupportCard = (props) => {
       lg={props.lg || 8}
     >
       <Layout.Content className='content'>
-        <a href={props.link} target={props.target || '_blank'} rel='noreferrer'>
+        <a href={content.url || content.link} target={target || '_blank'} rel='noreferrer'>
           <Row
             gutter={[10, 0]}
             align='stretch'
-            className={`content-row ${props.wrap ? 'content-row_wrap' : ''}`}
+            className={`content-row ${wrap ? 'content-row_wrap' : ''}`}
           >
             {props.image && (
-              <Col lg={props.wrap ? 24 : 6} md={24} sm={24} xs={24}>
+              <Col lg={wrap ? 24 : 6} md={24} sm={24} xs={24}>
                 <Image
-                  src={props.img}
+                  src={content.image || content.img}
                   preview={false}
-                  className={`image ${props.wrap ? 'image-wrap' : ''}`}
+                  className={`image ${wrap ? 'image-wrap' : ''}`}
                 />
               </Col>
             )}
 
             <Col
-              lg={props.wrap ? 24 : props.image ? 18 : 24}
+              lg={wrap ? 24 : props.image ? 18 : 24}
               md={24}
               sm={24}
               xs={24}
@@ -37,45 +40,45 @@ const FinanceSupportCard = (props) => {
               <Row
                 gutter={[10, 3]}
                 align='stretch'
-                className={`${props.wrap ? 'row_wrap' : null}`}
+                className={`${wrap ? 'row_wrap' : null}`}
               >
                 <Col
-                  lg={props.wrap ? 12 : 24}
-                  md={props.wrap ? 12 : 24}
-                  sm={props.wrap ? 12 : 24}
+                  lg={wrap ? 12 : 24}
+                  md={wrap ? 12 : 24}
+                  sm={wrap ? 12 : 24}
                   xs={24}
                 >
                   <Typography.Title
                     level={5}
                     ellipsis={{ rows: 1 }}
-                    title={props.title}
+                    title={content.title}
                   >
-                    {props.title}
+                    {content.title}
                   </Typography.Title>
                 </Col>
                 <Col
-                  lg={props.wrap ? 12 : 24}
-                  md={props.wrap ? 12 : 24}
-                  sm={props.wrap ? 12 : 24}
+                  lg={wrap ? 12 : 24}
+                  md={wrap ? 12 : 24}
+                  sm={wrap ? 12 : 24}
                   xs={24}
                 >
-                  <div className={`card-content ${props.wrap && 'wrap'}`}>
-                    {props.wrap && (
+                  <div className={`card-content ${wrap && 'wrap'}`}>
+                    {wrap && (
                       <Typography.Text className='card-item'>
-                        <img src={eyeIcon} alt={props.views} />
-                        <span>{props.views}</span>
+                        <img src={eyeIcon} alt={content.views || null} />
+                        <span>{content.views || 0}</span>
                       </Typography.Text>
                     )}
-                    {props.wrap && <span className='line'>|</span>}
+                    {wrap && <span className='line'>|</span>}
                     <Typography.Text className='card-item'>
-                      <img src={timeIcon} alt={props.date} />
-                      <span>{props.date}</span>
+                      <img src={timeIcon} alt={date} />
+                      <span>{date || content.date}</span>
                     </Typography.Text>
                   </div>
                 </Col>
               </Row>
               <Typography.Paragraph ellipsis={{ rows: 2 }} className='text'>
-                {props.desc}
+                {content.body || content.subTitle || content.desc}
               </Typography.Paragraph>
             </Col>
           </Row>

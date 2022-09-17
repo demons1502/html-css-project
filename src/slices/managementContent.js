@@ -14,7 +14,7 @@ export const retrieveData = createAsyncThunk(
 export const createContent = createAsyncThunk(
   'manageContent/create',
   async ({ type, payload }) => {
-    console.log(type, '-------', payload);
+    console.log(payload);
     const res = await create(type, payload);
     return res.data;
   }
@@ -22,16 +22,19 @@ export const createContent = createAsyncThunk(
 export const updateContent = createAsyncThunk(
   'manageContent/update',
   async ({ type, id, payload }) => {
-    console.log(type, '---', id, '---', payload);
-    const res = await update(type, id, payload);
-    return res.data;
+    if (id) {
+      const res = await update(type, id, payload);
+      return res.data;
+    } else {
+      const res = await create(type, payload)
+      return res.data
+    }
   }
 );
 
 export const deleteContent = createAsyncThunk(
   'manageContent/delete',
   async ({ type, id }) => {
-    console.log(type, '------------>', id);
     const res = await remove(type, id);
     return res.data;
   }
@@ -46,7 +49,6 @@ const manageContentSlice = createSlice({
       state.push(action.payload);
     },
     [retrieveData.fulfilled]: (state, action) => {
-      /* console.log(action.payload); */
       return [...action.payload?.articles];
     },
     [updateContent.fulfilled]: (state, action) => {

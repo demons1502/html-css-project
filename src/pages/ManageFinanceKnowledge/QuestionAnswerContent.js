@@ -56,7 +56,6 @@ const QuestionAnswerContent = (props) => {
                 type='primary'
                 className='btn-save'
                 onClick={() => onSave(content)}
-                /* disabled={buttonState} */
               >
                 Lưu
               </Button>
@@ -96,7 +95,7 @@ const QuestionAnswerContent = (props) => {
                   name='desc'
                   textarea
                   onChange={onChange}
-                  value={content?.desc}
+                  value={content?.body || content?.desc}
                   input={false}
                 />
               </div>
@@ -107,7 +106,7 @@ const QuestionAnswerContent = (props) => {
               type='primary'
               shape='circle'
               icon={<img src={IconPlus} alt='' />}
-              /* onClick={addList} */
+            /* onClick={addList} */
             >
               Thêm câu trả lời khác
             </Button>

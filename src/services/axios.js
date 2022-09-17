@@ -6,12 +6,13 @@ const axiosInstance = Axios.create({
   baseURL: configs.API_DOMAIN,
 });
 
+
 axiosInstance.interceptors.request.use(
   (config) => {
     // eslint-disable-next-line no-param-reassign
     // const token = Cookies.get('token');
     // if (token) {
-    config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQG1hbnVsaWZlLmNvbSIsImlkIjoiOWI2YThmMjktNzNhMy00ZGM3LWEyZWMtZDg4MGRmNzY0MGFhIiwiaWF0IjoxNjYzMzAxNjIyLCJleHAiOjE2NjMzODgwMjJ9.F3cbW0NdNGXJ3Tt08-XdDvTkvB69yRnggwu-OLLMJjE`;
+    config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQG1hbnVsaWZlLmNvbSIsImlkIjoiOWI2YThmMjktNzNhMy00ZGM3LWEyZWMtZDg4MGRmNzY0MGFhIiwiaWF0IjoxNjYzMzk4ODMzLCJleHAiOjE2NjM0ODUyMzN9.PN61PjXBMo5huAE8OlCt8BI6Jv66JUtlVJzAL-yJfek`;
     // }
     return config;
   },

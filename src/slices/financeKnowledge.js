@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getAll, getMostView } from '../services/financeKnowledge';
 
 const initialState = {
-  articles: { loading: false, message: '' },
-  mostView: { loading: false, message: '', data: [] },
+  articlesData: { loading: false },
+  mostViewData: [],
 };
 
 export const getArticlesData = createAsyncThunk(
@@ -28,28 +28,16 @@ const financeKnowledgeSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getArticlesData.pending]: (state, action) => {
-      state.articles.loading = true;
+      state.articlesData.loading = true
     },
     [getArticlesData.fulfilled]: (state, action) => {
-      state.articles.loading = false;
-      state.articles = { ...state.articles, ...action.payload };
-    },
-    [getArticlesData.rejected]: (state, action) => {
-      state.articles.loading = false;
-      state.articles.message = action.error.message;
+      state.articlesData.loading = false
+      state.articlesData = { ...state.articlesData, ...action.payload };
     },
 
-    [mostViewArticles.pending]: (state, action) => {
-      state.loading = true;
-    },
     [mostViewArticles.fulfilled]: (state, action) => {
-      state.mostView.push(...action.payload);
-      state.loading = false;
-      state.message = '';
-    },
-    [mostViewArticles.rejected]: (state, action) => {
-      state.message = action.error.message;
-    },
+      state.mostViewData.push(...action.payload);
+    }
   },
 });
 

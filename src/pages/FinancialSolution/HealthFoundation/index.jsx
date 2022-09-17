@@ -5,11 +5,12 @@ import SearchInputBox from "./SearchInputBox";
 import ListCalculation from "./ListCalculation";
 import ListDetails from "./ListDetails";
 import { Link, useLocation } from "react-router-dom";
-const StartupFund = () => {
+const HealthFoundation = () => {
   const location = useLocation();
   const [title] = useState(location?.state?.title);
 
   const [itemContent, setItemContent] = useState({});
+  const [buttonState, setButtonState] = useState(true);
   const [lists, setLists] = useState(sideBarMenuItems);
   const [payload, setPayload] = useState("");
 
@@ -36,7 +37,7 @@ const StartupFund = () => {
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </Link>
-        <h3>{`${title ? title : "Quỹ khởi nghiệp"}`}</h3>
+        <h3>{`${title ? title : "Quỹ thừa kế"}`}</h3>
       </div>
 
       {/* quyduphone-nav end  */}
@@ -100,4 +101,4 @@ const StartupFund = () => {
   );
 };
 
-export default StartupFund;
+export default HealthFoundation;

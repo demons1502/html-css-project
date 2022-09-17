@@ -58,30 +58,27 @@ const FinancialSolution = () => {
   ];
   return (
     <>
-      <Title title={t("financial solution.title")}></Title>
-      <Row gutter={[24, 24]}>
+      <Row gutter={[20, 20]}>
+        <Col span={24} className='financial-title'>
+          <h3>{t("financial solution.title")}</h3>
+        </Col>
         {dataSource.map((item) => (
           <Col span={24} lg={8} key={item.key} className="financial">
-            <Card className="financial__card">
-              <Link to={item.link}>
-                <Image
-                  src={item.image}
-                  className="financial__image"
-                  preview={false}
-                />
-              </Link>
-              <div className="financial__content">
-                <Link to={item.link}>
-                  <h3 className="financial__title">{item.title}</h3>
-                </Link>
-                <p className="financial__dec">{item.dec}</p>
-              </div>
-            </Card>
+            <div className='card-top'/>
+            <Link to={item.link}>
+              <Card className='financial__card'>
+                <Image src={item.image} className='financial__image' preview={false} />
+                <div className='financial__content'>
+                  <h3 className='financial__title'>{item.title}</h3>
+                  <p className='financial__dec'>{item.dec}</p>
+                </div>
+              </Card>
+            </Link>
           </Col>
         ))}
       </Row>
     </>
-  );
+  )
 };
 
 export default FinancialSolution;

@@ -5,6 +5,7 @@ import PageBack from "../../../assets/images/financial/PageBack";
 import Calender from "../../../assets/images/icons/calender";
 import Clock from "../../../assets/images/icons/Clock";
 import User from "../../../assets/images/icons/user";
+import messageIcon from "../../../assets/images/icons/message-white.svg";
 import { MinhHoaGiaTri } from "./MinhHoaGiaTri";
 import { TomTatQuyen } from "./TomTatQuyen";
 
@@ -37,18 +38,48 @@ const MinhHoaGiaTriUyThac = () => {
             <PageBack />
           </Link>
           <div className="minh-header_btns">
-            <Button className="historyButton" icon={<Clock />}>
-              Lịch sử
-            </Button>
-            <Button type="primary" htmlType="submit" className="btn-primary">
-              Chốt hợp đồng
-            </Button>
-            <Button type="primary" htmlType="submit" className="btn-primary">
-              Gửi email
-            </Button>
-            <Button type="primary" htmlType="submit" className="btn-primary">
-              Lưu
-            </Button>
+            <div className="finance-btn-wrapper">
+              <Button type="primary" htmlType="submit" className="btn-primary-outline" block>
+                <div className="btn-icon">
+                  <Clock />
+                </div>
+                <span> Lịch sử</span>
+              </Button>
+            </div>
+
+            <div className="finance-btn-wrapper">
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="btn-primary finance-btn-small"
+                block
+              >
+                Chốt hợp đồng
+              </Button>
+            </div>
+
+            <div className="finance-btn-wrapper">
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="btn-primary finance-btn-small"
+                block
+              >
+                <img src={messageIcon} alt="gmail btn" className="img-icon" />
+                Gửi email
+              </Button>
+            </div>
+
+            <div className="finance-btn-wrapper-sm">
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="btn-primary finance-btn-small"
+                block
+              >
+                Lưu
+              </Button>
+            </div>
           </div>
         </div>
         <Tabs defaultActiveKey="1" tabBarExtraContent={tabExtra()}>

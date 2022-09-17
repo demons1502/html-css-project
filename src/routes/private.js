@@ -9,7 +9,9 @@ import Book from '../assets/images/icons/book.svg';
 import ManageFinanceKnowledge from '../pages/ManageFinanceKnowledge';
 import StartupFund from '../pages/FinancialSolution/StartupFund';
 import InheritanceFund from '../pages/FinancialSolution/InheritanceFund';
-import QuyDuPhong from '../pages/FinancialSolution/QuyDuPhong';
+import ContingencyFund from '../pages/FinancialSolution/ContingencyFund';
+import HealthFoundation from '../pages/FinancialSolution/HealthFoundation';
+import EducationFoundation from '../pages/FinancialSolution/EducationFoundation';
 import MinhHoaGiaTriUyThac from '../pages/FinancialSolution/MinhHoaGiaTriUyThac';
 
 const CustomerCare = lazy(() => import('../pages/CustomerCare'));
@@ -122,9 +124,19 @@ const PrivateRoutes = [
     page: <InheritanceFund />,
   },
   {
-    path: '/quy-du-phong',
-    key: 'quy-du-phong',
-    page: <QuyDuPhong />,
+    path: "/contingency-fund",
+    key: "contingency-fund",
+    page: <ContingencyFund />,
+  },
+  {
+    path: "/education-foundation",
+    key: "education-foundation",
+    page: <EducationFoundation />,
+  },
+  {
+    path: "/health-foundation",
+    key: "health-foundation",
+    page: <HealthFoundation />,
   },
   // {
   //   path: "/qminh-hoa-gia",

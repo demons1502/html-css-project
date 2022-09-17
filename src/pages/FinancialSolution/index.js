@@ -39,21 +39,22 @@ const FinancialSolution = () => {
       title: "Quỹ dự phòng",
       dec: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
       image: IMG4,
-      link: "/quy-du-phong",
+      link: "/contingency-fund",
     },
     {
       key: 5,
       title: "Quỹ giáo dục",
       dec: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
       image: IMG5,
-      link: "/image-details",
+      link: "/education-foundation",
     },
+
     {
       key: 6,
       title: "Quỹ sức khỏe",
       dec: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
       image: IMG6,
-      link: "/image-details",
+      link: "/health-foundation",
     },
   ];
   return (

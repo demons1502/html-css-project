@@ -1,5 +1,8 @@
 .tom_tat_quyen_container {
   margin-top: 10px;
+  font-size: 1.1rem;
+  line-height: 15px;
+  letter-spacing: 0.05rem;
 
   .tom_tat_quyen_left,
   .tom_tat_quyen_middle {
@@ -19,7 +22,7 @@
         background-color: #3dbd78;
         color: #ffffff;
         border-bottom: 0.5px solid $green-table-boder;
-        padding: 10px 15px;
+        padding: 5px 15px;
       }
     }
   }
@@ -29,7 +32,7 @@
       border: 0.5px solid $green-table-boder;
       margin-bottom: 5px;
       &:last-child {
-        width: 35%;
+        width: 40%;
         text-align: right;
         font-size: 14px !important;
         font-weight: 700;
@@ -43,7 +46,7 @@
       font-weight: 700;
 
       &:last-child {
-        width: 35%;
+        width: 40%;
         text-align: right;
       }
     }
@@ -90,7 +93,7 @@
         td {
           background-color: #eff9f8;
           border-bottom: 0.5px solid #3dbd78;
-          padding: 10px 15px;
+          padding: 5px 15px;
 
           &:last-child {
             text-align: right;
@@ -111,7 +114,7 @@
         td {
           padding: 0px 10px;
           &:last-child {
-            width: 35%;
+            width: 40%;
             text-align: right;
             color: #3dbd78;
           }
@@ -135,13 +138,13 @@
       background-color: #eff9f8;
       border: 0.5px solid #3dbd78;
       border-radius: 5px;
-      padding: 8px 15px;
+      padding: 5px 15px;
       table {
         width: 100%;
       }
       td {
         &:last-child {
-          width: 35%;
+          width: 40%;
           text-align: right;
           color: #3dbd78;
         }
@@ -150,7 +153,7 @@
   }
 
   .tom_tat_quyen_right_four_bottom {
-    padding: 10px 15px;
+    padding: 5px 15px;
   }
 
   .tom_tat_quyen_right {
@@ -167,7 +170,7 @@
         background-color: #3dbd78;
         color: #ffffff;
         border: 0.5px solid $green-table-boder;
-        padding: 10px 15px;
+        padding: 5px 15px;
         &:first-child {
           font-weight: 700;
         }
@@ -189,9 +192,7 @@
   .tom_tat_quyen_middle_three_middle {
     display: flex;
     justify-content: center;
-    // display: inline-block;
     column-gap: 5px;
-    // position: relative !important;
   }
   .tom_tat_quyen_middle_three_last {
     display: flex;
@@ -207,7 +208,7 @@
       display: inline-block;
       background-color: #3dbd78;
       color: #ffffff;
-      padding: 10px 15px;
+      padding: 5px 15px;
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
     }
@@ -219,7 +220,7 @@
         th {
           background: #eff9f8;
           border: 0.5px solid #3dbd78;
-          padding: 10px 15px;
+          padding: 5px 15px;
         }
       }
     }
@@ -231,7 +232,7 @@
     color: white;
   }
 
-  .item_num_container{
+  .item_num_container {
     position: relative;
   }
   .item_num {
@@ -257,28 +258,16 @@
     justify-content: center;
     background-color: #199854;
     color: #ffffff;
-    width: 128px;
-    height: 128px;
+    width: 106px;
+    height: 106px;
     border-radius: 50%;
     padding: 5px;
 
     .circle_data {
       width: 96px;
       text-align: center;
+      font-size: 1rem;
     }
-
-    // .circle-two,
-    // .circle-three {
-    //   position: relative !important;
-    //   top: 25px;
-    //   display: inline-block;
-    // }
-    // .circle-four {
-    //   position: relative;
-    //   top: -10px;
-    //   right: 10px;
-    //   display: inline-block;
-    // }
   }
 
   .circle_title_container {
@@ -287,13 +276,69 @@
     justify-content: center;
     background-color: #ffffff;
     color: #3dbd78;
-    width: 128px;
-    height: 128px;
+    width: 106px;
+    height: 106px;
     border-radius: 50%;
     border: 0.5px solid #eff9f8;
     .circle_title {
       width: 95px;
       text-align: center;
+      font-size: 1rem;
+
     }
   }
+
+  .reserve_funds{
+    font-size: 1.4rem;
+    font-weight: 700;
+    position: relative;
+    top:12px
+  }
+}
+
+.btn-primary-outline {
+  background-color: #ffffff;
+  border: 1px solid $green-color;
+  border-radius: 10px;
+  height: 3.5rem;
+  color: $green-color;
+  font-size: 12px;
+  font-weight: 700;
+  position: relative;
+  &:hover {
+    background-color: #ffffff;
+    color: $green-color;
+  }
+  &:focus {
+    background-color: #ffffff;
+    color: $green-color;
+  }
+  .btn-icon {
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    right: 5px;
+  }
+}
+
+.finance-btn-wrapper {
+  width: 118px;
+}
+.finance-btn-wrapper-sm {
+  width: 92px;
+}
+
+.finance-btn-small {
+  font-size: 12px;
+  &:hover {
+    font-size: 12px;
+  }
+  &:focus {
+    font-size: 12px;
+  }
+}
+
+.img-icon {
+  position: relative;
+  right: 5px;
 }

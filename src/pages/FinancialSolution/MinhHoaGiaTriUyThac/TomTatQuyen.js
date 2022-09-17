@@ -303,9 +303,13 @@ export const TomTatQuyen = () => {
               <table>
                 <tbody>
                   <tr>
-                    <td rowSpan={2}>Quỹ dự phòng</td>
+                    <td rowSpan={2}>
+                      <span className="reserve_funds"> Quỹ dự phòng</span>
+                    </td>
                     <td>Tại năm HĐ thứ 1</td>
-                    <td rowSpan={2}>2.000.000.000 đ</td>
+                    <td rowSpan={2}>
+                      <span className="reserve_funds">2.000.000.000 đ</span>
+                    </td>
                   </tr>
                   <tr>
                     <td>Tại năm HĐ thứ 2</td>

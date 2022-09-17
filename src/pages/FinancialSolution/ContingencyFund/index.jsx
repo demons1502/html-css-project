@@ -5,7 +5,7 @@ import SearchInputBox from "./SearchInputBox";
 import ListCalculation from "./ListCalculation";
 import ListDetails from "./ListDetails";
 import { Link, useLocation } from "react-router-dom";
-const StartupFund = () => {
+const ContingencyFund = () => {
   const location = useLocation();
   const [title] = useState(location?.state?.title);
 
@@ -100,4 +100,4 @@ const StartupFund = () => {
   );
 };
 
-export default StartupFund;
+export default ContingencyFund;

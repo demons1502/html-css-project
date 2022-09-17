@@ -14,6 +14,12 @@
     "old": "Tuổi:",
     "contract": "Hợp đồng:",
     "sign date": "Ngày ký:",
+    "customer name": "Tên khách hàng",
+    "customer type": "Phân loại",
+    "phone": "SĐT",
+    "last call": "Lần gọi cuối",
+    "after call": "Lần gọi sau",
+    "note": "Ghi chú",
     "history": "Lịch sử",
     "solution": "Giải pháp",
     "consultant": "Tư vấn",
@@ -30,6 +36,16 @@
     "email": "Email",
     "no more potential": "Không còn tiềm năng",
     "sync info": "Tổng hợp thông tin"
+  },
+  "dashboard-page": {
+    "title": "Trang chủ",
+    "call-schedule": "Lịch gọi điện",
+    "appointment-schedule": "Lịch hẹn gặp",
+    "customer-care-dashboard": "Khách hàng cần chăm sóc",
+    "missed-appointment": "Cuộc hẹn bị lỡ",
+    "top-potential-customer": "Top 10 khách hàng tiềm năng",
+    "signed-contract": "Hợp đồng ký được",
+    "ratio-contract": "Tỷ lệ hợp đồng/cuộc hẹn"
   },
 
   "financial solution": {

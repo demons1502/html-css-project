@@ -15,5 +15,12 @@
       box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.05);
       border-radius: 25px;
     }
+
+    .around-box {
+      background: $white-color;
+      box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.05);
+      border-radius: 25px 25px 25px 25px;
+      height: 100%;
+    }
   }
 }

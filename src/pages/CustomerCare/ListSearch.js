@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Col} from 'antd';
+import {Col, Spin} from 'antd';
 import InputSearch from '../../components/InputSearch';
 import FilterCommon from '../../components/FilterCommon';
 import ListCommon from '../../components/ListCommon';
 import {TYPE_LIST_CUSTOMERS} from '../../ultis/constant';
-import {useDispatch} from "react-redux";
-import {searchData} from "../../slices/customerCare";
-import {getCustomer} from '../../services/customers'
+import {getCustomers} from '../../services/customers';
+import PaginationCommon from '../../components/PaginationCommon';
+import {getData} from '../../slices/customerCare';
+import {useDispatch, useSelector} from "react-redux";
 
 const options = [
   {label: 'Chưa gọi điện', value: 1},
@@ -19,33 +20,44 @@ const options = [
 
 export default function ListSearch() {
   const [selectId, setSelectId] = useState(0);
-  const [payload, setPayload] = useState('');
+  const [keyword, setKeyword] = useState('');
+  const [optionsFilter, setOptionsFilter] = useState('');
   const [dataSource, setDataSource] = useState([]);
+  const [total, setTotal] = useState([]);
   const dispatch = useDispatch();
 
-  const getDataCustomer = async () => {
-    const {data} = await getCustomer();
+  const getDataCustomer = async (payload) => {
+    const {data} = await getCustomers(payload);
     setDataSource(data?.data);
+    setTotal(data?.count);
   }
 
   useEffect(() => {
-    // dispatch(searchData())
-  }, [payload])
+    getDataCustomer({name: keyword})
+  }, [keyword])
 
   useEffect(() => {
-    // get id
-
-  }, [selectId])
+    console.log(optionsFilter)
+    // getDataCustomer({name: keyword})
+  }, [optionsFilter])
 
   useEffect(() => {
+    console.log('aaa')
     getDataCustomer()
   }, [])
 
+  useEffect(() => {
+    dispatch(getData({customerId: selectId}))
+  }, [selectId])
+
   return (
     <Col span={4} className="customer-care__left">
-      <InputSearch setPayload={setPayload}></InputSearch>
-      <FilterCommon options={options} setPayload={setPayload}></FilterCommon>
+      <InputSearch setPayload={setKeyword}></InputSearch>
+      <FilterCommon options={options} setPayload={setOptionsFilter}></FilterCommon>
+      {/*<Spin spinning={customerCare.isLoading}>*/}
       <ListCommon type={TYPE_LIST_CUSTOMERS} dataList={dataSource} selectId={selectId} setSelectId={setSelectId}></ListCommon>
+      {/*</Spin>*/}
+      <PaginationCommon total={total} showSizeChanger={false}/>
     </Col>
   );
 }

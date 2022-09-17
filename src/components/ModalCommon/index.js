@@ -6,18 +6,17 @@ export default function ModalCommon(props) {
     isVisible,
     setIsVisible,
     title,
-    content
+    content,
+    footer
   } = props;
-  const handleOk = () => {
-    // setIsModalOpen(false);
-  };
 
   return <Modal
     className="modal-custom"
     title={title}
     centered
     open={isVisible}
-    onOk={handleOk} onCancel={() => setIsVisible(false)}
+    onCancel={() => setIsVisible(false)}
+    footer={footer}
   >
     {content}
   </Modal>;

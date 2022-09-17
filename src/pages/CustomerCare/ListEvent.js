@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {Col, Progress, Button, Empty} from 'antd';
-import {createData, retrieveData} from '../../slices/customerCare';
+import {createData} from '../../slices/customerCare';
 import TableCommon from '../../components/TableCommon';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconSms from '../../assets/images/icons/sms.svg';
@@ -10,23 +10,9 @@ import IconMessage from '../../assets/images/icons/message.svg';
 import ModalCommon from "../../components/ModalCommon";
 import AddEventContent from "../../components/ModalCommon/AddEventContent";
 
-const dataSource = [
-  {
-    key: 0,
-    date: 'Mike',
-    content: 32,
-  },
-  {
-    key: 1,
-    date: 'Mike',
-    content: 32
-  }
-]
-
 export default function ListEvent() {
   const {t} = useTranslation();
-  const customerCare = useSelector((state) => state.customerCare);
-  const [dataTable, setDataTable] = useState(dataSource);
+  const listData = useSelector((state) => state.customerCare.data);
   const [addNew, setAddNew] = useState(false);
   const dispatch = useDispatch();
 
@@ -60,27 +46,12 @@ export default function ListEvent() {
     },
   ];
 
-  const initFetch = useCallback(() => {
-    dispatch(retrieveData());
-  }, [dispatch]);
-
-  useEffect(() => {
-    initFetch();
-  }, [initFetch]);
-
-  useEffect(() => {
-    //re render
-  }, [customerCare]);
-
-  const addRow = () => {
-    setAddNew(true);
-  }
-
-  const saveData = (e) => {
-    dispatch(createData({
-      id: 1,
-      title: e.target.value,
-    }));
+  const addEvent = (e) => {
+    console.log('aaaaa')
+    // dispatch(createData({
+    //   id: 1,
+    //   title: e.target.value,
+    // }));
   };
 
   const sendSms = () => {
@@ -91,13 +62,22 @@ export default function ListEvent() {
     console.log('send email')
   }
 
+  const footer = [
+    <Button key="back" onClick={() => setAddNew(false)}>
+      Huỷ
+    </Button>,
+    <Button key="submit" type="primary" onClick={addEvent}>
+      Submit
+    </Button>,
+  ];
+
   const table = useMemo(() => {
-    if (!!dataTable && dataTable.length > 0) {
-      return <TableCommon dataSource={dataTable} columnTable={columns}></TableCommon>
+    if (!!listData && listData.length > 0) {
+      return <TableCommon dataSource={listData} columnTable={columns}></TableCommon>
     } else {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
     }
-  }, [dataTable])
+  }, [listData])
 
   return (
     <>
@@ -111,10 +91,10 @@ export default function ListEvent() {
         </div>
         <div className="customer-care__center--list">
           {table}
-          <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={addRow}>{t('customer care.add event')}</Button>
+          <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={() => setAddNew(true)}>{t('customer care.add event')}</Button>
         </div>
       </Col>
-      <ModalCommon isVisible={addNew} setIsVisible={setAddNew} title="Thêm mới event" content={<AddEventContent />}></ModalCommon>
+      <ModalCommon isVisible={addNew} setIsVisible={setAddNew} title={t(('customer care.add event title'))} content={<AddEventContent />} footer={footer}></ModalCommon>
     </>
   );
 }

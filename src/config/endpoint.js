@@ -7,5 +7,11 @@ export const ENDPOINT = {
   },
   customers: {
     get: 'customers'
+  },
+  customerCare: {
+    get: 'customer-care',
+    post : 'customer-care',
+    delete : 'customer-care',
+    patch : 'customer-care'
   }
 }

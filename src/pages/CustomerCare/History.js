@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {Col, Checkbox, Button, Empty} from 'antd';
-import {createData, retrieveData, searchData} from '../../slices/customerCare';
+import {createData} from '../../slices/customerCare';
 import TableCommon from '../../components/TableCommon';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconFiles from '../../assets/images/icons/files.svg';
@@ -73,20 +73,22 @@ export default function History() {
   ];
 
   const initFetch = useCallback(() => {
-    dispatch(retrieveData());
+    // dispatch(retrieveData());
   }, [dispatch]);
 
   useEffect(() => {
     initFetch();
   }, [initFetch]);
 
+
   useEffect(() => {
-    console.log(payload)
-    dispatch(searchData())
+    console.log(payload,'history payload')
+    // dispatch(searchData())
   }, [payload])
 
   useEffect(() => {
     //re render
+    // console.log('history')
   }, [customerCare]);
 
   const addRow = () => {

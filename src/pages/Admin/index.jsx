@@ -8,21 +8,10 @@ import TableCommon from "../../components/TableCommon";
 import PaginationCommon from "../../components/PaginationCommon";
 import ModalConfirm from '../../components/ModalConfirm';
 import { useDispatch, useSelector } from 'react-redux';
-import {searchUser, createUser, getUserProfile, updateUser, removeUser, retrieveData} from '../../slices/userManagement';
-
-const dataSource = [
-  {
-    id: '21365441',
-    name: 'Brooklyn Simmons',
-    number: 4567897891,
-    email: 'nguyennhanh@gmail.com',
-    ID_login: 'ABG19300',
-    isProduct: true,
-    isPayment: false,
-    isAdmin: true,
-    idActive: true,
-  }
-];
+import {searchUser,uploadFiles , updateUser, removeUser,removeUserIds, retrieveData,resetUserId } from '../../slices/userManagement';
+import UploadFile from './UploadFile';
+import { uploadFile } from '../../services/userManagement';
+import Item from 'antd/lib/list/Item';
 
 var handleDeleteUser
 var handleCheckboxChange
@@ -34,63 +23,73 @@ const columns = [
     dataIndex: 'id',
     width: '95px',
     className: 'id-user',
+    key:1,
   },
   {
     title: 'Họ và tên',
     width: '180px',
     dataIndex: 'fullname',
+    key:2,
   },
   {
     title: 'Số điện thoại',
     width: '120px',
     dataIndex: 'phone',
+    key:3,
   },
   {
     title: 'Email',
     width: '215px',
     dataIndex: 'email',
+    key:4,
   },
   {
     width: '105px',
     title: 'ID login',
     dataIndex: 'loginId',
+    key:5,
   },
   {
     title: 'Hỏi đáp',
     align: 'center',
     width: '79px',
-    dataIndex: 'isPaid',
+    dataIndex: 'qna',
+    key:6,
     className: 'checkbox_cell ',
-    render: (dataIndex) => <Checkbox id='isPaid' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
+    render: (dataIndex) => <Checkbox id='qna' defaultChecked={dataIndex} onClick={handleCheckboxChange} />
   },
   {
     title: 'Thanh toán',
     dataIndex: 'isPaid',
     width: '110px',
     align: 'center',
+    key:7,
     className: 'checkbox_cell',
-    render: (dataIndex) => <Checkbox id='isPaid' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
+    render: (dataIndex) => <Checkbox id='isPaid' defaultChecked={dataIndex} onClick={handleCheckboxChange} />
   },
   {
     title: 'Admin',
     dataIndex: 'isAdmin',
     width: '70px',
     align: 'center',
+    key:8,
     className: 'checkbox_cell',
-    render: (dataIndex) => <Checkbox id='isAdmin' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
+    render: (dataIndex) => <Checkbox id='isAdmin' defaultChecked={dataIndex} onClick={handleCheckboxChange} />
   },
   {
     title: 'Active',
     dataIndex: 'isActive',
     width: '69px',
     align: 'center',
+    key:9,
     className: 'checkbox_cell',
-    render: (dataIndex) => <Checkbox id='idActive' defaultChecked={dataIndex} onChange={handleCheckboxChange} />
+    render: (dataIndex) => <Checkbox id='idActive' defaultChecked={dataIndex} onClick={handleCheckboxChange} />
   },
   {
     title: '',
     dataIndex: '',
     width: '110px',
+    key:10,
     align: 'center',
     render: () => <button className='btn_reset-user btn-bgWhite-textGreen-borGreen' onClick={handelResetUser}>Khởi tạo lại</button>,
   },
@@ -99,41 +98,43 @@ const columns = [
     dataIndex: '',
     width: '30px',
     align: 'center',
+    key:11,
     render: () => <img className='dustbin_icon' src='./images/dustbin.svg' onClick={handleDeleteUser} />,
   }
 ];
 
-const data = [];
- 
-for (let i = 0; i < 30; i++) {
-  data.push({
-    key: i,
-    ...dataSource[0],
-  });
-}
 export default function UserManagement() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isCreateUser, setIsCreateUser] = useState(false)
   const [isSettingLog, setIssettingLog] = useState(false)
-  const [dataTable, setDataTable]= useState(data)
+  const [dataTable, setDataTable]= useState(useSelector((state)=>state.userManagement))
   const [inputText, setInputText]= useState(null)
+  const [isUploadFile, setIsUploadFile]= useState(false)
+
   const dispatch= useDispatch()
   const userData=useSelector((state)=>state.userManagement)
+
   const getSelectedRowKeys = (rowkeys) => {
+    console.log(rowkeys);
     setSelectedRowKeys(rowkeys);
+    console.log(selectedRowKeys);
   }
+
   useEffect(() => {
     input_file.current.style.display = 'none'
     dispatch(retrieveData())
   },[])
+
   useEffect(()=>{
     setDataTable(userData)
   },[userData])
+
   handleDeleteUser = (e) => {
     const rowOfElement = e.target.parentNode.parentNode
-    const idUser = rowOfElement.querySelector('.id-user').innerHTML
-    console.log(idUser);
-    dispatch(reducer.removeUser(idUser))
+    const userId = rowOfElement.querySelector('.id-user').innerHTML
+    const id=[]
+    id.push(userId)
+    dispatch(removeUser(id))
     // ModalConfirm()
   }
 
@@ -141,18 +142,32 @@ export default function UserManagement() {
     const data = e.target.id
     const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
     const idCheckboxChange = rowHover[1].innerHTML
-    //call api when click checkbox
+    const itemChange= dataTable.find(item=>item.id === idCheckboxChange)
+    console.log(itemChange);
+    const dataItem={
+      loginId:itemChange.loginId,
+      [data]:!itemChange[data]
+    }
+    dispatch(updateUser(dataItem))
   };
 
   handelResetUser = (e) => {
-    ModalConfirm()
-    // const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
-    // const id = rowHover[1].innerHTML
-    //call api
+    // ModalConfirm()
+    const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
+    const id = rowHover[1].innerHTML
+    const listId= []
+    listId.push(id)
+    dispatch(resetUserId({userIds:listId}))
   }
-
+  const handelResetUsers=()=>{
+    const listId= []
+    listId.push(id)
+    dispatch(resetUserId({userIds:listId}))
+  }
   const input_file = useRef(null)
   const handleImport = () => {
+    setIsUploadFile(true)
+    console.log('asd');
     input_file.current.click()
     const inputElement = input_file.current
     inputElement.addEventListener("change", handleFiles, false);
@@ -160,7 +175,9 @@ export default function UserManagement() {
       const fileList = this.files;
       if (fileList) {
         console.log(fileList);
-        // call api import file
+        // dispatch(uploadFiles(fileList[0]))
+        uploadFile(fileList[0])
+
       }
     }
   }
@@ -177,11 +194,12 @@ export default function UserManagement() {
   }
 
   const handleDeleteUsers = () => {
+    const listId=[]
     selectedRowKeys.map(selectedRowKey => {
-      console.log('data ID:', data[selectedRowKey].id);
+      listId.push(selectedRowKey.id)
     })
-    //call api delete users
-    ModalConfirm()
+    dispatch(removeUserIds(listId))
+    // ModalConfirm()
   }
   useEffect(()=>{
     if(inputText){
@@ -191,11 +209,13 @@ export default function UserManagement() {
       dispatch(retrieveData())
     }
   },[inputText])
+
   useEffect(() => {
     const pageTitle = document.querySelector('.ant-select-selection-item').innerHTML
     const pageText = pageTitle.slice(0, 2)
     document.querySelector('.ant-select-selection-item').innerHTML = pageText
   }, [])
+
   return (
     <>
       <div className="admin_header">
@@ -206,7 +226,7 @@ export default function UserManagement() {
             Xoá
           </button>
           <button className="func_reset-user btn-bgWhite-textGreen-borGreen"
-            onClick={handelResetUser}
+            onClick={handelResetUsers}
           >
             Khởi tạo lại
           </button>
@@ -244,7 +264,7 @@ export default function UserManagement() {
           </div>
         </div>
 
-        <TableCommon dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={setSelectedRowKeys}>
+        <TableCommon  dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={getSelectedRowKeys}>
         </TableCommon>
         <PaginationCommon></PaginationCommon>
         {isCreateUser &&
@@ -257,6 +277,14 @@ export default function UserManagement() {
           </Modal>
         }
       </div>
+      {/* {isUploadFile &&
+        <Modal centered width={809} closable={false}
+          open={isUploadFile}
+          onCancel={() => { setIsUploadFile(false) }}
+        >
+          <UploadFile />
+        </Modal>
+      } */}
     </>
   );
 };

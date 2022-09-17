@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { create, getUser,getAll, update, getSearch, remove } from '../services/userManagement';
+import { create, getUser,getAll, update, getSearch, remove,removeUsers,uploadFile, resetUser } from '../services/userManagement';
 
 const initialState = [];
 
@@ -21,8 +21,22 @@ export const getUserProfile = createAsyncThunk('userManagement/getUser', async (
 });
 export const updateUser = createAsyncThunk(//
   'userManagement/updateUser',
-  async ({ id, data }) => {
-    const res = await update(id, data);
+  async ( data ) => {
+    const res = await update(data);
+    return res.data;
+  }
+);
+export const resetUserId = createAsyncThunk(//
+  'userManagement/updateUser',
+  async ( data ) => {
+    const res = await resetUser(data);
+    return res.data;
+  }
+);
+export const uploadFiles = createAsyncThunk(//
+  'userManagement/uploadFile',
+  async ( data ) => {
+    const res = await uploadFile(data);
     return res.data;
   }
 );
@@ -35,8 +49,16 @@ export const retrieveData = createAsyncThunk(//
 );
 export const removeUser = createAsyncThunk(//
   'userManagement/removeUser',
-  async ({ id }) => {
+  async (id) => {
     await remove(id);
+    return { id };
+  }
+);
+export const removeUserIds = createAsyncThunk(//
+  'userManagement/removeUser',
+  async (id) => {
+    console.log(id);
+    await removeUsers(id);
     return { id };
   }
 );

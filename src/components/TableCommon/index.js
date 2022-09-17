@@ -39,17 +39,15 @@ export default function TableCommon(props) {
     }
   }, [dataSource]);
 
-  const onSelectChange = (selectedRowKeys, selectedRows) => {
-    setSelectedRowKeys(selectedRows);
-  };
-
   const rowSelection = {
-    onChange: onSelectChange,
-  };
+    onChange: (selectedRowKeys, selectedRows) => {
+      setSelectedRowKeys(selectedRows);
+    }
+  }
 
   return (
     <Table
-      rowSelection={isSelection ? rowSelection : undefined}
+      rowSelection={{ ...rowSelection }}
       dataSource={dataSource}
       columns={columns}
       pagination={false}
@@ -57,6 +55,7 @@ export default function TableCommon(props) {
       bordered={bordered}
       key={nameTable}
       scroll={scroll}
+      rowKey={(record)=>record.id}
     >
       {props.children}
     </Table>

@@ -1,14 +1,16 @@
 import { Col, Layout, List, Row, Typography } from "antd";
-import _ from "lodash";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import PageBack from "../../../assets/images/financial/PageBack";
 import { sideBarMenuItems } from "../../../assets/fake-data/QuyDuPhongData";
 import SearchInputBox from "./SearchInputBox";
 import ListCalculation from "./ListCalculation";
 import ListDetails from "./ListDetails";
-const Retirement = () => {
+import { Link, useLocation } from "react-router-dom";
+const HealthFoundation = () => {
+  const location = useLocation();
+  const [title] = useState(location?.state?.title);
+
   const [itemContent, setItemContent] = useState({});
+  const [buttonState, setButtonState] = useState(true);
   const [lists, setLists] = useState(sideBarMenuItems);
   const [payload, setPayload] = useState("");
 
@@ -35,7 +37,7 @@ const Retirement = () => {
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </Link>
-        <h3 className="quyduphone-nav-title">Quỹ Hưu trí</h3>
+        <h3>{`${title ? title : "Quỹ thừa kế"}`}</h3>
       </div>
 
       {/* quyduphone-nav end  */}
@@ -99,4 +101,4 @@ const Retirement = () => {
   );
 };
 
-export default Retirement;
+export default HealthFoundation;

@@ -1,3 +1,15 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 .quyduphone {
   &-nav {
     width: 100%;
@@ -156,7 +168,7 @@
           padding-top: 8px;
           padding-right: 24px;
           padding-left: 10px;
-          padding-bottom: 18px;
+          padding-bottom: 16px;
 
           .ant-form-item {
             margin: 0px !important;
@@ -174,7 +186,7 @@
               font-family: "Quicksand";
               font-style: normal;
               font-weight: 600;
-              font-size: 13px;
+              font-size: 14px;
               line-height: 16px;
               color: #333333;
             }
@@ -199,6 +211,7 @@
             padding-right: 8px;
             padding-bottom: 8px;
           }
+
           .form-input-text {
             height: 20px;
             font-family: "Quicksand";
@@ -208,6 +221,44 @@
             line-height: 20px;
             text-align: right;
             color: #666666;
+          }
+          .ant-select {
+            font-size: 12px;
+            float: right;
+            .ant-select-selector {
+              background: #f8f8f8;
+              border-radius: 5px;
+              border: 0px;
+
+              height: 40px;
+              align-items: center;
+
+              .ant-select-selection-placeholder {
+                font-family: "Quicksand";
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                line-height: 20px;
+                text-align: center;
+                color: #333333;
+              }
+              .ant-select-selection-item {
+                font-family: "Quicksand";
+                font-style: normal;
+                font-weight: 700;
+                font-size: 16px;
+                line-height: 20px;
+                text-align: center;
+                color: #333333;
+              }
+            }
+            .ant-select-arrow {
+              width: 10px;
+              height: 5px;
+              color: #999999;
+              margin-right: 9px;
+              margin-top: 0px !important;
+            }
           }
 
           .ant-form-item-explain-error {
@@ -230,7 +281,7 @@
             font-family: "Quicksand";
             font-style: normal;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
             line-height: 16px;
             color: #333333;
           }
@@ -240,7 +291,7 @@
             font-family: "Quicksand";
             font-style: normal;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 14px;
             line-height: 16px;
             text-align: right;
 

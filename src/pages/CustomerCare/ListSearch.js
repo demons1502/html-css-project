@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Col, Spin} from 'antd';
+import {Col} from 'antd';
 import InputSearch from '../../components/InputSearch';
 import FilterCommon from '../../components/FilterCommon';
 import ListCommon from '../../components/ListCommon';
 import {TYPE_LIST_CUSTOMERS} from '../../ultis/constant';
 import {getCustomers} from '../../services/customers';
 import PaginationCommon from '../../components/PaginationCommon';
-import {getData} from '../../slices/customerCare';
-import {useDispatch, useSelector} from "react-redux";
+import {setCustomerId} from '../../slices/customerCare';
+import {useDispatch} from "react-redux";
 
 const options = [
   {label: 'Không còn tiềm năng, dừng tư vấn', value: 1},
@@ -35,6 +35,7 @@ export default function ListSearch() {
     const {data} = await getCustomers(payload);
     setDataSource(data?.data);
     setTotal(data?.count);
+    dispatch(setCustomerId(data?.data[0].customerId))
   }
 
   useEffect(() => {
@@ -42,26 +43,18 @@ export default function ListSearch() {
   }, [keyword])
 
   useEffect(() => {
-    console.log(optionsFilter)
-    // getDataCustomer({name: keyword})
+
   }, [optionsFilter])
 
   useEffect(() => {
-    console.log('aaa')
-    getDataCustomer()
-  }, [])
-
-  useEffect(() => {
-    dispatch(getData({customerId: selectId}))
+    dispatch(setCustomerId(selectId))
   }, [selectId])
 
   return (
     <Col span={4} className="customer-care__left">
       <InputSearch setPayload={setKeyword}></InputSearch>
       <FilterCommon options={options} setPayload={setOptionsFilter}></FilterCommon>
-      {/*<Spin spinning={customerCare.isLoading}>*/}
       <ListCommon type={TYPE_LIST_CUSTOMERS} dataList={dataSource} selectId={selectId} setSelectId={setSelectId}></ListCommon>
-      {/*</Spin>*/}
       <PaginationCommon total={total} showSizeChanger={false}/>
     </Col>
   );

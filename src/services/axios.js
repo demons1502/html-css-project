@@ -11,7 +11,7 @@ axiosInstance.interceptors.request.use(
     // eslint-disable-next-line no-param-reassign
     // const token = Cookies.get('token');
     // if (token) {
-    config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN1b25nbHZtcGhwQGdtYWlsLmNvbSIsImlkIjoiZmY3YzY1OTMtOTZkOC00MjdmLWFjYzQtYmU1ZDE3ODExMTQwIiwiaWF0IjoxNjYzMzg5MTgzLCJleHAiOjE2NjM0NzU1ODN9.dyqkWG9a5_5Uq6snCVyoecTGGq34mC2EEKIZhgRcBSA`;
+    config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN1b25nbHZtcGhwQGdtYWlsLmNvbSIsImlkIjoiZmY3YzY1OTMtOTZkOC00MjdmLWFjYzQtYmU1ZDE3ODExMTQwIiwiaWF0IjoxNjYzNDkwNTI4LCJleHAiOjE2NjM1NzY5Mjh9.Ae-riGMGPkTY2ZuSEWTHEOoo-gezUpyDEcoAqTDlSh4`;
     // }
     return config;
   },

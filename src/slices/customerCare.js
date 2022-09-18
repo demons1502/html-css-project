@@ -1,11 +1,16 @@
-import {createSlice, createAsyncThunk, isPending, isRejected} from '@reduxjs/toolkit';
+import {createSlice, createAction, createAsyncThunk, isPending, isRejected, isFulfilled} from '@reduxjs/toolkit';
 import {getCustomerCare, addCustomerCare, patchCustomerCare, deleteCustomerCare} from '../services/customerCare';
+import {FORMAT_DATE, LOADING_STATUS} from '../ultis/constant'
+import moment from 'moment'
 
 const initialState = {
   data: [],
-  isLoading: false,
-  error: {}
+  customerId: 0,
+  loading: LOADING_STATUS.idle,
+  message: ""
 };
+
+export const setCustomerId = createAction('customerCare/setCustomerId')
 
 export const getData = createAsyncThunk('customerCare/get', async (payload) => {
   const res = await getCustomerCare(payload);
@@ -38,31 +43,41 @@ const customerCareSlice = createSlice({
   name: 'customerCare',
   initialState,
   extraReducers: builder => {
-    builder.addCase(getData.fulfilled, (state, action) => {
-      state.isLoading = false
-      state.data = action.payload.data
+    builder.addCase(setCustomerId, (state, action) => {
+      state.customerId = action.payload
+    }).addCase(getData.fulfilled, (state, action) => {
+      state.data = action.payload
     }).addCase(createData.fulfilled, (state, action) => {
-      state.isLoading = false
       state.data.push(action.payload)
+      state.message = 'Tạo thông tin thành công'
     }).addCase(updateData.fulfilled, (state, action) => {
-      state.isLoading = false
-      const index = state.findIndex((data) => data.id === action.payload.id);
+      action.payload.date = moment(action.payload.date).format(FORMAT_DATE)
+      const index = state.data.findIndex((data) => data.id === action.payload.id);
       state.data[index] = {
         ...state[index],
         ...action.payload,
-      };
+      }
+      state.message = 'Sửa thông tin thành công'
     }).addCase(deleteData.fulfilled, (state, action) => {
-      let index = state.findIndex(({id}) => id === action.payload.id);
-      state.data.splice(index, 1);
+      let index = state.data.findIndex(({id}) => id === action.payload.id);
+      state.data.splice(index, 1)
+      state.message = 'Xóa thông tin thành công'
     }).addMatcher(
-      isPending,
-      (state, action) => {
-        state.isLoading = true
+      isPending(createData, getData, updateData, deleteData),
+      (state) => {
+        state.loading = LOADING_STATUS.pending
       }
     ).addMatcher(
-      isRejected,
+      isFulfilled(createData, getData, updateData, deleteData),
+      (state) => {
+        console.log('aaa');
+        state.loading = LOADING_STATUS.succeeded
+      }
+    ).addMatcher(
+      isRejected(createData, getData, updateData, deleteData),
       (state, action) => {
-        state.isLoading = true
+        state.loading = LOADING_STATUS.failed
+        state.message = action?.error?.message
       }
     )
   },

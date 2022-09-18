@@ -36,7 +36,7 @@ export default function AddEventContent(props) {
     <Row gutter={[6, 13]}>
       <Col span={6}>
         <Form.Item
-          label="Ngày"
+          label={t('common.date')}
           name="date"
           rules={[{required: true}]}>
           <DatePicker className="input-item-outline" format={FORMAT_DATE}/>
@@ -44,7 +44,7 @@ export default function AddEventContent(props) {
       </Col>
       <Col span={6}>
         <Form.Item
-          label="Loại"
+          label={t('common.type')}
           name="type">
           <Select defaultValue="Hằng năm" className="select-item-outline">
             <Option value="Hằng năm">Hằng năm</Option>
@@ -54,14 +54,14 @@ export default function AddEventContent(props) {
       </Col>
       <Col span={12}>
         <Form.Item
-          label="Sự kiện"
+          label={t('common.event')}
           name="name">
           <Input className='input-item-outline' placeholder="Nhập" />
         </Form.Item>
       </Col>
       <Col span={24}>
         <Form.Item
-          label="Mẫu sự kiện"
+          label={t('customer care.event template')}
           name="isTemplate">
           <Select defaultValue={true} className="select-item-outline">
             <Option value={true}>Có</Option>
@@ -71,15 +71,15 @@ export default function AddEventContent(props) {
       </Col>
       <Col span={24}>
         <Form.Item
-          label="Mẫu tin SMS"
+          label={t('customer care.sms template')}
           name="smsTemplate"
           rules={[{required: true}]}>
           <TextArea rows={4} placeholder="Nhập" className="input-item-outline"/>
         </Form.Item>
       </Col>
-      <Col span={24}>
+      <Col span={24} className="m-b-10">
         <Form.Item
-          label="Mẫu nội dung Email"
+          label={t('customer care.email template')}
           name="emailTemplate"
           rules={[{required: true}]}>
           <TextArea rows={4} placeholder="Nhập" className="input-item-outline"/>
@@ -91,7 +91,7 @@ export default function AddEventContent(props) {
             {t('common.cancel')}
           </Button>
           <Button key="submit" className="btn-primary" htmlType="submit" type="primary">
-            {t('common.create')}
+            {Object.keys(detailData).length > 0 ? t('common.save') : t('common.create')}
           </Button>
         </Form.Item>
       </Col>

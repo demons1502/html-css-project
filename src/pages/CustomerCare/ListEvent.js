@@ -13,7 +13,7 @@ import AddEventContent from "../../components/ModalCommon/CustomerCare/AddEventC
 import SendSmsContent from "../../components/ModalCommon/CustomerCare/SendSmsContent";
 import SendEmailContent from "../../components/ModalCommon/CustomerCare/SendEmailContent";
 import moment from 'moment';
-import {LOADING_STATUS} from '../../ultis/constant'
+import {LOADING_STATUS} from '../../ultis/constant';
 
 export default function ListEvent() {
   const {t} = useTranslation()
@@ -40,7 +40,7 @@ export default function ListEvent() {
       key: 'smsTemplate',
       render: (record) => {
         return (
-          <span onClick={() => editModal(record)}>{record.smsTemplate}</span>
+          <span className="cursor-pointer" onClick={() => editModal(record)}>{record.smsTemplate}</span>
         );
       }
     },
@@ -52,7 +52,7 @@ export default function ListEvent() {
           <div className="btn-table">
             <Button className="btn-table__btn m-r-10" icon={<img src={IconSms} alt=""/>} onClick={() => setVisibleModalSms(true)}>{t('customer care.sms')}</Button>
             <Button className="btn-table__btn m-r-10" icon={<img src={IconMessage} alt=""/>} onClick={() => setVisibleModalEmail(true)}>{t('customer care.email')}</Button>
-            <Popconfirm placement="top" title={t('common.delete title')} onConfirm={() => deleteEvent(record.id)} okText={t('common.delete')}  cancelText={t('common.cancel')} >
+            <Popconfirm className="pop-confirm-delete" placement="top" title={t('common.delete title')} onConfirm={() => deleteEvent(record.id)} okText={t('common.delete')}  cancelText={t('common.cancel')} >
               <Button className="btn-table__btn flex-end" icon={<img src={IconDelete} alt=""/>}></Button>
             </Popconfirm>
           </div>
@@ -66,14 +66,12 @@ export default function ListEvent() {
     setDetailData({})
   }
 
-
   const editModal = (detail) => {
     setVisibleModalAddEvent(true)
     setDetailData(detail)
   }
 
   const handleSaveEvent = (values) => {
-    console.log('asaas')
     values.date = moment(values.date)
     if (Object.keys(detailData).length > 0) {
       values.id = detailData.id
@@ -81,7 +79,6 @@ export default function ListEvent() {
     } else {
       dispatch(createData(values))
     }
-
   }
 
   const deleteEvent = (id) => {
@@ -140,9 +137,9 @@ export default function ListEvent() {
           <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add event')}</Button>
         </div>
       </Col>
-      <ModalCommon isVisible={visibleModalAddEvent} setIsVisible={setVisibleModalAddEvent} title={t(('customer care.add event title'))} width={770} content={<AddEventContent onFinish={handleSaveEvent} detailData={detailData} setVisibleModalAddEvent={setVisibleModalAddEvent}/>} />
-      <ModalCommon isVisible={visibleModalEmail} setIsVisible={setVisibleModalEmail} title={t(('customer care.add event title'))} width={770} content={<SendEmailContent setVisibleModalEmail={setVisibleModalEmail} onFinish={sendEmail}/>} />
-      <ModalCommon isVisible={visibleModalSms} setIsVisible={setVisibleModalSms} title={t(('customer care.add event title'))} width={770} content={<SendSmsContent setVisibleModalSms={setVisibleModalSms} onFinish={sendSms}/>} />
+      <ModalCommon isVisible={visibleModalAddEvent} setIsVisible={setVisibleModalAddEvent} title={Object.keys(detailData).length > 0 ? t(('customer care.edit event title')) : t(('customer care.add event title'))} width={770} content={<AddEventContent onFinish={handleSaveEvent} detailData={detailData} setVisibleModalAddEvent={setVisibleModalAddEvent}/>} />
+      <ModalCommon isVisible={visibleModalEmail} setIsVisible={setVisibleModalEmail} title={t(('customer care.email title'))} width={770} content={<SendEmailContent setVisibleModalEmail={setVisibleModalEmail} onFinish={sendEmail}/>} />
+      <ModalCommon isVisible={visibleModalSms} setIsVisible={setVisibleModalSms} title={t(('customer care.sms title'))} width={770} content={<SendSmsContent setVisibleModalSms={setVisibleModalSms} onFinish={sendSms}/>} />
     </>
   );
 }

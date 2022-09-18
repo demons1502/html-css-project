@@ -2,7 +2,7 @@
   .ant-table-thead tr {
     th {
       background: $secondary-color;
-      padding: 9px 13px;
+      padding: 9px 10px;
       font-size: 1.4rem;
       border-bottom: none;
       font-weight: $font-weight-semibold;
@@ -22,7 +22,7 @@
       td {
         font-size: 1.4rem;
         border-bottom: 1px solid $grey-table-boder;
-        padding: 9px 13px !important;
+        padding: 9px 10px !important;
         vertical-align: middle;
 
         &.green-color {

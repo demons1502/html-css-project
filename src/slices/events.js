@@ -58,17 +58,17 @@ const eventsSlice = createSlice({
       state.data.splice(index, 1)
       state.message = 'Xóa sự kiện thành công'
     }).addMatcher(
-      isPending,
+      isPending(createData, getData, updateData, deleteData),
       (state) => {
         state.loading = LOADING_STATUS.pending
       }
     ).addMatcher(
-      isFulfilled,
+      isFulfilled(createData, getData, updateData, deleteData),
       (state) => {
         state.loading = LOADING_STATUS.succeeded
       }
     ).addMatcher(
-      isRejected,
+      isRejected(createData, getData, updateData, deleteData),
       (state, action) => {
         state.loading = LOADING_STATUS.failed
         state.message = action?.error?.message

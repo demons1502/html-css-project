@@ -166,3 +166,9 @@
 .ant-popover-placement-bottomLeft {
   padding-top: 9px;
 }
+
+.ant-popconfirm {
+  .ant-popover-inner-content {
+    padding: 18px 18px 18px 20px !important;
+  }
+}

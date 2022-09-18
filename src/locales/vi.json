@@ -47,6 +47,15 @@
     "signed-contract": "Hợp đồng ký được",
     "ratio-contract": "Tỷ lệ hợp đồng/cuộc hẹn"
   },
+  "customer-care-dashboard": {
+    "remind": "Nhắc phí",
+    "CSKH": "CSKH",
+    "feeRemind": "Nhắc nộp phí",
+    "birthday": "Ngày sinh nhật",
+    "dueDate": "Ngày đến hạn: ",
+    "contractId": "Số HD: ",
+    "money": "Số tiền: "
+  },
 
   "financial solution": {
     "title": "Giải pháp tài chính"

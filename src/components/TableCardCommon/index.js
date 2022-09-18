@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Table } from 'antd';
 
 export default function TableCardCommon(props) {
-  const { dataSource, columnTable, nameTable, isSelection = false } = props;
+  const { dataSource, columnTable, nameTable, isSelection = false, showHeader = true } = props;
   const [columns, setColumns] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
@@ -41,6 +41,7 @@ export default function TableCardCommon(props) {
       pagination={false}
       className="table-card-common"
       bordered={false}
+      showHeader={showHeader}
       key={nameTable}
       scroll={{ scrollToFirstRowOnChange: false }}
     >

@@ -36,7 +36,7 @@ const ContingencyFund = () => {
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </Link>
-        <h3>{`${title ? title : "Quỹ khởi nghiệp"}`}</h3>
+        <h3>{`${title ? title : "Quỹ dự phòng"}`}</h3>
       </div>
 
       {/* quyduphone-nav end  */}

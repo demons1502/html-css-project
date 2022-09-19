@@ -1,15 +1,31 @@
 import { Button, Tabs } from "antd";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import PageBack from "../../../assets/images/financial/PageBack";
 import Calender from "../../../assets/images/icons/calender";
 import Clock from "../../../assets/images/icons/Clock";
 import User from "../../../assets/images/icons/user";
 import messageIcon from "../../../assets/images/icons/message-white.svg";
-import { MinhHoaGiaTri } from "./MinhHoaGiaTri";
-import { TomTatQuyen } from "./TomTatQuyen";
+import { FiduciaryValue } from "./FiduciaryValue";
+import { SummaryOfBenefits } from "./SummaryOfBenefits";
+import { HistoryModal } from "./HistoryModal";
+import { ClosingModal } from "./ClosingModal";
 
-const MinhHoaGiaTriUyThac = () => {
+const IllustrateFiduciary = () => {
+  const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+
+  const toggleHistoryModal = () => {
+    setIsHistoryModalOpen(!isHistoryModalOpen);
+  };
+
+  const showHistory = () => {
+    toggleHistoryModal();
+  };
+
+  const sendEmail = () => {
+    window.location.href =
+      "https://mail.google.com/mail/u/0/#inbox?compose=new";
+  };
   const tabExtra = () => {
     return (
       <>
@@ -39,7 +55,13 @@ const MinhHoaGiaTriUyThac = () => {
           </Link>
           <div className="minh-header_btns">
             <div className="finance-btn-wrapper">
-              <Button type="primary" htmlType="submit" className="btn-primary-outline" block>
+              <Button
+                type="primary"
+                htmlType="button"
+                className="btn-primary-outline"
+                block
+                onClick={showHistory}
+              >
                 <div className="btn-icon">
                   <Clock />
                 </div>
@@ -48,14 +70,7 @@ const MinhHoaGiaTriUyThac = () => {
             </div>
 
             <div className="finance-btn-wrapper">
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="btn-primary finance-btn-small"
-                block
-              >
-                Chốt hợp đồng
-              </Button>
+              <ClosingModal />
             </div>
 
             <div className="finance-btn-wrapper">
@@ -64,6 +79,7 @@ const MinhHoaGiaTriUyThac = () => {
                 htmlType="submit"
                 className="btn-primary finance-btn-small"
                 block
+                onClick={sendEmail}
               >
                 <img src={messageIcon} alt="gmail btn" className="img-icon" />
                 Gửi email
@@ -84,15 +100,19 @@ const MinhHoaGiaTriUyThac = () => {
         </div>
         <Tabs defaultActiveKey="1" tabBarExtraContent={tabExtra()}>
           <Tabs.TabPane tab="Minh họa giá trị ủy thác" key="1">
-            <MinhHoaGiaTri />
+            <FiduciaryValue />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Tóm tắt quyền lợi bằng bông hoa" key="2">
-            <TomTatQuyen />
+            <SummaryOfBenefits />
           </Tabs.TabPane>
         </Tabs>
       </div>
+      <HistoryModal
+        isModalOpen={isHistoryModalOpen}
+        toggleModal={toggleHistoryModal}
+      />
     </>
   );
 };
 
-export default MinhHoaGiaTriUyThac;
+export default IllustrateFiduciary;

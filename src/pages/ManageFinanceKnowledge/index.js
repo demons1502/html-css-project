@@ -1,19 +1,18 @@
 import { Button, Col, Layout, List, Row, Segmented, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { options } from '../../assets/fake-data/data';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import Title from '../../components/Title';
-import FinanceKnowledgeContent from './FinanceKnowledgeContent';
-import QuestionAnswerContent from './QuestionAnswerContent';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   createContent,
   deleteContent,
   retrieveData,
   updateContent,
 } from '../../slices/managementContent';
-import ModalConfirm from '../../components/ModalConfirm';
+import FinanceKnowledgeContent from './FinanceKnowledgeContent';
+import QuestionAnswerContent from './QuestionAnswerContent';
 
 const ManageFinanceKnowledge = () => {
   const { t } = useTranslation();

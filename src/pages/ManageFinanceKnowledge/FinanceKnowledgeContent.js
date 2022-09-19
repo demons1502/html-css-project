@@ -58,6 +58,15 @@ const FinanceKnowledgeContent = (props) => {
           <ManageContentInput
             onChange={onChange}
             name='desc'
+            value={content?.link}
+            title='Tóm tắt'
+            textarea
+            input={false}
+            placeholder='Summary content'
+          />
+          <ManageContentInput
+            onChange={onChange}
+            name='desc'
             value={content?.desc}
             title='Nội dung'
             textarea

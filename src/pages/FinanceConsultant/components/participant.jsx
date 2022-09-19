@@ -4,7 +4,6 @@ import InputSearch from '../../../components/InputSearch';
 import FilterCommon from '../../../components/FilterCommon';
 import ListCommon from '../../../components/ListCommon';
 import {useDispatch} from "react-redux";
-import {searchData} from "../../../slices/customerCare";
 
 const dataSource = [
   {
@@ -37,8 +36,6 @@ export default function Participant() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(payload)
-    dispatch(searchData())
   }, [payload])
 
   useEffect(() => {

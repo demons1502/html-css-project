@@ -7,15 +7,14 @@ import Title from '../../components/Title';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
 // import PaymentManagement from '../PaymentManagement';
-import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   createContent,
+  deleteContent,
   retrieveData,
   updateContent,
-  deleteContent,
 } from '../../slices/managementContent';
-import PaymentManagement from '../PaymentManagement';
 
 const ManageFinanceKnowledge = () => {
   const [itemContent, setItemContent] = useState({});
@@ -69,13 +68,16 @@ const ManageFinanceKnowledge = () => {
     const indexS = index >= 10 ? `${index}` : `0${index}`;
     return indexS;
   };
+  const handleCreate = () => {
+    dispatch(createContent({ type: option, payload: { ...itemContent } }));
+  };
 
   const handleDelete = (id) => {
-    dispatch(deleteContent({ option: option, id: id }));
+    dispatch(deleteContent({ type: option, id: id }));
   };
 
   const handleSave = (item) => {
-    dispatch(updateContent({ option: option, id: item.id, payload: item }));
+    dispatch(updateContent({ type: option, id: item.id, payload: item }));
   };
 
   const dataSource = [];
@@ -87,9 +89,7 @@ const ManageFinanceKnowledge = () => {
   }, [option]);
   useEffect(() => {
     //fetch data
-    dispatch(
-      retrieveData({ option: option, params: { limit: 10, offset: 0 } })
-    );
+    dispatch(retrieveData({ type: option, params: { limit: 10, offset: 0 } }));
   }, [option]);
 
   return (
@@ -99,7 +99,7 @@ const ManageFinanceKnowledge = () => {
       </div>
       <Layout className='manageFinanceKnowledge-container'>
         <Row gutter={[16, 10]} justify='start' align='stretch'>
-          <Col lg={6} md={24} sm={24} xs={24}>
+          <Col lg={7} md={24} sm={24} xs={24}>
             <Layout.Content>
               <div className='list-option'>
                 <Segmented
@@ -122,8 +122,8 @@ const ManageFinanceKnowledge = () => {
                   <Title
                     title={
                       option !== 'q&a'
-                        ? 'Danh sách bài viết'
-                        : 'Danh sách câu hỏi'
+                        ? t('manage content.articles list title')
+                        : t('manage content.q&a list title')
                     }
                   />
                 }
@@ -132,7 +132,8 @@ const ManageFinanceKnowledge = () => {
                     type='primary'
                     shape='circle'
                     icon={<img src={IconPlus} alt='' />}
-                    onClick={addList}
+                    onClick={handleCreate}
+                    /*  onClick={addList} */
                   >
                     Thêm mới
                   </Button>
@@ -154,7 +155,7 @@ const ManageFinanceKnowledge = () => {
             </Layout.Content>
           </Col>
 
-          <Col lg={18} flex={1}>
+          <Col lg={16} flex={1}>
             <Layout.Content className='manageContent'>
               {option !== 'q&a' ? (
                 <FinanceKnowledgeContent
@@ -176,7 +177,6 @@ const ManageFinanceKnowledge = () => {
           </Col>
         </Row>
       </Layout>
-      <PaymentManagement />
     </div>
   );
 };

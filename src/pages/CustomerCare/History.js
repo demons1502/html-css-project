@@ -1,112 +1,101 @@
-import React, {useState, useEffect, useCallback, useMemo} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {Col, Checkbox, Button, Empty} from 'antd';
-import {createData, retrieveData, searchData} from '../../slices/customerCare';
+import {Col, Checkbox, Button, Empty, message} from 'antd';
+import {getData , createData, updateData} from '../../slices/customerCare';
 import TableCommon from '../../components/TableCommon';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconFiles from '../../assets/images/icons/files.svg';
 import FilterCommon from "../../components/FilterCommon";
-import SendSmsContent from "../../components/ModalCommon/SendSmsContent";
+import AddInfoContent from "../../components/ModalCommon/CustomerCare/AddInfoContent";
 import ModalCommon from "../../components/ModalCommon";
-
-const dataSource = [
-  {
-    key: 0,
-    date: '12/04/2022',
-    info: 'Thông tin thu nhập',
-    content: '10 Downing Street'
-  },
-  {
-    key: 1,
-    date: '12/04/2022',
-    info: 'Thông tin thu nhập',
-    content: '10 Downing Street'
-  },
-  {
-    key: 2,
-    date: '12/04/2022',
-    info: 'Thông tin thu nhập',
-    content: '10 Downing Street'
-  },
-  {
-    key: 3,
-    date: '12/04/2022',
-    info: 'Thông tin thu nhập',
-    content: '10 Downing Street'
-  },
-]
+import {LOADING_STATUS} from '../../ultis/constant';
+import moment from 'moment';
 
 const options = [
-  { label: 'Chưa gọi điện', value: 1 },
-  { label: 'Đã gọi điện lần 1, cần gọi lần 2', value: 2 },
-  { label: 'Đã gọi điện từ 2 lần', value: 3 },
-  { label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 4 },
-  { label: 'Đã tư vấn giải pháp, chờ chốt kết quả', value: 5 },
-  { label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 6 },
+  { label: 'Thu nhập', value: 1 },
+  { label: 'Lịch hẹn', value: 2 },
+  { label: 'Quà', value: 3 },
+  { label: 'Ký hợp đồng', value: 4 },
+  { label: 'Tư vấn', value: 5 },
+  { label: 'Khảo sát', value: 6 },
+  { label: 'Sở thích', value: 7 },
+  { label: 'Gia đình', value: 8 },
+  { label: 'Khác', value: 9 },
 ];
 
 export default function History() {
   const {t} = useTranslation();
   const customerCare = useSelector((state) => state.customerCare);
-  const [dataTable, setDataTable] = useState(dataSource);
-  const [payload, setPayload] = useState('');
-  const [sendSms, setSendSms] = useState(false);
+  const [visibleModalAddInfo, setVisibleModalAddInfo] = useState(false)
+  const [detailData, setDetailData] = useState({})
+  const [optionsFilter, setOptionsFilter] = useState('')
   const dispatch = useDispatch();
 
   const columns = [
     {
       title: t('common.date'),
       dataIndex: 'date',
-      key: 'stt',
+      key: 'date'
     },
     {
       title: t('common.type info'),
-      dataIndex: 'info',
-      key: 'date',
+      key: 'info',
+      render: (record) => {
+        return (
+          <span onClick={() => editModal(record)}>{record.info}</span>
+        );
+      }
     },
     {
       title: t('common.content'),
       dataIndex: 'content',
-      key: 'content',
+      key: 'content'
     }
   ];
 
-  const initFetch = useCallback(() => {
-    dispatch(retrieveData());
-  }, [dispatch]);
-
-  useEffect(() => {
-    initFetch();
-  }, [initFetch]);
-
-  useEffect(() => {
-    console.log(payload)
-    dispatch(searchData())
-  }, [payload])
-
-  useEffect(() => {
-    //re render
-  }, [customerCare]);
-
-  const addRow = () => {
-    setSendSms(true);
+  const addModal = (detail) => {
+    setVisibleModalAddInfo(true)
+    setDetailData({})
   }
 
-  const saveData = (e) => {
-    dispatch(createData({
-      id: 1,
-      title: e.target.value,
-    }));
-  };
+  const handleSaveInfo = (values) => {
+    values.date = moment(values.date)
+    values.customerId = customerCare.customerId
+    if (Object.keys(detailData).length > 0) {
+      values.id = detailData.id
+      dispatch(updateData(values))
+    } else {
+      dispatch(createData(values))
+    }
+  }
 
   const table = useMemo(() => {
-    if (!!dataTable && dataTable.length > 0) {
-      return <TableCommon dataSource={dataTable} columnTable={columns}></TableCommon>
+    if (!!customerCare.data && customerCare.data.length > 0) {
+      return <TableCommon dataSource={customerCare.data} columnTable={columns}></TableCommon>
     } else {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
     }
-  }, [dataTable])
+  }, [customerCare.data])
+
+  useEffect(() => {
+    if (customerCare.loading === LOADING_STATUS.failed) {
+      message.error(customerCare?.message)
+    }
+
+    if (customerCare.loading === LOADING_STATUS.succeeded) {
+      setVisibleModalAddInfo(false)
+      if (!!customerCare?.message) {
+        message.success(customerCare?.message)
+      }
+    }
+  }, [customerCare.loading])
+
+  useEffect(() => {
+    if (customerCare.customerId > 0) {
+      dispatch(getData({customerId: customerCare.customerId}))
+    }
+  }, [customerCare.customerId])
 
   return (
     <>
@@ -117,13 +106,13 @@ export default function History() {
         <div className="customer-care__right--event">
           <div className="customer-care__right--event--left">
             <h5>{t('customer care.history title')}</h5>
-            <FilterCommon options={options} setPayload={setPayload}></FilterCommon>
+            <FilterCommon options={options} setPayload={setOptionsFilter}></FilterCommon>
           </div>
         </div>
         <div className="customer-care__right--list">
           {table}
           <div className="customer-care__right--list-footer">
-            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={addRow}>{t('customer care.add event')}</Button>
+            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add info title')}</Button>
           </div>
         </div>
         <div className="customer-care__right--info">
@@ -134,7 +123,7 @@ export default function History() {
           </ul>
         </div>
       </Col>
-      <ModalCommon isVisible={sendSms} setIsVisible={setSendSms} title="Gửi SMS/Email" content={<SendSmsContent />}></ModalCommon>
+      <ModalCommon isVisible={visibleModalAddInfo} setIsVisible={setVisibleModalAddInfo} title={Object.keys(detailData).length > 0 ? t(('customer care.edit info title')) : t(('customer care.add info title'))} width={770} content={<AddInfoContent onFinish={handleSaveInfo} detailData={detailData} setVisibleModalAddInfo={setVisibleModalAddInfo}/>} />
     </>
 
   );

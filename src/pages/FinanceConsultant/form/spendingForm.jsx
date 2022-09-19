@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {Col, Checkbox, Button, Empty, Popover} from 'antd';
-import {createData, retrieveData} from '../../../slices/customerCare';
+import {Col, Checkbox, Button, Empty} from 'antd';
+import {createData} from '../../../slices/customerCare';
 import TableCommon from '../../../components/TableCommon';
 import IconPlus from '../../../assets/images/icons/plus.svg';
 import _ from 'lodash';
@@ -75,7 +75,6 @@ export default function SpendingForm() {
   ];
 
   const initFetch = useCallback(() => {
-    dispatch(retrieveData());
   }, [dispatch]);
 
   useEffect(() => {

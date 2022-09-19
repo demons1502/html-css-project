@@ -3,6 +3,11 @@
   height: 4rem;
   border-radius: 5px;
   font-size: 1.2rem;
+  width: 100%;
+
+  .ant-picker-input > input {
+    color: $green-color;
+  }
 }
 
 .ant-picker-input > input {

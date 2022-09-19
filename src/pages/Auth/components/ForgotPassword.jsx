@@ -6,20 +6,29 @@ import { resetPasswordApi } from "../../../services/auth";
 import FooterPassword from "./FooterPassword";
 import HeaderPassword from "./HeaderPassword";
 
-const ForgotPassword = ({ open, handleCancel }) => {
-  const [id, setId] = useState("");
-  const [messageError, setMessageError] = useState(false);
+const ForgotPassword = ({
+  open,
+  handleCancel,
+  handleOpenUpdate,
+  id,
+  handleLoginId,
+}) => {
+  const [messageError, setMessageError] = useState("");
+  const [openMessageError, setOpenMessageError] = useState(false);
 
   const handleSend = async () => {
     try {
       if (id !== "") {
         await resetPasswordApi({ loginId: id });
-        setMessageError(false);
+        setOpenMessageError(false);
+        handleOpenUpdate();
       } else {
-        setMessageError(true);
+        setOpenMessageError(true);
+        setMessageError("Vui lòng nhập ID của bạn");
       }
-    } catch (error) {
-      return Promise.reject(error.data);
+    } catch (e) {
+      setOpenMessageError(true);
+      setMessageError("ID của bạn không được tìm thấy");
     }
   };
 
@@ -48,14 +57,14 @@ const ForgotPassword = ({ open, handleCancel }) => {
         <Typography className="forgot-password__boxInput__label">ID</Typography>
         <Input
           value={id}
-          onChange={(e) => setId(e.target.value)}
+          onChange={(e) => handleLoginId(e.target.value)}
           className="login__input forgot-password__boxInput__id"
           placeholder="id"
         />
       </div>
-      {messageError && (
+      {openMessageError && (
         <Typography className="forgot-password__textError">
-          Vui lòng nhận ID
+          {messageError}
         </Typography>
       )}
     </Modal>
@@ -65,6 +74,9 @@ const ForgotPassword = ({ open, handleCancel }) => {
 ForgotPassword.propTypes = {
   open: PropTypes.bool,
   handleCancel: PropTypes.func,
+  handleOpenUpdate: PropTypes.func,
+  id: PropTypes.string,
+  handleLoginId: PropTypes.func,
 };
 
 export default ForgotPassword;

@@ -12,7 +12,7 @@ import InheritanceFund from '../pages/FinancialSolution/InheritanceFund';
 import ContingencyFund from '../pages/FinancialSolution/ContingencyFund';
 import HealthFoundation from '../pages/FinancialSolution/HealthFoundation';
 import EducationFoundation from '../pages/FinancialSolution/EducationFoundation';
-import MinhHoaGiaTriUyThac from '../pages/FinancialSolution/MinhHoaGiaTriUyThac';
+import IllustrateFiduciary from '../pages/FinancialSolution/IllustrateFiduciary';
 
 const CustomerCare = lazy(() => import('../pages/CustomerCare'));
 const FinanceConsultant = lazy(() => import('../pages/FinanceConsultant'));
@@ -152,7 +152,7 @@ export const RoutesWithOutMenu = [
     path: '/advise/financial-solutions/minh-hoa-gia',
     key: 'minh-hoa-gia',
     label: 'Minh họa giá trị ủy thác',
-    page: <MinhHoaGiaTriUyThac />,
+    page: <IllustrateFiduciary />,
   },
   {
     path: '/payment',

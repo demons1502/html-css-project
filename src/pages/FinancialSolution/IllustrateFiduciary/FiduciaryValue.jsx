@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input } from "antd";
-export const MinhHoaGiaTri = () => {
+
+export const FiduciaryValue = () => {
   const [investmentYear, setInvestmentYear] = useState("");
   const [percentage, setPercentage] = useState("");
   const [amountOfMoney, setAmountOfMoney] = useState("");
@@ -34,68 +35,99 @@ export const MinhHoaGiaTri = () => {
       autoComplete="off"
     >
       <table className="minh_table">
-        <tr className="table_top">
-          <th colSpan={4}>Thời gian ủy thác</th>
-          <th>
-            <Form.Item name="investment_year">
-              <Input
-                className="table__input"
-                onChange={(e) => setInvestmentYear(e.target.value)}
-              />
-            </Form.Item>
-          </th>
-          <th rowSpan={2} colSpan={3}>
-            đầu tư thêm
-          </th>
-          <th>Số tiền</th>
-          <th>Số năm đầu tư thêm</th>
-        </tr>
-        <tr className="table_top">
-          <th colSpan={4}>Mức tỷ suất đầu tư minh họa</th>
-          <th>
-            <Form.Item name="percent">
-              <Input
-                className="table__input"
-                onChange={(e) => setPercentage(e.target.value)}
-              />
-            </Form.Item>
-          </th>
-          <th>
-            <Form.Item name="amount_of_money">
-              <Input
-                className="table__input"
-                onChange={(e) => setAmountOfMoney(e.target.value)}
-              />
-            </Form.Item>
-          </th>
-          <th>
-            <Form.Item name="additional_investment_year">
-              <Input
-                className="table__input"
-                onChange={(e) => setAdditionalInvestmentYear(e.target.value)}
-              />
-            </Form.Item>
-          </th>
-        </tr>
-        <tr>
-          <th rowSpan={2}>Tuổi</th>
-          <th rowSpan={2}>Năm HĐ</th>
-          <th rowSpan={2}>Phí BH cơ bản</th>
-          <th rowSpan={2}>Phí BH đóng thêm</th>
-          <th rowSpan={2}>Tổng phí BH lũy kế</th>
-          <th colSpan={4}>
-            Mức tỷ suất đầu tư với lãi suất minh họa - Quỹ Tăng Trưởng
-          </th>
-          <th colSpan={4}>Các kênh đầu tư khác</th>
-        </tr>
+        <thead>
+          <tr className="table_top">
+            <th colSpan={4}>THỜI GIAN ỦY THÁC</th>
+            <th>
+              <Form.Item name="investment_year">
+                <Input
+                  className="form-input-text"
+                  type="number"
+                  placeholder="0"
+                  onChange={(e) => setInvestmentYear(e.target.value)}
+                />
+              </Form.Item>
+            </th>
+            <th rowSpan={2} colSpan={3}>
+              <span className="invest_more">đầu tư thêm</span>
+            </th>
+            <th>Số tiền</th>
+            <th>Số năm đầu tư thêm</th>
+          </tr>
+          <tr className="table_top">
+            <th colSpan={4}>Mức tỷ suất đầu tư minh họa</th>
+            <th>
+              <Form.Item name="percent">
+                <Input
+                  className="form-input-text"
+                  type="number"
+                  placeholder="0"
+                  onChange={(e) => setPercentage(e.target.value)}
+                />
+              </Form.Item>
+            </th>
+            <th>
+              <Form.Item name="amount_of_money">
+                <Input
+                  className="form-input-text"
+                  placeholder="0"
+                  type="number"
+                  onChange={(e) => setAmountOfMoney(e.target.value)}
+                />
+              </Form.Item>
+            </th>
+            <th>
+              <Form.Item name="additional_investment_year">
+                <Input
+                  className="form-input-text"
+                  placeholder="0"
+                  type="number"
+                  onChange={(e) => setAdditionalInvestmentYear(e.target.value)}
+                />
+              </Form.Item>
+            </th>
+          </tr>
+          <tr>
+            <th rowSpan={3}>
+              <span className="merge-heading"> Tuổi</span>
+            </th>
+            <th rowSpan={3}>
+              <span className="merge-heading"> Năm HĐ</span>
+            </th>
+            <th rowSpan={3}>
+              <span className="merge-heading"> Phí BH cơ bản</span>
+            </th>
+            <th rowSpan={3}>
+              <span className="merge-heading"> Phí BH đóng thêm</span>
+            </th>
+            <th rowSpan={3}>
+              <span className="merge-heading"> Tổng phí BH lũy kế</span>
+            </th>
+            <th colSpan={4}>
+              Mức tỷ suất đầu tư với lãi suất minh họa - Quỹ Tăng Trưởng
+            </th>
+            <th colSpan={4}>Các kênh đầu tư khác</th>
+          </tr>
 
-        <tr>
-          <th>GTTK cơ bản</th>
-          <th>GTTK đóng thêm</th>
-          <th>GTTK hợp đồng</th>
-          <th>Giá trị hoàn lại</th>
-          <th>Ngân hàng</th>
-        </tr>
+          <tr>
+            <th rowSpan={2}>
+              <span className="merge-heading"> GTTK cơ bản</span>
+            </th>
+            <th rowSpan={2}>
+              <span className="merge-heading"> GTTK đóng thêm</span>
+            </th>
+            <th rowSpan={2}>
+              <span className="merge-heading"> GTTK hợp đồng</span>
+            </th>
+            <th rowSpan={2}>
+              <span className="merge-heading"> Giá trị hoàn lại</span>
+            </th>
+            <th>Ngân hàng</th>
+          </tr>
+          <tr>
+            <th>6.0%</th>
+          </tr>
+        </thead>
 
         <tr>
           <td>31</td>

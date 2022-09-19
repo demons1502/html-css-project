@@ -3,7 +3,7 @@ import { Row, Col } from "antd";
 import { CircleData } from "./CircleData";
 import { CircleTitle } from "./CircleTitle";
 
-export const TomTatQuyen = () => {
+export const SummaryOfBenefits = () => {
   return (
     <div className="tom_tat_quyen_container">
       <Row gutter={[16, 10]}>

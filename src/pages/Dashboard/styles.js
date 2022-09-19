@@ -1,9 +1,10 @@
 import { CaretDownOutlined as AntDCaretDownOutlined } from '@ant-design/icons';
-import { Select as AntDSelect } from 'antd';
+import { Select as AntDSelect, Row as AntDRow, Col as AntDCol, Button as AntDButton } from 'antd';
 import styled, { css } from 'styled-components';
 
 const greyColor = '#e6e6e6';
 const primaryColor = '#36b872';
+const disabledColor = '#f4f4f4';
 const fontSize = '1.4rem';
 
 export const WrapLayout = styled.div`
@@ -24,20 +25,21 @@ export const WrapHeader = styled.div`
   padding-bottom: 10px;
 `;
 
-export const WrapTitle = styled.div`
+export const WrapTitle = styled(AntDRow)`
   height: 60px;
   border-bottom: 1px solid ${greyColor};
   display: flex;
   align-items: center;
+  width: 100%;
 
-  ${({ $toggle }) =>
-    $toggle &&
+  ${(props) =>
+    props.$toggle &&
     css`
       border: none;
     `};
 
-  ${({ $noneIcon }) =>
-    $noneIcon &&
+  ${(props) =>
+    props.$noneIcon &&
     css`
       padding: 19px 0px 19px 23px;
     `};
@@ -132,6 +134,81 @@ export const TagVertical = styled.div`
       case 'purple':
         return css`
           border-left: 2px solid #8f99d3;
+        `;
+    }
+  }}
+`;
+
+export const WrapButtonTitle = styled(AntDCol)`
+  text-align: right;
+  padding-right: 23px;
+`;
+
+export const WrapButtonTable = styled.div`
+  text-align: right;
+  padding-right: 3px;
+`;
+
+export const TextTable = styled.span`
+  font-size: 12px;
+  line-height: 15px;
+  color: #999999;
+  ${(props) =>
+    props.$bold &&
+    css`
+      color: #333333;
+    `};
+`;
+
+export const CircleTag = styled.div`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+
+  margin-left: 7px;
+  margin-top: 8px;
+  background-color: ${primaryColor};
+  ${(props) =>
+    props.$miss &&
+    css`
+      background-color: #ff5855;
+    `};
+`;
+
+export const Button = styled(AntDButton)`
+  background: ${primaryColor};
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  &:hover,
+  &:focus {
+    background: ${primaryColor};
+    color: #fff;
+    border-color: #30a867;
+  }
+  ${(props) => {
+    switch (props.$type) {
+      case 'disabled':
+        return css`
+          background: ${disabledColor};
+          color: #666666;
+          &:hover,
+          &:focus {
+            background: ${disabledColor};
+            color: #666666;
+          }
+        `;
+      case 'ghost':
+        return css`
+          background: #ffffff;
+          color: ${primaryColor};
+          border: 1px solid ${primaryColor};
+          &:hover,
+          &:focus {
+            background: #ffffff;
+            color: ${primaryColor};
+            border: 1px solid ${primaryColor};
+          }
         `;
     }
   }}

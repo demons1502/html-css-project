@@ -116,11 +116,8 @@
     padding: 0;
     height: 2rem;
     font-weight: $font-weight-semibold;
-
-    img {
-      padding-right: 7px;
-    }
-
+    column-gap: 7px;
+    
     &:focus,
     &:hover {
       color: $green-color;

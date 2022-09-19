@@ -1,6 +1,11 @@
-.financeSupport {
+.financeKnowledge {
   .title {
     padding: 2.4rem 0 1.2rem 0;
+  }
+  &-list {
+    .ant-spin-container {
+      min-height: 50vh;
+    }
   }
   .gutter-row {
     .ant-typography {
@@ -16,15 +21,51 @@
       }
     }
     .content {
+      width: 100%;
+      height: 100%;
       padding: 10px;
       border-radius: 10px;
       background-color: $white-color;
+
+      a {
+        width: 100%;
+        height: 100%;
+        /* display: flex;
+        justify-content: center;
+        align-items: center; */
+      }
+      &-row {
+        width: 100%;
+        height: 100%;
+        margin: unset !important;
+
+        &.content-row_wrap {
+          /* .ant-col {
+            height: 100%;
+          } */
+        }
+      }
     }
-    .ant-image-img {
-      object-fit: cover;
-      border-radius: 10px;
-      min-height: 90px;
-      max-height: 250px;
+    .ant-image {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &-img {
+        object-fit: cover;
+        border-radius: 10px;
+        min-height: 100%;
+        height: auto;
+        &.image-wrap {
+          width: 100%;
+          max-height: 150px;
+          @media screen and(max-width:990px) {
+            width: 100%;
+            max-height: 100%;
+          }
+        }
+      }
     }
     .card-content {
       width: 100%;

@@ -36,3 +36,5 @@ export const sendPatch = (url, params) =>
   axiosInstance.patch(url, params).then((res) => res);
 export const sendDelete = (url, params) =>
   axiosInstance.delete(url, { params }).then((res) => res);
+export const sendDeletes = (url, params) =>
+  axiosInstance.delete(url, {data:params}).then((res) => res);

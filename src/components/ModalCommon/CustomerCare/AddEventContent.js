@@ -14,8 +14,6 @@ export default function AddEventContent(props) {
   const {detailData , setVisibleModalAddEvent} = props;
   const [form] = Form.useForm();
   const dispatch = useDispatch()
-  // const [events, setEvents] = useState(null);
-  // const [eventsTemplate, setEventsTemplate] = useState(null);
 
   const handleSaveEvent = (values) => {
     values.date = moment(values.date)
@@ -26,15 +24,6 @@ export default function AddEventContent(props) {
       dispatch(createData(values))
     }
   }
-
-  // const fetchMyDataEvents = async () => {
-  //   const data = await Promise.all([getEvents({isTemplate: true}), getEvents({isTemplate: false})]);
-  //   setEventsTemplate(data[0], setEvents[1]);
-  // };
-
-  // useEffect(() => {
-  //   fetchMyDataEvents();
-  // }, [])
 
   useEffect(() => {
     if (Object.keys(detailData).length > 0) {
@@ -58,7 +47,7 @@ export default function AddEventContent(props) {
         <Form.Item
           label={t('common.type')}
           name="type"
-          rules={[{required: true}]}>
+        >
           <Select placeholder={t('common.select')} className="select-item-outline">
             <Option value="Hằng năm">Hằng năm</Option>
             <Option value="Một lần">Một lần</Option>

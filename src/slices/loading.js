@@ -27,7 +27,7 @@ const loadingSlice = createSlice({
         if (action.payload.statusCode === HTTP_400) {
           return ({...state, ...{ loading: LOADING_STATUS.failed, errors: action.payload?.errors}})
         } else {
-          return ({...state, ...{ loading: LOADING_STATUS.failed, message: action.error}})
+          return ({...state, ...{ loading: LOADING_STATUS.failed, message: action.payload?.message}})
         }
       }
     )

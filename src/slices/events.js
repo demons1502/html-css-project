@@ -1,55 +1,50 @@
-import {createSlice, createAction, createAsyncThunk, isPending, isRejected, isFulfilled} from '@reduxjs/toolkit';
-import {getCustomerCare, addCustomerCare, patchCustomerCare, deleteCustomerCare} from '../services/customerCare';
+import {createSlice, createAsyncThunk, isPending, isRejected, isFulfilled} from '@reduxjs/toolkit';
+import {getEvents, addEvents, patchEvents, deleteEvents} from '../services/events';
 import {FORMAT_DATE, LOADING_STATUS} from '../ultis/constant'
 import moment from 'moment'
 
 const initialState = {
   data: [],
-  customerId: 0,
   loading: LOADING_STATUS.idle,
   message: ""
 };
 
-export const setCustomerId = createAction('customerCare/setCustomerId')
-
-export const getData = createAsyncThunk('customerCare/get', async (payload) => {
-  const res = await getCustomerCare(payload);
+export const getData = createAsyncThunk('events/get', async (payload) => {
+  const res = await getEvents(payload);
   return res.data;
 });
 
 export const createData = createAsyncThunk(
-  'customerCare/create',
+  'events/create',
   async (payload) => {
-    const res = await addCustomerCare(payload);
-    return res.data;
+    const res = await addEvents(payload);
+    return res.data
   }
 );
 export const updateData = createAsyncThunk(
-  'customerCare/update',
-  async ({id, data}) => {
-    const res = await patchCustomerCare(id, data);
-    return res.data;
+  'events/update', 
+  async (payload) => {
+    await patchEvents(payload.id, payload);
+    return payload;
   }
 );
 export const deleteData = createAsyncThunk(
-  'customerCare/delete',
-  async ({id}) => {
-    await deleteCustomerCare(id);
+  'events/delete',
+  async (id) => {
+    await deleteEvents(id);
     return {id};
   }
 );
 
-const customerCareSlice = createSlice({
-  name: 'customerCare',
+const eventsSlice = createSlice({
+  name: 'events',
   initialState,
   extraReducers: builder => {
-    builder.addCase(setCustomerId, (state, action) => {
-      state.customerId = action.payload
-    }).addCase(getData.fulfilled, (state, action) => {
+    builder.addCase(getData.fulfilled, (state, action) => {
       state.data = action.payload
     }).addCase(createData.fulfilled, (state, action) => {
       state.data.push(action.payload)
-      state.message = 'Tạo thông tin thành công'
+      state.message = 'Tạo sự kiện thành công'
     }).addCase(updateData.fulfilled, (state, action) => {
       action.payload.date = moment(action.payload.date).format(FORMAT_DATE)
       const index = state.data.findIndex((data) => data.id === action.payload.id);
@@ -57,11 +52,11 @@ const customerCareSlice = createSlice({
         ...state[index],
         ...action.payload,
       }
-      state.message = 'Sửa thông tin thành công'
+      state.message = 'Sửa sự kiện thành công'
     }).addCase(deleteData.fulfilled, (state, action) => {
       let index = state.data.findIndex(({id}) => id === action.payload.id);
       state.data.splice(index, 1)
-      state.message = 'Xóa thông tin thành công'
+      state.message = 'Xóa sự kiện thành công'
     }).addMatcher(
       isPending(createData, getData, updateData, deleteData),
       (state) => {
@@ -70,7 +65,6 @@ const customerCareSlice = createSlice({
     ).addMatcher(
       isFulfilled(createData, getData, updateData, deleteData),
       (state) => {
-        console.log('aaa');
         state.loading = LOADING_STATUS.succeeded
       }
     ).addMatcher(
@@ -83,6 +77,6 @@ const customerCareSlice = createSlice({
   },
 });
 
-const {reducer} = customerCareSlice;
+const {reducer} = eventsSlice;
 
 export default reducer;

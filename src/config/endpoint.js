@@ -5,11 +5,11 @@ export const ENDPOINT = {
     login: 'login',
     resetPassword: 'reset-password',
   },
-  customers: {
-    get: 'customers',
-  },
+  customers: 'customers',
+  customerCare: 'customer-care', 
+  events: 'events',
   financeKnowledge: {
     getArticles: 'articles',
-    getMostView: 'most-view',
+    getMostView: 'most-view'
   },
-};
+}

@@ -42,6 +42,7 @@ export default function TableCommon(props) {
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       setSelectedRowKeys(selectedRows);
+      console.log(selectedRowKeys);
     }
   }
 
@@ -51,12 +52,10 @@ export default function TableCommon(props) {
       dataSource={dataSource}
       columns={columns}
       pagination={false}
-      className='table-common '
+      className='table-common'
       bordered={bordered}
-      key={nameTable}
-      scroll={scroll}
-      rowKey={(record)=>record.id}
-    >
+      rowKey="id"
+      scroll={scroll}>
       {props.children}
     </Table>
   );

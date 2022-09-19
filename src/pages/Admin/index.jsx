@@ -8,9 +8,7 @@ import TableCommon from "../../components/TableCommon";
 import PaginationCommon from "../../components/PaginationCommon";
 import ModalConfirm from '../../components/ModalConfirm';
 import { useDispatch, useSelector } from 'react-redux';
-import {searchUser,uploadFiles , updateUser, removeUser,removeUserIds, retrieveData,resetUserId } from '../../slices/userManagement';
-import UploadFile from './UploadFile';
-import { uploadFile } from '../../services/userManagement';
+import {searchUser, uploadFiles, updateUser, removeUser, removeUserIds, retrieveData, resetUserId } from '../../slices/userManagement';
 import Item from 'antd/lib/list/Item';
 
 var handleDeleteUser
@@ -107,22 +105,22 @@ export default function UserManagement() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isCreateUser, setIsCreateUser] = useState(false)
   const [isSettingLog, setIssettingLog] = useState(false)
-  const [dataTable, setDataTable]= useState(useSelector((state)=>state.userManagement))
-  const [inputText, setInputText]= useState(null)
-  const [isUploadFile, setIsUploadFile]= useState(false)
-
+  const [dataTable, setDataTable]= useState(useSelector((state)=>state.userManagement.data))
+  const [inputText, setInputText]= useState('')
+  const [pageNum, setPageNum] = useState(10)
+  const [current, setCurrent] = useState(1)
+  // console.log(dataTable);
   const dispatch= useDispatch()
-  const userData=useSelector((state)=>state.userManagement)
-
+  const userData=useSelector((state)=>state.userManagement.data)
+  const totalItem=useSelector((state)=>state.userManagement.totalItem)
   const getSelectedRowKeys = (rowkeys) => {
     console.log(rowkeys);
     setSelectedRowKeys(rowkeys);
-    console.log(selectedRowKeys);
   }
 
   useEffect(() => {
     input_file.current.style.display = 'none'
-    dispatch(retrieveData())
+    dispatch(retrieveData({page:1,limit:10}))
   },[])
 
   useEffect(()=>{
@@ -134,8 +132,7 @@ export default function UserManagement() {
     const userId = rowOfElement.querySelector('.id-user').innerHTML
     const id=[]
     id.push(userId)
-    dispatch(removeUser(id))
-    // ModalConfirm()
+    ModalConfirm({title:'Xác nhận',content:`Xoá ID: ${id}`,callApi:()=>dispatch(removeUser(id))})
   }
 
   handleCheckboxChange = (e) => {
@@ -145,43 +142,46 @@ export default function UserManagement() {
     const itemChange= dataTable.find(item=>item.id === idCheckboxChange)
     console.log(itemChange);
     const dataItem={
-      loginId:itemChange.loginId,
+      id:itemChange.id,
       [data]:!itemChange[data]
     }
     dispatch(updateUser(dataItem))
   };
 
   handelResetUser = (e) => {
-    // ModalConfirm()
     const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
-    const id = rowHover[1].innerHTML
-    const listId= []
-    listId.push(id)
-    dispatch(resetUserId({userIds:listId}))
+    const id = []
+    if(rowHover){
+      id.push(rowHover[1].innerHTML)
+    }
+    ModalConfirm({title:'Xác nhận',content:`Khởi tạo lại ID: ${id[0]}`,callApi:()=>dispatch(resetUserId({userIds:id}))})
   }
   const handelResetUsers=()=>{
     const listId= []
-    listId.push(id)
-    dispatch(resetUserId({userIds:listId}))
+    selectedRowKeys.map(item=>{
+      listId.push(item.id)
+    })
+    if(listId.length != 0){
+      ModalConfirm({title:'Xác nhận',content:`Khởi tạo lại ${listId.length} ID?`,callApi:()=>dispatch(resetUserId({userIds:listId}))})
+    }
   }
+  
   const input_file = useRef(null)
   const handleImport = () => {
-    setIsUploadFile(true)
-    console.log('asd');
     input_file.current.click()
     const inputElement = input_file.current
     inputElement.addEventListener("change", handleFiles, false);
+    
     function handleFiles() {
       const fileList = this.files;
       if (fileList) {
-        console.log(fileList);
-        // dispatch(uploadFiles(fileList[0]))
-        uploadFile(fileList[0])
-
+        const formData = new FormData();
+        formData.append('file', fileList[0])
+        ModalConfirm({title:'Xác nhận',content:`Upload file: ${fileList[0].name}?`,callApi:()=>uploadFiles(formData)})
       }
     }
   }
-
+ 
   const handleCreateUser = () => {
     setIsCreateUser(true)
   }
@@ -194,28 +194,38 @@ export default function UserManagement() {
   }
 
   const handleDeleteUsers = () => {
-    const listId=[]
-    selectedRowKeys.map(selectedRowKey => {
-      listId.push(selectedRowKey.id)
+    var listId=[]
+    selectedRowKeys.map(item => {
+      listId.push(item.id)
     })
-    dispatch(removeUserIds(listId))
-    // ModalConfirm()
+    if(listId.length != 0){
+      ModalConfirm({title:'Xác nhận',content:`Xoá ${listId.length} ID?`,callApi:()=>dispatch(removeUserIds({userIds:listId}))})
+    }
   }
   useEffect(()=>{
     if(inputText){
-      dispatch(searchUser({q: inputText,limit: 10, page: 1 }))
+      dispatch(searchUser({q: inputText,page:current, limit:pageNum }))
     }
     else{
-      dispatch(retrieveData())
+      dispatch(retrieveData({q:inputText,page:current, limit:pageNum}))
     }
-  },[inputText])
+  },[inputText,pageNum,current])
+  
+  // useEffect(()=>{
+  //   dispatch(retrieveData())
+  // },[pageNum, current])
 
-  useEffect(() => {
-    const pageTitle = document.querySelector('.ant-select-selection-item').innerHTML
-    const pageText = pageTitle.slice(0, 2)
-    document.querySelector('.ant-select-selection-item').innerHTML = pageText
-  }, [])
+  // useEffect(() => {
+  //   const pageTitle = document.querySelector('.ant-select-selection-item').innerHTML
+  //   const pageText = pageTitle.slice(0, 2)
+  //   document.querySelector('.ant-select-selection-item').innerHTML = pageText
+  // }, [])
 
+  const onPageNumber=(current,page)=>{
+    setPageNum(page)
+    setCurrent(current)
+  }
+  
   return (
     <>
       <div className="admin_header">
@@ -266,7 +276,7 @@ export default function UserManagement() {
 
         <TableCommon  dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={getSelectedRowKeys}>
         </TableCommon>
-        <PaginationCommon></PaginationCommon>
+        <PaginationCommon total={totalItem}  onShowSizeChange={onPageNumber}></PaginationCommon>
         {isCreateUser &&
           <Modal centered width={589} closable={false}
             footer={null}
@@ -277,14 +287,6 @@ export default function UserManagement() {
           </Modal>
         }
       </div>
-      {/* {isUploadFile &&
-        <Modal centered width={809} closable={false}
-          open={isUploadFile}
-          onCancel={() => { setIsUploadFile(false) }}
-        >
-          <UploadFile />
-        </Modal>
-      } */}
     </>
   );
 };

@@ -1,23 +1,23 @@
 import React from 'react';
-import {Button, Checkbox, Col, Form, Input, Modal, Row} from "antd";
+import {Modal} from "antd";
 
 export default function ModalCommon(props) {
   const {
     isVisible,
     setIsVisible,
     title,
+    width = 600,
     content
   } = props;
-  const handleOk = () => {
-    // setIsModalOpen(false);
-  };
 
   return <Modal
     className="modal-custom"
     title={title}
     centered
     open={isVisible}
-    onOk={handleOk} onCancel={() => setIsVisible(false)}
+    width={width}
+    footer={null}
+    onCancel={() => setIsVisible(false)}
   >
     {content}
   </Modal>;

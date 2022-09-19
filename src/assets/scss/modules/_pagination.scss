@@ -25,19 +25,17 @@
 
 .ant-pagination {
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
+  @extend %flex-end;
+  align-items: center;
   row-gap: 8px;
-  justify-content: flex-end;
-  padding: 3rem 2.2rem 2rem 1.3rem;
+  padding: 3rem 0 2rem 0;
 
   .ant-pagination-item {
     border: none;
     border-radius: 50%;
-    padding: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @extend %flex-centered;
+    min-width: 25px;
+    height: 25px;
 
     &-active {
       background-color: $green-color;
@@ -64,40 +62,13 @@
       color: $gray-light-color  !important;
     }
   }
-
-  /* &.payment-pagination {
-    .ant-pagination-item {
-      width: 27px;
-      height: 27px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  } */
-  &.manageFinanceKnowledge-pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: nowrap;
-
-    .ant-pagination-options {
-      display: none;
-    }
-
-    .ant-pagination-item {
-      width: 25px !important;
-      min-width: 25px !important;
-      height: 25px;
-      padding: unset;
-    }
-  }
 }
 
 .ant-pagination-prev {
   .ant-pagination-item-link:after {
     content: 'Trước';
     opacity: 0.7;
-    margin-right: 4px;
+    margin-right: 8px;
   }
 }
 
@@ -105,7 +76,7 @@
   .ant-pagination-item-link::before {
     content: 'Tiếp';
     opacity: 0.7;
-    margin-left: 4px;
+    margin-left: 8px;
   }
 }
 

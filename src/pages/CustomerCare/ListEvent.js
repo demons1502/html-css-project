@@ -14,6 +14,7 @@ import SendSmsContent from "../../components/ModalCommon/CustomerCare/SendSmsCon
 import SendEmailContent from "../../components/ModalCommon/CustomerCare/SendEmailContent";
 import moment from 'moment';
 import {FORMAT_DATE, LOADING_STATUS} from '../../ultis/constant';
+import {pad} from '../../helper'
 
 export default function ListEvent() {
   const {t} = useTranslation()
@@ -30,7 +31,7 @@ export default function ListEvent() {
     {
       title: t('common.stt'),
       key: 'stt',
-      render: (text, record, index) => (index + 1),
+      render: (text, record, index) => pad((index + 1), 2),
     },
     {
       title: t('common.date'),
@@ -53,6 +54,7 @@ export default function ListEvent() {
     {
       title: '',
       key: 'action',
+      width: '42%',
       render: (record) => {
         return (
           <div className="btn-table">

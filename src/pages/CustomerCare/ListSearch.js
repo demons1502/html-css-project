@@ -44,7 +44,7 @@ export default function ListSearch() {
   }, [keyword])
 
   useEffect(() => {
-
+    // setPercent(optionsFilter.slice(-1)[0] * 10)
   }, [optionsFilter])
 
   useEffect(() => {

@@ -7,7 +7,7 @@ import History from './History';
 
 export default function CustomerCare() {
   const {t} = useTranslation();
-
+  
   return (
     <div className="content-box customer-care">
       <h3>{t('customer care.title')}</h3>

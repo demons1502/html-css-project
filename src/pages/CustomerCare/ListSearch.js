@@ -36,6 +36,7 @@ export default function ListSearch() {
     setDataSource(data?.data);
     setTotal(data?.count);
     dispatch(setCustomerId(data?.data[0].customerId))
+    setSelectId(data?.data[0].customerId)
   }
 
   useEffect(() => {

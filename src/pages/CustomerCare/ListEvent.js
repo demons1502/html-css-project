@@ -2,7 +2,7 @@ import React, {useState, useEffect, useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {Col, Progress, Button, Empty, Popconfirm, message, Spin} from 'antd';
-import {createData, getData, deleteData, updateData} from '../../slices/events';
+import {getData, deleteData} from '../../slices/events';
 import TableCommon from '../../components/TableCommon';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconSms from '../../assets/images/icons/sms.svg';
@@ -13,15 +13,17 @@ import AddEventContent from "../../components/ModalCommon/CustomerCare/AddEventC
 import SendSmsContent from "../../components/ModalCommon/CustomerCare/SendSmsContent";
 import SendEmailContent from "../../components/ModalCommon/CustomerCare/SendEmailContent";
 import moment from 'moment';
-import {LOADING_STATUS} from '../../ultis/constant';
+import {FORMAT_DATE, LOADING_STATUS} from '../../ultis/constant';
 
 export default function ListEvent() {
   const {t} = useTranslation()
+  const loading = useSelector((state) => state.loading.loading);
   const eventState = useSelector((state) => state.events)
   const [visibleModalAddEvent, setVisibleModalAddEvent] = useState(false)
   const [visibleModalEmail, setVisibleModalEmail] = useState(false)
   const [visibleModalSms, setVisibleModalSms] = useState(false)
   const [detailData, setDetailData] = useState({})
+  const [eventId, setEventId] = useState(0)
   const dispatch = useDispatch()
 
   const columns = [
@@ -32,15 +34,19 @@ export default function ListEvent() {
     },
     {
       title: t('common.date'),
-      dataIndex: 'date',
       key: 'date',
+      render: (record) => {
+        return (
+          <span>{moment(record.date).format(FORMAT_DATE)}</span>
+        );
+      }
     },
     {
       title: t('common.content'),
-      key: 'smsTemplate',
+      key: 'name',
       render: (record) => {
         return (
-          <span className="cursor-pointer" onClick={() => editModal(record)}>{record.smsTemplate}</span>
+          <span className="cursor-pointer" onClick={() => editModal(record)}>{record.name}</span>
         );
       }
     },
@@ -50,8 +56,8 @@ export default function ListEvent() {
       render: (record) => {
         return (
           <div className="btn-table">
-            <Button className="btn-table__btn m-r-10" icon={<img src={IconSms} alt=""/>} onClick={() => setVisibleModalSms(true)}>{t('customer care.sms')}</Button>
-            <Button className="btn-table__btn m-r-10" icon={<img src={IconMessage} alt=""/>} onClick={() => setVisibleModalEmail(true)}>{t('customer care.email')}</Button>
+            <Button className="btn-table__btn m-r-10" icon={<img src={IconSms} alt=""/>} onClick={() => showModalSms(record.id)}>{t('customer care.sms')}</Button>
+            <Button className="btn-table__btn m-r-10" icon={<img src={IconMessage} alt=""/>} onClick={() => showModalEmail(record.id)}>{t('customer care.email')}</Button>
             <Popconfirm className="pop-confirm-delete" placement="top" title={t('common.delete title')} onConfirm={() => deleteEvent(record.id)} okText={t('common.delete')}  cancelText={t('common.cancel')} >
               <Button className="btn-table__btn flex-end" icon={<img src={IconDelete} alt=""/>}></Button>
             </Popconfirm>
@@ -61,6 +67,16 @@ export default function ListEvent() {
     },
   ]
 
+  const showModalSms = (id) => {
+    setVisibleModalSms(true)
+    setEventId(id)
+  }
+
+  const showModalEmail = (id) => {
+    setVisibleModalEmail(true)
+    setEventId(id)
+  }
+
   const addModal = (detail) => {
     setVisibleModalAddEvent(true)
     setDetailData({})
@@ -68,31 +84,13 @@ export default function ListEvent() {
 
   const editModal = (detail) => {
     setVisibleModalAddEvent(true)
-    setDetailData(detail)
-  }
-
-  const handleSaveEvent = (values) => {
-    values.date = moment(values.date)
-    if (Object.keys(detailData).length > 0) {
-      values.id = detailData.id
-      dispatch(updateData(values))
-    } else {
-      dispatch(createData(values))
-    }
+    setDetailData({...detail})
   }
 
   const deleteEvent = (id) => {
     dispatch(deleteData(id))
   }
   
-  const sendSms = (values) => {
-    console.log('aaaaa', values)
-  }
-
-  const sendEmail = (values) => {
-    console.log('aaaaa', values)
-  }
-
   const table = useMemo(() => {
     if (!!eventState.data && eventState.data.length > 0) {
       return <TableCommon dataSource={eventState.data} columnTable={columns}></TableCommon>
@@ -106,19 +104,12 @@ export default function ListEvent() {
   }, [])
 
   useEffect(() => {
-    if (eventState.loading === LOADING_STATUS.failed) {
-      message.error(eventState?.message)
-    }
-
-    if (eventState.loading === LOADING_STATUS.succeeded) {
+    if (loading === LOADING_STATUS.succeeded) {
       setVisibleModalAddEvent(false)
       setVisibleModalEmail(false)
       setVisibleModalSms(false)
-      if (!!eventState?.message) {
-        message.success(eventState?.message)
-      }
     }
-  }, [eventState.loading])
+  }, [loading])
 
   return (
     <>
@@ -131,15 +122,15 @@ export default function ListEvent() {
           <h5>{t('customer care.event title')}</h5>
         </div>
         <div className="customer-care__center--list">
-          <Spin spinning={eventState.loading === LOADING_STATUS.pending}>
+          <Spin spinning={loading === LOADING_STATUS.pending}>
             {table}
           </Spin>
           <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add event')}</Button>
         </div>
       </Col>
-      <ModalCommon isVisible={visibleModalAddEvent} setIsVisible={setVisibleModalAddEvent} title={Object.keys(detailData).length > 0 ? t(('customer care.edit event title')) : t(('customer care.add event title'))} width={770} content={<AddEventContent onFinish={handleSaveEvent} detailData={detailData} setVisibleModalAddEvent={setVisibleModalAddEvent}/>} />
-      <ModalCommon isVisible={visibleModalEmail} setIsVisible={setVisibleModalEmail} title={t(('customer care.email title'))} width={770} content={<SendEmailContent setVisibleModalEmail={setVisibleModalEmail} onFinish={sendEmail}/>} />
-      <ModalCommon isVisible={visibleModalSms} setIsVisible={setVisibleModalSms} title={t(('customer care.sms title'))} width={770} content={<SendSmsContent setVisibleModalSms={setVisibleModalSms} onFinish={sendSms}/>} />
+      <ModalCommon isVisible={visibleModalAddEvent} setIsVisible={setVisibleModalAddEvent} title={Object.keys(detailData).length > 0 ? t(('customer care.edit event title')) : t(('customer care.add event title'))} width={770} content={<AddEventContent detailData={detailData} setVisibleModalAddEvent={setVisibleModalAddEvent}/>} />
+      <ModalCommon isVisible={visibleModalEmail} setIsVisible={setVisibleModalEmail} title={t(('customer care.email title'))} width={770} content={<SendEmailContent eventId={eventId} setVisibleModalEmail={setVisibleModalEmail}/>} />
+      <ModalCommon isVisible={visibleModalSms} setIsVisible={setVisibleModalSms} title={t(('customer care.sms title'))} width={770} content={<SendSmsContent eventId={eventId} setVisibleModalSms={setVisibleModalSms}/>} />
     </>
   );
 }

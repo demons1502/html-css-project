@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import {DatePicker, Select, Col, Form, Input, Row, Button} from "antd";
 import {VALIDATE_MESSAGES, FORMAT_DATE} from '../../../ultis/constant';
 import {useTranslation} from 'react-i18next';
-import {getEvents} from '../../../services/events';
+import {createData, updateData} from '../../../slices/events';
 import moment from 'moment';
 
 const { Option } = Select;
@@ -10,19 +11,30 @@ const { TextArea } = Input;
 
 export default function AddEventContent(props) {
   const {t} = useTranslation();
-  const {onFinish, detailData , setVisibleModalAddEvent} = props;
+  const {detailData , setVisibleModalAddEvent} = props;
   const [form] = Form.useForm();
-  const [events, setEvents] = useState(null);
-  const [eventsTemplate, setEventsTemplate] = useState(null);
+  const dispatch = useDispatch()
+  // const [events, setEvents] = useState(null);
+  // const [eventsTemplate, setEventsTemplate] = useState(null);
 
-  const fetchMyDataEvents = async () => {
-    const data = await Promise.all([getEvents({isTemplate: true}), getEvents({isTemplate: false})]);
-    setEventsTemplate(data[0], setEvents[1]);
-  };
+  const handleSaveEvent = (values) => {
+    values.date = moment(values.date)
+    if (Object.keys(detailData).length > 0) {
+      values.id = detailData.id
+      dispatch(updateData(values))
+    } else {
+      dispatch(createData(values))
+    }
+  }
 
-  useEffect(() => {
-    fetchMyDataEvents();
-  }, [])
+  // const fetchMyDataEvents = async () => {
+  //   const data = await Promise.all([getEvents({isTemplate: true}), getEvents({isTemplate: false})]);
+  //   setEventsTemplate(data[0], setEvents[1]);
+  // };
+
+  // useEffect(() => {
+  //   fetchMyDataEvents();
+  // }, [])
 
   useEffect(() => {
     if (Object.keys(detailData).length > 0) {
@@ -32,7 +44,7 @@ export default function AddEventContent(props) {
     }
   }, [detailData])
 
-  return <Form layout="vertical" form={form} validateMessages={VALIDATE_MESSAGES} onFinish={onFinish}>
+  return <Form layout="vertical" form={form} validateMessages={VALIDATE_MESSAGES} onFinish={handleSaveEvent}>
     <Row gutter={[6, 13]}>
       <Col span={6}>
         <Form.Item
@@ -45,8 +57,9 @@ export default function AddEventContent(props) {
       <Col span={6}>
         <Form.Item
           label={t('common.type')}
-          name="type">
-          <Select defaultValue="Hằng năm" className="select-item-outline">
+          name="type"
+          rules={[{required: true}]}>
+          <Select placeholder={t('common.select')} className="select-item-outline">
             <Option value="Hằng năm">Hằng năm</Option>
             <Option value="Một lần">Một lần</Option>
           </Select>
@@ -55,15 +68,17 @@ export default function AddEventContent(props) {
       <Col span={12}>
         <Form.Item
           label={t('common.event')}
-          name="name">
+          name="name"
+          rules={[{required: true}]}>
           <Input className='input-item-outline' placeholder="Nhập" />
         </Form.Item>
       </Col>
       <Col span={24}>
         <Form.Item
           label={t('customer care.event template')}
-          name="isTemplate">
-          <Select defaultValue={true} className="select-item-outline">
+          name="isTemplate"
+          rules={[{required: true}]}>
+          <Select placeholder={t('common.select')} className="select-item-outline">
             <Option value={true}>Có</Option>
             <Option value={false}>Không</Option>
           </Select>

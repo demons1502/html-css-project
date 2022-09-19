@@ -11,7 +11,7 @@ axiosInstance.interceptors.request.use(
     // eslint-disable-next-line no-param-reassign
     // const token = Cookies.get('token');
     // if (token) {
-    config.headers.Authorization = `Bearer`;
+    config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN1b25nbHZtcGhwQGdtYWlsLmNvbSIsImlkIjoiZmY3YzY1OTMtOTZkOC00MjdmLWFjYzQtYmU1ZDE3ODExMTQwIiwiaWF0IjoxNjYzNTkzOTEyLCJleHAiOjE2NjM2ODAzMTJ9.4GNzPc3SH675oHlAtmPC-oBAlDqGoxgcOMcu-TcZ44k`;
     // }
     return config;
   },

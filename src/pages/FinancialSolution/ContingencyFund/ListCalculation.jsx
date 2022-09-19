@@ -11,7 +11,7 @@ const ListCalculation = () => {
 
   const onFinish = (values) => {
     console.log(values);
-     navigate("/advise/financial-solutions/minh-hoa-gia");
+    navigate("/advise/financial-solutions/minh-hoa-gia");
   };
   const onChange = (value) => {
     setAmount(value);

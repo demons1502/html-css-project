@@ -1,54 +1,103 @@
-import { Button, Checkbox, Form, Input } from "antd";
-import React from "react";
+import { Button, Checkbox, Form, Input, InputNumber } from "antd";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const ListCalculation = () => {
+  const [Percent, setPercent] = useState(0);
+  const [Amount, setAmount] = useState(0);
+  const [TotalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    console.log("Success:", values);
-    navigate("/advise/financial-solutions/minh-hoa-gia");
+    console.log(values);
+     navigate("/advise/financial-solutions/minh-hoa-gia");
+  };
+  const onChange = (value) => {
+    setAmount(value);
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  useEffect(() => {
+    setTotalAmount(Amount * 12 / (Percent / 100));
+  }, [Amount, Percent]);
+
   return (
     <Form
       form={form}
       name="control-hooks"
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
+      autoComplete="off">
       <div className="container-right-middle">
         <Form.Item
-          name="name1"
+          name="percantage"
           label="Lãi suất ngân hàng"
           rules={[
             {
               required: false,
             },
-          ]}
-        >
-          <Input placeholder="0" type="text" style={{ width: 40 }} />
+          ]}>
+          {/* <InputNumber
+            style={{ width: 50 }}
+            defaultValue={0}
+            min={0}
+            formatter={(value) => `${value}%`}
+            parser={(value) => value.replace("%", "")}
+            onChange={onChange}
+          /> */}
+          <div className="percentage-field">
+            <Input
+              className="percentage-input"
+              onChange={(e) => setPercent(Number(e.target.value))}
+              placeholder="0"
+              type="text"
+              style={{ width: 45, paddingRight: 0 }}
+              value={Percent}
+            />
+            <span className="pIcon">%</span>
+          </div>
         </Form.Item>
         <Form.Item
-          name="name2"
+          name="amount"
           label="Tổng tiền chi tiêu thiết yếu/tháng"
           rules={[
             {
               required: false,
             },
-          ]}
-        >
-          <Input placeholder="0" type="number" min={0} style={{ width: 120 }} />
+          ]}>
+          <InputNumber
+            defaultValue={0}
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            onChange={onChange}
+          />
+          {/* <Input
+            placeholder="0"
+            type="text"
+            onChange={(e) =>
+              setAmount(e.target.value.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+            }
+            value={Amount}
+            style={{ width: 120 }}
+          /> */}
         </Form.Item>
       </div>
       <div className="container-right-bottom">
         <p>
-          Thông tin quỹ: <span className="total-amount">40.000.000</span>
+          Thông tin quỹ:{" "}
+          <span className="total-amount">
+            {TotalAmount > 0 &&
+              TotalAmount.toFixed(2)
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            {(TotalAmount < 1 || isNaN(TotalAmount)) && "00.00"}
+          </span>
         </p>
       </div>
 

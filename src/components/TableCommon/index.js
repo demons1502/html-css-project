@@ -53,11 +53,10 @@ export default function TableCommon(props) {
       dataSource={dataSource}
       columns={columns}
       pagination={false}
-      className='table-common '
+      className='table-common'
       bordered={bordered}
-      key={nameTable}
-      scroll={scroll}
-    >
+      rowKey="id"
+      scroll={scroll}>
       {props.children}
     </Table>
   );

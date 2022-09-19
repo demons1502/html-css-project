@@ -1,11 +1,16 @@
 import { Col, Image, Layout, Row, Typography } from 'antd';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import eyeIcon from '../../assets/images/icons/eyeIcon.svg';
 import timeIcon from '../../assets/images/icons/timeIcon.svg';
+import { getView } from '../../slices/financeKnowledge';
 
 const FinanceSupportCard = (props) => {
-  const { wrap, target, content } = props
-  const date = content.createdAt ? content.createdAt.slice(0, 10).replace(/-/g, '/') : content.date
+  const dispatch = useDispatch();
+  const { wrap, target, content } = props;
+  const date = content?.createdAt
+    ? content?.createdAt.slice(0, 10).replace(/-/g, '/')
+    : content?.date;
 
   return (
     <Col
@@ -15,7 +20,12 @@ const FinanceSupportCard = (props) => {
       lg={props.lg || 8}
     >
       <Layout.Content className='content'>
-        <a href={content.url || content.link} target={target || '_blank'} rel='noreferrer'>
+        <a
+          href={content?.url || content?.link}
+          target={target || '_blank'}
+          rel='noreferrer'
+          onClick={() => dispatch(getView(content?.id))}
+        >
           <Row
             gutter={[10, 0]}
             align='stretch'
@@ -24,19 +34,14 @@ const FinanceSupportCard = (props) => {
             {props.image && (
               <Col lg={wrap ? 24 : 6} md={24} sm={24} xs={24}>
                 <Image
-                  src={content.image || content.img}
+                  src={content?.image || content?.img}
                   preview={false}
                   className={`image ${wrap ? 'image-wrap' : ''}`}
                 />
               </Col>
             )}
 
-            <Col
-              lg={wrap ? 24 : props.image ? 18 : 24}
-              md={24}
-              sm={24}
-              xs={24}
-            >
+            <Col lg={wrap ? 24 : props.image ? 18 : 24} md={24} sm={24} xs={24}>
               <Row
                 gutter={[10, 3]}
                 align='stretch'
@@ -51,9 +56,9 @@ const FinanceSupportCard = (props) => {
                   <Typography.Title
                     level={5}
                     ellipsis={{ rows: 1 }}
-                    title={content.title}
+                    title={content?.title}
                   >
-                    {content.title}
+                    {content?.title}
                   </Typography.Title>
                 </Col>
                 <Col
@@ -65,20 +70,20 @@ const FinanceSupportCard = (props) => {
                   <div className={`card-content ${wrap && 'wrap'}`}>
                     {wrap && (
                       <Typography.Text className='card-item'>
-                        <img src={eyeIcon} alt={content.views || null} />
-                        <span>{content.views || 0}</span>
+                        <img src={eyeIcon} alt={content?.view || null} />
+                        <span>{content?.view || 0}</span>
                       </Typography.Text>
                     )}
                     {wrap && <span className='line'>|</span>}
                     <Typography.Text className='card-item'>
                       <img src={timeIcon} alt={date} />
-                      <span>{date || content.date}</span>
+                      <span>{date || content?.date}</span>
                     </Typography.Text>
                   </div>
                 </Col>
               </Row>
               <Typography.Paragraph ellipsis={{ rows: 2 }} className='text'>
-                {content.body || content.subTitle || content.desc}
+                {content?.body || content?.subTitle || content?.desc}
               </Typography.Paragraph>
             </Col>
           </Row>

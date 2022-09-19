@@ -1,5 +1,6 @@
 import { Button, Col, Pagination, Row, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import deleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import importIcon from '../../assets/images/icons/importIcon.svg';
 import plusIcon from '../../assets/images/icons/plus.svg';
@@ -8,6 +9,7 @@ import CreatePayment from './CreatePayment';
 import { customers } from './data';
 import PaymentHistory from './PaymentHistory';
 import PaymentManagementHeader from './PaymentManagementHeader';
+import { retrieveData } from '../../slices/paymentManagement';
 
 const PaymentManagement = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -16,6 +18,8 @@ const PaymentManagement = () => {
   const [searchPayload, setSearchPayload] = useState(null);
   const [historyItem, setHistoryItem] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const dispatch = useDispatch();
 
   const onSelectChange = (newSelectedRowKeys) => {
     /* console.log('selectedRowKeys changed: ', selectedRowKeys); */
@@ -108,6 +112,10 @@ const PaymentManagement = () => {
   useEffect(() => {
     setRowActive(data[0]?.id);
     setHistoryItem(data[0]);
+  }, []);
+  useEffect(() => {
+    const params = { q: '', page: 1, limit: 10 };
+    dispatch(retrieveData({ params }));
   }, []);
 
   return (

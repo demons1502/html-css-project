@@ -2,9 +2,11 @@ import { Button, List } from 'antd';
 import React from 'react';
 import ManageContentInput from './ManageContentInput';
 import Title from '../../components/Title';
+import DeleteIcon from '../../assets/images/icons/deleteIcon.svg';
+import EditIcon from '../../assets/images/icons/edit-green.svg';
 
 const FinanceKnowledgeContent = (props) => {
-  const { content, onChange, fileList, onClick, onDelete } = props;
+  const { content, onChange, fileList, onClick, onDelete, onUpload, onCancel } = props;
 
   return (
     <div className='financeKnowledgeContent'>
@@ -13,6 +15,10 @@ const FinanceKnowledgeContent = (props) => {
         header={
           <div className='manageContent-header'>
             <Title title='Nội dung' />
+            <div className='manageContent-header_icon'>
+              <img src={EditIcon} />
+              <img src={DeleteIcon} onClick={() => onDelete(content?.id)} />
+            </div>
           </div>
         }
         footer={
@@ -25,7 +31,7 @@ const FinanceKnowledgeContent = (props) => {
               placeholder='Nhập link'
             />
             <div className='manageContent-footer_button'>
-              <Button danger className='btn-cancer' onClick={() => onDelete(content?.id)}>
+              <Button danger className='btn-cancer' onClick={() => onDelete(content.id)}>
                 Hủy
               </Button>
               <Button
@@ -53,9 +59,8 @@ const FinanceKnowledgeContent = (props) => {
             input={false}
             title='Ảnh đại diện: '
             type='file'
-            onChange={onChange}
+            onChange={onUpload}
             fileList={fileList}
-            imgURL={content?.image}
           />
           <ManageContentInput
             name='subTitle'
@@ -66,6 +71,7 @@ const FinanceKnowledgeContent = (props) => {
             input={false}
             placeholder='Nội dung'
           />
+
         </div>
       </List>
     </div>

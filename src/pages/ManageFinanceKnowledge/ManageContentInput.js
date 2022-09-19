@@ -13,7 +13,7 @@ const ManageContentInput = (props) => {
     value,
     placeholder,
     color = false,
-    imgURL
+    fileList
   } = props;
 
 
@@ -45,7 +45,9 @@ const ManageContentInput = (props) => {
           />
         </div>
       ) : (
+
         <div className='manageContentInput-upload'>
+
           <span className=' avatar-title'>{title}</span>
           <Upload
             name={name}
@@ -53,8 +55,10 @@ const ManageContentInput = (props) => {
             className='avatar-uploader'
             showUploadList
             onChange={onChange}
-            onPreview={imgURL}
-            beforeUpload={() => { return false }}
+            /* beforeUpload={() => { return false }} */
+            beforeUpload={Upload.LIST_IGNORE}
+            fileList={fileList}
+          /* disabled={fileList.length > 0 ? true : false} */
           >
             <div className='upload-content'>
               <CameraOutlined />

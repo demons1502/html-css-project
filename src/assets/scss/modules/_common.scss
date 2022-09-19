@@ -16,7 +16,22 @@
   }
 
   .ant-modal-body {
-    padding: 10px 30px 17px 30px;
+    padding: 10px 30px 20px 30px;
+
+    .footer-modal {
+      @extend %flex-end;
+      border-top: 1px solid $grey-border-color;
+      margin: 0 -30px;
+
+      .ant-form-item-row{
+        padding: 0 30px;
+        margin-top: 16px;
+      }
+      .ant-form-item-control-input-content {
+        display: flex;
+        column-gap: 8px
+      }
+    }
   }
 
   .ant-modal-footer {
@@ -64,6 +79,7 @@
         line-height: 1.5rem;
         border-radius: 50%;
         text-align: center;
+        padding-top: 1px;
       }
     }
   }
@@ -149,4 +165,10 @@
 
 .ant-popover-placement-bottomLeft {
   padding-top: 9px;
+}
+
+.ant-popconfirm {
+  .ant-popover-inner-content {
+    padding: 18px 18px 18px 20px !important;
+  }
 }

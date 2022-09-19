@@ -1,26 +1,26 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginApi } from "../services/auth";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { loginApi } from '../services/auth';
 
 const initialState = {
-  accessToken: "",
+  accessToken: '',
 };
 
-export const login = createAsyncThunk("auth/login", async (data) => {
+export const login = createAsyncThunk('auth/login', async (data) => {
   try {
     const res = await loginApi(data);
-
     return res.data;
   } catch (error) {
+    console.log(error);
     return Promise.reject(error.data);
   }
 });
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   extraReducers: {
     [login.fulfilled]: (state, action) => {
-      state.accessToken = action.payload.access_token;
+      state.accessToken = action.payload.accessToken;
     },
   },
 });

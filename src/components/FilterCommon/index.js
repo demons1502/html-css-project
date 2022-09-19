@@ -7,9 +7,11 @@ export default function FilterCommon(props) {
   const {t} = useTranslation();
   const {options, setPayload} = props;
   const [open, setOpen] = useState(false);
+  const [count, setCount] = useState(0);
 
   const checkFilter = (checkedValues) => {
     setPayload(checkedValues);
+    setCount(checkedValues.length);
   };
 
   const handleOpenChange = (newOpen) => {
@@ -42,7 +44,7 @@ export default function FilterCommon(props) {
       >
         <Button className={`filter__btn ${open && 'filter__btn--active'}`}>
           <div>
-            <span className="filter__btn--count">2</span>
+            <span className="filter__btn--count">{count}</span>
             {t('common.filter')}
           </div>
           <img src={FilterIcon} alt=""/>

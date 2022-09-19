@@ -11,20 +11,24 @@ import {
   createContent,
   deleteContent,
   retrieveData,
-  updateContent
+  updateContent,
 } from '../../slices/managementContent';
+import ModalConfirm from '../../components/ModalConfirm';
 
 const ManageFinanceKnowledge = () => {
-  const [itemContent, setItemContent] = useState({});
-  const [option, setOption] = useState('articles');
-  const [fileList, setFileList] = useState([]);
-
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const contents = useSelector((state) => state.managementContentReducer);
 
+  const [itemContent, setItemContent] = useState({});
+  const [option, setOption] = useState('articles');
+  const [fileList, setFileList] = useState([
+    {
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+  ]);
+
   const handleChange = (e) => {
-    setButtonState(false);
     let values;
     const name = e.target.name;
     values = { ...itemContent, [name]: e.target.value };
@@ -33,39 +37,46 @@ const ManageFinanceKnowledge = () => {
 
   const handleFileList = ({ fileList: newFile }) => {
     setFileList(newFile);
-    setItemContent({ ...itemContent, image: newFile });
-  };
-
-  const addList = () => {
-    const itemData = {
-      title: 'new item',
-      image: '',
-      body: '',
-      url: '',
-    };
-    dispatch(createContent({ type: option, payload: itemData }))
-    setItemContent(itemData);
+    /* console.log(newFile[0]) */
+    setItemContent({ ...itemContent, image: newFile[0]?.originFileObj });
   };
 
   const handleCreate = () => {
-    dispatch(createContent({ type: option, payload: { title: 'title' } }));
-  };
-
-  const handleDelete = (id) => {
-    dispatch(deleteContent({ type: option, id: id }));
+    const data = new FormData();
+    data.append('title', 'title');
+    data.append('subTitle', '');
+    data.append('image', '');
+    data.append('body', '');
+    data.append('url', '');
+    dispatch(createContent({ type: option, payload: data }));
+    setItemContent(itemContent[contents.length - 1]);
   };
 
   const handleSave = (item) => {
-    dispatch(updateContent({ type: option, id: item.id, payload: item }));
+    const formData = new FormData();
+    formData.append('image', item.image);
+    formData.append('title', item.title);
+    formData.append('subTitle', item.subTitle);
+    formData.append('url', item.url);
+    formData.append('body', item.body);
+
+    dispatch(updateContent({ type: option, id: item.id, payload: formData }));
   };
-  /* useEffect(() => {
-    setItemContent(contents[0])
-  }, []) */
+
+  const handleCancel = (item) => {
+    console.log(item);
+    /* setItemContent(item) */
+  };
+
+  const handleDelete = (id) => {
+    // ModalConfirm()
+    dispatch(deleteContent({ type: option, id: id }));
+    setItemContent({});
+  };
 
   useEffect(() => {
     //fetch data
     dispatch(retrieveData({ type: option, params: { limit: 10, offset: 0 } }));
-
   }, [option]);
 
   return (
@@ -108,8 +119,7 @@ const ManageFinanceKnowledge = () => {
                     type='primary'
                     shape='circle'
                     icon={<img src={IconPlus} alt='' />}
-                    onClick={addList}
-                  /*  onClick={addList} */
+                    onClick={handleCreate}
                   >
                     Thêm mới
                   </Button>
@@ -117,12 +127,10 @@ const ManageFinanceKnowledge = () => {
                 dataSource={contents}
                 renderItem={(item) => (
                   <List.Item
-                    onClick={() => { setItemContent(item), setFileList(item.image) }}
-                    className={`${item.id === itemContent.id ? 'active' : ''}`}
+                    onClick={() => setItemContent(item)}
+                    className={`${item.id === itemContent?.id ? 'active' : ''}`}
                   >
-                    <Typography.Text ellipsis>
-                      {item.title}
-                    </Typography.Text>
+                    <Typography.Text ellipsis>{item.title}</Typography.Text>
                   </List.Item>
                 )}
               />
@@ -139,6 +147,7 @@ const ManageFinanceKnowledge = () => {
                   fileList={fileList}
                   onClick={handleSave}
                   onDelete={handleDelete}
+                  onCancel={handleCancel}
                 />
               ) : (
                 <QuestionAnswerContent

@@ -5,15 +5,13 @@ import './helper/i18n';
 import './assets/scss/styles.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import store from './store';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root')
-);
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <App/>
+    <App />
   </Provider>
 );
 

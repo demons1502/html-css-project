@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { create, getAll, remove, update } from '../services/manageContent';
+import {
+  create,
+  getAll,
+  remove,
+  update,
+  updateBV,
+} from '../services/manageContent';
 
 const initialState = [];
 
@@ -14,7 +20,6 @@ export const retrieveData = createAsyncThunk(
 export const createContent = createAsyncThunk(
   'manageContent/create',
   async ({ type, payload }) => {
-    console.log(payload);
     const res = await create(type, payload);
     return res.data;
   }
@@ -22,21 +27,16 @@ export const createContent = createAsyncThunk(
 export const updateContent = createAsyncThunk(
   'manageContent/update',
   async ({ type, id, payload }) => {
-    if (id) {
-      const res = await update(type, id, payload);
-      return res.data;
-    } else {
-      const res = await create(type, payload)
-      return res.data
-    }
+    const res = await update(type, id, payload);
+    return res.data;
   }
 );
 
 export const deleteContent = createAsyncThunk(
   'manageContent/delete',
   async ({ type, id }) => {
-    const res = await remove(type, id);
-    return res.data;
+    await remove(type, id);
+    return { id };
   }
 );
 
@@ -46,20 +46,24 @@ const manageContentSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createContent.fulfilled]: (state, action) => {
-      state.push(action.payload);
+      state.push(action.payload.article);
     },
+
     [retrieveData.fulfilled]: (state, action) => {
-      return [...action.payload?.articles];
+      return [...action.payload.articles];
     },
+
     [updateContent.fulfilled]: (state, action) => {
-      const index = state.findIndex((data) => data.id === action.payload.id);
+      const index = state.findIndex(
+        (data) => data.id === action.payload.article.id
+      );
       state[index] = {
         ...state[index],
-        ...action.payload,
+        ...action.payload.article,
       };
     },
     [deleteContent.fulfilled]: (state, action) => {
-      let index = state.findIndex(({ id }) => id === action.payload.id);
+      let index = state.findIndex(({ id }) => id == action.payload.id);
       state.splice(index, 1);
     },
   },

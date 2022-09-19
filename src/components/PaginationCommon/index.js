@@ -1,6 +1,14 @@
 import React from 'react';
-import { Pagination } from 'antd';
+import {Pagination} from 'antd';
+import {PAGE_SIZE_OPTIONS, DEFAULT_SIZE} from '../../ultis/constant'
 
 export default function PaginationCommon(props) {
-  return (<Pagination pageSizeOptions={['10', '20', '30']} defaultPageSize={10} total={50} showSizeChanger={true} />)
+  const {
+    pageSizeOptions = PAGE_SIZE_OPTIONS,
+    defaultPageSize = DEFAULT_SIZE,
+    total,
+    showSizeChanger = true
+  } = props;
+
+  return (total > DEFAULT_SIZE && <Pagination pageSizeOptions={pageSizeOptions} defaultPageSize={defaultPageSize} total={total} showSizeChanger={showSizeChanger}/>)
 }

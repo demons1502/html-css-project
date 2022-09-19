@@ -77,7 +77,7 @@ const QuestionAnswerContent = (props) => {
             title='Công việc'
             placeholder='Nhập nội dung công việc'
             onChange={onChange}
-            value={content?.date}
+            value={content?.title}
           />
 
           <div className='questionAnswerContent-answer'>
@@ -95,7 +95,7 @@ const QuestionAnswerContent = (props) => {
                   name='desc'
                   textarea
                   onChange={onChange}
-                  value={content?.body || content?.desc}
+                  value={content?.subTitle || content?.desc}
                   input={false}
                 />
               </div>
@@ -106,7 +106,7 @@ const QuestionAnswerContent = (props) => {
               type='primary'
               shape='circle'
               icon={<img src={IconPlus} alt='' />}
-            /* onClick={addList} */
+              /* onClick={addList} */
             >
               Thêm câu trả lời khác
             </Button>

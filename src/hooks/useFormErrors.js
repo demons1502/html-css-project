@@ -3,8 +3,7 @@ import {useSelector} from 'react-redux';
 import {LOADING_STATUS} from '../ultis/constant';
 
 function useFormErrors(form) {
-  const loading = useSelector((state) => state.loading.loading);
-  const errors = useSelector((state) => state.loading.errors);
+  const {loading, errors} = useSelector((state) => state.loading);
 
   useEffect(() => {
     if (loading === LOADING_STATUS.failed && errors.length > 0) {

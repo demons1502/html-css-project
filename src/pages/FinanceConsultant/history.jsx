@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {Col, Checkbox, Button, Empty, Popover} from 'antd';
+import {Col, Checkbox, Button, Empty} from 'antd';
 import {createData, retrieveData} from '../../slices/customerCare';
-import TableCommon from '../../components/TableCommon';
+import Table from '../../components/common/TableNormal';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import _ from 'lodash';
 import FilterCommon from "../../components/FilterCommon";
@@ -108,7 +108,7 @@ export default function History() {
 
   const table = useMemo(() => {
     if (!!dataTable && dataTable.length > 0) {
-      return <TableCommon dataSource={dataTable} columnTable={columns}></TableCommon>
+      return <Table dataSource={dataTable} columnTable={columns} />
     } else {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
     }

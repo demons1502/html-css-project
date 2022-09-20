@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Title from '../../components/Title';
-import { Table, Button, Checkbox, Modal } from 'antd';
+import { Checkbox, Modal } from 'antd';
 import "../../assets/scss/Admin/stylesAdmin.scss"
 import InputSearch from '../../components/InputSearch';
 import CreateUser from './CreateUser';
-import TableCommon from "../../components/TableCommon";
-import PaginationCommon from "../../components/PaginationCommon";
+import Table from "../../components/common/TableNormal";
+import Pagination from "../../components/common/Pagination";
 import ModalConfirm from '../../components/ModalConfirm';
 import { useDispatch, useSelector } from 'react-redux';
 import {searchUser, createUser, getUserProfile, updateUser, removeUser, retrieveData} from '../../slices/userManagement';
@@ -244,9 +243,8 @@ export default function UserManagement() {
           </div>
         </div>
 
-        <TableCommon dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={setSelectedRowKeys}>
-        </TableCommon>
-        <PaginationCommon></PaginationCommon>
+        <TableNormal dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={setSelectedRowKeys} />
+        <Pagination />
         {isCreateUser &&
           <Modal centered width={589} closable={false}
             footer={null}

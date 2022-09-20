@@ -1,9 +1,9 @@
 import React, {Button, Checkbox, Row, Col, Popover} from 'antd';
 import {useTranslation} from 'react-i18next';
 import {useMemo, useState} from 'react';
-import FilterIcon from '../../assets/images/icons/filter.svg';
+import FilterIcon from '../../../assets/images/icons/filter.svg';
 
-export default function FilterCommon(props) {
+export default function Filter(props) {
   const {t} = useTranslation();
   const {options, setPayload} = props;
   const [open, setOpen] = useState(false);

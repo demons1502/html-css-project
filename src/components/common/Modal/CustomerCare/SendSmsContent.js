@@ -1,9 +1,9 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector, useDispatch} from 'react-redux';
-import {sendEvent} from '../../../slices/events';
+import {sendEvent} from '../../../../slices/events';
 import {Col, Form, Input, Row, Button} from "antd";
-import {VALIDATE_MESSAGES} from '../../../ultis/constant';
+import {VALIDATE_MESSAGES} from '../../../../ultis/constant';
 
 const { TextArea } = Input;
 

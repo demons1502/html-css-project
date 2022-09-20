@@ -3,15 +3,15 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {Col, Progress, Button, Empty, Popconfirm, message, Spin} from 'antd';
 import {getData, deleteData} from '../../slices/events';
-import TableCommon from '../../components/TableCommon';
+import Table from '../../components/common/TableNormal';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconSms from '../../assets/images/icons/sms.svg';
 import IconMessage from '../../assets/images/icons/message.svg';
 import IconDelete from '../../assets/images/icons/delete.svg';
-import ModalCommon from "../../components/ModalCommon";
-import AddEventContent from "../../components/ModalCommon/CustomerCare/AddEventContent";
-import SendSmsContent from "../../components/ModalCommon/CustomerCare/SendSmsContent";
-import SendEmailContent from "../../components/ModalCommon/CustomerCare/SendEmailContent";
+import Modal from "../../components/common/Modal";
+import AddEventContent from "../../components/common/Modal/CustomerCare/AddEventContent";
+import SendSmsContent from "../../components/common/Modal/CustomerCare/SendSmsContent";
+import SendEmailContent from "../../components/common/Modal/CustomerCare/SendEmailContent";
 import moment from 'moment';
 import {FORMAT_DATE, LOADING_STATUS} from '../../ultis/constant';
 import {pad} from '../../helper'
@@ -95,7 +95,7 @@ export default function ListEvent() {
   
   const table = useMemo(() => {
     if (!!eventState.data && eventState.data.length > 0) {
-      return <TableCommon dataSource={eventState.data} columnTable={columns}></TableCommon>
+      return <Table dataSource={eventState.data} columnTable={columns} />
     } else {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
     }
@@ -128,9 +128,9 @@ export default function ListEvent() {
           <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add event')}</Button>
         </div>
       </Col>
-      <ModalCommon isVisible={visibleModalAddEvent} setIsVisible={setVisibleModalAddEvent} title={Object.keys(detailData).length > 0 ? t(('customer care.edit event title')) : t(('customer care.add event title'))} width={770} content={<AddEventContent detailData={detailData} setVisibleModalAddEvent={setVisibleModalAddEvent}/>} />
-      <ModalCommon isVisible={visibleModalEmail} setIsVisible={setVisibleModalEmail} title={t(('customer care.email title'))} width={770} content={<SendEmailContent eventId={eventId} setVisibleModalEmail={setVisibleModalEmail}/>} />
-      <ModalCommon isVisible={visibleModalSms} setIsVisible={setVisibleModalSms} title={t(('customer care.sms title'))} width={770} content={<SendSmsContent eventId={eventId} setVisibleModalSms={setVisibleModalSms}/>} />
+      <Modal isVisible={visibleModalAddEvent} setIsVisible={setVisibleModalAddEvent} title={Object.keys(detailData).length > 0 ? t(('customer care.edit event title')) : t(('customer care.add event title'))} width={770} content={<AddEventContent detailData={detailData} setVisibleModalAddEvent={setVisibleModalAddEvent}/>} />
+      <Modal isVisible={visibleModalEmail} setIsVisible={setVisibleModalEmail} title={t(('customer care.email title'))} width={770} content={<SendEmailContent eventId={eventId} setVisibleModalEmail={setVisibleModalEmail}/>} />
+      <Modal isVisible={visibleModalSms} setIsVisible={setVisibleModalSms} title={t(('customer care.sms title'))} width={770} content={<SendSmsContent eventId={eventId} setVisibleModalSms={setVisibleModalSms}/>} />
     </>
   );
 }

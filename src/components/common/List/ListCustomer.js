@@ -1,9 +1,9 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
-import {FORMAT_DATE} from '../../ultis/constant'
+import {FORMAT_DATE} from '../../../ultis/constant'
 import moment from 'moment'
 
-export default function ListCustomerItem(props) {
+export default function ListCustomer(props) {
   const {t} = useTranslation();
   const { data, selectId = null, setSelectId = null } = props;
 

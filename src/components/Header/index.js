@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, Dropdown, Menu } from 'antd';
 import {useTranslation} from 'react-i18next';
-import InputSearch from '../InputSearch';
+import InputSearch from '../common/InputSearch';
 
 
 

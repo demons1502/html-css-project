@@ -1,3 +1,6 @@
+import moment from 'moment'
+import {FORMAT_DATE} from '../ultis/constant'
+
 export const formatDataNumber = (number) => {
   if (number) {
     if (Number.isInteger(number)) {
@@ -14,4 +17,8 @@ export const pad = (num, size) => {
   num = num.toString();
   while (num.length < size) num = "0" + num;
   return num;
+}
+
+export const getTimeByTZ = (date, format = FORMAT_DATE) => {
+  return moment(date).utc().format(format)
 }

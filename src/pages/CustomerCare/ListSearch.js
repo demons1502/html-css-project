@@ -6,7 +6,7 @@ import List from '../../components/common/List';
 import {TYPE_LIST_CUSTOMERS, DEFAULT_SIZE} from '../../ultis/constant';
 import {getCustomers} from '../../services/customers';
 import Pagination from '../../components/common/Pagination';
-import {setCustomerId} from '../../slices/customerCare';
+import {setCustomerData } from '../../slices/customerCare';
 import {useDispatch} from "react-redux";
 
 const options = [
@@ -24,22 +24,21 @@ const options = [
 ];
 
 export default function ListSearch() {
-  const [selectId, setSelectId] = useState(0);
-  const [keyword, setKeyword] = useState('');
-  const [optionsFilter, setOptionsFilter] = useState('');
-  const [dataSource, setDataSource] = useState([]);
-  const [total, setTotal] = useState([]);
-  const dispatch = useDispatch();
+  const [selectId, setSelectId] = useState(0)
+  const [keyword, setKeyword] = useState('')
+  const [optionsFilter, setOptionsFilter] = useState('')
+  const [listCustomer, setListCustomer] = useState([])
+  const [total, setTotal] = useState([])
+  const dispatch = useDispatch()
   const [paginate, setPaginate] = useState({
     limit: DEFAULT_SIZE,
     offset: 0
   });
 
   const getDataCustomer = async (payload) => {
-    const {data} = await getCustomers(payload);
-    setDataSource(data?.data);
-    setTotal(data?.count);
-    dispatch(setCustomerId(data?.data[0].customerId))
+    const {data} = await getCustomers(payload)
+    setListCustomer(data?.data)
+    setTotal(data?.count)
     setSelectId(data?.data[0].customerId)
   }
 
@@ -48,7 +47,10 @@ export default function ListSearch() {
   }, [optionsFilter])
 
   useEffect(() => {
-    dispatch(setCustomerId(selectId))
+    if (selectId > 0) {
+      const customerData = listCustomer.find((data) => data.customerId === selectId)
+      dispatch(setCustomerData(customerData))
+    }
   }, [selectId])
 
   useEffect(() => {
@@ -59,7 +61,7 @@ export default function ListSearch() {
     <Col span={4} className="customer-care__left">
       <InputSearch setPayload={setKeyword} />
       <Filter options={options} setPayload={setOptionsFilter} />
-      <List type={TYPE_LIST_CUSTOMERS} dataList={dataSource} selectId={selectId} setSelectId={setSelectId} />
+      <List type={TYPE_LIST_CUSTOMERS} dataList={listCustomer} selectId={selectId} setSelectId={setSelectId} />
       <Pagination total={total} showSizeChanger={false} setPaginate={setPaginate} />
     </Col>
   );

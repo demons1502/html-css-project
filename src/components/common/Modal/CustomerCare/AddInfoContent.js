@@ -14,13 +14,13 @@ export default function AddEventContent(props) {
   const [form] = Form.useForm();
   useFormErrors(form);
   const {t} = useTranslation();
-  const customerId = useSelector((state) => state.customerCare.customerId);
+  const {customerData} = useSelector((state) => state.customerCare);
   const {detailData , setVisibleModalAddInfo} = props;
   const dispatch = useDispatch();
 
   const handleSaveInfo = (values) => {
     values.date = moment(values.date)
-    values.customerId = customerId
+    values.customerId = customerData.customerId
     if (Object.keys(detailData).length > 0) {
       values.id = detailData.id
       dispatch(updateData(values))

@@ -3,10 +3,12 @@ import {getCustomerCare, addCustomerCare, patchCustomerCare, deleteCustomerCare}
 
 const initialState = {
   data: [],
-  customerId: 0,
+  customerData: {
+    customerId: 0
+  }
 };
 
-export const setCustomerId = createAction('customerCare/setCustomerId')
+export const setCustomerData = createAction('customerCare/setCustomerData')
 
 export const getData = createAsyncThunk('customerCare/get', async (payload, { rejectWithValue }) => {
   try {
@@ -64,8 +66,8 @@ const customerCareSlice = createSlice({
   name: 'customerCare',
   initialState,
   extraReducers: {
-    [setCustomerId]: (state, action) => {
-      state.customerId = action.payload
+    [setCustomerData]: (state, action) => {
+      state.customerData = action.payload
     },
     [getData.fulfilled]: (state, action) => {
       state.data = action.payload

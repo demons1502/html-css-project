@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux';
 import {DatePicker, Select, Col, Form, Input, Row, Button} from "antd";
 import {VALIDATE_MESSAGES, FORMAT_DATE} from '../../../../ultis/constant';
 import {useTranslation} from 'react-i18next';
-import {createData, updateData} from '../../../../slices/events';
+import {getData, createData, updateData} from '../../../../slices/events';
 import moment from 'moment';
 
 const { Option } = Select;
@@ -11,7 +11,7 @@ const { TextArea } = Input;
 
 export default function AddEventContent(props) {
   const {t} = useTranslation();
-  const {detailData , setVisibleModalAddEvent} = props;
+  const {detailData, isTemplate, setVisibleModalAddEvent} = props;
   const [form] = Form.useForm();
   const dispatch = useDispatch();
 
@@ -24,6 +24,10 @@ export default function AddEventContent(props) {
       dispatch(createData(values))
     }
   }
+
+  // const getTemplate = (val) => {
+  //   dispatch(getData({isTemplate: 1, date: moment(val).toISOString()}))
+  // }
 
   useEffect(() => {
     if (Object.keys(detailData).length > 0) {
@@ -40,7 +44,7 @@ export default function AddEventContent(props) {
           label={t('common.date')}
           name="date"
           rules={[{required: true}]}>
-          <DatePicker className="input-item-outline" format={FORMAT_DATE}/>
+          <DatePicker className="input-item-outline" format={FORMAT_DATE} />
         </Form.Item>
       </Col>
       <Col span={6}>

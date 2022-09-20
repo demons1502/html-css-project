@@ -168,16 +168,15 @@ export default function UserManagement() {
   const handleImport = () => {
     input_file.current.click()
     const inputElement = input_file.current
-    inputElement.addEventListener("change", handleFiles, false);
+    inputElement.addEventListener("change", handleFiles);
     
     function handleFiles() {
       const fileList = this.files;
-      console.log('1');
       if (fileList) {
-        console.log('2');
         const formData = new FormData();
         formData.append('file', fileList[0])
-        uploadFiles(formData)
+        console.log(formData);
+        dispatch(uploadFiles(formData))
         // ModalConfirm({title:'Xác nhận',content:`Upload file: ${fileList[0].name}?`,callApi:()=>uploadFiles(formData)})
       }
     }

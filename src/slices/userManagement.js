@@ -61,8 +61,8 @@ export const removeUser = createAsyncThunk(
 export const removeUserIds = createAsyncThunk(
   'userManagement/removeUser',
   async (data) => {
-    console.log(data);
     const res = await removeUsers(data);
+    console.log(res.data);
     return res.data;
   }
 );
@@ -93,10 +93,11 @@ const useManagement = createSlice({
       let index = state.data.findIndex(({ id }) => id == action.payload.id);
       state.data.splice(index, 1);
     },
-    // [removeUserIds.fulfilled]: (state, action) => {
-    //   let index = state.data.findIndex(({ id }) => id == action.payload.id);
-    //   state.data.splice(index, 1);
-    // },
+    [removeUserIds.fulfilled]: (state, action) => {
+      // state.data = state.data.filter(
+      //   ({ id }) => action.payload.id.includes(id)
+      // );
+    },
   },
 });
 

@@ -1,5 +1,4 @@
-import { sendPost, sendGet, sendDelete,sendDeletes, sendPut } from "./axios";
-import axios, { Axios } from "axios";
+import { sendPost, sendGet, sendDelete, sendPut } from "./axios";
 
 export const create = (payload) => sendPost('users', payload)
 export const getUser = () => sendGet('api/user/me')

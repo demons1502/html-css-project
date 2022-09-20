@@ -9,6 +9,7 @@ import customerCare from './slices/customerCare';
 import financeKnowledgeReducer from './slices/financeKnowledge';
 import managementContentReducer from './slices/managementContent';
 import userManagement from './slices/userManagement';
+import contractManagement from './slices/contractManagement'
 
 const persistConfig = {
   key: 'root',
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   managementContentReducer: managementContentReducer,
   events: events,
   userManagement: userManagement,
+  contractManagement: contractManagement,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

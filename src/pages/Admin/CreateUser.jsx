@@ -1,12 +1,21 @@
-import React from 'react'
-import { Col, Row, Checkbox, Button, Form, Input } from 'antd';
+import {React, useState, useEffect} from 'react'
+import { Col, Row, Checkbox, Button, Form, Input, Select } from 'antd';
 import "../../assets/scss/Admin/create-user.scss"
 import { useDispatch, useSelector } from 'react-redux';
-import {searchUser, createUser, getUserProfile, updateUser, removeUser, retrieveData} from '../../slices/userManagement';
-
+import {createUser} from '../../slices/userManagement';
+import axios from 'axios';
+const {Option} = Select;
 
 function Create_user(props) {
+  const [dataCity, setDataCity]= useState([])
   const dispatch= useDispatch()
+  useEffect(() => {
+    axios.get('https://provinces.open-api.vn/api/')
+      .then(function (response) {
+        setDataCity(response.data)
+      })
+  },[])
+  
   const handleClose = () => {
     props.closeCreateUser()
   }
@@ -17,6 +26,7 @@ function Create_user(props) {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
   return (
     <div className='container_create-user'>
       <div className="creater_user-title">
@@ -116,7 +126,19 @@ function Create_user(props) {
               label="Vùng hoạt động"
               name="location"
             >
-              <Input type="text" placeholder='Nhập' />
+              <Select
+                placeholder="Nhập"
+                style={{
+                  
+                }}
+                // onChange={handleChangeSelect}
+              >
+                {dataCity != [] && dataCity.map(item=>{
+                  return(
+                    <Option key={item.code} value={item.name}>{item.name}</Option>
+                  )
+                })}
+              </Select>
             </Form.Item>
           </Col>
           <Col span={8}>

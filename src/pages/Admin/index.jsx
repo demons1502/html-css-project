@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Title from '../../components/Title';
 import { Table, Button, Checkbox, Modal } from 'antd';
 import "../../assets/scss/Admin/stylesAdmin.scss"
 import InputSearch from '../../components/InputSearch';
@@ -19,7 +18,7 @@ const columns = [
   {
     title: 'ID',
     dataIndex: 'id',
-    width: '95px',
+    width: '90px',
     className: 'id-user',
     key:1,
   },
@@ -109,12 +108,11 @@ export default function UserManagement() {
   const [inputText, setInputText]= useState('')
   const [pageNum, setPageNum] = useState(10)
   const [current, setCurrent] = useState(1)
-  // console.log(dataTable);
+
   const dispatch= useDispatch()
   const userData=useSelector((state)=>state.userManagement.data)
   const totalItem=useSelector((state)=>state.userManagement.totalItem)
   const getSelectedRowKeys = (rowkeys) => {
-    console.log(rowkeys);
     setSelectedRowKeys(rowkeys);
   }
 
@@ -122,7 +120,7 @@ export default function UserManagement() {
     input_file.current.style.display = 'none'
     dispatch(retrieveData({page:1,limit:10}))
   },[])
-
+  
   useEffect(()=>{
     setDataTable(userData)
   },[userData])
@@ -174,10 +172,13 @@ export default function UserManagement() {
     
     function handleFiles() {
       const fileList = this.files;
+      console.log('1');
       if (fileList) {
+        console.log('2');
         const formData = new FormData();
         formData.append('file', fileList[0])
-        ModalConfirm({title:'Xác nhận',content:`Upload file: ${fileList[0].name}?`,callApi:()=>uploadFiles(formData)})
+        uploadFiles(formData)
+        // ModalConfirm({title:'Xác nhận',content:`Upload file: ${fileList[0].name}?`,callApi:()=>uploadFiles(formData)})
       }
     }
   }
@@ -210,10 +211,6 @@ export default function UserManagement() {
       dispatch(retrieveData({q:inputText,page:current, limit:pageNum}))
     }
   },[inputText,pageNum,current])
-  
-  // useEffect(()=>{
-  //   dispatch(retrieveData())
-  // },[pageNum, current])
 
   // useEffect(() => {
   //   const pageTitle = document.querySelector('.ant-select-selection-item').innerHTML
@@ -274,7 +271,7 @@ export default function UserManagement() {
           </div>
         </div>
 
-        <TableCommon  dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={getSelectedRowKeys}>
+        <TableCommon  dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={false} setSelectedRowKeys={getSelectedRowKeys}>
         </TableCommon>
         <PaginationCommon total={totalItem}  onShowSizeChange={onPageNumber}></PaginationCommon>
         {isCreateUser &&

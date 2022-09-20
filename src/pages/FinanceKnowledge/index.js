@@ -1,4 +1,4 @@
-import { Col, List, message, Row, Spin } from 'antd';
+import { Col, List, Row } from 'antd';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,6 @@ import {
   getArticlesData,
   mostViewArticles,
 } from '../../slices/financeKnowledge';
-import { LOADING_STATUS } from '../../ultis/constant';
 import FinanceKnowledgeCard from './FinanceKnowledgeCard';
 
 const index = () => {
@@ -29,45 +28,35 @@ const index = () => {
     dispatch(mostViewArticles());
   }, []);
 
-  useEffect(() => {
-    if (mostViewArticles.loading === LOADING_STATUS.failed) {
-      message.error(mostViewArticles?.message);
-    }
-  }, [mostViewArticles.loading]);
-
   return (
     <div className='financeKnowledge'>
       <div>
         <Title title={t('finance knowledge.most view')} icon={commentIcon} />
-        {mostViewData.loading === LOADING_STATUS.pending ? (
-          <Spin size='large' />
-        ) : (
-          <Row gutter={[10, 10]}>
-            <Col lg={8} md={24} sm={24}>
-              <Row>
+        <Row gutter={[10, 10]}>
+          <Col lg={8} md={24} sm={24}>
+            <Row>
+              <FinanceKnowledgeCard
+                content={mostViewData[0]}
+                wrap
+                image
+                lg={24}
+              />
+            </Row>
+          </Col>
+          <Col lg={16} md={24} sm={24}>
+            <Row gutter={[10, 10]} align='stretch' style={{ height: '100%' }}>
+              {mostViewData.slice(1)?.map((item) => (
                 <FinanceKnowledgeCard
-                  content={mostViewData.data[0]}
-                  wrap
+                  content={item}
                   image
-                  lg={24}
+                  key={item.id}
+                  lg={12}
+                  md={12}
                 />
-              </Row>
-            </Col>
-            <Col lg={16} md={24} sm={24}>
-              <Row gutter={[10, 10]} align='stretch' style={{ height: '100%' }}>
-                {mostViewData.data?.slice(1)?.map((item) => (
-                  <FinanceKnowledgeCard
-                    content={item}
-                    image
-                    key={item.id}
-                    lg={12}
-                    md={12}
-                  />
-                ))}
-              </Row>
-            </Col>
-          </Row>
-        )}
+              ))}
+            </Row>
+          </Col>
+        </Row>
       </div>
       <div>
         <Title title={t('finance knowledge.old articles')} icon={commentIcon} />
@@ -77,7 +66,7 @@ const index = () => {
             gutter: 10,
             column: 3,
           }}
-          dataSource={articlesData.data}
+          dataSource={articlesData.articles}
           pagination={{
             pageSize: 12,
             className: 'financeKnowledge-pagination',

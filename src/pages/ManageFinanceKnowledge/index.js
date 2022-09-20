@@ -31,7 +31,7 @@ const ManageFinanceKnowledge = () => {
   const contents = useSelector((state) => state.managementContentReducer);
   const loading = useSelector((state) => state.loading.loading);
 
-  const [itemContent, setItemContent] = useState({});
+  const [itemContent, setItemContent] = useState(null);
   const [option, setOption] = useState('articles');
   const [fileList, setFileList] = useState([
     {
@@ -80,10 +80,19 @@ const ManageFinanceKnowledge = () => {
   };
 
   const handleDelete = (item) => {
-    ModalConfirm({
-      content: `Xác nhận xóa nội dung`,
-      callApi: () => dispatch(deleteContent({ type: option, id: item.id })),
-    });
+    if (item) {
+      ModalConfirm({
+        content: `Xác nhận xóa nội dung`,
+        callApi: () => dispatch(deleteContent({ type: option, id: item.id })),
+      });
+    } else {
+      ModalConfirm({
+        content: `Chọn nội dung cần xóa`,
+        callApi: () => {
+          return;
+        },
+      });
+    }
   };
 
   useEffect(() => {

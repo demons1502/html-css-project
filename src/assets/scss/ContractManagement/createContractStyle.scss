@@ -10,6 +10,7 @@
         width: 100%;
         z-index: 2;
     }
+
     .create_contract_content {
 
         .btn_group {
@@ -58,6 +59,7 @@
             width: 162px !important;
             background-color: $secondary-color;
             box-shadow: none;
+
             &:hover {
                 border-color: $green-color;
             }
@@ -67,7 +69,8 @@
             }
         }
 
-        .ant-piker:hover, .ant-picker-focused {
+        .ant-piker:hover,
+        .ant-picker-focused {
             border-color: $green-color;
         }
 
@@ -76,8 +79,8 @@
         }
 
 
-        .ant-form-item-explain-error{
-            display: none;  //error display validate
+        .ant-form-item-explain-error {
+            display: none; //error display validate
         }
     }
 

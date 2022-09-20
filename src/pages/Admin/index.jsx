@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Title from '../../components/Title';
 import { Table, Button, Checkbox, Modal } from 'antd';
 import '../../assets/scss/Admin/stylesAdmin.scss';
 import InputSearch from '../../components/InputSearch';
@@ -27,7 +26,7 @@ const columns = [
   {
     title: 'ID',
     dataIndex: 'id',
-    width: '95px',
+    width: '90px',
     className: 'id-user',
     key: 1,
   },
@@ -148,31 +147,28 @@ const columns = [
 
 export default function UserManagement() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [isCreateUser, setIsCreateUser] = useState(false);
-  const [isSettingLog, setIssettingLog] = useState(false);
-  const [dataTable, setDataTable] = useState(
-    useSelector((state) => state.userManagement.data)
-  );
-  const [inputText, setInputText] = useState('');
-  const [pageNum, setPageNum] = useState(10);
-  const [current, setCurrent] = useState(1);
-  // console.log(dataTable);
-  const dispatch = useDispatch();
-  const userData = useSelector((state) => state.userManagement.data);
-  const totalItem = useSelector((state) => state.userManagement.totalItem);
+  const [isCreateUser, setIsCreateUser] = useState(false)
+  const [isSettingLog, setIssettingLog] = useState(false)
+  const [dataTable, setDataTable]= useState(useSelector((state)=>state.userManagement.data))
+  const [inputText, setInputText]= useState('')
+  const [pageNum, setPageNum] = useState(10)
+  const [current, setCurrent] = useState(1)
+
+  const dispatch= useDispatch()
+  const userData=useSelector((state)=>state.userManagement.data)
+  const totalItem=useSelector((state)=>state.userManagement.totalItem)
   const getSelectedRowKeys = (rowkeys) => {
-    console.log(rowkeys);
     setSelectedRowKeys(rowkeys);
   };
 
   useEffect(() => {
-    input_file.current.style.display = 'none';
-    dispatch(retrieveData({ page: 1, limit: 10 }));
-  }, []);
-
-  useEffect(() => {
-    setDataTable(userData);
-  }, [userData]);
+    input_file.current.style.display = 'none'
+    dispatch(retrieveData({page:1,limit:10}))
+  },[])
+  
+  useEffect(()=>{
+    setDataTable(userData)
+  },[userData])
 
   handleDeleteUser = (e) => {
     const rowOfElement = e.target.parentNode.parentNode;
@@ -227,24 +223,23 @@ export default function UserManagement() {
 
   const input_file = useRef(null);
   const handleImport = () => {
-    input_file.current.click();
-    const inputElement = input_file.current;
-    inputElement.addEventListener('change', handleFiles, false);
-
+    input_file.current.click()
+    const inputElement = input_file.current
+    inputElement.addEventListener("change", handleFiles);
+    
     function handleFiles() {
       const fileList = this.files;
       if (fileList) {
         const formData = new FormData();
-        formData.append('file', fileList[0]);
-        ModalConfirm({
-          title: 'Xác nhận',
-          content: `Upload file: ${fileList[0].name}?`,
-          callApi: () => uploadFiles(formData),
-        });
+        formData.append('file', fileList[0])
+        console.log(formData);
+        dispatch(uploadFiles(formData))
+        // ModalConfirm({title:'Xác nhận',content:`Upload file: ${fileList[0].name}?`,callApi:()=>uploadFiles(formData)})
       }
     }
-  };
-
+    removeEventListener('change', handleFiles)
+  }
+ 
   const handleCreateUser = () => {
     setIsCreateUser(true);
   };
@@ -275,11 +270,7 @@ export default function UserManagement() {
     } else {
       dispatch(retrieveData({ q: inputText, page: current, limit: pageNum }));
     }
-  }, [inputText, pageNum, current]);
-
-  // useEffect(()=>{
-  //   dispatch(retrieveData())
-  // },[pageNum, current])
+  },[inputText,pageNum,current])
 
   // useEffect(() => {
   //   const pageTitle = document.querySelector('.ant-select-selection-item').innerHTML
@@ -350,22 +341,11 @@ export default function UserManagement() {
           </div>
         </div>
 
-        <TableCommon
-          dataSource={dataTable}
-          columnTable={columns}
-          isSelection={true}
-          isScroll={true}
-          setSelectedRowKeys={getSelectedRowKeys}
-        ></TableCommon>
-        <PaginationCommon
-          total={totalItem}
-          onShowSizeChange={onPageNumber}
-        ></PaginationCommon>
-        {isCreateUser && (
-          <Modal
-            centered
-            width={589}
-            closable={false}
+        <TableCommon  dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={false} setSelectedRowKeys={getSelectedRowKeys}>
+        </TableCommon>
+        <PaginationCommon total={totalItem}  onShowSizeChange={onPageNumber}></PaginationCommon>
+        {isCreateUser &&
+          <Modal centered width={589} closable={false}
             footer={null}
             open={isCreateUser}
             onCancel={() => {
@@ -374,7 +354,7 @@ export default function UserManagement() {
           >
             <CreateUser closeCreateUser={closeCreateUser} />
           </Modal>
-        )}
+        }
       </div>
     </>
   );

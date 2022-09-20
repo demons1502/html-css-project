@@ -1,8 +1,10 @@
-import { React, useState } from 'react'
+import { React, useState, useEffect } from 'react'
 import InputSearch from '../../components/InputSearch'
 import "../../assets/scss/ContractManagement/styleContract.scss"
 import { Button, Table, Modal } from 'antd'
 import CreateContract from './CreateContract';
+import { retrieveData } from '../../slices/contractManagement';
+import { useDispatch, useSelector } from 'react-redux';
 
 const dataSource = [
   {
@@ -23,12 +25,12 @@ var handleEditUser
 const columns = [
   {
     title: 'Mã số',
-    dataIndex: 'id_contract',
+    dataIndex: 'contractNumber',
     className: 'id-contract',
   },
   {
     title: 'Người mua',
-    dataIndex: 'name_payment',
+    dataIndex: 'insured',
   },
   {
     title: 'Người hưởng',
@@ -36,28 +38,28 @@ const columns = [
   },
   {
     title: 'Giá trị',
-    className: 'table_price',
+    className: 'value',
     dataIndex: 'price',
   },
   {
     title: 'Ngày hiệu lực',
-    dataIndex: 'effective_date',
+    dataIndex: 'startDate',
   },
   {
     title: 'Số năm nộp phí',
-    dataIndex: 'year_payment',
+    dataIndex: 'duration',
   },
   {
     title: 'Chu kì nộp phí',
-    dataIndex: 'submission_cycle',
+    dataIndex: 'depositTerm',
   },
   {
     title: 'Lần cuối nộp phí',
-    dataIndex: 'last_time_payment',
+    dataIndex: 'lastDepositDate',
   },
   {
     title: 'Hạn nộp phí tiếp theo',
-    dataIndex: 'last_day_payment',
+    dataIndex: 'nextDepositDue',
   },
   {
     title: '',
@@ -84,14 +86,27 @@ export default function ContractManagement() {
   const [modalCreateContract, setModalCreateContract] = useState(false)
   const [modalEditContract, setModalEditContract] = useState(false)
   const [dataEdit, setDataEdit] = useState(null)
+  const [dataTable, setDataTable]= useState([])
 
+  const dispatch= useDispatch()
+  const userData=useSelector((state)=>state.contractManagement.data)
   const handleCloseModalCreate = () => {
     setModalCreateContract(false)
     setModalEditContract(false)
   }
+
+  useEffect(() => {
+    dispatch(retrieveData({limit:20, offset:0}))
+  }, [])
+
+  useEffect(()=>{
+    setDataTable(userData)
+  },[userData])
+  
   handleEditUser = (e) => {
     const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
     const id = rowHover[0].innerHTML
+    console.log(id);
     //call api
     setDataEdit({
       title: 'Thay đổi nội dung hợp đồng',
@@ -121,14 +136,14 @@ export default function ContractManagement() {
         </div>
       </div>
       <div className="contract_list">
-        <Table dataSource={data} columns={columns} size='middle' 
+        <Table dataSource={dataTable} columns={columns} size='middle' 
           pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '30'] }}
         />
       </div>
       {
         modalCreateContract ? (
           <Modal width='800px' centered footer={null} closable={false}
-            open={() => setModalCreateContract(true)} 
+            open={modalCreateContract} 
             onOk={() => setModalCreateContract(false)} 
             onCancel={() => setModalCreateContract(false)}>
             <CreateContract handleCloseModalCreate={handleCloseModalCreate} />
@@ -139,10 +154,10 @@ export default function ContractManagement() {
       {
         modalEditContract ? (
           <Modal width='800px' centered footer={null} closable={false}
-            open={() => setModalEditContract(true)} 
+            open={modalEditContract} 
             onOk={() => setModalEditContract(false)} 
             onCancel={() => setModalEditContract(false)}>
-            <CreateContract handleCloseModalCreate={handleCloseModalCreate} data={dataEdit} />
+            <CreateContract handleCloseModalCreate={handleCloseModalCreate} data={dataEdit} func={'edit'}/>
           </Modal>
         ) :
           <></>

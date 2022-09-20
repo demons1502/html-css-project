@@ -29,10 +29,6 @@ const PaymentManagement = () => {
     /* console.log('selectedRowKeys changed: ', selectedRowKeys); */
     setSelectedRowKeys(newSelectedRowKeys);
   };
-  const dataSource = [];
-  for (let i = 0; i < 100; i++) {
-    dataSource.push({ ...data[0], id: i });
-  }
 
   const handleDeleteOne = (id) => {
     const newData = data.filter((item) => item.id !== id);
@@ -120,8 +116,8 @@ const PaymentManagement = () => {
   };
 
   useEffect(() => {
-    setRowActive(data[0]?.id);
-    setHistoryItem(data[0]);
+    setRowActive(payments[0]?.id);
+    setHistoryItem(payments[0]);
   }, []);
   useEffect(() => {
     const params = { q: '', page: 1, limit: 10 };
@@ -223,7 +219,7 @@ const PaymentManagement = () => {
           </Col>
         </Row>
         <CreatePayment
-          users={data}
+          users={payments}
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           onClick={handleAdd}

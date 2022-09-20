@@ -36,8 +36,8 @@ const CreatePayment = (props) => {
             >
               {users &&
                 users.map((user) => (
-                  <Select.Option value={user.username} key={user.id}>
-                    {user.username}
+                  <Select.Option value={user.id} key={user.id}>
+                    {user.userFullname}
                   </Select.Option>
                 ))}
             </Select>

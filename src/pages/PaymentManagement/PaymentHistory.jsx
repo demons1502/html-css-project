@@ -1,6 +1,8 @@
 import { Table } from 'antd';
 import React from 'react';
 import calendarIcon from '../../assets/images/icons/calendar.svg';
+import moment from 'moment';
+import { FORMAT_DATE, LOADING_STATUS } from '../../ultis/constant';
 
 const columns = [
   {
@@ -16,14 +18,15 @@ const columns = [
 ];
 
 const PaymentHistory = ({ customer }) => {
+  console.log(customer);
   return (
     <div className='paymentHistory'>
       <div className='paymentHistory-customer'>
         <div className='paymentHistory-info'>
           <div className='paymentHistory-title'>
-            <h4>{customer.username} </h4>
+            <h4>{customer?.userFullname} </h4>
             <p>
-              Số tiền: <span>{customer.money}</span>
+              Số tiền: <span>{customer?.amount}</span>
             </p>
           </div>
           <div className='paymentHistory-time'>
@@ -33,7 +36,7 @@ const PaymentHistory = ({ customer }) => {
                 <span>Ngày thanh toán</span>
               </div>
               <div className='paymentHistory-time_date'>
-                {customer.dateOfPayment}
+                <span>{moment(customer?.startDate).format(FORMAT_DATE)}</span>
               </div>
             </div>
 
@@ -43,7 +46,7 @@ const PaymentHistory = ({ customer }) => {
                 <span>Ngày hiệu lực</span>
               </div>
               <div className='paymentHistory-time_date'>
-                {customer.effectiveDate}
+                <span>{moment(customer?.startDate).format(FORMAT_DATE)}</span>
               </div>
             </div>
 
@@ -52,7 +55,9 @@ const PaymentHistory = ({ customer }) => {
                 <img src={calendarIcon} alt='' />
                 <span>Ngày kết thúc</span>
               </div>
-              <div className='paymentHistory-time_date'>{customer.endDate}</div>
+              <div className='paymentHistory-time_date'>
+                <span>{moment(customer?.dueDate).format(FORMAT_DATE)}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -61,7 +66,7 @@ const PaymentHistory = ({ customer }) => {
         <Table
           className='table-common'
           size='middle'
-          dataSource={customer.histories}
+          dataSource={customer?.histories}
           columns={columns}
           pagination={false}
           rowKey={(record) => record.id}

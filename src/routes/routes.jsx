@@ -42,7 +42,7 @@ const IllustrateFiduciary = lazy(() =>
   import('../pages/FinancialSolution/IllustrateFiduciary')
 );
 const PaymentManagement = lazy(() => import('../pages/PaymentManagement'));
-const Admin = lazy(()=> import('../pages/Admin/index'))
+const Admin = lazy(() => import('../pages/Admin/index'));
 // ADMIN VIEWS
 
 export const routes = () => [
@@ -122,10 +122,10 @@ export const routes = () => [
         path: 'health-foundation',
         element: <GuestGuard element={<HealthFoundation />} />,
       },
-      {
-        path: 'payment',
-        element: <GuestGuard element={<PaymentManagement />} />,
-      },
+      // {
+      //   path: 'payment',
+      //   element: <GuestGuard element={<PaymentManagement />} />,
+      // },
     ],
   },
   {
@@ -140,10 +140,14 @@ export const routes = () => [
     path: '/admin',
     element: <AdminLayout />,
     children: [
-      { path: '/admin', element: < Admin/> },
+      { path: '/admin', element: <Admin /> },
       {
         path: 'dashboard',
         element: <ManagerGuard element={<CustomerCare />} />,
+      },
+      {
+        path: 'payment',
+        element: <ManagerGuard element={<PaymentManagement />} />,
       },
     ],
   },

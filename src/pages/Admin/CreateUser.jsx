@@ -12,6 +12,7 @@ function Create_user(props) {
   useEffect(() => {
     axios.get('https://provinces.open-api.vn/api/')
       .then(function (response) {
+        console.log(response.data);
         setDataCity(response.data)
       })
   },[])
@@ -135,7 +136,7 @@ function Create_user(props) {
               >
                 {dataCity != [] && dataCity.map(item=>{
                   return(
-                    <Option key={item.code} value={item.name}>{item.name}</Option>
+                    <Option key={item.code} value={item.codename}>{item.name}</Option>
                   )
                 })}
               </Select>

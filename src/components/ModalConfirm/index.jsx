@@ -1,7 +1,6 @@
 import React from 'react';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
-const { confirm } = Modal;
 
 export default function ModalConfirm({
   title = 'Xác nhận',

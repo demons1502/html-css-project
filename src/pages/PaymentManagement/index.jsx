@@ -1,3 +1,4 @@
+import { Button, Col, Row, Table } from 'antd';
 import { Alert, Button, Col, notification, Row, Table } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -6,8 +7,8 @@ import deleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import importIcon from '../../assets/images/icons/importIcon.svg';
 import plusIcon from '../../assets/images/icons/plus.svg';
 import ModalConfirm from '../../components/ModalConfirm';
-import PaginationCommon from '../../components/PaginationCommon';
-import TableCommon from '../../components/TableCommon';
+import Pagination from '../../components/common/Pagination';
+import Table from '../../components/common/TableNormal';
 import {
   deletePayment,
   retrieveData,
@@ -191,16 +192,16 @@ const PaymentManagement = () => {
                 size='middle'
                 bordered={false}
               /> */}
-              <TableCommon
+              <Table
                 dataSource={payments.data}
                 columnTable={columns}
                 isSelection
                 setSelectedRowKeys={onSelectChange}
-              ></TableCommon>
-              <PaginationCommon
+              ></Table>
+              <Pagination
                 total={payments.total}
                 onShowSizeChange={onChangePage}
-              ></PaginationCommon>
+              ></Pagination>
             </div>
           </Col>
           <Col

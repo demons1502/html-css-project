@@ -43,7 +43,7 @@ const authSlice = createSlice({
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.status = 'success';
-      state.accessToken = action.payload.access_token;
+      state.accessToken = action.payload.accessToken;
       state.me = action.payload.userInfo;
       state.isAuth = true;
     });

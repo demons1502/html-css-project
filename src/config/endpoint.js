@@ -8,6 +8,7 @@ export const ENDPOINT = {
   customers: 'customers',
   customerCare: 'customer-care', 
   events: 'events',
+  eventsSend: 'events/send',
   financeKnowledge: {
     getArticles: 'articles',
     getMostView: 'most-view'

@@ -29,7 +29,8 @@
     "delete title": "Bạn chắc chắn muốn xóa",
     "input": "Nhập",
     "type": "Loại",
-    "event": "Sự kiện"
+    "event": "Sự kiện",
+    "select": "Chọn"
   },
   "validate": {},
   "message": {

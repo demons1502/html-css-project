@@ -1,12 +1,14 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Table } from 'antd';
+import { Table, Spin } from 'antd';
+import {LOADING_STATUS} from "../../ultis/constant";
+import {useSelector} from "react-redux";
 
 export default function TableCommon(props) {
+  const loading = useSelector((state) => state.loading.loading);
   const {
     dataSource,
     columnTable,
-    nameTable,
     isSelection = false,
     bordered = false,
     heightMargin = 340,
@@ -47,16 +49,18 @@ export default function TableCommon(props) {
   }
 
   return (
-    <Table
-      rowSelection={{ ...rowSelection }}
-      dataSource={dataSource}
-      columns={columns}
-      pagination={false}
-      className='table-common'
-      bordered={bordered}
-      rowKey="id"
-      scroll={scroll}>
-      {props.children}
-    </Table>
+    <Spin spinning={loading === LOADING_STATUS.pending}>
+      <Table
+        rowSelection={isSelection ? rowSelection : undefined}
+        dataSource={dataSource}
+        columns={columns}
+        pagination={false}
+        className='table-common'
+        bordered={bordered}
+        rowKey="id"
+        scroll={scroll}>
+        {props.children}
+      </Table>
+    </Spin>
   );
 }

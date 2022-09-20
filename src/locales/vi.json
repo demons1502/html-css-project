@@ -19,6 +19,8 @@
     "consultant": "Tư vấn",
     "booking": "Đặt lịch hẹn",
     "no more potential": "Không còn tiềm năng",
+    "setting": "Cấu hình",
+    "logout": "Đăng xuất",
     "cancel": "Hủy",
     "cancel create": "Hủy tạo",
     "create": "Tạo",
@@ -27,7 +29,8 @@
     "delete title": "Bạn chắc chắn muốn xóa",
     "input": "Nhập",
     "type": "Loại",
-    "event": "Sự kiện"
+    "event": "Sự kiện",
+    "select": "Chọn"
   },
   "validate": {},
   "message": {

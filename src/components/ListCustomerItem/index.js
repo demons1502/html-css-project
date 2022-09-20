@@ -24,7 +24,7 @@ export default function ListCustomerItem(props) {
           <p className="list-customer__content-gender--left"><span className="before">{t('common.gender')}</span>Nam {data?.gender}</p>
           <p className="list-customer__content-gender--right"><span className="before">{t('common.old')}</span> {data?.age}</p>
         </div>
-        <p className={`${selectId === data.key ? 'color-green' : ''} list-customer__content-contract`}>
+        <p className={`${selectId === data.customerId ? 'color-green' : ''} list-customer__content-contract`}>
           <span className="before">{t('common.contract')}</span>{data?.income}
         </p>
         <p className="list-customer__content-date">

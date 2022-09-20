@@ -18,13 +18,24 @@ const FinanceConsultant = lazy(() => import('../pages/FinanceConsultant'));
 const Survey = lazy(() => import('../pages/Survey'));
 const Contract_management = lazy(() => import('../pages/ContractManagement'));
 const FinancialSolution = lazy(() => import('../pages/FinancialSolution'));
-const FinanceKnowledge = lazy(() => import("../pages/FinanceKnowledge"));
-const Retirement = lazy(() => import("../pages/FinancialSolution/Retirement"));
-const StartupFund = lazy(() => import("../pages/FinancialSolution/StartupFund"));
-const ManageFinanceKnowledge = lazy(() => import("../pages/ManageFinanceKnowledge"));
-const InheritanceFund = lazy(() => import("../pages/FinancialSolution/InheritanceFund"));
-const QuyDuPhong = lazy(() => import("../pages/FinancialSolution/QuyDuPhong"));
-const MinhHoaGiaTriUyThac = lazy(() => import("../pages/FinancialSolution/MinhHoaGiaTriUyThac"));
+const FinanceKnowledge = lazy(() => import('../pages/FinanceKnowledge'));
+const Retirement = lazy(() => import('../pages/FinancialSolution/Retirement'));
+const StartupFund = lazy(() =>
+  import('../pages/FinancialSolution/StartupFund')
+);
+const ManageFinanceKnowledge = lazy(() =>
+  import('../pages/ManageFinanceKnowledge')
+);
+const InheritanceFund = lazy(() =>
+  import('../pages/FinancialSolution/InheritanceFund')
+);
+const QuyDuPhong = lazy(() => import('../pages/FinancialSolution/QuyDuPhong'));
+const MinhHoaGiaTriUyThac = lazy(() =>
+  import('../pages/FinancialSolution/MinhHoaGiaTriUyThac')
+);
+const AppointmentManagement = lazy(() =>
+  import('../pages/Main/views/AppointmentManagement')
+);
 // ADMIN VIEWS
 
 export const routes = () => [
@@ -32,14 +43,14 @@ export const routes = () => [
     path: '/',
     element: <MainLayout />,
     children: [
-      { path: '', element: <GuestGuard element={ <CustomerCare /> } /> },
+      { path: '', element: <GuestGuard element={<CustomerCare />} /> },
       {
         path: 'potential-customers',
         element: <GuestGuard element={<CustomerCare />} />,
       },
       {
         path: 'appointment-management',
-        element: <GuestGuard element={<CustomerCare />} />,
+        element: <GuestGuard element={<AppointmentManagement />} />,
       },
       {
         path: 'advise',
@@ -60,7 +71,7 @@ export const routes = () => [
                 path: 'minh-hoa-gia',
                 element: <GuestGuard element={<MinhHoaGiaTriUyThac />} />,
               },
-            ]
+            ],
           },
           {
             path: 'contract-management',
@@ -72,7 +83,10 @@ export const routes = () => [
         path: 'customer-care',
         element: <GuestGuard element={<CustomerCare />} />,
       },
-      { path: 'q&a', element: <GuestGuard element={<ManageFinanceKnowledge />} /> },
+      {
+        path: 'q&a',
+        element: <GuestGuard element={<ManageFinanceKnowledge />} />,
+      },
       {
         path: 'finance-support',
         element: <GuestGuard element={<FinanceKnowledge />} />,
@@ -93,7 +107,6 @@ export const routes = () => [
         path: 'quy-du-phong',
         element: <GuestGuard element={<QuyDuPhong />} />,
       },
-      
     ],
   },
   {

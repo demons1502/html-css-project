@@ -124,9 +124,7 @@ export default function ListEvent() {
           <h5>{t('customer care.event title')}</h5>
         </div>
         <div className="customer-care__center--list">
-          <Spin spinning={loading === LOADING_STATUS.pending}>
-            {table}
-          </Spin>
+          {table}
           <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add event')}</Button>
         </div>
       </Col>

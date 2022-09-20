@@ -86,9 +86,7 @@ export default function History() {
           </div>
         </div>
         <div className="customer-care__right--list">
-          <Spin spinning={loading === LOADING_STATUS.pending}>
-            {table}
-          </Spin>
+          {table}
           <div className="customer-care__right--list-footer">
             <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add info title')}</Button>
           </div>

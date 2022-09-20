@@ -1,18 +1,25 @@
-import React from 'react'
+import React from 'react';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Modal } from 'antd'
+import { Modal } from 'antd';
 const { confirm } = Modal;
 
-export default function ModalConfirm({title='Xác nhận',content='Bạn có muốn thực hiện thao tác này?',confirmText='Xác nhận',cancelText='Huỷ bỏ', callApi}) {
+export default function ModalConfirm({
+  title = 'Xác nhận',
+  content = 'Bạn có muốn thực hiện thao tác này?',
+  confirmText = 'Xác nhận',
+  cancelText = 'Huỷ bỏ',
+  callApi,
+}) {
   Modal.confirm({
     title,
     icon: <ExclamationCircleOutlined />,
     content,
     okText: confirmText,
     cancelText: cancelText,
-    centered:true ,
+    centered: true,
 
     onOk() {
-      callApi()
+      callApi();
     },
-  })}
+  });
+}

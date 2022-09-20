@@ -10,7 +10,7 @@ import useLoading from '../../hooks/useLoading';
 export default function App() {
   useLoading();
   const currentPath = useLocation();
-  const noNav = ['/admin', '/q&a', '/payment'];
+  const noNav = ['/admin', '/q&a', '/payment', '/content-management'];
 
   return (
     <Suspense fallback={null}>

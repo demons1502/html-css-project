@@ -10,6 +10,7 @@ import { FiduciaryValue } from "./FiduciaryValue";
 import { SummaryOfBenefits } from "./SummaryOfBenefits";
 import { HistoryModal } from "./HistoryModal";
 import { ClosingModal } from "./ClosingModal";
+import { SaveConfirmation } from "./SaveConfirmation";
 
 const IllustrateFiduciary = () => {
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
@@ -87,14 +88,15 @@ const IllustrateFiduciary = () => {
             </div>
 
             <div className="finance-btn-wrapper-sm">
-              <Button
+              {/* <Button
                 type="primary"
                 htmlType="submit"
                 className="btn-primary finance-btn-small"
                 block
               >
                 Lưu
-              </Button>
+              </Button> */}
+              <SaveConfirmation />
             </div>
           </div>
         </div>

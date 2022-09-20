@@ -139,11 +139,13 @@
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
+        flex-direction: column;
         &-title {
           min-width: 80px;
         }
         &-input {
           padding: unset;
+
           &.background {
             background-color: #f3f3f3;
           }

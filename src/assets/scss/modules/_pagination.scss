@@ -62,6 +62,45 @@
       color: $gray-light-color  !important;
     }
   }
+  /* &.payment-pagination {
+    .ant-pagination-item {
+      width: 27px;
+      height: 27px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  } */
+  &.manageFinanceKnowledge-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    .ant-pagination-options {
+      display: none;
+    }
+    .ant-pagination-item {
+      width: 25px !important;
+      min-width: 25px !important;
+      height: 25px;
+      padding: unset;
+    }
+  }
+  &.financeKnowledge-pagination {
+    .ant-pagination-item {
+      background-color: unset;
+      &-active {
+        background-color: $green-color;
+      }
+    }
+
+    .ant-pagination-prev,
+    .ant-pagination-next {
+      button {
+        background-color: unset;
+      }
+    }
+  }
 }
 
 .ant-pagination-prev {

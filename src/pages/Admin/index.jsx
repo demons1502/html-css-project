@@ -181,6 +181,7 @@ export default function UserManagement() {
         // ModalConfirm({title:'Xác nhận',content:`Upload file: ${fileList[0].name}?`,callApi:()=>uploadFiles(formData)})
       }
     }
+    removeEventListener('change', handleFiles)
   }
  
   const handleCreateUser = () => {

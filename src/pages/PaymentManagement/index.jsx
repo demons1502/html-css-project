@@ -1,5 +1,6 @@
 import { Button, Col, Pagination, Row, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import deleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import importIcon from '../../assets/images/icons/importIcon.svg';
 import plusIcon from '../../assets/images/icons/plus.svg';
@@ -8,6 +9,9 @@ import CreatePayment from './CreatePayment';
 import { customers } from './data';
 import PaymentHistory from './PaymentHistory';
 import PaymentManagementHeader from './PaymentManagementHeader';
+import { retrieveData } from '../../slices/paymentManagement';
+import moment from 'moment';
+import { FORMAT_DATE, LOADING_STATUS } from '../../ultis/constant';
 
 const PaymentManagement = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -17,14 +21,14 @@ const PaymentManagement = () => {
   const [historyItem, setHistoryItem] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const dispatch = useDispatch();
+
+  const payments = useSelector((state) => state.paymentManagementReducer);
+
   const onSelectChange = (newSelectedRowKeys) => {
     /* console.log('selectedRowKeys changed: ', selectedRowKeys); */
     setSelectedRowKeys(newSelectedRowKeys);
   };
-  const dataSource = [];
-  for (let i = 0; i < 100; i++) {
-    dataSource.push({ ...data[0], id: i });
-  }
 
   const handleDeleteOne = (id) => {
     const newData = data.filter((item) => item.id !== id);
@@ -48,28 +52,34 @@ const PaymentManagement = () => {
   const columns = [
     {
       title: 'Họ và tên',
-      dataIndex: 'username',
-      key: 'username',
+      dataIndex: 'userFullname',
+      key: 'userFullname',
     },
     {
       title: 'Ngày thanh toán',
-      dataIndex: 'dateOfPayment',
-      key: 'dateOfPayment',
+      key: 'startDate',
+      render: (record) => {
+        return <span>{moment(record.startDate).format(FORMAT_DATE)}</span>;
+      },
     },
     {
       title: 'Ngày hiệu lực',
-      dataIndex: 'effectiveDate',
-      key: 'effectiveDate',
+      key: 'startDate',
+      render: (record) => {
+        return <span>{moment(record.startDate).format(FORMAT_DATE)}</span>;
+      },
     },
     {
       title: 'Ngày kết thúc',
-      dataIndex: 'endDate',
-      key: 'endDate',
+      key: 'dueDate',
+      render: (record) => {
+        return <span>{moment(record.dueDate).format(FORMAT_DATE)}</span>;
+      },
     },
     {
       title: 'Số tiền',
-      dataIndex: 'money',
-      key: 'money',
+      dataIndex: 'amount',
+      key: 'amount',
       className: 'green-color',
     },
     {
@@ -106,8 +116,12 @@ const PaymentManagement = () => {
   };
 
   useEffect(() => {
-    setRowActive(data[0]?.id);
-    setHistoryItem(data[0]);
+    setRowActive(payments[0]?.id);
+    setHistoryItem(payments[0]);
+  }, []);
+  useEffect(() => {
+    const params = { q: '', page: 1, limit: 10 };
+    dispatch(retrieveData(params));
   }, []);
 
   return (
@@ -161,7 +175,7 @@ const PaymentManagement = () => {
               />
               <Table
                 className='table-common paymentManagement-table'
-                dataSource={dataSource}
+                dataSource={payments}
                 columns={columns}
                 pagination={{ className: 'payment-pagination' }}
                 rowSelection={{
@@ -205,7 +219,7 @@ const PaymentManagement = () => {
           </Col>
         </Row>
         <CreatePayment
-          users={data}
+          users={payments}
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           onClick={handleAdd}

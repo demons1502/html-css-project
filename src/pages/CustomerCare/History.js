@@ -1,37 +1,25 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {Col, Checkbox, Button, Empty, message} from 'antd';
-import {getData , createData, updateData} from '../../slices/customerCare';
+import {Col, Checkbox, Button, Empty, Spin} from 'antd';
+import {getData} from '../../slices/customerCare';
 import TableCommon from '../../components/TableCommon';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconFiles from '../../assets/images/icons/files.svg';
 import FilterCommon from "../../components/FilterCommon";
 import AddInfoContent from "../../components/ModalCommon/CustomerCare/AddInfoContent";
 import ModalCommon from "../../components/ModalCommon";
-import {LOADING_STATUS} from '../../ultis/constant';
-import moment from 'moment';
-
-const options = [
-  { label: 'Thu nhập', value: 1 },
-  { label: 'Lịch hẹn', value: 2 },
-  { label: 'Quà', value: 3 },
-  { label: 'Ký hợp đồng', value: 4 },
-  { label: 'Tư vấn', value: 5 },
-  { label: 'Khảo sát', value: 6 },
-  { label: 'Sở thích', value: 7 },
-  { label: 'Gia đình', value: 8 },
-  { label: 'Khác', value: 9 },
-];
+import {CUSTOMER_CARE_INFO, LOADING_STATUS } from '../../ultis/constant';
 
 export default function History() {
   const {t} = useTranslation();
+  const loading = useSelector((state) => state.loading.loading);
   const customerCare = useSelector((state) => state.customerCare);
   const [visibleModalAddInfo, setVisibleModalAddInfo] = useState(false)
   const [detailData, setDetailData] = useState({})
   const [optionsFilter, setOptionsFilter] = useState('')
   const dispatch = useDispatch();
-
+ 
   const columns = [
     {
       title: t('common.date'),
@@ -43,7 +31,7 @@ export default function History() {
       key: 'info',
       render: (record) => {
         return (
-          <span onClick={() => editModal(record)}>{record.info}</span>
+          <span>{record.info}</span>
         );
       }
     },
@@ -59,17 +47,6 @@ export default function History() {
     setDetailData({})
   }
 
-  const handleSaveInfo = (values) => {
-    values.date = moment(values.date)
-    values.customerId = customerCare.customerId
-    if (Object.keys(detailData).length > 0) {
-      values.id = detailData.id
-      dispatch(updateData(values))
-    } else {
-      dispatch(createData(values))
-    }
-  }
-
   const table = useMemo(() => {
     if (!!customerCare.data && customerCare.data.length > 0) {
       return <TableCommon dataSource={customerCare.data} columnTable={columns}></TableCommon>
@@ -79,23 +56,22 @@ export default function History() {
   }, [customerCare.data])
 
   useEffect(() => {
-    if (customerCare.loading === LOADING_STATUS.failed) {
-      message.error(customerCare?.message)
+    if (customerCare.customerId > 0) {
+      dispatch(getData({customerId: customerCare.customerId, info: CUSTOMER_CARE_INFO[0].value}))
     }
-
-    if (customerCare.loading === LOADING_STATUS.succeeded) {
-      setVisibleModalAddInfo(false)
-      if (!!customerCare?.message) {
-        message.success(customerCare?.message)
-      }
-    }
-  }, [customerCare.loading])
+  }, [customerCare.customerId])
 
   useEffect(() => {
     if (customerCare.customerId > 0) {
-      dispatch(getData({customerId: customerCare.customerId}))
+      dispatch(getData({customerId: customerCare.customerId, info: optionsFilter[0]}))
     }
-  }, [customerCare.customerId])
+  }, [optionsFilter])
+
+  useEffect(() => {
+    if (loading === LOADING_STATUS.succeeded) {
+      setVisibleModalAddInfo(false)
+    }
+  }, [loading])
 
   return (
     <>
@@ -106,7 +82,7 @@ export default function History() {
         <div className="customer-care__right--event">
           <div className="customer-care__right--event--left">
             <h5>{t('customer care.history title')}</h5>
-            <FilterCommon options={options} setPayload={setOptionsFilter}></FilterCommon>
+            <FilterCommon options={CUSTOMER_CARE_INFO} setPayload={setOptionsFilter}></FilterCommon>
           </div>
         </div>
         <div className="customer-care__right--list">
@@ -123,7 +99,7 @@ export default function History() {
           </ul>
         </div>
       </Col>
-      <ModalCommon isVisible={visibleModalAddInfo} setIsVisible={setVisibleModalAddInfo} title={Object.keys(detailData).length > 0 ? t(('customer care.edit info title')) : t(('customer care.add info title'))} width={770} content={<AddInfoContent onFinish={handleSaveInfo} detailData={detailData} setVisibleModalAddInfo={setVisibleModalAddInfo}/>} />
+      <ModalCommon isVisible={visibleModalAddInfo} setIsVisible={setVisibleModalAddInfo} title={Object.keys(detailData).length > 0 ? t(('customer care.edit info title')) : t(('customer care.add info title'))} width={770} content={<AddInfoContent detailData={detailData} setVisibleModalAddInfo={setVisibleModalAddInfo}/>} />
     </>
 
   );

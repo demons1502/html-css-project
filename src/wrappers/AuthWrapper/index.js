@@ -5,8 +5,10 @@ import Header from '../../components/Header';
 import Nav from '../../components/Nav';
 import { useLocation } from 'react-router-dom';
 import { RoutesWithOutMenu } from '../../routes/private';
+import useLoading from '../../hooks/useLoading';
 
 export default function App() {
+  useLoading();
   const currentPath = useLocation();
   const noNav = ['/admin', '/q&a', '/payment', '/content-management'];
 

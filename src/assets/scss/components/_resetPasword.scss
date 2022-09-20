@@ -16,7 +16,7 @@
     @extend %align-items-center;
     flex-direction: column;
     text-align: center;
-    width: 203px;
+    width: 235px;
 
     &__title {
       margin-bottom: 6px;
@@ -56,6 +56,7 @@
       margin-bottom: 8px;
     }
     &__id {
+      height: 40px;
       background-color: $secondary-color;
     }
   }
@@ -68,12 +69,68 @@
   }
 }
 
+.update-password {
+  .ant-modal-content {
+    border-radius: 22px;
+  }
+
+  .ant-modal-body {
+    display: flex;
+    padding: 30px 0 0 0;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__content {
+    @extend %align-items-center;
+    margin-top: 25px;
+    flex-direction: column;
+  }
+
+  &__form {
+    margin-top: 20px;
+  }
+
+  &__boxInput {
+    padding: 0 30px;
+    .ant-form-item-required:after {
+      content: "*";
+      color: $red-color;
+      font-weight: 600;
+      font-size: 16px;
+      margin-left: 2px;
+    }
+  }
+
+  &__password {
+    @extend %input;
+    height: 40px;
+    border-radius: 5px;
+    background-color: $secondary-color !important;
+    > input {
+      background-color: $secondary-color;
+    }
+  }
+
+  &__textError {
+    @extend .forgot-password__textError;
+    margin-bottom: 20px;
+    margin-top: 0;
+  }
+
+  &__footer {
+    border-top: 1px solid $grey-bg-color;
+    padding: 14px 14px 0 14px;
+  }
+}
+
 .footer-password {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 
   &__btn {
     width: 127px;
     height: 35px;
+    margin: 0 !important;
   }
 }

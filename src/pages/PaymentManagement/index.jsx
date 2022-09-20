@@ -10,6 +10,8 @@ import { customers } from './data';
 import PaymentHistory from './PaymentHistory';
 import PaymentManagementHeader from './PaymentManagementHeader';
 import { retrieveData } from '../../slices/paymentManagement';
+import moment from 'moment';
+import { FORMAT_DATE, LOADING_STATUS } from '../../ultis/constant';
 
 const PaymentManagement = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -22,7 +24,6 @@ const PaymentManagement = () => {
   const dispatch = useDispatch();
 
   const payments = useSelector((state) => state.paymentManagementReducer);
-  console.log(payments);
 
   const onSelectChange = (newSelectedRowKeys) => {
     /* console.log('selectedRowKeys changed: ', selectedRowKeys); */
@@ -60,18 +61,24 @@ const PaymentManagement = () => {
     },
     {
       title: 'Ngày thanh toán',
-      dataIndex: 'startDate',
       key: 'startDate',
+      render: (record) => {
+        return <span>{moment(record.startDate).format(FORMAT_DATE)}</span>;
+      },
     },
     {
       title: 'Ngày hiệu lực',
-      dataIndex: 'startDate',
       key: 'startDate',
+      render: (record) => {
+        return <span>{moment(record.startDate).format(FORMAT_DATE)}</span>;
+      },
     },
     {
       title: 'Ngày kết thúc',
-      dataIndex: 'dueDate',
       key: 'dueDate',
+      render: (record) => {
+        return <span>{moment(record.dueDate).format(FORMAT_DATE)}</span>;
+      },
     },
     {
       title: 'Số tiền',
@@ -118,7 +125,7 @@ const PaymentManagement = () => {
   }, []);
   useEffect(() => {
     const params = { q: '', page: 1, limit: 10 };
-    dispatch(retrieveData({ params }));
+    dispatch(retrieveData(params));
   }, []);
 
   return (

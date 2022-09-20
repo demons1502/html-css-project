@@ -36,6 +36,7 @@ export default function ListSearch() {
     setDataSource(data?.data);
     setTotal(data?.count);
     dispatch(setCustomerId(data?.data[0].customerId))
+    setSelectId(data?.data[0].customerId)
   }
 
   useEffect(() => {
@@ -43,7 +44,7 @@ export default function ListSearch() {
   }, [keyword])
 
   useEffect(() => {
-
+    // setPercent(optionsFilter.slice(-1)[0] * 10)
   }, [optionsFilter])
 
   useEffect(() => {

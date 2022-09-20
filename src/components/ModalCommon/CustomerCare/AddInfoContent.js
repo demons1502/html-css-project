@@ -1,17 +1,33 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {DatePicker, Select, Col, Form, Input, Row, Button} from "antd";
-import {VALIDATE_MESSAGES, FORMAT_DATE} from '../../../ultis/constant';
+import {VALIDATE_MESSAGES, FORMAT_DATE, CUSTOMER_CARE_INFO} from '../../../ultis/constant';
+import {createData, updateData} from '../../../slices/customerCare';
 import {useTranslation} from 'react-i18next';
-import {getEvents} from '../../../services/events';
+import useFormErrors from '../../../hooks/useFormErrors'
 import moment from 'moment';
 
 const { Option } = Select;
 const { TextArea } = Input;
 
 export default function AddEventContent(props) {
-  const {t} = useTranslation();
-  const {onFinish, detailData , setVisibleModalAddInfo} = props;
   const [form] = Form.useForm();
+  useFormErrors(form);
+  const {t} = useTranslation();
+  const customerId = useSelector((state) => state.customerCare.customerId);
+  const {detailData , setVisibleModalAddInfo} = props;
+  const dispatch = useDispatch();
+
+  const handleSaveInfo = (values) => {
+    values.date = moment(values.date)
+    values.customerId = customerId
+    if (Object.keys(detailData).length > 0) {
+      values.id = detailData.id
+      dispatch(updateData(values))
+    } else {
+      dispatch(createData(values))
+    }
+  }
 
   useEffect(() => {
     if (Object.keys(detailData).length > 0) {
@@ -21,7 +37,7 @@ export default function AddEventContent(props) {
     }
   }, [detailData])
 
-  return <Form layout="vertical" form={form} validateMessages={VALIDATE_MESSAGES} onFinish={onFinish}>
+  return <Form layout="vertical" form={form} validateMessages={VALIDATE_MESSAGES} onFinish={handleSaveInfo}>
     <Row gutter={[6, 13]}>
       <Col span={6}>
         <Form.Item
@@ -34,10 +50,14 @@ export default function AddEventContent(props) {
       <Col span={18}>
         <Form.Item
           label={t('common.type info')}
-          name="info">
-          <Select defaultValue={0} className="select-item-outline">
-            <Option value={0}>Loại thông tin 1</Option>
-            <Option value={1}>Một lần</Option>
+          name="info"
+          rules={[{required: true}]}>
+          <Select className="select-item-outline" placeholder={t('common.select')}>
+            {
+              CUSTOMER_CARE_INFO.map((value, index) => {
+                return <Option key={index} value={value.value}>{value.label}</Option>
+              })
+            }
           </Select>
         </Form.Item>
       </Col>

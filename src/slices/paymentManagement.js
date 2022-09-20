@@ -5,17 +5,25 @@ const initialState = [];
 
 export const retrieveData = createAsyncThunk(
   'paymentManagement/getAll',
-  async (params) => {
-    const res = await getAll(params);
-    return res.data;
+  async (params, { rejectWithValue }) => {
+    try {
+      const res = await getAll(params);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 export const createPayment = createAsyncThunk(
   'paymentManagement/create',
-  async (params) => {
-    const res = await create(params);
-    return res.data;
+  async (params, { rejectWithValue }) => {
+    try {
+      const res = await create(params);
+      return { data: res.data, message: 'Tạo thanh toán thành công' };
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -36,7 +44,7 @@ const paymentManagementSlice = createSlice({
       state.push(action.payload);
     },
     [retrieveData.fulfilled]: (state, action) => {
-      return [...action.payload?.data];
+      return [...action.payload.data];
     },
     [deleteContent.fulfilled]: (state, action) => {
       let index = state.findIndex(({ id }) => id === action.payload.id);

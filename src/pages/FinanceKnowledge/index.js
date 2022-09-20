@@ -18,10 +18,18 @@ const index = () => {
   const mostViewData = useSelector(
     (state) => state.financeKnowledgeReducer.mostViewData
   );
-  console.log(articlesData);
+  /* const loading = useSelector((state) => state.loading.loading);
+  console.log(loading); */
+
   const dispatch = useDispatch();
 
   //fetch data
+  useEffect(() => {
+    const params = { limit: 12, offset: 0 };
+    dispatch(getArticlesData(params));
+    dispatch(mostViewArticles());
+  }, []);
+
   useEffect(() => {
     const params = { limit: 12, offset: 0 };
     dispatch(getArticlesData(params));

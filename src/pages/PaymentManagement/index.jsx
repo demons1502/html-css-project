@@ -1,6 +1,6 @@
 import { Button, Col, Pagination, Row, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import deleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import importIcon from '../../assets/images/icons/importIcon.svg';
 import plusIcon from '../../assets/images/icons/plus.svg';
@@ -20,6 +20,9 @@ const PaymentManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const dispatch = useDispatch();
+
+  const payments = useSelector((state) => state.paymentManagementReducer);
+  console.log(payments);
 
   const onSelectChange = (newSelectedRowKeys) => {
     /* console.log('selectedRowKeys changed: ', selectedRowKeys); */
@@ -52,28 +55,28 @@ const PaymentManagement = () => {
   const columns = [
     {
       title: 'Họ và tên',
-      dataIndex: 'username',
-      key: 'username',
+      dataIndex: 'userFullname',
+      key: 'userFullname',
     },
     {
       title: 'Ngày thanh toán',
-      dataIndex: 'dateOfPayment',
-      key: 'dateOfPayment',
+      dataIndex: 'startDate',
+      key: 'startDate',
     },
     {
       title: 'Ngày hiệu lực',
-      dataIndex: 'effectiveDate',
-      key: 'effectiveDate',
+      dataIndex: 'startDate',
+      key: 'startDate',
     },
     {
       title: 'Ngày kết thúc',
-      dataIndex: 'endDate',
-      key: 'endDate',
+      dataIndex: 'dueDate',
+      key: 'dueDate',
     },
     {
       title: 'Số tiền',
-      dataIndex: 'money',
-      key: 'money',
+      dataIndex: 'amount',
+      key: 'amount',
       className: 'green-color',
     },
     {
@@ -169,7 +172,7 @@ const PaymentManagement = () => {
               />
               <Table
                 className='table-common paymentManagement-table'
-                dataSource={dataSource}
+                dataSource={payments}
                 columns={columns}
                 pagination={{ className: 'payment-pagination' }}
                 rowSelection={{

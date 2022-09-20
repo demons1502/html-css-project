@@ -6,7 +6,8 @@ import DeleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import EditIcon from '../../assets/images/icons/edit-green.svg';
 
 const FinanceKnowledgeContent = (props) => {
-  const { content, onChange, fileList, onClick, onDelete, onUpload, onCancel } = props;
+  const { content, onChange, fileList, onClick, onDelete, onUpload, onCancel } =
+    props;
 
   return (
     <div className='financeKnowledgeContent'>
@@ -17,7 +18,7 @@ const FinanceKnowledgeContent = (props) => {
             <Title title='Nội dung' />
             <div className='manageContent-header_icon'>
               <img src={EditIcon} />
-              <img src={DeleteIcon} onClick={() => onDelete(content?.id)} />
+              <img src={DeleteIcon} onClick={() => onDelete(content)} />
             </div>
           </div>
         }
@@ -31,14 +32,18 @@ const FinanceKnowledgeContent = (props) => {
               placeholder='Nhập link'
             />
             <div className='manageContent-footer_button'>
-              <Button danger className='btn-cancer' onClick={() => onDelete(content.id)}>
+              <Button
+                danger
+                className='btn-cancer'
+                onClick={() => onCancel(content)}
+              >
                 Hủy
               </Button>
               <Button
                 type='primary'
                 className='btn-save'
                 onClick={() => onClick(content)}
-              /* disabled={buttonState} */
+                /* disabled={buttonState} */
               >
                 Lưu
               </Button>
@@ -71,7 +76,6 @@ const FinanceKnowledgeContent = (props) => {
             input={false}
             placeholder='Nội dung'
           />
-
         </div>
       </List>
     </div>

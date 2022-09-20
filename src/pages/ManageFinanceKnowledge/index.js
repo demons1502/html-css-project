@@ -1,4 +1,13 @@
-import { Button, Col, Layout, List, Row, Segmented, Typography } from 'antd';
+import {
+  Button,
+  Col,
+  Layout,
+  List,
+  Row,
+  Segmented,
+  Spin,
+  Typography,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,11 +22,14 @@ import {
 } from '../../slices/managementContent';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
+import { LOADING_STATUS } from '../../ultis/constant';
+import ModalConfirm from '../../components/ModalConfirm';
 
 const ManageFinanceKnowledge = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const contents = useSelector((state) => state.managementContentReducer);
+  const loading = useSelector((state) => state.loading.loading);
 
   const [itemContent, setItemContent] = useState({});
   const [option, setOption] = useState('articles');
@@ -48,7 +60,7 @@ const ManageFinanceKnowledge = () => {
     data.append('body', '');
     data.append('url', '');
     dispatch(createContent({ type: option, payload: data }));
-    setItemContent(itemContent[contents.length - 1]);
+    /* setItemContent(itemContent[contents.length - 1]); */
   };
 
   const handleSave = (item) => {
@@ -67,10 +79,11 @@ const ManageFinanceKnowledge = () => {
     /* setItemContent(item) */
   };
 
-  const handleDelete = (id) => {
-    // ModalConfirm()
-    dispatch(deleteContent({ type: option, id: id }));
-    setItemContent({});
+  const handleDelete = (item) => {
+    ModalConfirm({
+      content: `Xác nhận xóa nội dung`,
+      callApi: () => dispatch(deleteContent({ type: option, id: item.id })),
+    });
   };
 
   useEffect(() => {
@@ -95,44 +108,47 @@ const ManageFinanceKnowledge = () => {
                   value={option}
                 />
               </div>
-
-              <List
-                className='manageFinanceKnowledge-container_list'
-                size='small'
-                pagination={{
-                  className: 'manageFinanceKnowledge-pagination',
-                  pageSize: 7,
-                  showLessItems: true,
-                }}
-                header={
-                  <Title
-                    title={
-                      option !== 'q&a'
-                        ? t('manage content.articles list title')
-                        : t('manage content.q&a list title')
-                    }
-                  />
-                }
-                footer={
-                  <Button
-                    type='primary'
-                    shape='circle'
-                    icon={<img src={IconPlus} alt='' />}
-                    onClick={handleCreate}
-                  >
-                    Thêm mới
-                  </Button>
-                }
-                dataSource={contents}
-                renderItem={(item) => (
-                  <List.Item
-                    onClick={() => setItemContent(item)}
-                    className={`${item.id === itemContent?.id ? 'active' : ''}`}
-                  >
-                    <Typography.Text ellipsis>{item.title}</Typography.Text>
-                  </List.Item>
-                )}
-              />
+              <Spin spinning={loading === LOADING_STATUS.pending}>
+                <List
+                  className='manageFinanceKnowledge-container_list'
+                  size='small'
+                  pagination={{
+                    className: 'manageFinanceKnowledge-pagination',
+                    pageSize: 7,
+                    showLessItems: true,
+                  }}
+                  header={
+                    <Title
+                      title={
+                        option !== 'q&a'
+                          ? t('manage content.articles list title')
+                          : t('manage content.q&a list title')
+                      }
+                    />
+                  }
+                  footer={
+                    <Button
+                      type='primary'
+                      shape='circle'
+                      icon={<img src={IconPlus} alt='' />}
+                      onClick={handleCreate}
+                    >
+                      Thêm mới
+                    </Button>
+                  }
+                  dataSource={contents}
+                  renderItem={(item) => (
+                    <List.Item
+                      onClick={() => setItemContent(item)}
+                      className={`${
+                        item.id === itemContent?.id ? 'active' : ''
+                      }`}
+                    >
+                      <Typography.Text ellipsis>{item.title}</Typography.Text>
+                    </List.Item>
+                  )}
+                />
+              </Spin>
             </Layout.Content>
           </Col>
 

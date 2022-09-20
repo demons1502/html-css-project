@@ -1,4 +1,4 @@
-import { Col, List, Row } from 'antd';
+import { Col, List, Row, Spin } from 'antd';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import {
   mostViewArticles,
 } from '../../slices/financeKnowledge';
 import FinanceKnowledgeCard from './FinanceKnowledgeCard';
+import { LOADING_STATUS } from '../../ultis/constant';
 
 const index = () => {
   const { t } = useTranslation();
@@ -18,8 +19,7 @@ const index = () => {
   const mostViewData = useSelector(
     (state) => state.financeKnowledgeReducer.mostViewData
   );
-  /* const loading = useSelector((state) => state.loading.loading);
-  console.log(loading); */
+  const loading = useSelector((state) => state.loading.loading);
 
   const dispatch = useDispatch();
 
@@ -40,52 +40,56 @@ const index = () => {
     <div className='financeKnowledge'>
       <div>
         <Title title={t('finance knowledge.most view')} icon={commentIcon} />
-        <Row gutter={[10, 10]}>
-          <Col lg={8} md={24} sm={24}>
-            <Row>
-              <FinanceKnowledgeCard
-                content={mostViewData[0]}
-                wrap
-                image
-                lg={24}
-              />
-            </Row>
-          </Col>
-          <Col lg={16} md={24} sm={24}>
-            <Row gutter={[10, 10]} align='stretch' style={{ height: '100%' }}>
-              {mostViewData.slice(1)?.map((item) => (
+        <Spin spinning={loading === LOADING_STATUS.pending}>
+          <Row gutter={[10, 10]}>
+            <Col lg={8} md={24} sm={24}>
+              <Row>
                 <FinanceKnowledgeCard
-                  content={item}
+                  content={mostViewData[0]}
+                  wrap
                   image
-                  key={item.id}
-                  lg={12}
-                  md={12}
+                  lg={24}
                 />
-              ))}
-            </Row>
-          </Col>
-        </Row>
+              </Row>
+            </Col>
+            <Col lg={16} md={24} sm={24}>
+              <Row gutter={[10, 10]} align='stretch' style={{ height: '100%' }}>
+                {mostViewData.slice(1)?.map((item) => (
+                  <FinanceKnowledgeCard
+                    content={item}
+                    image
+                    key={item.id}
+                    lg={12}
+                    md={12}
+                  />
+                ))}
+              </Row>
+            </Col>
+          </Row>
+        </Spin>
       </div>
       <div>
         <Title title={t('finance knowledge.old articles')} icon={commentIcon} />
-        <List
-          className='financeKnowledge-list'
-          grid={{
-            gutter: 10,
-            column: 3,
-          }}
-          dataSource={articlesData.articles}
-          pagination={{
-            pageSize: 12,
-            className: 'financeKnowledge-pagination',
-            pageSizeOptions: true,
-          }}
-          renderItem={(item) => (
-            <List.Item>
-              <FinanceKnowledgeCard content={item} key={item.id} lg={24} />
-            </List.Item>
-          )}
-        />
+        <Spin spinning={loading === LOADING_STATUS.pending}>
+          <List
+            className='financeKnowledge-list'
+            grid={{
+              gutter: 10,
+              column: 3,
+            }}
+            dataSource={articlesData.articles}
+            pagination={{
+              pageSize: 12,
+              className: 'financeKnowledge-pagination',
+              pageSizeOptions: true,
+            }}
+            renderItem={(item) => (
+              <List.Item>
+                <FinanceKnowledgeCard content={item} key={item.id} lg={24} />
+              </List.Item>
+            )}
+          />
+        </Spin>
       </div>
     </div>
   );

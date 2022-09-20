@@ -11,10 +11,11 @@ const ManageContentInput = (props) => {
     type = 'text',
     textarea = false,
     value,
-    fileList,
     placeholder,
     color = false,
+    fileList
   } = props;
+
 
   return (
     <>
@@ -39,21 +40,25 @@ const ManageContentInput = (props) => {
             onChange={onChange}
             value={value}
             type={type}
-            autoSize
+            autoSize={{ minRows: 5 }}
             className='textarea-input'
           />
         </div>
       ) : (
+
         <div className='manageContentInput-upload'>
+
           <span className=' avatar-title'>{title}</span>
           <Upload
-            name='avatar'
+            name={name}
             listType='picture-card'
             className='avatar-uploader'
-            showUploadList={true}
-            action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+            showUploadList
             onChange={onChange}
+            /* beforeUpload={() => { return false }} */
+            beforeUpload={Upload.LIST_IGNORE}
             fileList={fileList}
+          /* disabled={fileList.length > 0 ? true : false} */
           >
             <div className='upload-content'>
               <CameraOutlined />
@@ -61,7 +66,8 @@ const ManageContentInput = (props) => {
             </div>
           </Upload>
         </div>
-      )}
+      )
+      }
     </>
   );
 };

@@ -1,8 +1,95 @@
-import { Button, Select, Checkbox, Form, Input } from "antd";
+import { Button, Select, Checkbox, Form, Input, InputNumber } from "antd";
 import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const ListCalculation = () => {
   const [form] = Form.useForm();
+  const [annualTuitionFee, setAnnualTuitionFee] = useState(0);
+  const [numberOfChildren, setNumberOfChildren] = useState(0);
+  const [collegeAge, setCollegeAge] = useState(0);
+  const [firstChildAge, setFirstChildAge] = useState(0);
+  const [firstChildAmount, setFirstChildAmount] = useState(0);
+  const [secondChildAge, setSecondChildAge] = useState(0);
+  const [secondChildAmount, setSecondChildAmount] = useState(0);
+  const [thirdChildAge, setThirdChildAge] = useState(0);
+  const [thirdChildAmount, setThirdChildAmount] = useState(0);
+  const [fourthChildAge, setFourthChildAge] = useState(0);
+  const [fourthChildAmount, setFourthChildAmount] = useState(0);
+  const [minusAmount, setMinusAmount] = useState(0);
+  const [inflationRate, setInflationRate] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [grandTotalAmount, setGrandTotalAmount] = useState(0);
+
+  // onchange founctions
+  const onChange = (value) => {
+    setAnnualTuitionFee(value);
+  };
+  const onChange1 = (value) => {
+    setMinusAmount(value);
+  };
+
+  // annualTuitionFee
+  useEffect(() => {}, []);
+
+  // firstChildAmount
+  useEffect(() => {
+    let per = inflationRate / 100 + 1;
+    let childAge1 = collegeAge - firstChildAge;
+    setFirstChildAmount(annualTuitionFee * Math.pow(per, childAge1));
+  }, [annualTuitionFee, inflationRate, collegeAge, firstChildAge]);
+
+  // secondChildAmount
+  useEffect(() => {
+    let per = inflationRate / 100 + 1;
+    let childAge2 = collegeAge - secondChildAge;
+    setSecondChildAmount(annualTuitionFee * Math.pow(per, childAge2));
+  }, [annualTuitionFee, inflationRate, collegeAge, secondChildAge]);
+
+  // setThirdChildAmount
+  useEffect(() => {
+    let per = inflationRate / 100 + 1;
+    let childAge3 = collegeAge - thirdChildAge;
+    setThirdChildAmount(annualTuitionFee * Math.pow(per, childAge3));
+  }, [annualTuitionFee, inflationRate, collegeAge, thirdChildAge]);
+
+  // setFourthChildAmount
+  useEffect(() => {
+    let per = inflationRate / 100 + 1;
+    let childAge4 = collegeAge - fourthChildAge;
+    setFourthChildAmount(annualTuitionFee * Math.pow(per, childAge4));
+  }, [annualTuitionFee, inflationRate, collegeAge, fourthChildAge]);
+
+  //setTotalAmount
+  useEffect(() => {
+    setTotalAmount(
+      firstChildAmount +
+        secondChildAmount +
+        thirdChildAmount +
+        fourthChildAmount
+    );
+  }, [
+    firstChildAmount,
+    secondChildAmount,
+    thirdChildAmount,
+    fourthChildAmount,
+  ]);
+
+  // setGrandTotalAmount
+  useEffect(() => {
+    setGrandTotalAmount(totalAmount - minusAmount);
+  }, [
+    totalAmount,
+    minusAmount,
+    annualTuitionFee,
+    numberOfChildren,
+    firstChildAge,
+    secondChildAmount,
+    thirdChildAmount,
+    fourthChildAmount,
+    totalAmount,
+  ]);
+
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -36,7 +123,15 @@ const ListCalculation = () => {
               message: "Học phí hằng năm",
             },
           ]}>
-          <Input placeholder="0" type="number" min={0} style={{ width: 152 }} />
+          <InputNumber
+            style={{ width: 152 }}
+            initialvalues={0}
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            onChange={onChange}
+          />
         </Form.Item>
 
         <Form.Item
@@ -48,7 +143,14 @@ const ListCalculation = () => {
               message: "Số con",
             },
           ]}>
-          <Input placeholder="0" type="number" min={0} style={{ width: 40 }} />
+          <Input
+            onChange={(e) => setNumberOfChildren(Number(e.target.value))}
+            placeholder="0"
+            type="number"
+            min={0}
+            max={4}
+            style={{ width: 40 }}
+          />
         </Form.Item>
         <Form.Item
           name="name4"
@@ -59,52 +161,90 @@ const ListCalculation = () => {
               message: "Số tuổi vào đại học",
             },
           ]}>
-          <Input placeholder="0" type="number" min={0} style={{ width: 40 }} />
+          <Input
+            placeholder="0"
+            type="number"
+            min={0}
+            style={{ width: 40 }}
+            onChange={(e) => setCollegeAge(Number(e.target.value))}
+          />
         </Form.Item>
-        <Form.Item
-          name="name5"
-          label="Tuổi con thứ nhất"
-          rules={[
-            {
-              required: true,
-              message: "Tuổi con thứ nhất",
-            },
-          ]}>
-          <Input placeholder="0" type="number" min={0} style={{ width: 40 }} />
-        </Form.Item>
-        <Form.Item
-          name="name6"
-          label="Tuổi con thứ 2"
-          rules={[
-            {
-              required: true,
-              message: "Tuổi con thứ 2",
-            },
-          ]}>
-          <Input placeholder="0" type="number" min={0} style={{ width: 40 }} />
-        </Form.Item>
-        <Form.Item
-          name="name7"
-          label="Tuổi con thứ 3"
-          rules={[
-            {
-              required: true,
-              message: "Tuổi con thứ 3",
-            },
-          ]}>
-          <Input placeholder="0" type="number" min={0} style={{ width: 40 }} />
-        </Form.Item>
-        <Form.Item
-          name="name8"
-          label="Tuổi con thứ 4"
-          rules={[
-            {
-              required: true,
-              message: "Tuổi con thứ 4",
-            },
-          ]}>
-          <Input placeholder="0" type="number" min={0} style={{ width: 40 }} />
-        </Form.Item>
+        {numberOfChildren > 0 && numberOfChildren < 5 && (
+          <Form.Item
+            name="name5"
+            label="Tuổi con thứ nhất"
+            rules={[
+              {
+                required: true,
+                message: "Tuổi con thứ nhất",
+              },
+            ]}>
+            <Input
+              placeholder="0"
+              type="number"
+              min={0}
+              style={{ width: 40 }}
+              onChange={(e) => setFirstChildAge(Number(e.target.value))}
+            />
+          </Form.Item>
+        )}
+        {numberOfChildren > 1 && numberOfChildren < 5 && (
+          <Form.Item
+            name="name6"
+            label="Tuổi con thứ 2"
+            rules={[
+              {
+                required: true,
+                message: "Tuổi con thứ 2",
+              },
+            ]}>
+            <Input
+              placeholder="0"
+              type="number"
+              min={0}
+              style={{ width: 40 }}
+              onChange={(e) => setSecondChildAge(Number(e.target.value))}
+            />
+          </Form.Item>
+        )}
+        {numberOfChildren > 2 && numberOfChildren < 5 && (
+          <Form.Item
+            name="name7"
+            label="Tuổi con thứ 3"
+            rules={[
+              {
+                required: true,
+                message: "Tuổi con thứ 3",
+              },
+            ]}>
+            <Input
+              placeholder="0"
+              type="number"
+              min={0}
+              style={{ width: 40 }}
+              onChange={(e) => setThirdChildAge(Number(e.target.value))}
+            />
+          </Form.Item>
+        )}
+        {numberOfChildren > 3 && numberOfChildren < 5 && (
+          <Form.Item
+            name="name8"
+            label="Tuổi con thứ 4"
+            rules={[
+              {
+                required: true,
+                message: "Tuổi con thứ 4",
+              },
+            ]}>
+            <Input
+              placeholder="0"
+              type="number"
+              min={0}
+              style={{ width: 40 }}
+              onChange={(e) => setFourthChildAge(Number(e.target.value))}
+            />
+          </Form.Item>
+        )}
         <Form.Item
           name="name9"
           label="Số năm đại học"
@@ -125,7 +265,15 @@ const ListCalculation = () => {
               message: "Tổng tiền đã có",
             },
           ]}>
-          <Input placeholder="0" type="number" min={0} style={{ width: 152 }} />
+          <InputNumber
+            style={{ width: 152 }}
+            initialvalues={0}
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            onChange={onChange1}
+          />
         </Form.Item>
         <Form.Item
           name="name11"
@@ -136,7 +284,17 @@ const ListCalculation = () => {
               message: "Tỷ lệ lạm phát",
             },
           ]}>
-          <Input placeholder="0" type="text" style={{ width: 40 }} />
+          <div className="percentage-field">
+            <Input
+              className="percentage-input"
+              onChange={(e) => setInflationRate(Number(e.target.value))}
+              placeholder="0"
+              type="text"
+              style={{ width: 45, paddingRight: 0 }}
+              value={inflationRate}
+            />
+            <span className="pIcon">%</span>
+          </div>
         </Form.Item>
         <Form.Item
           name="name12"
@@ -165,10 +323,25 @@ const ListCalculation = () => {
       <div className="container-right-bottom">
         <p className="bottom-para">
           Tổng số tiền cần cho tương lai:{" "}
-          <span className="total-amount">40.000.000</span>
+          <span className="total-amount">
+            {totalAmount > 0 &&
+              totalAmount
+                .toFixed(2)
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            {(totalAmount < 1 || isNaN(totalAmount)) && "00.00"}
+          </span>
         </p>
         <p>
-          Số tiền còn thiếu : <span className="total-amount">40.000.000</span>
+          Số tiền còn thiếu :{" "}
+          <span className="total-amount">
+            {grandTotalAmount > 0 &&
+              grandTotalAmount
+                .toFixed(2)
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            {(grandTotalAmount < 1 || isNaN(grandTotalAmount)) && "00.00"}
+          </span>
         </p>
       </div>
 

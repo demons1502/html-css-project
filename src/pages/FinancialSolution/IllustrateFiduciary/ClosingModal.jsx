@@ -34,7 +34,10 @@ export const ClosingModal = () => {
               name="reminiscent_name"
               labelCol={{ span: 24 }}
             >
-              <Input placeholder="Enter your Number" className="closing__input"/>
+              <Input
+                placeholder="Enter your Number"
+                className="closing__input"
+              />
             </Form.Item>
           </div>
         </div>

@@ -1,8 +1,28 @@
 import { Button, DatePicker, Form, Input, Modal, Select } from 'antd';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
+import { createPayment } from '../../slices/paymentManagement';
+import { LOADING_STATUS } from '../../ultis/constant';
 
 const CreatePayment = (props) => {
-  const { users, isModalOpen, setIsModalOpen, onClick } = props;
+  const { users, isModalOpen, setIsModalOpen } = props;
+  const dispatch = useDispatch();
+
+  const loading = useSelector((state) => state.loading.loading);
+
+  const handleAddNew = (values) => {
+    const newPayment = {
+      ...values,
+      startDate: moment(values.startDate?._d).format(),
+      dueDate: moment(values.dueDate?._d).format(),
+      amount: +values.amount,
+    };
+    dispatch(createPayment(newPayment));
+    if (loading === LOADING_STATUS.succeeded) {
+      setIsModalOpen(false);
+    }
+  };
 
   return (
     <div className='createPayment'>
@@ -15,9 +35,20 @@ const CreatePayment = (props) => {
         centered
         onCancel={() => setIsModalOpen(false)}
       >
-        <Form name='nest-messages' onFinish={onClick}>
+        <Form name='nest-messages' onFinish={handleAddNew}>
           <Form.Item
-            name={['payment', 'username']}
+            name='loginId'
+            label='ID Login'
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input placeholder='ID login' />
+          </Form.Item>
+          <Form.Item
+            name='userFullname'
             label='Họ và tên:'
             rules={[
               {
@@ -26,7 +57,8 @@ const CreatePayment = (props) => {
               },
             ]}
           >
-            <Select
+            <Input placeholder='Nhập' />
+            {/* <Select
               showSearch
               placeholder='Select a person'
               optionFilterProp='children'
@@ -36,14 +68,15 @@ const CreatePayment = (props) => {
             >
               {users &&
                 users.map((user) => (
-                  <Select.Option value={user.username} key={user.id}>
-                    {user.username}
+                  <Select.Option value={user.id} key={user.id}>
+                    {user.userFullname}
                   </Select.Option>
                 ))}
-            </Select>
+            </Select> */}
           </Form.Item>
+
           <Form.Item
-            name={['payment', 'dateOfPayment']}
+            name='startDate'
             label='Ngày thanh toán'
             rules={[
               {
@@ -55,7 +88,7 @@ const CreatePayment = (props) => {
             <DatePicker placeholder='Chọn ngày thanh toán' />
           </Form.Item>
           <Form.Item
-            name={['payment', 'endDate']}
+            name='dueDate'
             label='Ngày kết thúc'
             rules={[
               {
@@ -66,14 +99,10 @@ const CreatePayment = (props) => {
           >
             <DatePicker placeholder='Chọn ngày kết thúc' />
           </Form.Item>
-          <Form.Item
-            name={['payment', 'money']}
-            label='Số tiền'
-            rules={[{ required: true }]}
-          >
+          <Form.Item name='amount' label='Số tiền' rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item name={['payment', 'content']} label='Nội dung'>
+          <Form.Item name='description' label='Nội dung'>
             <Input.TextArea autoSize />
           </Form.Item>
           <Form.Item>

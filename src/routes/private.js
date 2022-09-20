@@ -112,7 +112,12 @@ export const RoutesWithOutMenu = [
   },
   {
     path: '/payment',
-    key: 'payment-manage',
+    key: 'payment-management',
     label: 'Quản lý thanh toán',
+  },
+  {
+    path: '/content-management',
+    key: 'content-management',
+    label: '',
   },
 ];

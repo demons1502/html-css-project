@@ -1,21 +1,22 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import storage from 'redux-persist/es/storage/session';
 
-import loading from './slices/loading'
+import loading from './slices/loading';
 import authReducer from './slices/auth';
 import events from './slices/events';
 import customerCare from './slices/customerCare';
 import financeKnowledgeReducer from './slices/financeKnowledge';
 import managementContentReducer from './slices/managementContent';
+import userManagement from './slices/userManagement';
+import contractManagement from './slices/contractManagement'
+import paymentManagement from './slices/paymentManagement';
 
 const persistConfig = {
   key: 'root',
   storage,
   whitelist: ['auth'],
 };
-
-import userManagement from './slices/userManagement';
 
 const rootReducer = combineReducers({
   loading: loading,
@@ -25,6 +26,8 @@ const rootReducer = combineReducers({
   managementContentReducer: managementContentReducer,
   events: events,
   userManagement: userManagement,
+  contractManagement: contractManagement,
+  paymentManagementReducer: paymentManagement,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

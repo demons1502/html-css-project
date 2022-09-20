@@ -22,6 +22,7 @@ export const getMe = createAsyncThunk('auth/user/Me', async (data) => {
     const res = await getMeApi(data);
     return res.data;
   } catch (error) {
+    console.log(error);
     return Promise.reject(error.data);
   }
 });

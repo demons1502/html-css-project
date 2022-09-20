@@ -5,35 +5,48 @@ const initialState = [];
 
 export const retrieveData = createAsyncThunk(
   'manageContent/getAll',
-  async ({ type = 'articles', params }) => {
-    const res = await getAll(type, params);
-    return res.data;
+  async ({ type = 'articles', params }, { rejectWithValue }) => {
+    try {
+      const res = await getAll(type, params);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 export const createContent = createAsyncThunk(
   'manageContent/create',
-  async ({ type, payload }) => {
-    console.log(type, '-------', payload);
-    const res = await create(type, payload);
-    return res.data;
+  async ({ type, payload }, { rejectWithValue }) => {
+    try {
+      const res = await create(type, payload);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 export const updateContent = createAsyncThunk(
   'manageContent/update',
-  async ({ type, id, payload }) => {
-    console.log(type, '---', id, '---', payload);
-    const res = await update(type, id, payload);
-    return res.data;
+  async ({ type, id, payload }, { rejectWithValue }) => {
+    try {
+      const res = await update(type, id, payload);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 export const deleteContent = createAsyncThunk(
   'manageContent/delete',
-  async ({ type, id }) => {
-    console.log(type, '------------>', id);
-    const res = await remove(type, id);
-    return res.data;
+  async ({ type, id }, { rejectWithValue }) => {
+    try {
+      await remove(type, id);
+      return { id };
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -43,21 +56,22 @@ const manageContentSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createContent.fulfilled]: (state, action) => {
-      state.push(action.payload);
+      state.push(action.payload.article);
     },
     [retrieveData.fulfilled]: (state, action) => {
-      /* console.log(action.payload); */
-      return [...action.payload?.articles];
+      return [...action.payload.articles];
     },
     [updateContent.fulfilled]: (state, action) => {
-      const index = state.findIndex((data) => data.id === action.payload.id);
+      const index = state.findIndex(
+        (data) => data.id === action.payload.article.id
+      );
       state[index] = {
         ...state[index],
-        ...action.payload,
+        ...action.payload.article,
       };
     },
     [deleteContent.fulfilled]: (state, action) => {
-      let index = state.findIndex(({ id }) => id === action.payload.id);
+      let index = state.findIndex(({ id }) => id == action.payload.id);
       state.splice(index, 1);
     },
   },

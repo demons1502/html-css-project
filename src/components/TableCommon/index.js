@@ -41,13 +41,12 @@ export default function TableCommon(props) {
     }
   }, [dataSource]);
 
-  const onSelectChange = (selectedRowKeys, selectedRows) => {
-    setSelectedRowKeys(selectedRows);
-  };
-
   const rowSelection = {
-    onChange: onSelectChange,
-  };
+    onChange: (selectedRowKeys, selectedRows) => {
+      setSelectedRowKeys(selectedRows);
+      console.log(selectedRowKeys);
+    }
+  }
 
   return (
     <Spin spinning={loading === LOADING_STATUS.pending}>

@@ -1,15 +1,17 @@
 import React from 'react'
 import { Col, Row, Checkbox, Button, Form, Input } from 'antd';
 import "../../assets/scss/Admin/create-user.scss"
+import { useDispatch, useSelector } from 'react-redux';
+import {searchUser, createUser, getUserProfile, updateUser, removeUser, retrieveData} from '../../slices/userManagement';
+
 
 function Create_user(props) {
-
+  const dispatch= useDispatch()
   const handleClose = () => {
     props.closeCreateUser()
   }
   const onFinish = (values) => {
-    console.log('Success:', values);
-    //call api create user
+    dispatch(createUser(values))
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -40,7 +42,7 @@ function Create_user(props) {
           <Col span={8}>
             <Form.Item
               label="Họ và tên"
-              name="username"
+              name="fullname"
               rules={[
                 {
                   required: true,
@@ -54,7 +56,7 @@ function Create_user(props) {
           <Col span={8}>
             <Form.Item
               label="Sô điện thoại"
-              name="number"
+              name="phone"
               rules={[
                 {
                   required: true,
@@ -69,7 +71,7 @@ function Create_user(props) {
           <Col span={8}>
             <Form.Item
               label="ID login"
-              name="idLogin">
+              name="loginId">
               <Input type="text" placeholder='Nhập' />
             </Form.Item>
           </Col>
@@ -93,7 +95,7 @@ function Create_user(props) {
           </Col>
           <Col span={5}>
             <Form.Item
-              name="isQuestion"
+              name="qna"
               valuePropName="checked"
             >
               <Checkbox className='checkbox-primary'>Hỏi đáp</Checkbox>
@@ -101,7 +103,7 @@ function Create_user(props) {
           </Col>
           <Col span={6}>
             <Form.Item
-              name="isPayment"
+              name="isPaid"
               valuePropName="checked"
             >
               <Checkbox className='checkbox-primary'>Thanh toán</Checkbox>
@@ -112,14 +114,14 @@ function Create_user(props) {
           <Col span={16}>
             <Form.Item
               label="Vùng hoạt động"
-              name="area"
+              name="location"
             >
               <Input type="text" placeholder='Nhập' />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item
-              name="idLoginUser"
+              name="idLoginUserManager"
               label="ID login người quản lý"
             >
               <Input type="text" placeholder='Nhập' />

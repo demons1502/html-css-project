@@ -211,6 +211,57 @@ input[type="number"] {
             padding-right: 8px;
             padding-bottom: 8px;
           }
+          .ant-input-number {
+            background: #f8f8f8;
+            border-radius: 5px;
+            border: 0px;
+            float: right;
+            height: 40px;
+            font-family: "Quicksand";
+            font-style: normal;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 20px;
+            text-align: center;
+            color: #333333;
+            padding-top: 8px;
+            padding-right: 8px;
+            padding-bottom: 8px;
+          }
+          .ant-input-number-input {
+            font-family: "Quicksand";
+            font-style: normal;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 20px;
+            text-align: center;
+            color: #333333;
+          }
+          .percentage-field {
+            display: flex;
+            float: right;
+            align-items: center;
+            background: #f8f8f8;
+            border-radius: 5px;
+            border: 0px;
+            float: right;
+            height: 40px;
+            font-family: "Quicksand";
+            font-style: normal;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 20px;
+            text-align: center;
+            color: #333333;
+            position: relative;
+            .percentage-input {
+              padding-right: 10px !important;
+            }
+            .pIcon {
+              position: absolute;
+              right: 0px;
+            }
+          }
 
           .form-input-text {
             height: 20px;
@@ -229,7 +280,6 @@ input[type="number"] {
               background: #f8f8f8;
               border-radius: 5px;
               border: 0px;
-
               height: 40px;
               align-items: center;
 

@@ -1,7 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { create, getAll, remove } from '../services/paymentManagement';
+import {
+  create,
+  getAll,
+  remove,
+  importFile,
+} from '../services/paymentManagement';
 
-const initialState = [];
+const initialState = { data: [], total: 0 };
 
 export const retrieveData = createAsyncThunk(
   'paymentManagement/getAll',
@@ -27,11 +32,28 @@ export const createPayment = createAsyncThunk(
   }
 );
 
-export const deleteContent = createAsyncThunk(
+export const uploadFile = createAsyncThunk(
+  'paymentManagement/upload',
+  async (params, { rejectWithValue }) => {
+    try {
+      const res = await importFile(params);
+      return { data: res.data, message: 'Upload thanh toán thành công' };
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deletePayment = createAsyncThunk(
   'paymentManagement/delete',
-  async (params) => {
-    const res = await remove(params);
-    return res.data;
+  async (params, { rejectWithValue }) => {
+    try {
+      await remove(params);
+      return { id: params.transactionIds, message: 'Xóa thông tin thành công' };
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -41,14 +63,20 @@ const paymentManagementSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createPayment.fulfilled]: (state, action) => {
-      state.push(action.payload);
+      state.data.push(action.payload);
     },
     [retrieveData.fulfilled]: (state, action) => {
-      return [...action.payload.data];
+      state.data = action.payload.data;
+      state.total = action.payload.total;
     },
-    [deleteContent.fulfilled]: (state, action) => {
-      let index = state.findIndex(({ id }) => id === action.payload.id);
-      state.splice(index, 1);
+    [deletePayment.fulfilled]: (state, action) => {
+      // let index = state.data.findIndex(({ id }) =>
+      //   action.payload.id.includes(id)
+      // );
+      // state.data.splice(index, 1);
+      state.data = state.data.filter(
+        ({ id }) => !action.payload.id.includes(id)
+      );
     },
   },
 });

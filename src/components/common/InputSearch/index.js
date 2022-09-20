@@ -1,6 +1,6 @@
 import React from 'react';
 import {Input} from 'antd';
-import SearchIcon from '../../assets/images/icons/green-search.svg';
+import SearchIcon from '../../../assets/images/icons/green-search.svg';
 
 export default function InputSearch(props) {
   const {

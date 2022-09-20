@@ -4,6 +4,6 @@ export const create = (params) => sendPost('transactions', params);
 export const getAll = (params) => sendGet('transactions/search', params);
 export const remove = (params) => sendDelete('transactions', params);
 export const importFile = (params) =>
-  sendPost('transactions', params, {
+  sendPost('transactions/bulk-create', params, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });

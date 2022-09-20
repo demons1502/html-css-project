@@ -1,8 +1,7 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {Col, Checkbox, Button, Empty, Input, Popover} from 'antd';
-import TableCommon from '../../../components/TableCommon';
+import Table from '../../../components/common/TableNormal';
 import _ from 'lodash';
 
 const content = (
@@ -148,7 +147,7 @@ export default function SurveyForm() {
 
   const table = useMemo(() => {
     if (!!dataTable && dataTable.length > 0) {
-      return <TableCommon dataSource={dataTable} columnTable={columns} bordered></TableCommon>
+      return <Table dataSource={dataTable} columnTable={columns} bordered={true} />
     } else {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
     }

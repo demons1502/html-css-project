@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ListNormalItem(props) {
+export default function ListNormal(props) {
   const { data, selectId = null, setSelectId = null } = props;
 
   const selectItem = () => {

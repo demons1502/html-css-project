@@ -1,52 +1,66 @@
-import { Button, Col, Pagination, Row, Table } from 'antd';
+import { Button, Col, Row, Table } from 'antd';
+import { Alert, Button, Col, notification, Row, Table } from 'antd';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import deleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import importIcon from '../../assets/images/icons/importIcon.svg';
 import plusIcon from '../../assets/images/icons/plus.svg';
-import TableCommon from '../../components/TableCommon';
+import ModalConfirm from '../../components/ModalConfirm';
+import Pagination from '../../components/common/Pagination';
+import Table from '../../components/common/TableNormal';
+import {
+  deletePayment,
+  retrieveData,
+  uploadFile,
+} from '../../slices/paymentManagement';
+import { FORMAT_DATE } from '../../ultis/constant';
 import CreatePayment from './CreatePayment';
-import { customers } from './data';
 import PaymentHistory from './PaymentHistory';
 import PaymentManagementHeader from './PaymentManagementHeader';
-import { retrieveData } from '../../slices/paymentManagement';
-import moment from 'moment';
-import { FORMAT_DATE, LOADING_STATUS } from '../../ultis/constant';
 
 const PaymentManagement = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [data, setData] = useState(customers);
   const [rowActive, setRowActive] = useState({});
-  const [searchPayload, setSearchPayload] = useState(null);
-  const [historyItem, setHistoryItem] = useState({});
+  const [searchPayload, setSearchPayload] = useState('');
+  const [historyItem, setHistoryItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const dispatch = useDispatch();
-
   const payments = useSelector((state) => state.paymentManagementReducer);
 
   const onSelectChange = (newSelectedRowKeys) => {
-    /* console.log('selectedRowKeys changed: ', selectedRowKeys); */
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
-  const handleDeleteOne = (id) => {
-    const newData = data.filter((item) => item.id !== id);
-    setData(newData);
-    setHistoryItem({});
+  const handleDeleteOne = (item) => {
+    ModalConfirm({
+      content: `Xác nhận xóa ${item.userFullname}`,
+      callApi: () => dispatch(deletePayment({ transactionIds: [item.id] })),
+    });
   };
 
   const handleDelete = () => {
     if (selectedRowKeys.length > 0) {
-      const newData = data.filter((item) => !selectedRowKeys.includes(item.id));
-      setHistoryItem({});
-      setData(newData);
+      const id = [];
+      selectedRowKeys.map((item) => id.push(item.id));
+      ModalConfirm({
+        callApi: () => dispatch(deletePayment({ transactionIds: id })),
+      });
     } else {
-      alert('not selection');
+      notification.warning({
+        message: 'Vui lòng chọn thanh toán cần xóa',
+        duration: 2,
+        placement: 'topLeft',
+      });
     }
   };
   const handleImport = (e) => {
-    console.log(e.target.files[0]?.name);
+    const data = new FormData();
+    data.append('file', e.target.files[0]);
+    dispatch(uploadFile(data));
   };
 
   const columns = [
@@ -90,39 +104,21 @@ const PaymentManagement = () => {
         <img
           src={deleteIcon}
           className='btn-deleteIcon'
-          onClick={() => handleDeleteOne(record.id)}
+          onClick={() => handleDeleteOne(record)}
         />
       ),
     },
   ];
 
-  const handleAdd = (values) => {
-    const payment = values.payment;
-    const newPayment = {
-      ...payment,
-      dateOfPayment: payment.dateOfPayment?._d,
-      effectiveDate: payment.dateOfPayment?._d,
-      endDate: payment.endDate?._d,
-      money: +payment.money,
-      histories: [
-        {
-          id: '1-1',
-          date: payment.dateOfPayment?._d,
-          content: payment.content,
-        },
-      ],
-    };
-    console.log(newPayment);
+  const onChangePage = (current, pageSize) => {
+    setPage(current);
+    setPageSize(pageSize);
   };
 
   useEffect(() => {
-    setRowActive(payments[0]?.id);
-    setHistoryItem(payments[0]);
-  }, []);
-  useEffect(() => {
-    const params = { q: '', page: 1, limit: 10 };
+    const params = { q: searchPayload, page: page, limit: pageSize };
     dispatch(retrieveData(params));
-  }, []);
+  }, [searchPayload, page, pageSize]);
 
   return (
     <div className='paymentManagement'>
@@ -173,7 +169,7 @@ const PaymentManagement = () => {
                 search
                 setPayload={setSearchPayload}
               />
-              <Table
+              {/* <Table
                 className='table-common paymentManagement-table'
                 dataSource={payments}
                 columns={columns}
@@ -195,13 +191,17 @@ const PaymentManagement = () => {
                 rowKey={(record) => record.id}
                 size='middle'
                 bordered={false}
-              />
-              {/* <TableCommon
-                dataSource={data}
+              /> */}
+              <Table
+                dataSource={payments.data}
                 columnTable={columns}
                 isSelection
                 setSelectedRowKeys={onSelectChange}
-              ></TableCommon> */}
+              ></Table>
+              <Pagination
+                total={payments.total}
+                onShowSizeChange={onChangePage}
+              ></Pagination>
             </div>
           </Col>
           <Col
@@ -219,10 +219,9 @@ const PaymentManagement = () => {
           </Col>
         </Row>
         <CreatePayment
-          users={payments}
+          users={payments.data}
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          onClick={handleAdd}
         />
       </div>
     </div>

@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {Col, Checkbox, Button, Empty, Spin} from 'antd';
+import {Col, Checkbox, Button, Empty} from 'antd';
 import {getData} from '../../slices/customerCare';
-import TableCommon from '../../components/TableCommon';
+import Table from '../../components/common/TableNormal';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconFiles from '../../assets/images/icons/files.svg';
-import FilterCommon from "../../components/FilterCommon";
-import AddInfoContent from "../../components/ModalCommon/CustomerCare/AddInfoContent";
-import ModalCommon from "../../components/ModalCommon";
+import Filter from "../../components/common/Filter";
+import AddInfoContent from "../../components/common/Modal/CustomerCare/AddInfoContent";
+import Modal from "../../components/common/Modal";
 import {CUSTOMER_CARE_INFO, LOADING_STATUS } from '../../ultis/constant';
 
 export default function History() {
@@ -49,7 +49,7 @@ export default function History() {
 
   const table = useMemo(() => {
     if (!!customerCare.data && customerCare.data.length > 0) {
-      return <TableCommon dataSource={customerCare.data} columnTable={columns}></TableCommon>
+      return <Table dataSource={customerCare.data} columnTable={columns} />
     } else {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
     }
@@ -82,7 +82,7 @@ export default function History() {
         <div className="customer-care__right--event">
           <div className="customer-care__right--event--left">
             <h5>{t('customer care.history title')}</h5>
-            <FilterCommon options={CUSTOMER_CARE_INFO} setPayload={setOptionsFilter}></FilterCommon>
+            <Filter options={CUSTOMER_CARE_INFO} setPayload={setOptionsFilter} />
           </div>
         </div>
         <div className="customer-care__right--list">
@@ -99,7 +99,7 @@ export default function History() {
           </ul>
         </div>
       </Col>
-      <ModalCommon isVisible={visibleModalAddInfo} setIsVisible={setVisibleModalAddInfo} title={Object.keys(detailData).length > 0 ? t(('customer care.edit info title')) : t(('customer care.add info title'))} width={770} content={<AddInfoContent detailData={detailData} setVisibleModalAddInfo={setVisibleModalAddInfo}/>} />
+      <Modal isVisible={visibleModalAddInfo} setIsVisible={setVisibleModalAddInfo} title={Object.keys(detailData).length > 0 ? t(('customer care.edit info title')) : t(('customer care.add info title'))} width={770} content={<AddInfoContent detailData={detailData} setVisibleModalAddInfo={setVisibleModalAddInfo}/>} />
     </>
 
   );

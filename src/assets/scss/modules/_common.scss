@@ -172,3 +172,7 @@
     padding: 18px 18px 18px 20px !important;
   }
 }
+
+.ant-spin-nested-loading>div>.ant-spin {
+  max-height: 100%;
+}

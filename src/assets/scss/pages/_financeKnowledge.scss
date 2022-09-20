@@ -7,6 +7,11 @@
       min-height: 50vh;
     }
   }
+  &-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .gutter-row {
     .ant-typography {
       color: $black-color;

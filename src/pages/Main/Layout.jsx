@@ -16,7 +16,7 @@ export const MainLayout = () => {
       <Nav />
       <div className='main-wrapper'>
         <Suspense fallback={null}>
-          <Outlet />;
+          <Outlet />
         </Suspense>
       </div>
     </Fragment>

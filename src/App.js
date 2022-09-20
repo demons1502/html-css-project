@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, Spin } from 'antd';
 import locale from 'antd/lib/locale/vi_VN';
 import Router from './routes';
 import store from './store';
@@ -19,7 +19,7 @@ function App() {
         <Router />
       </BrowserRouter>
     </ConfigProvider>
-  );
+  )
 }
 
 export default App;

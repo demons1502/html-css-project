@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Checkbox, Modal } from 'antd';
 import "../../assets/scss/Admin/stylesAdmin.scss"
 import { Button, Checkbox, Modal } from 'antd';
 import '../../assets/scss/Admin/stylesAdmin.scss';
-import InputSearch from '../../components/InputSearch';
+import InputSearch from '../../components/common/InputSearch';
 import CreateUser from './CreateUser';
 import Table from "../../components/common/TableNormal";
 import Pagination from "../../components/common/Pagination";

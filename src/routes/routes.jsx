@@ -92,6 +92,10 @@ export const routes = () => [
           {
             path: 'financial-solutions',
             element: <GuestGuard element={<FinancialSolution />} />,
+          },
+          {
+            path: 'financial-solutions',
+            element: <GuestGuard element={<IllustrateFiduciary />} />,
             children: [
               {
                 path: 'minh-hoa-gia',

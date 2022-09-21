@@ -19,6 +19,7 @@ export const createContent = createAsyncThunk(
   'manageContent/create',
   async ({ type, payload }, { rejectWithValue }) => {
     try {
+      console.log(payload);
       const res = await create(type, payload);
       return res.data;
     } catch (error) {

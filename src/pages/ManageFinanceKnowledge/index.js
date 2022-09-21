@@ -52,16 +52,16 @@ const ManageFinanceKnowledge = () => {
     setItemContent({ ...itemContent, image: newFile[0]?.originFileObj });
   };
 
-  const handleCreate = () => {
-    const data = new FormData();
-    data.append('title', 'title');
-    data.append('subTitle', '');
-    data.append('image', '');
-    data.append('body', '');
-    data.append('url', '');
-    dispatch(createContent({ type: option, payload: data }));
-    /* setItemContent(itemContent[contents.length - 1]); */
-  };
+  // const handleCreate = () => {
+  //   const data = new FormData();
+  //   data.append('title', 'title');
+  //   data.append('subTitle', '');
+  //   data.append('image', '');
+  //   data.append('body', '');
+  //   data.append('url', '');
+  //   dispatch(createContent({ type: option, payload: data }));
+
+  // };
 
   const handleSave = (item) => {
     const formData = new FormData();
@@ -70,8 +70,11 @@ const ManageFinanceKnowledge = () => {
     formData.append('subTitle', item.subTitle);
     formData.append('url', item.url);
     formData.append('body', item.body);
-
-    dispatch(updateContent({ type: option, id: item.id, payload: formData }));
+    if (!item.id) {
+      dispatch(createContent({ type: option, payload: formData }));
+    } else {
+      dispatch(updateContent({ type: option, id: item.id, payload: formData }));
+    }
   };
 
   const handleCancel = (item) => {
@@ -119,6 +122,7 @@ const ManageFinanceKnowledge = () => {
               </div>
               <Spin spinning={loading === LOADING_STATUS.pending}>
                 <List
+                  locale={{ emptyText: 'Không có dữ liệu' }}
                   className='manageFinanceKnowledge-container_list'
                   size='small'
                   pagination={{
@@ -140,7 +144,7 @@ const ManageFinanceKnowledge = () => {
                       type='primary'
                       shape='circle'
                       icon={<img src={IconPlus} alt='' />}
-                      onClick={handleCreate}
+                      onClick={() => setItemContent(null)}
                     >
                       Thêm mới
                     </Button>

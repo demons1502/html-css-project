@@ -43,6 +43,10 @@ export const WrapContainer = styled(CalendarBig)`
             border: none;
           }
         }
+
+        > .rbc-current-time-indicator {
+          background-color: unset;
+        }
       }
 
       & .rbc-time-gutter {
@@ -82,7 +86,7 @@ export const WrapContainer = styled(CalendarBig)`
   > .rbc-time-view .rbc-event {
     background-color: unset;
     border: none;
-    padding: 0;
+    padding: 0 2px;
   }
   > .rbc-time-view .rbc-events-container {
     margin-right: 0;

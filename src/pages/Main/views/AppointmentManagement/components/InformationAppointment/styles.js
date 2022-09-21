@@ -9,3 +9,7 @@ export const WrapContainer = styled.div`
   box-shadow: -8px 4px 50px rgba(0, 0, 0, 0.05);
   background-color: #fff;
 `;
+
+export const Empty = styled.span`
+  text-align: center;
+`;

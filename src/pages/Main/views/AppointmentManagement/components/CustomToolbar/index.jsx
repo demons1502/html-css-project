@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { getMonday, getSunday } from '../../../../../../ultis/date';
 
 // STYLES
 import * as S from './styles';
@@ -7,13 +8,13 @@ import * as S from './styles';
 //IMAGE
 import LeftArrow from '../../../../../../assets/images/icons/left-arrow-min.svg';
 import RightArrow from '../../../../../../assets/images/icons/right-arrow-min.svg';
-import Calender from '../../../../../../assets/images/icons/components/calender';
+import { Calender } from '../../../../../../assets/images/icons/components';
 import Plus from '../../../../../../assets/images/icons/plus.svg';
-import { getMonday, getSunday } from '../../../../../../ultis/date';
 
 function CalendarToolbar(props) {
   const { date, onNavigate } = props;
-
+  const sunDay = getMonday(new Date(date));
+  const monDay = getSunday(new Date(date));
   const goToBack = () => {
     onNavigate('PREV');
   };
@@ -45,7 +46,7 @@ function CalendarToolbar(props) {
 
           <S.ContentCaledar>
             <Calender />
-            <S.TextDate>{`${getMonday(date)} - ${getSunday(date)}`}</S.TextDate>
+            <S.TextDate>{`${sunDay} - ${monDay}`}</S.TextDate>
           </S.ContentCaledar>
 
           <S.Action onClick={goToNext}>

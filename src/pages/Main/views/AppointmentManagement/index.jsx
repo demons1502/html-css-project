@@ -18,11 +18,11 @@ const Appontment = () => {
   return (
     <S.WrapContainer>
       <S.WrapTitle>Quản lý lịch hẹn</S.WrapTitle>
-      <Row gutter={16}>
-        <Col span={16}>
-          <CalendarCustom handleEvent={handleEvent} />
+      <Row gutter={8}>
+        <Col span={14}>
+          <CalendarCustom eventActive={event} handleEvent={handleEvent} />
         </Col>
-        <Col span={8}>
+        <Col span={10}>
           <InformationAppointment info={event} />
         </Col>
       </Row>

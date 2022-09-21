@@ -12,45 +12,48 @@ import {
 // STYLES
 import * as S from './styles';
 
-export const DayEvent = ({ event }) => {
-  var startDate = new Date(event.start);
-  var endDate = new Date(event.end);
+export const DayEvent = ({ event }, eventActive) => {
+  const startDate = new Date(event.start);
+  const endDate = new Date(event.end);
+  const nowDate = new Date();
   const diffTime = Math.abs(endDate - startDate);
   const start = moment(event.start).format('LT');
   const startSchedular = moment.duration(diffTime, 'milliseconds').asMinutes();
-
+  const isEventActive = event.apptId === eventActive.apptId;
+  const stausColor = statusAppointment(
+    startDate,
+    endDate,
+    nowDate,
+    event.isCompleted,
+    isEventActive
+  );
   return (
     <S.WrapContainer
-      backgroundColor={statusAppointment(event.status).backgroundColor}
-      color={statusAppointment(event.status).color}
+      backgroundColor={stausColor.backgroundColor}
+      color={stausColor.color}
     >
       <S.Content>
-        {event.company ? (
+        {/* COMPANY */}
+        {event.typeId === 3 ? (
           <S.BoxTitle>
-            <Company
-              width={15}
-              height={13}
-              color={statusAppointment(event.status).color}
-            />
-            <S.Name>DN - {event.company.members}</S.Name>
-            <Users color={statusAppointment(event.status).color} />
+            <Company width={15} height={13} color={stausColor.color} />
+            <S.Name>DN - {event.customerApptRecords.length}</S.Name>
+            <Users color={stausColor.color} />
           </S.BoxTitle>
         ) : (
           <S.BoxTitle>
-            <UserCircle color={statusAppointment(event.status).color} />
+            <UserCircle color={stausColor.color} />
             <S.Name>Cá nhân</S.Name>
           </S.BoxTitle>
         )}
-        <S.Text color={statusAppointment(event.status).color}>
-          {event.title}
-        </S.Text>
-        <S.Description check={event.status === 'wait'}>
+        <S.Text color={stausColor.color}>{event.title}</S.Text>
+        <S.Description check={startDate < nowDate && nowDate < endDate}>
           {event.description}
         </S.Description>
       </S.Content>
 
       <S.Text
-        color={statusAppointment(event.status).color}
+        color={stausColor.color}
       >{`${start} (${startSchedular}p)`}</S.Text>
     </S.WrapContainer>
   );

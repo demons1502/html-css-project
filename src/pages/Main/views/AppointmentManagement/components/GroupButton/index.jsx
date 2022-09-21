@@ -15,8 +15,8 @@ export const GroupButton = () => {
         <S.Button type='primary'>Giải pháp</S.Button>
       </S.WrapLeft>
       <S.WrapRight>
-        <S.ButtonIcon icon={<Edit />}></S.ButtonIcon>
-        <S.ButtonIcon icon={<Delete />}></S.ButtonIcon>
+        <S.ButtonIcon type='text' icon={<Edit />}></S.ButtonIcon>
+        <S.ButtonIcon type='text' icon={<Delete />}></S.ButtonIcon>
       </S.WrapRight>
     </S.WrapContainer>
   );

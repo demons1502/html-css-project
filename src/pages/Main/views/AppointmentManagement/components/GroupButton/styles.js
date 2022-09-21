@@ -46,4 +46,11 @@ export const ButtonIcon = styled(ButtonAntd)`
   border: none;
   box-shadow: none;
   margin-left: 5px;
+  padding: 10px;
+
+  &:hover,
+  &:focus {
+    border: none;
+    background-color: #fff;
+  }
 `;

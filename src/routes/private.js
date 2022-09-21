@@ -8,7 +8,7 @@ import Book from '../assets/images/icons/book.svg';
 
 const PrivateRoutes = [
   {
-    path: '/admin/dashboard',
+    path: '/dashboard',
     key: 'dashboard',
     label: 'Dashboard',
     icon: Dashboard,

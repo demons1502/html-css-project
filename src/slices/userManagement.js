@@ -76,14 +76,14 @@ const useManagement = createSlice({
       state.totalItem = action.payload.total;
     },
     [createUser.fulfilled]: (state, action) => {
-      // state.data.push(action.payload);
-      retrieveData()
+      state.data.push(action.payload);
+      // retrieveData()
     },
     [createUser.rejected]: (state, action) => {
       state.messageError = action.payload;
     },
     [retrieveData.fulfilled]: (state, action) => {
-      state.data = [...action.payload.data];
+      state.data = [...action.payload?.data];
       state.totalItem = action.payload.total;
     },
     [updateUser.fulfilled]: (state, action) => {

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Button, Checkbox, Modal } from 'antd';
-import '../../assets/scss/Admin/stylesAdmin.scss';
-import InputSearch from '../../components/InputSearch';
+import { Checkbox, Modal } from 'antd';
+import "../../assets/scss/Admin/stylesAdmin.scss"
+import InputSearch from '../../components/common/InputSearch';
 import CreateUser from './CreateUser';
-import TableCommon from '../../components/TableCommon';
-import PaginationCommon from '../../components/PaginationCommon';
+import Table from "../../components/common/TableNormal";
+import Pagination from "../../components/common/Pagination";
 import ModalConfirm from '../../components/ModalConfirm';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -16,7 +16,6 @@ import {
   retrieveData,
   resetUserId,
 } from '../../slices/userManagement';
-import Item from 'antd/lib/list/Item';
 
 var handleDeleteUser;
 var handleCheckboxChange;
@@ -166,7 +165,7 @@ export default function UserManagement() {
     input_file.current.style.display = 'none'
     dispatch(retrieveData({page:1,limit:10}))
   },[])
-  
+
   useEffect(()=>{
     setDataTable(userData)
   },[userData])
@@ -228,7 +227,7 @@ export default function UserManagement() {
     input_file.current.click()
     const inputElement = input_file.current
     inputElement.addEventListener("change", handleFiles);
-    
+
     function handleFiles() {
       const fileList = this.files;
       if (fileList) {
@@ -241,7 +240,7 @@ export default function UserManagement() {
     }
     removeEventListener('change', handleFiles)
   }
- 
+
   const handleCreateUser = () => {
     setIsCreateUser(true);
   };
@@ -280,7 +279,8 @@ export default function UserManagement() {
   //   document.querySelector('.ant-select-selection-item').innerHTML = pageText
   // }, [])
 
-  const onPageNumber = (current, page) => {
+  const setPaginate = (current, page) => {
+    console.log(current, page);
     setPageNum(page);
     setCurrent(current);
   };
@@ -342,10 +342,8 @@ export default function UserManagement() {
             <InputSearch setPayload={(e) => setInputText(e)} />
           </div>
         </div>
-
-        <TableCommon  dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={false} setSelectedRowKeys={getSelectedRowKeys}>
-        </TableCommon>
-        <PaginationCommon total={totalItem}  onShowSizeChange={onPageNumber}></PaginationCommon>
+        <Table dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={setSelectedRowKeys} />
+        <Pagination total={totalItem}  setPaginate={setPaginate}  />
         {isCreateUser &&
           <Modal centered width={589} closable={false}
             footer={null}

@@ -55,7 +55,9 @@
     "sms title": "Gửi SMS",
     "email title": "Gửi Email",
     "email content": "Nội dung email",
-    "sms content": "Nội dung SMS"
+    "sms content": "Nội dung SMS",
+    "add event template": "Tạo mẫu event",
+    "add template": "Thêm mới mẫu"
   },
 
   "financial solution": {

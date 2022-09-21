@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react'
-import InputSearch from '../../components/InputSearch'
+import InputSearch from '../../components/common/InputSearch'
 import "../../assets/scss/ContractManagement/styleContract.scss"
 import { Button, Table, Modal } from 'antd'
 import CreateContract from './CreateContract';

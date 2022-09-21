@@ -8,6 +8,7 @@ import { AuthGuard, GuestGuard, ManagerGuard } from './guard';
 import AuthLayout from '../pages/Auth/Layout';
 import MainLayout from '../pages/Main/Layout';
 import AdminLayout from '../pages/Admin/Layout';
+import PublicLayout from '../pages/Public/Layout';
 
 // AUTH VIEWS
 const Login = lazy(() => import('../pages/Auth/views/Login'));
@@ -23,9 +24,7 @@ const Retirement = lazy(() => import('../pages/FinancialSolution/Retirement'));
 const StartupFund = lazy(() =>
   import('../pages/FinancialSolution/StartupFund')
 );
-const ManageFinanceKnowledge = lazy(() =>
-  import('../pages/ManageFinanceKnowledge')
-);
+
 const InheritanceFund = lazy(() =>
   import('../pages/FinancialSolution/InheritanceFund')
 );
@@ -41,20 +40,35 @@ const EducationFoundation = lazy(() =>
 const IllustrateFiduciary = lazy(() =>
   import('../pages/FinancialSolution/IllustrateFiduciary')
 );
-const PaymentManagement = lazy(() => import('../pages/PaymentManagement'));
-const Admin = lazy(() => import('../pages/Admin/index'));
+
 // ADMIN VIEWS
+const Admin = lazy(() => import('../pages/Admin/index'));
+const ManageFinanceKnowledge = lazy(() =>
+  import('../pages/ManageFinanceKnowledge')
+);
+const PaymentManagement = lazy(() => import('../pages/PaymentManagement'));
+
+// NOT FOUND
+import NotFound from '../pages/NotFound';
 
 export const routes = () => [
+  // MAINLAYOUT
   {
     path: '/',
     element: <MainLayout />,
     children: [
-      { path: '', element: <GuestGuard element={<CustomerCare />} /> },
+      { path: '/', element: <Navigate to='dashboard' /> },
+      // no page yet
+      {
+        path: 'dashboard',
+        element: <GuestGuard element={<CustomerCare />} />,
+      },
+      // no page yet
       {
         path: 'potential-customers',
         element: <GuestGuard element={<CustomerCare />} />,
       },
+      // no page yet
       {
         path: 'appointment-management',
         element: <GuestGuard element={<CustomerCare />} />,
@@ -66,6 +80,11 @@ export const routes = () => [
             path: 'survey',
             element: <GuestGuard element={<Survey />} />,
           },
+          // no page yet
+          {
+            path: 'finance-consultant',
+            element: <GuestGuard element={<CustomerCare />} />,
+          },
           {
             path: 'finance-support',
             element: <GuestGuard element={<FinanceConsultant />} />,
@@ -73,6 +92,10 @@ export const routes = () => [
           {
             path: 'financial-solutions',
             element: <GuestGuard element={<FinancialSolution />} />,
+          },
+          {
+            path: 'financial-solutions',
+            element: <GuestGuard element={<IllustrateFiduciary />} />,
             children: [
               {
                 path: 'minh-hoa-gia',
@@ -92,7 +115,7 @@ export const routes = () => [
       },
       {
         path: 'q&a',
-        element: <GuestGuard element={<ManageFinanceKnowledge />} />,
+        element: <GuestGuard element={<CustomerCare />} />,
       },
       {
         path: 'finance-support',
@@ -122,12 +145,9 @@ export const routes = () => [
         path: 'health-foundation',
         element: <GuestGuard element={<HealthFoundation />} />,
       },
-      // {
-      //   path: 'payment',
-      //   element: <GuestGuard element={<PaymentManagement />} />,
-      // },
     ],
   },
+  // AUTHLAYOUT
   {
     path: '/auth',
     element: <AuthLayout />,
@@ -136,19 +156,46 @@ export const routes = () => [
       { path: 'login', element: <AuthGuard element={<Login />} /> },
     ],
   },
+  // ADMINLAYOUT
   {
-    path: '/admin',
+    path: 'admin',
     element: <AdminLayout />,
     children: [
-      { path: '/admin', element: <Admin /> },
-      {
-        path: 'dashboard',
-        element: <ManagerGuard element={<CustomerCare />} />,
-      },
+      { path: '', element: <ManagerGuard element={<Admin />} /> },
       {
         path: 'payment',
         element: <ManagerGuard element={<PaymentManagement />} />,
       },
+      // no page yet
+      {
+        path: 'log',
+        element: <ManagerGuard element={<CustomerCare />} />,
+      },
+      {
+        path: 'finance-knowledge',
+        element: <ManagerGuard element={<ManageFinanceKnowledge />} />,
+      },
+      // no page yet
+      {
+        path: 'operation-history',
+        element: <ManagerGuard element={<CustomerCare />} />,
+      },
     ],
+  },
+  // PUBLICLAYOUT
+  {
+    path: '',
+    element: <PublicLayout />,
+    children: [
+      // no page yet
+      {
+        path: 'setting',
+        element: <CustomerCare />,
+      },
+    ],
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ];

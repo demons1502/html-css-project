@@ -27,8 +27,7 @@
   position: relative;
   @extend %flex-end;
   align-items: center;
-  row-gap: 8px;
-  padding: 3rem 2rem 2rem 2rem;
+  padding: 3rem 0rem;
 
   .ant-pagination-item {
     border: none;
@@ -62,15 +61,7 @@
       color: $gray-light-color  !important;
     }
   }
-  /* &.payment-pagination {
-    .ant-pagination-item {
-      width: 27px;
-      height: 27px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  } */
+
   &.manageFinanceKnowledge-pagination {
     display: flex;
     justify-content: center;

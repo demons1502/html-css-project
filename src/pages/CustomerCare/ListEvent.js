@@ -124,7 +124,7 @@ export default function ListEvent() {
           <h5>{t('customer care.event title')}</h5>
         </div>
         <div className="customer-care__center--list">
-          <Table dataSource={eventState.data} columnTable={columns} heightMargin={550}/>
+          <Table dataSource={eventState.data} columnTable={columns} heightMargin={430}/>
           <div className="customer-care__center--list-footer">
             <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(true))}>{t('customer care.add event template')}</Button>
             <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(false))}>{t('customer care.add event')}</Button>

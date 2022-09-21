@@ -4,8 +4,9 @@
   &-nav {
     background-color: $white-color;
     width: 100%;
-    height: 66px;
-    padding: 0 30px;
+    min-height: 66px;
+    height: auto;
+    padding: 10px 32px;
     margin-bottom: 12px;
     display: flex;
     justify-content: space-between;
@@ -18,7 +19,8 @@
   }
   &-content {
     width: 100%;
-    min-height: 90vh;
+    min-height: 75vh;
+    height: 100%;
     background-color: $white-color;
     border-radius: 20px;
     box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.05);
@@ -37,13 +39,14 @@
     justify-content: flex-start;
     align-items: center;
     .ant-btn {
+      @extend %btn-bg-green;
       border-radius: 10px;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: $font-weight-bold;
-      border: 1px solid $green-color;
-      padding: 10px 24px;
-      display: flex;
-      align-items: center;
+      border: 1px solid $primary-color;
+      // padding: 0 24px;
+      /* display: flex;
+      align-items: center; */
       img {
         margin-right: 10px;
       }
@@ -52,10 +55,18 @@
       }
       &.ant-btn-default {
         color: $green-color;
+        background: $white-color;
       }
       &.ant-btn-primary {
         background-color: $green-color;
       }
+    }
+    label {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
   .paymentHistory {

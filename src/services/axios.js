@@ -1,10 +1,11 @@
-import Axios from "axios";
-import configs from "../config";
+import Axios from 'axios';
+import { useSelector } from 'react-redux';
+import configs from '../config';
 
 const baseApiConfig = {
   baseURL: configs.API_DOMAIN,
   headers: {
-    "content-type": "application/json",
+    'content-type': 'application/json',
   },
   timeout: 3 * 60 * 1000,
 };
@@ -25,7 +26,7 @@ export const setupInterceptor = (_store) => {
     (config) => {
       const { accessToken } = _store.getState().auth;
       if (config.headers && accessToken) {
-        config.headers["Authorization"] = `Bearer ${accessToken}`;
+        config.headers['Authorization'] = `Bearer ${accessToken}`;
       }
       return config;
     },
@@ -42,4 +43,4 @@ export const sendPut = (url, params) =>
 export const sendPatch = (url, params) =>
   baseApiClient.patch(url, params).then((res) => res);
 export const sendDelete = (url, params) =>
-  baseApiClient.delete(url, { params }).then((res) => res);
+  baseApiClient.delete(url, { data:params }).then((res) => res);

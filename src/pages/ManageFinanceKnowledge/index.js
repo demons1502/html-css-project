@@ -1,42 +1,33 @@
 import { Button, Col, Layout, List, Row, Segmented, Typography } from 'antd';
-import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { finances, options } from '../../assets/fake-data/data';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { options } from '../../assets/fake-data/data';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import Title from '../../components/Title';
-import FinanceKnowledgeContent from './FinanceKnowledgeContent';
-import QuestionAnswerContent from './QuestionAnswerContent';
-// import PaymentManagement from '../PaymentManagement';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import {
   createContent,
+  deleteContent,
   retrieveData,
   updateContent,
-  deleteContent,
 } from '../../slices/managementContent';
-import PaymentManagement from '../PaymentManagement';
+import FinanceKnowledgeContent from './FinanceKnowledgeContent';
+import QuestionAnswerContent from './QuestionAnswerContent';
 
 const ManageFinanceKnowledge = () => {
-  const [itemContent, setItemContent] = useState({});
-  const [option, setOption] = useState('articles');
-  const [buttonState, setButtonState] = useState(true);
-  const [lists, setLists] = useState(finances);
-  const [fileList, setFileList] = useState([
-    {
-      uid: '-1',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-  ]);
   const { t } = useTranslation();
-
   const dispatch = useDispatch();
   const contents = useSelector((state) => state.managementContentReducer);
 
+  const [itemContent, setItemContent] = useState({});
+  const [option, setOption] = useState('articles');
+  const [fileList, setFileList] = useState([
+    {
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+  ]);
+
   const handleChange = (e) => {
-    setButtonState(false);
     let values;
     const name = e.target.name;
     values = { ...itemContent, [name]: e.target.value };
@@ -45,51 +36,46 @@ const ManageFinanceKnowledge = () => {
 
   const handleFileList = ({ fileList: newFile }) => {
     setFileList(newFile);
-    setItemContent({ ...itemContent, image: newFile });
+    /* console.log(newFile[0]) */
+    setItemContent({ ...itemContent, image: newFile[0]?.originFileObj });
   };
 
-  const addList = () => {
-    const itemData = {
-      id: 0,
-      title: '',
-      img: '',
-      date: '20/09/2012',
-      desc: 'asd',
-      views: 0,
-      link: 'link',
-    };
-    let lastId = _.last(lists);
-    itemData.id = lastId?.id ? lastId.id + 1 : 1;
-    setLists([...lists, itemData]);
-    setItemContent(itemData);
-    dispatch(createContent({ option: option, payload: { ...itemData } }));
-  };
-
-  const handleIndex = (index) => {
-    const indexS = index >= 10 ? `${index}` : `0${index}`;
-    return indexS;
-  };
-
-  const handleDelete = (id) => {
-    dispatch(deleteContent({ option: option, id: id }));
+  const handleCreate = () => {
+    const data = new FormData();
+    data.append('title', 'title');
+    data.append('subTitle', '');
+    data.append('image', '');
+    data.append('body', '');
+    data.append('url', '');
+    dispatch(createContent({ type: option, payload: data }));
+    setItemContent(itemContent[contents.length - 1]);
   };
 
   const handleSave = (item) => {
-    dispatch(updateContent({ option: option, id: item.id, payload: item }));
+    const formData = new FormData();
+    formData.append('image', item.image);
+    formData.append('title', item.title);
+    formData.append('subTitle', item.subTitle);
+    formData.append('url', item.url);
+    formData.append('body', item.body);
+
+    dispatch(updateContent({ type: option, id: item.id, payload: formData }));
   };
 
-  const dataSource = [];
-  for (let i = 0; i <= 20; i++) {
-    dataSource.push({ ...finances[0], id: i });
-  }
-  useEffect(() => {
-    setItemContent(dataSource[0]);
-  }, [option]);
+  const handleCancel = (item) => {
+    console.log(item);
+    /* setItemContent(item) */
+  };
+
+  const handleDelete = (id) => {
+    // ModalConfirm()
+    dispatch(deleteContent({ type: option, id: id }));
+    setItemContent({});
+  };
+
   useEffect(() => {
     //fetch data
-    dispatch(
-      retrieveData({ option: option, params: { limit: 10, offset: 0 } })
-    );
+    dispatch(retrieveData({ type: option, params: { limit: 10, offset: 0 } }));
   }, [option]);
 
   return (
@@ -99,7 +85,7 @@ const ManageFinanceKnowledge = () => {
       </div>
       <Layout className='manageFinanceKnowledge-container'>
         <Row gutter={[16, 10]} justify='start' align='stretch'>
-          <Col lg={6} md={24} sm={24} xs={24}>
+          <Col lg={7} md={24} sm={24} xs={24}>
             <Layout.Content>
               <div className='list-option'>
                 <Segmented
@@ -122,8 +108,8 @@ const ManageFinanceKnowledge = () => {
                   <Title
                     title={
                       option !== 'q&a'
-                        ? 'Danh sách bài viết'
-                        : 'Danh sách câu hỏi'
+                        ? t('manage content.articles list title')
+                        : t('manage content.q&a list title')
                     }
                   />
                 }
@@ -132,29 +118,25 @@ const ManageFinanceKnowledge = () => {
                     type='primary'
                     shape='circle'
                     icon={<img src={IconPlus} alt='' />}
-                    onClick={addList}
+                    onClick={handleCreate}
                   >
                     Thêm mới
                   </Button>
                 }
-                dataSource={dataSource}
-                renderItem={(item, index) => (
+                dataSource={contents}
+                renderItem={(item) => (
                   <List.Item
                     onClick={() => setItemContent(item)}
-                    className={`${item.id === itemContent.id ? 'active' : ''}`}
+                    className={`${item.id === itemContent?.id ? 'active' : ''}`}
                   >
-                    <Typography.Text ellipsis>
-                      {option !== 'q&a'
-                        ? `Bài viết ${handleIndex(index + 1)}: ${item.title}`
-                        : `Câu hỏi ${handleIndex(index + 1)}: ${item.title}`}
-                    </Typography.Text>
+                    <Typography.Text ellipsis>{item.title}</Typography.Text>
                   </List.Item>
                 )}
               />
             </Layout.Content>
           </Col>
 
-          <Col lg={18} flex={1}>
+          <Col lg={16} flex={1}>
             <Layout.Content className='manageContent'>
               {option !== 'q&a' ? (
                 <FinanceKnowledgeContent
@@ -163,6 +145,8 @@ const ManageFinanceKnowledge = () => {
                   onUpload={handleFileList}
                   fileList={fileList}
                   onClick={handleSave}
+                  onDelete={handleDelete}
+                  onCancel={handleCancel}
                 />
               ) : (
                 <QuestionAnswerContent
@@ -176,7 +160,6 @@ const ManageFinanceKnowledge = () => {
           </Col>
         </Row>
       </Layout>
-      <PaymentManagement />
     </div>
   );
 };

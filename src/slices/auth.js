@@ -22,6 +22,7 @@ export const getMe = createAsyncThunk('auth/user/Me', async (data) => {
     const res = await getMeApi(data);
     return res.data;
   } catch (error) {
+    console.log(error);
     return Promise.reject(error.data);
   }
 });
@@ -43,7 +44,7 @@ const authSlice = createSlice({
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.status = 'success';
-      state.accessToken = action.payload.access_token;
+      state.accessToken = action.payload.accessToken;
       state.me = action.payload.userInfo;
       state.isAuth = true;
     });

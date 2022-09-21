@@ -4,8 +4,10 @@ import { useRoutes } from 'react-router-dom';
 
 import { getMe } from '../slices/auth';
 import { routes } from './routes';
+import useLoading from "../hooks/useLoading";
 
 const Router = () => {
+  useLoading();
   const { isAuth } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 

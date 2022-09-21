@@ -39,49 +39,47 @@ const FinancialSolution = () => {
       title: "Quỹ dự phòng",
       dec: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
       image: IMG4,
-      link: "/quy-du-phong",
+      link: "/contingency-fund",
     },
     {
       key: 5,
       title: "Quỹ giáo dục",
       dec: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
       image: IMG5,
-      link: "/image-details",
+      link: "/education-foundation",
     },
+
     {
       key: 6,
       title: "Quỹ sức khỏe",
       dec: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
       image: IMG6,
-      link: "/image-details",
+      link: "/health-foundation",
     },
   ];
   return (
     <>
-      <Title title={t("financial solution.title")}></Title>
-      <Row gutter={[24, 24]}>
+      <Row gutter={[20, 20]}>
+        <Col span={24} className='financial-title'>
+          <h3>{t("financial solution.title")}</h3>
+        </Col>
         {dataSource.map((item) => (
           <Col span={24} lg={8} key={item.key} className="financial">
-            <Card className="financial__card">
-              <Link to={item.link}>
-                <Image
-                  src={item.image}
-                  className="financial__image"
-                  preview={false}
-                />
-              </Link>
-              <div className="financial__content">
-                <Link to={item.link}>
-                  <h3 className="financial__title">{item.title}</h3>
-                </Link>
-                <p className="financial__dec">{item.dec}</p>
-              </div>
-            </Card>
+            <div className='card-top'/>
+            <Link to={item.link}>
+              <Card className='financial__card'>
+                <Image src={item.image} className='financial__image' preview={false} />
+                <div className='financial__content'>
+                  <h3 className='financial__title'>{item.title}</h3>
+                  <p className='financial__dec'>{item.dec}</p>
+                </div>
+              </Card>
+            </Link>
           </Col>
         ))}
       </Row>
     </>
-  );
+  )
 };
 
 export default FinancialSolution;

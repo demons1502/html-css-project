@@ -92,8 +92,9 @@
         height: 20px;
     }
 }
+
 .ant-table-container{
-    overflow: scroll;
+    overflow-x: scroll;
     .ant-table-thead{
         th{
             white-space: nowrap;

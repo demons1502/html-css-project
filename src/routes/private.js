@@ -1,34 +1,34 @@
-import Dashboard from "../assets/images/icons/dashboard.svg";
-import Users from "../assets/images/icons/users.svg";
-import Calendar from "../assets/images/icons/calendar.svg";
-import Support from "../assets/images/icons/support.svg";
-import Care from "../assets/images/icons/care.svg";
-import QA from "../assets/images/icons/q&a.svg";
-import Book from "../assets/images/icons/book.svg";
+import Dashboard from '../assets/images/icons/dashboard.svg';
+import Users from '../assets/images/icons/users.svg';
+import Calendar from '../assets/images/icons/calendar.svg';
+import Support from '../assets/images/icons/support.svg';
+import Care from '../assets/images/icons/care.svg';
+import QA from '../assets/images/icons/q&a.svg';
+import Book from '../assets/images/icons/book.svg';
 
 const PrivateRoutes = [
   {
-    path: '/admin/dashboard',
+    path: '/dashboard',
     key: 'dashboard',
     label: 'Dashboard',
     icon: Dashboard,
   },
   {
-    path: "/potential-customers",
-    key: "potential-customers",
-    label: "Khách hàng tiềm năng",
+    path: '/potential-customers',
+    key: 'potential-customers',
+    label: 'Khách hàng tiềm năng',
     icon: Users,
   },
   {
-    path: "/appointment-management",
-    key: "appointment-management",
-    label: "Quản lý lịch hẹn",
+    path: '/appointment-management',
+    key: 'appointment-management',
+    label: 'Quản lý lịch hẹn',
     icon: Calendar,
   },
   {
-    path: "/advise",
-    key: "advise",
-    label: "Tư vấn",
+    path: '/advise',
+    key: 'advise',
+    label: 'Tư vấn',
     icon: Support,
     children: [
       {
@@ -54,45 +54,52 @@ const PrivateRoutes = [
     ],
   },
   {
-    path: "/customer-care",
-    key: "customer-care",
-    label: "Chăm sóc",
+    path: '/customer-care',
+    key: 'customer-care',
+    label: 'Chăm sóc',
     icon: Care,
   },
   {
-    path: "/q&a",
-    key: "q&a",
-    label: "Hỏi đáp",
+    path: '/q&a',
+    key: 'q&a',
+    label: 'Hỏi đáp',
     icon: QA,
   },
   {
-    path: "/finance-support",
-    key: "finance-support",
-    label: "Kiến thức tư vấn tài chính",
+    path: '/finance-support',
+    key: 'finance-support',
+    label: 'Kiến thức tư vấn tài chính',
     icon: Book,
   },
   {
-    path: "/retirement",
-    key: "retirement",
+    path: '/retirement',
+    key: 'retirement',
   },
   {
-    path: "/startup-fund",
-    key: "startup-fund",
+    path: '/startup-fund',
+    key: 'startup-fund',
   },
   {
-    path: "/inheritance-fund",
-    key: "inheritance-fund",
+    path: '/inheritance-fund',
+    key: 'inheritance-fund',
   },
   {
-    path: "/quy-du-phong",
-    key: "quy-du-phong",
+    path: '/contingency-fund',
+    key: 'contingency-fund',
+  },
+  {
+    path: '/education-foundation',
+    key: 'education-foundation',
+  },
+  {
+    path: '/health-foundation',
+    key: 'health-foundation',
   },
   // {
   //   path: "/qminh-hoa-gia",
   //   key: "minh-hoa-gia",
   //   page: <MinhHoaGiaTriUyThac />,
   // },
-
 ];
 
 export default PrivateRoutes;
@@ -102,5 +109,15 @@ export const RoutesWithOutMenu = [
     path: '/advise/financial-solutions/minh-hoa-gia',
     key: 'minh-hoa-gia',
     label: 'Minh họa giá trị ủy thác',
-  }
-]
+  },
+  {
+    path: '/payment',
+    key: 'payment-management',
+    label: 'Quản lý thanh toán',
+  },
+  {
+    path: '/content-management',
+    key: 'content-management',
+    label: '',
+  },
+];

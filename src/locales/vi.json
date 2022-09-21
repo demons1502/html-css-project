@@ -20,9 +20,22 @@
     "booking": "Đặt lịch hẹn",
     "no more potential": "Không còn tiềm năng",
     "setting": "Cấu hình",
-    "logout": "Đăng xuất"
+    "logout": "Đăng xuất",
+    "cancel": "Hủy",
+    "cancel create": "Hủy tạo",
+    "create": "Tạo",
+    "create new": "Tạo mới",
+    "delete": "Xóa",
+    "delete title": "Bạn chắc chắn muốn xóa",
+    "input": "Nhập",
+    "type": "Loại",
+    "event": "Sự kiện",
+    "select": "Chọn"
   },
   "validate": {},
+  "message": {
+    "create event success": "Thêm sự kiện thành công"
+  },
   "customer care": {
     "title": "Danh sách khách hàng",
     "event title": "Các event sắp tới",
@@ -31,7 +44,20 @@
     "sms": "SMS",
     "email": "Email",
     "no more potential": "Không còn tiềm năng",
-    "sync info": "Tổng hợp thông tin"
+    "sync info": "Tổng hợp thông tin",
+    "add event title": "Thêm mới event",
+    "edit event title": "Chỉnh sửa event",
+    "add info title": "Thêm thông tin",
+    "edit info title": "Chỉnh sửa thông tin",
+    "event template": "Mẫu sự kiện",
+    "sms template": "Mẫu tin SMS",
+    "email template": "Mẫu nội dung email",
+    "sms title": "Gửi SMS",
+    "email title": "Gửi Email",
+    "email content": "Nội dung email",
+    "sms content": "Nội dung SMS",
+    "add event template": "Tạo mẫu event",
+    "add template": "Thêm mới mẫu"
   },
 
   "financial solution": {
@@ -46,6 +72,8 @@
     "old articles": "Các tin cũ hơn"
   },
   "manage content": {
-    "title": "Quản lý nội dung"
+    "title": "Quản lý nội dung",
+    "articles list title": "Danh sách bài viết",
+    "q&a list title": "Danh sách câu hỏi"
   }
 }

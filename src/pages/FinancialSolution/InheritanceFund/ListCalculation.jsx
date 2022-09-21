@@ -20,98 +20,39 @@ const ListCalculation = () => {
       onFinishFailed={onFinishFailed}
       autoComplete="off">
       <div className="container-right-middle">
-        <Form.Item name="name" label="Nền giáo dục" className="input-item">
-          <Select className="input-item-search-gary " placeholder="Công lập">
-            <Option value="">Tháng</Option>
-            <Option value="">Nửa năm</Option>
-            <Option value="">Năm</Option>
-          </Select>
-        </Form.Item>
         <Form.Item
-          name="total"
-          label="Học phí hằng năm"
+          name="name1"
+          label="Tài sản hiện có"
           rules={[
             {
               required: true,
-              message: "Học phí hằng năm",
+           
             },
           ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
+          <Input placeholder="0" type="number" min={0} style={{ width: 152 }} />
         </Form.Item>
-
         <Form.Item
-          name="total"
-          label="Số con"
+          name="name2"
+          label="Kinh nghiệm đầu tư sinh lời"
           rules={[
             {
               required: true,
-              message: "Số con",
+            
             },
           ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
+          <Input placeholder="0" type="text" style={{ width: 152 }} />
         </Form.Item>
         <Form.Item
-          name="total"
-          label="Số tuổi vào đại học"
+          name="name3"
+          label="Số năm gấp đôi tài sản"
           rules={[
             {
               required: true,
-              message: "Số tuổi vào đại học",
+           
             },
           ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
+          <Input placeholder="0" type="number" min={0} style={{ width: 152 }} />
         </Form.Item>
-        <Form.Item
-          name="total"
-          label="Thời gian nghỉ hưu mong muốn"
-          rules={[
-            {
-              required: true,
-              message: "Thời gian nghỉ hưu",
-            },
-          ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
-        </Form.Item>
-        <Form.Item
-          name="total"
-          label="Số tiền đã có"
-          rules={[
-            {
-              required: true,
-              message: "Số tiền đã có",
-            },
-          ]}>
-          <Input
-            placeholder="0"
-            type="number"
-            className="input-item-search-gary"
-          />
-        </Form.Item>
-      </div>
-      <div className="container-right-bottom">
-        <p>
-          Tổng số tiền cần cho tương lai:{" "}
-          <span className="total-amount">40.000.000</span>
-        </p>
-        <p>
-          Số tiền còn thiếu : <span className="total-amount">40.000.000</span>
-        </p>
       </div>
 
       <div className="container-right-submit">

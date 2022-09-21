@@ -1,5 +1,5 @@
 import React from 'react';
-import InputSearch from '../../components/InputSearch';
+import InputSearch from '../../components/common/InputSearch';
 
 const PaymentManagementHeader = (props) => {
   const { title, search = false, setPayload } = props;
@@ -14,7 +14,7 @@ const PaymentManagementHeader = (props) => {
         </div>
       )}
     </div>
-  );
+  )
 };
 
 export default PaymentManagementHeader;

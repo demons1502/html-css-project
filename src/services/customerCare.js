@@ -1,6 +1,7 @@
-import {sendGet, sendPost, sendPut, sendDelete} from './axios';
+import {sendGet, sendPost, sendPatch, sendDelete} from './axios';
+import {ENDPOINT} from "../config/endpoint";
 
-export const create = (payload) => sendPost('api/create', payload)
-export const getAll = (payload) => sendGet('api/get-all', payload)
-export const update = (id, payload) => sendPut(`api/update/${id}`, payload)
-export const remove = (id) => sendDelete(`api/remove/${id}`)
+export const getCustomerCare = (payload) => sendGet(ENDPOINT.customerCare, payload)
+export const addCustomerCare = (payload) => sendPost(ENDPOINT.customerCare, payload)
+export const patchCustomerCare = (id, payload) => sendPatch(`${ENDPOINT.customerCare}/${id}`, payload)
+export const deleteCustomerCare = (id) => sendDelete(`${ENDPOINT.customerCare}/${id}`)

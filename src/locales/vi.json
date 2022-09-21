@@ -30,7 +30,8 @@
     "input": "Nhập",
     "type": "Loại",
     "event": "Sự kiện",
-    "select": "Chọn"
+    "select": "Chọn",
+    "no data": "Không có dữ liệu"
   },
   "validate": {},
   "message": {

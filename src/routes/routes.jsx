@@ -40,6 +40,9 @@ const EducationFoundation = lazy(() =>
 const IllustrateFiduciary = lazy(() =>
   import('../pages/FinancialSolution/IllustrateFiduciary')
 );
+const PotentialCustomers = lazy(() =>
+  import('../pages/PotentialCustomers')
+);
 
 // ADMIN VIEWS
 const Admin = lazy(() => import('../pages/Admin/index'));
@@ -66,7 +69,7 @@ export const routes = () => [
       // no page yet
       {
         path: 'potential-customers',
-        element: <GuestGuard element={<CustomerCare />} />,
+        element: <GuestGuard element={<PotentialCustomers />} />,
       },
       // no page yet
       {

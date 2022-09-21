@@ -1,7 +1,7 @@
 import { Modal, Empty } from "antd";
 import React, { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import TableCommon from "../../../components/TableCommon";
+import Table from "../../../components/common/TableNormal";
 
 const dataSource = [
   {
@@ -71,7 +71,7 @@ export const HistoryModal = ({ isModalOpen, toggleModal }) => {
   const table = useMemo(() => {
     if (!!dataTable && dataTable.length > 0) {
       return (
-        <TableCommon dataSource={dataTable} columnTable={columns}></TableCommon>
+        <Table dataSource={dataTable} columnTable={columns} />
       );
     } else {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;

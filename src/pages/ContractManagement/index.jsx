@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react'
-import InputSearch from '../../components/InputSearch'
+import InputSearch from '../../components/common/InputSearch'
 import "../../assets/scss/ContractManagement/styleContract.scss"
 import { Button, Table, Modal } from 'antd'
 import CreateContract from './CreateContract';
@@ -102,7 +102,7 @@ export default function ContractManagement() {
   useEffect(()=>{
     setDataTable(userData)
   },[userData])
-  
+
   handleEditUser = (e) => {
     const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
     const id = rowHover[0].innerHTML
@@ -136,14 +136,14 @@ export default function ContractManagement() {
         </div>
       </div>
       <div className="contract_list">
-        <Table dataSource={dataTable} columns={columns} size='middle' 
+        <Table dataSource={dataTable} columns={columns} size='middle'
           pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '30'] }}
         />
       </div>
       {
         modalCreateContract ? (
           <Modal width='800px' centered footer={null} closable={false}
-            open={modalCreateContract} 
+            open={modalCreateContract}
             onOk={() => setModalCreateContract(false)} 
             onCancel={() => setModalCreateContract(false)}>
             <CreateContract handleCloseModalCreate={handleCloseModalCreate} />
@@ -154,7 +154,7 @@ export default function ContractManagement() {
       {
         modalEditContract ? (
           <Modal width='800px' centered footer={null} closable={false}
-            open={modalEditContract} 
+            open={modalEditContract}
             onOk={() => setModalEditContract(false)} 
             onCancel={() => setModalEditContract(false)}>
             <CreateContract handleCloseModalCreate={handleCloseModalCreate} data={dataEdit} func={'edit'}/>

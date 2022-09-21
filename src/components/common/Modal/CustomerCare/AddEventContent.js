@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {DatePicker, Select, Col, Form, Input, Row, Button} from "antd";
-import {VALIDATE_MESSAGES, FORMAT_DATE} from '../../../ultis/constant';
+import {VALIDATE_MESSAGES, FORMAT_DATE} from '../../../../ultis/constant';
 import {useTranslation} from 'react-i18next';
-import {createData, updateData} from '../../../slices/events';
+import {createData, updateData} from '../../../../slices/events';
 import moment from 'moment';
 
 const { Option } = Select;
@@ -13,7 +13,7 @@ export default function AddEventContent(props) {
   const {t} = useTranslation();
   const {detailData , setVisibleModalAddEvent} = props;
   const [form] = Form.useForm();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleSaveEvent = (values) => {
     values.date = moment(values.date)

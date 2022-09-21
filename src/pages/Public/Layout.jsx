@@ -2,25 +2,24 @@ import React, { Fragment, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 import Header from '../../components/Header';
-import Nav from '../../components/Nav';
 
-export const MainLayout = () => {
+export const PublicLayout = () => {
   const { isAuth } = useSelector((state) => state.auth);
 
   if (!isAuth) {
     return <Navigate to='/auth' />;
   }
+
   return (
     <Fragment>
       <Header />
-      <Nav />
       <div className='main-wrapper'>
         <Suspense fallback={null}>
-          <Outlet />
+          <Outlet />;
         </Suspense>
       </div>
     </Fragment>
   );
 };
 
-export default MainLayout;
+export default PublicLayout;

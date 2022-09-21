@@ -6,7 +6,7 @@ import {
   importFile,
 } from '../services/paymentManagement';
 
-const initialState = { data: [], total: 0 };
+const initialState = { isReload: false, data: [], total: 0 };
 
 export const retrieveData = createAsyncThunk(
   'paymentManagement/getAll',
@@ -63,20 +63,23 @@ const paymentManagementSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createPayment.fulfilled]: (state, action) => {
-      state.data.push(action.payload);
+      state.isReload = true;
+      // state.data.push(action.payload);
     },
     [retrieveData.fulfilled]: (state, action) => {
       state.data = action.payload.data;
       state.total = action.payload.total;
+      state.isReload = false;
     },
     [deletePayment.fulfilled]: (state, action) => {
       // let index = state.data.findIndex(({ id }) =>
       //   action.payload.id.includes(id)
       // );
       // state.data.splice(index, 1);
-      state.data = state.data.filter(
-        ({ id }) => !action.payload.id.includes(id)
-      );
+      state.isReload = true;
+      // state.data = state.data.filter(
+      //   ({ id }) => !action.payload.id.includes(id)
+      // );
     },
   },
 });

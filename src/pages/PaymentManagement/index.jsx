@@ -1,13 +1,13 @@
-import { Alert, Button, Col, notification, Row } from 'antd';
+import { Button, Col, notification, Row } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import deleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import importIcon from '../../assets/images/icons/importIcon.svg';
 import plusIcon from '../../assets/images/icons/plus.svg';
-import ModalConfirm from '../../components/ModalConfirm';
 import Pagination from '../../components/common/Pagination';
 import Table from '../../components/common/TableNormal';
+import ModalConfirm from '../../components/ModalConfirm';
 import {
   deletePayment,
   retrieveData,
@@ -117,7 +117,7 @@ const PaymentManagement = () => {
   useEffect(() => {
     const params = { q: searchPayload, page: page, limit: pageSize };
     dispatch(retrieveData(params));
-  }, [searchPayload, page, pageSize]);
+  }, [searchPayload, page, pageSize, payments.isReload]);
 
   return (
     <div className='paymentManagement'>

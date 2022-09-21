@@ -1,16 +1,19 @@
 import { Col, Image, Layout, Row, Typography } from 'antd';
-import React from 'react';
+import axios from 'axios';
+import moment from 'moment';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import eyeIcon from '../../assets/images/icons/eyeIcon.svg';
 import timeIcon from '../../assets/images/icons/timeIcon.svg';
+import { getImage } from '../../services/financeKnowledge';
 import { getView } from '../../slices/financeKnowledge';
+import { FORMAT_DATE } from '../../ultis/constant';
 
 const FinanceSupportCard = (props) => {
-  const dispatch = useDispatch();
   const { wrap, target, content } = props;
-  const date = content?.createdAt
-    ? content?.createdAt.slice(0, 10).replace(/-/g, '/')
-    : content?.date;
+
+  const dispatch = useDispatch();
+  const date = moment(content?.createdAt).format(FORMAT_DATE);
 
   return (
     <Col
@@ -34,7 +37,10 @@ const FinanceSupportCard = (props) => {
             {props.image && (
               <Col lg={wrap ? 24 : 6} md={24} sm={24} xs={24}>
                 <Image
-                  src={content?.image || content?.img}
+                  src={
+                    // content?.image ||
+                    'https://th.bing.com/th/id/R.3242f9c1b5d96e263abe961bfed6527e?rik=2lHe5NGSV1%2f0bg&pid=ImgRaw&r=0'
+                  }
                   preview={false}
                   className={`image ${wrap ? 'image-wrap' : ''}`}
                 />
@@ -83,7 +89,7 @@ const FinanceSupportCard = (props) => {
                 </Col>
               </Row>
               <Typography.Paragraph ellipsis={{ rows: 2 }} className='text'>
-                {content?.body || content?.subTitle || content?.desc}
+                {content?.subTitle || content?.desc}
               </Typography.Paragraph>
             </Col>
           </Row>

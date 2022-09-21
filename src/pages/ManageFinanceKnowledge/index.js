@@ -22,8 +22,9 @@ import {
 } from '../../slices/managementContent';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
-import { LOADING_STATUS } from '../../ultis/constant';
+import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import ModalConfirm from '../../components/ModalConfirm';
+import Pagination from '../../components/common/Pagination';
 
 const ManageFinanceKnowledge = () => {
   const { t } = useTranslation();
@@ -33,10 +34,14 @@ const ManageFinanceKnowledge = () => {
 
   const [itemContent, setItemContent] = useState(null);
   const [option, setOption] = useState('articles');
+  const [paginate, setPaginate] = useState({
+    limit: DEFAULT_SIZE,
+    offset: 0,
+  });
   const [fileList, setFileList] = useState([
-    {
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
+    // {
+    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    // },
   ]);
 
   const handleChange = (e) => {
@@ -48,7 +53,6 @@ const ManageFinanceKnowledge = () => {
 
   const handleFileList = ({ fileList: newFile }) => {
     setFileList(newFile);
-    /* console.log(newFile[0]) */
     setItemContent({ ...itemContent, image: newFile[0]?.originFileObj });
   };
 
@@ -60,7 +64,6 @@ const ManageFinanceKnowledge = () => {
   //   data.append('body', '');
   //   data.append('url', '');
   //   dispatch(createContent({ type: option, payload: data }));
-
   // };
 
   const handleSave = (item) => {
@@ -70,10 +73,15 @@ const ManageFinanceKnowledge = () => {
     formData.append('subTitle', item.subTitle);
     formData.append('url', item.url);
     formData.append('body', item.body);
+    console.log(item);
     if (!item.id) {
       dispatch(createContent({ type: option, payload: formData }));
+      setItemContent(null);
+      setFileList([]);
     } else {
       dispatch(updateContent({ type: option, id: item.id, payload: formData }));
+      setItemContent(null);
+      setFileList([]);
     }
   };
 
@@ -88,6 +96,7 @@ const ManageFinanceKnowledge = () => {
         content: `Xác nhận xóa nội dung`,
         callApi: () => dispatch(deleteContent({ type: option, id: item.id })),
       });
+      setItemContent(null);
     } else {
       ModalConfirm({
         content: `Chọn nội dung cần xóa`,
@@ -97,11 +106,10 @@ const ManageFinanceKnowledge = () => {
       });
     }
   };
-
   useEffect(() => {
     //fetch data
-    dispatch(retrieveData({ type: option, params: { limit: 10, offset: 0 } }));
-  }, [option]);
+    dispatch(retrieveData({ type: option, params: paginate }));
+  }, [option, contents.isReload, paginate]);
 
   return (
     <div className='manageFinanceKnowledge'>
@@ -125,11 +133,11 @@ const ManageFinanceKnowledge = () => {
                   locale={{ emptyText: 'Không có dữ liệu' }}
                   className='manageFinanceKnowledge-container_list'
                   size='small'
-                  pagination={{
-                    className: 'manageFinanceKnowledge-pagination',
-                    pageSize: 7,
-                    showLessItems: true,
-                  }}
+                  // pagination={{
+                  //   className: 'manageFinanceKnowledge-pagination',
+                  //   pageSize: 7,
+                  //   showLessItems: true,
+                  // }}
                   header={
                     <Title
                       title={
@@ -149,7 +157,7 @@ const ManageFinanceKnowledge = () => {
                       Thêm mới
                     </Button>
                   }
-                  dataSource={contents}
+                  dataSource={contents.data}
                   renderItem={(item) => (
                     <List.Item
                       onClick={() => setItemContent(item)}
@@ -160,8 +168,13 @@ const ManageFinanceKnowledge = () => {
                       <Typography.Text ellipsis>{item.title}</Typography.Text>
                     </List.Item>
                   )}
-                />
+                ></List>
               </Spin>
+              <Pagination
+                total={contents.totalItem}
+                setPaginate={setPaginate}
+                showSizeChanger={false}
+              ></Pagination>
             </Layout.Content>
           </Col>
 

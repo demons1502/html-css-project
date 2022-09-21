@@ -1,5 +1,5 @@
 import { Col, List, Row, Spin } from 'antd';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import commentIcon from '../../assets/images/icons/comment.svg';
@@ -9,9 +9,15 @@ import {
   mostViewArticles,
 } from '../../slices/financeKnowledge';
 import FinanceKnowledgeCard from './FinanceKnowledgeCard';
-import { LOADING_STATUS } from '../../ultis/constant';
+import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
+import Pagination from '../../components/common/Pagination';
 
 const index = () => {
+  const [paginate, setPaginate] = useState({
+    limit: DEFAULT_SIZE,
+    offset: 0,
+  });
+
   const { t } = useTranslation();
   const articlesData = useSelector(
     (state) => state.financeKnowledgeReducer.articlesData
@@ -23,18 +29,11 @@ const index = () => {
 
   const dispatch = useDispatch();
 
-  //fetch data
   useEffect(() => {
-    const params = { limit: 12, offset: 0 };
+    const params = paginate;
     dispatch(getArticlesData(params));
     dispatch(mostViewArticles());
-  }, []);
-
-  useEffect(() => {
-    const params = { limit: 12, offset: 0 };
-    dispatch(getArticlesData(params));
-    dispatch(mostViewArticles());
-  }, []);
+  }, [paginate]);
 
   return (
     <div className='financeKnowledge'>
@@ -78,17 +77,22 @@ const index = () => {
               column: 3,
             }}
             dataSource={articlesData.articles}
-            pagination={{
-              pageSize: 12,
-              className: 'financeKnowledge-pagination',
-              pageSizeOptions: true,
-            }}
+            // pagination={{
+            //   pageSize: 12,
+            //   className: 'financeKnowledge-pagination',
+            //   pageSizeOptions: true,
+            // }}
             renderItem={(item) => (
               <List.Item>
                 <FinanceKnowledgeCard content={item} key={item.id} lg={24} />
               </List.Item>
             )}
-          />
+          ></List>
+          <Pagination
+            total={articlesData.articlesCount}
+            setPaginate={setPaginate}
+            showSizeChanger={false}
+          ></Pagination>
         </Spin>
       </div>
     </div>

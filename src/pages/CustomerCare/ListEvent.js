@@ -39,7 +39,7 @@ export default function ListEvent() {
     {
       title: t('common.date'),
       key: 'date',
-      width: '25%',
+      width: '22%',
       render: (record) => {
         return (
           <span>{getTimeByTZ(record.date)}</span>

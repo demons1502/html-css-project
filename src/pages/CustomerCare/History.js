@@ -37,7 +37,7 @@ export default function History() {
     {
       title: t('common.type info'),
       key: 'info',
-      width: '25%',
+      width: '23%',
       render: (record) => {
         return (
           <span>{getCustomerCareLabel(record.info)}</span>

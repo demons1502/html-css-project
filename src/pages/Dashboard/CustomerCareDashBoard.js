@@ -1,8 +1,8 @@
-import { Col, Empty, Row } from 'antd';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PaginationCommon from '../../components/PaginationCommon';
-import TableCardCommon from '../../components/TableCardCommon';
+import CustomerItemBirthday from './commons/CustomerCareDashboard/customer-item-col-birthday';
+import CustomerItemRemind from './commons/CustomerCareDashboard/customer-item-col-remind';
 import * as S from './styles';
 
 const dataCustomerCare = [
@@ -39,21 +39,7 @@ const columnCustomerCare = [
   {
     dataIndex: 'name',
     key: 'name',
-    render: (text, record) => (
-      <Row gutter={[10, 0]}>
-        <Col>
-          <S.CircleTag />
-        </Col>
-        <Col>
-          <Row>
-            <p>{text}</p>
-          </Row>
-          <Row>
-            <S.TextTable>Sinh nhật {record.birthday}</S.TextTable>
-          </Row>
-        </Col>
-      </Row>
-    ),
+    render: (text, record) => <CustomerItemBirthday record={record} />,
   },
   {
     dataIndex: '',
@@ -112,35 +98,7 @@ const columnsRemind = [
   {
     dataIndex: 'name',
     key: 'name',
-    render: (text, record) => (
-      <Row gutter={[10, 0]}>
-        <Col>
-          <S.CircleTag />
-        </Col>
-        <Col>
-          <Row>
-            <p>{text}</p>
-          </Row>
-          <Row>
-            <S.TextTable>
-              Ngày đến hạn: <S.TextTable $bold>{record.dueDate}</S.TextTable>
-            </S.TextTable>
-          </Row>
-          <Row gutter={10}>
-            <Col>
-              <S.TextTable>
-                Số HĐ: <S.TextTable $bold>{record.contractId}</S.TextTable>
-              </S.TextTable>
-            </Col>
-            <Col>
-              <S.TextTable>
-                Số tiền: <S.TextTable $bold>{record.money}</S.TextTable>
-              </S.TextTable>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-    ),
+    render: (text, record) => <CustomerItemRemind record={record} />,
   },
   {
     dataIndex: '',
@@ -168,16 +126,8 @@ export default function CustomerCareDashBoard() {
     setColumns(!remind ? columnsRemind : columnCustomerCare);
   };
 
-  const table = useMemo(() => {
-    if (!!dataTable && dataTable.length > 0) {
-      return <TableCardCommon dataSource={dataTable} columnTable={columns} showHeader={false}></TableCardCommon>;
-    } else {
-      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
-    }
-  }, [dataTable]);
-
   return (
-    <S.WrapContainer>
+    <S.WrapContainer $toggle={toggle}>
       <S.WrapTitle $toggle={toggle}>
         <S.IconDown onClick={() => setToggle(!toggle)} />
         <S.Title>{t('dashboard-page.customer-care-dashboard')}</S.Title>
@@ -188,7 +138,14 @@ export default function CustomerCareDashBoard() {
         </S.WrapButtonTitle>
       </S.WrapTitle>
       <S.WrapContent $display={!toggle ? 'block' : 'none'}>
-        {table}
+        <S.Table
+          dataSource={dataTable}
+          columns={columns}
+          pagination={false}
+          bordered={false}
+          scroll={{ scrollToFirstRowOnChange: false }}
+          showHeader={false}
+        />
         <PaginationCommon />
       </S.WrapContent>
     </S.WrapContainer>

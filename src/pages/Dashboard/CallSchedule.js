@@ -1,9 +1,8 @@
-import { Checkbox, Empty } from 'antd';
-import React, { useMemo, useState } from 'react';
+import { Checkbox } from 'antd';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import call from '../../assets/images/icons/call.svg';
 import PaginationCommon from '../../components/PaginationCommon';
-import TableCardCommon from '../../components/TableCardCommon';
 import * as S from './styles';
 
 const dataSource = [
@@ -142,16 +141,8 @@ export default function CallSchedule() {
     },
   ];
 
-  const table = useMemo(() => {
-    if (!!dataTable && dataTable.length > 0) {
-      return <TableCardCommon dataSource={dataTable} columnTable={columns}></TableCardCommon>;
-    } else {
-      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
-    }
-  }, [dataTable]);
-
   return (
-    <S.WrapContainer>
+    <S.WrapContainer $toggle={toggle}>
       <S.WrapTitle $toggle={toggle}>
         <S.IconDown onClick={() => setToggle(!toggle)} />
         <S.Title>{t('dashboard-page.call-schedule')}</S.Title>
@@ -163,7 +154,13 @@ export default function CallSchedule() {
         />
       </S.WrapTitle>
       <S.WrapContent $display={!toggle ? 'block' : 'none'}>
-        {table}
+        <S.Table
+          dataSource={dataTable}
+          columns={columns}
+          pagination={false}
+          bordered={false}
+          scroll={{ scrollToFirstRowOnChange: false }}
+        />
         <PaginationCommon />
       </S.WrapContent>
     </S.WrapContainer>

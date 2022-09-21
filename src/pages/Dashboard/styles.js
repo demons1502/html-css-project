@@ -1,11 +1,15 @@
+/* eslint-disable indent */
 import { CaretDownOutlined as AntDCaretDownOutlined } from '@ant-design/icons';
-import { Select as AntDSelect, Row as AntDRow, Col as AntDCol, Button as AntDButton } from 'antd';
+import { Button as AntDButton, Col as AntDCol, Row as AntDRow, Select as AntDSelect, Table as AntDTable } from 'antd';
 import styled, { css } from 'styled-components';
 
 const greyColor = '#e6e6e6';
+const greyTableColor = '#cccccc';
 const primaryColor = '#36b872';
+const secondaryColor = '#f8f8f8';
 const disabledColor = '#f4f4f4';
 const fontSize = '1.4rem';
+const fontWeightSemiBold = '600 !default';
 
 export const WrapLayout = styled.div`
   padding-bottom: 88px;
@@ -18,6 +22,13 @@ export const WrapContainer = styled.div`
   border-radius: 25px 25px 25px 25px;
   height: 100%;
   width: 100%;
+
+  ${(props) =>
+    props.$toggle &&
+    css`
+      height: 60px;
+      width: 100%;
+    `};
 `;
 
 export const WrapHeader = styled.div`
@@ -98,6 +109,12 @@ export const WrapContent = styled.div`
         `;
     }
   }}
+
+  ${(props) =>
+    props.$paddingBottom &&
+    css`
+      padding-bottom: 13px;
+    `};
 `;
 
 export const WrapTableAction = styled.div`
@@ -167,7 +184,8 @@ export const CircleTag = styled.div`
 
   margin-left: 7px;
   margin-top: 8px;
-  background-color: ${primaryColor};
+  background-color: ${(props) => props?.$color || primaryColor};
+
   ${(props) =>
     props.$miss &&
     css`
@@ -212,4 +230,107 @@ export const Button = styled(AntDButton)`
         `;
     }
   }}
+`;
+
+export const WrapIconTable = styled.img`
+  width: 12px;
+  height: 12px;
+
+  margin-left: 7px;
+  margin-top: 5px;
+`;
+
+export const IconTooltip = styled.img`
+  width: 16px;
+  height: 16px;
+`;
+
+export const Table = styled(AntDTable)`
+  .ant-table-thead tr {
+    th {
+      background: ${secondaryColor};
+      padding: 11.5px 20px;
+      font-size: 1.4rem;
+      border-bottom: none;
+      font-weight: ${fontWeightSemiBold};
+
+      &::before {
+        display: none;
+      }
+
+      &:first-child {
+        border-top-left-radius: 0 !important;
+        padding-left: 25px;
+        ${(props) => {
+          switch (props.$paddingIcon) {
+            case true:
+              return css`
+                padding: 11.5px 20px;
+              `;
+            default:
+              return css`
+                padding-left: 25px;
+              `;
+          }
+        }}
+      }
+    }
+  }
+
+  .ant-table-tbody {
+    tr {
+      td {
+        font-size: 1.4rem;
+        border-bottom: 1px dotted ${greyTableColor};
+        padding: 10px 20px;
+        vertical-align: middle;
+
+        &:first-child {
+          padding-left: 10px;
+          ${(props) => {
+            switch (props.$paddingIcon) {
+              case true:
+                return css`
+                  padding: 10px 20px;
+                `;
+              default:
+                return css`
+                  padding-left: 10px;
+                `;
+            }
+          }}
+        }
+      }
+
+      &:last-child {
+        td {
+          ${(props) => {
+            switch (props.$borderBottom) {
+              case false:
+                return css`
+                  border-bottom: none;
+                `;
+              default:
+                return css`
+                  border-bottom: 1px solid ${greyTableColor};
+                `;
+            }
+          }}
+        }
+      }
+    }
+  }
+
+  .ant-table-row-selected {
+    td {
+      background: $green-table-bg !important;
+      border-bottom: 1px solid $white-color !important;
+      color: $white-color;
+    }
+  }
+`;
+
+export const WrapIconCenter = styled(AntDCol)`
+  display: flex;
+  align-items: center;
 `;

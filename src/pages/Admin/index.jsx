@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Checkbox, Modal } from 'antd';
 import "../../assets/scss/Admin/stylesAdmin.scss"
-import { Button, Checkbox, Modal } from 'antd';
-import '../../assets/scss/Admin/stylesAdmin.scss';
 import InputSearch from '../../components/common/InputSearch';
 import CreateUser from './CreateUser';
 import Table from "../../components/common/TableNormal";
@@ -17,7 +16,6 @@ import {
   retrieveData,
   resetUserId,
 } from '../../slices/userManagement';
-import Item from 'antd/lib/list/Item';
 
 var handleDeleteUser;
 var handleCheckboxChange;
@@ -341,7 +339,6 @@ export default function UserManagement() {
             <InputSearch setPayload={(e) => setInputText(e)} />
           </div>
         </div>
-
         <Table dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={setSelectedRowKeys} />
         <Pagination />
         {isCreateUser &&

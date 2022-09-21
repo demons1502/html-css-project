@@ -19,7 +19,7 @@ const loadingSlice = createSlice({
     ).addMatcher(
       isFulfilled(),
       (state, action) => {
-        return ({...state, ...{ loading: LOADING_STATUS.succeeded, message: action.payload.message}})
+        return ({...state, ...{ loading: LOADING_STATUS.succeeded, message: action.payload?.message}})
       }
     ).addMatcher(
       isRejected(),

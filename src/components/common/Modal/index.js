@@ -13,17 +13,17 @@ export default function ModalCommon(props) {
   } = props;
   const { loading } = useSelector((state) => state.loading);
 
-  return <Spin spinning={loading === LOADING_STATUS.pending}>
-    <Modal
-      className="modal-custom"
-      title={title}
-      centered
-      open={isVisible}
-      width={width}
-      footer={null}
-      onCancel={() => setIsVisible(false)}
-    >
+  return <Modal
+    className="modal-custom"
+    title={title}
+    centered
+    open={isVisible}
+    width={width}
+    footer={null}
+    onCancel={() => setIsVisible(false)}
+  >
+    <Spin spinning={loading === LOADING_STATUS.pending}>
       {content}
-    </Modal>
-  </Spin>
+    </Spin>
+  </Modal>
 }

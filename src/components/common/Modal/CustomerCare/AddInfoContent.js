@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {DatePicker, Select, Col, Form, Input, Row, Button} from "antd";
 import {VALIDATE_MESSAGES, FORMAT_DATE, CUSTOMER_CARE_INFO} from '../../../../ultis/constant';
-import {createData, updateData} from '../../../../slices/customerCare';
+import {getData, createData, updateData} from '../../../../slices/customerCare';
 import {useTranslation} from 'react-i18next';
 import useFormErrors from '../../../../hooks/useFormErrors'
 import moment from 'moment';
@@ -14,13 +14,13 @@ export default function AddEventContent(props) {
   const [form] = Form.useForm();
   useFormErrors(form);
   const {t} = useTranslation();
-  const customerId = useSelector((state) => state.customerCare.customerId);
+  const {customerData} = useSelector((state) => state.customerCare);
   const {detailData , setVisibleModalAddInfo} = props;
   const dispatch = useDispatch();
 
   const handleSaveInfo = (values) => {
     values.date = moment(values.date)
-    values.customerId = customerId
+    values.customerId = customerData.customerId
     if (Object.keys(detailData).length > 0) {
       values.id = detailData.id
       dispatch(updateData(values))
@@ -66,7 +66,7 @@ export default function AddEventContent(props) {
           label={t('common.content')}
           name="content"
           rules={[{required: true}]}>
-          <TextArea rows={4} placeholder="Nhập" className="input-item-outline"/>
+          <TextArea rows={3} placeholder={t('common.input')} className="input-item-outline"/>
         </Form.Item>
       </Col>
       <Col span={24}>

@@ -1,3 +1,7 @@
+import moment from 'moment'
+import {FORMAT_DATE, CUSTOMER_CARE_INFO} from '../ultis/constant'
+import _ from 'lodash'
+
 export const formatDataNumber = (number) => {
   if (number) {
     if (Number.isInteger(number)) {
@@ -11,7 +15,19 @@ export const formatDataNumber = (number) => {
 }
 
 export const pad = (num, size) => {
-  num = num.toString();
-  while (num.length < size) num = "0" + num;
-  return num;
+  num = num.toString()
+  while (num.length < size) num = "0" + num
+  return num
+}
+
+export const getTimeByTZ = (date, format = FORMAT_DATE) => {
+  return moment(date).utc().format(format)
+}
+
+export const getCustomerCareLabel = (customerValue) => {
+  const info =  _.find(CUSTOMER_CARE_INFO, function (value) {
+    return value.value === customerValue;
+  })
+
+  return info.label
 }

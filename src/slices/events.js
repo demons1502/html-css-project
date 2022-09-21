@@ -1,6 +1,5 @@
 import {createSlice, createAsyncThunk, isFulfilled} from '@reduxjs/toolkit';
 import {getEvents, addEvents, patchEvents, deleteEvents, sendEvents} from '../services/events';
-import {getTimeByTZ} from '../helper';
 
 const initialState = {
   data: []
@@ -8,7 +7,10 @@ const initialState = {
 
 export const sendEvent = createAsyncThunk('events/send', async (payload) => {
   const res = await sendEvents(payload);
-  return res.data;
+  return {
+    data: res.data,
+    message: `Gửi ${payload.type} thành công`
+  };
 });
 
 export const getData = createAsyncThunk('events/get', async (payload) => {

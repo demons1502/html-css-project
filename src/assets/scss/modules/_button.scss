@@ -71,9 +71,7 @@
   color: $green-color;
   padding: 0;
   column-gap: 11px;
-  margin-left: auto;
-  margin-right: 20px;
-  margin-top: 20px;
+  background-color: transparent;
 
   img {
     background: $green-color;
@@ -117,14 +115,38 @@
     height: 2rem;
     font-weight: $font-weight-semibold;
     column-gap: 7px;
-    
+  }
+
+  &-sms {
     &:focus,
     &:hover {
       color: $green-color;
-
+      background: transparent;
       img {
         filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg)
-          brightness(97%) contrast(99%);
+        brightness(97%) contrast(99%);
+      }
+    }
+  }
+
+  &-email {
+    &:focus,
+    &:hover {
+      color: $green-color;
+      background: transparent;
+      img {
+        filter: invert(57%) sepia(52%) saturate(461%) hue-rotate(95deg)
+        brightness(97%) contrast(99%);
+      }
+    }
+  }
+
+  &-del {
+    &:focus,
+    &:hover {
+      background: transparent;
+      img {
+        filter: invert(70%) sepia(64%) saturate(5423%) hue-rotate(323deg) brightness(99%) contrast(127%);
       }
     }
   }

@@ -31,5 +31,16 @@ export const CUSTOMER_CARE_INFO = [
   { label: 'Khảo sát', value: "SURVEY" },
   { label: 'Sở thích', value: "INTERESTS" },
   { label: 'Gia đình', value: "FAMILY" },
+  { label: 'Giải pháp', value: "SOLUTION" },
   { label: 'Khác', value: "OTHER" }
 ]
+
+export const ARR_INFO_REDIRECT = ['SURVEY', 'ADVISE', 'SOLUTION']
+
+export const INFO_PATH = {
+  SURVEY: '/advise/survey',
+  ADVISE: '/advise/finance-consultant',
+  SOLUTION: '/advise/financial-solutions',
+}
+
+

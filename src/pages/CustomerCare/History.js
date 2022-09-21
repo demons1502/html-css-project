@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {Col, Checkbox, Button, Empty} from 'antd';
+import {Col, Checkbox, Button} from 'antd';
 import {getData} from '../../slices/customerCare';
 import Table from '../../components/common/TableNormal';
 import IconPlus from '../../assets/images/icons/plus.svg';
@@ -9,7 +9,9 @@ import IconFiles from '../../assets/images/icons/files.svg';
 import Filter from "../../components/common/Filter";
 import AddInfoContent from "../../components/common/Modal/CustomerCare/AddInfoContent";
 import Modal from "../../components/common/Modal";
-import {CUSTOMER_CARE_INFO, LOADING_STATUS } from '../../ultis/constant';
+import {CUSTOMER_CARE_INFO, LOADING_STATUS, ARR_INFO_REDIRECT, INFO_PATH} from '../../ultis/constant';
+import {getCustomerCareLabel, getTimeByTZ} from "../../helper";
+import {Link} from "react-router-dom";
 
 export default function History() {
   const {t} = useTranslation();
@@ -24,21 +26,40 @@ export default function History() {
     {
       title: t('common.date'),
       dataIndex: 'date',
-      key: 'date'
+      key: 'date',
+      width: '18%',
+      render: (record) => {
+        return (
+          <span>{getTimeByTZ(record.date)}</span>
+        );
+      }
     },
     {
       title: t('common.type info'),
       key: 'info',
+      width: '25%',
       render: (record) => {
         return (
-          <span>{record.info}</span>
+          <span>{getCustomerCareLabel(record.info)}</span>
         );
       }
     },
     {
       title: t('common.content'),
       dataIndex: 'content',
-      key: 'content'
+      key: 'content',
+    },
+    {
+      title: '',
+      key: 'info',
+      width: '15%',
+      render: (record) => {
+        if (ARR_INFO_REDIRECT.includes(record.info)) {
+          return <Link to={INFO_PATH[record.info]} className="btn-bgWhite-textGreen-borGreen pd-btn">
+            <span>Xem</span>
+          </Link>
+        }
+      }
     }
   ];
 
@@ -93,6 +114,5 @@ export default function History() {
       </Col>
       <Modal isVisible={visibleModalAddInfo} setIsVisible={setVisibleModalAddInfo} title={Object.keys(detailData).length > 0 ? t(('customer care.edit info title')) : t(('customer care.add info title'))} width={770} content={<AddInfoContent detailData={detailData} setVisibleModalAddInfo={setVisibleModalAddInfo}/>} />
     </>
-
   );
 }

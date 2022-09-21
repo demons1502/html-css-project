@@ -14,7 +14,7 @@ import SendSmsContent from "../../components/common/Modal/CustomerCare/SendSmsCo
 import SendEmailContent from "../../components/common/Modal/CustomerCare/SendEmailContent";
 import moment from 'moment';
 import {FORMAT_DATE, LOADING_STATUS} from '../../ultis/constant';
-import {pad} from '../../helper'
+import {getTimeByTZ, pad} from '../../helper'
 
 export default function ListEvent() {
   const {t} = useTranslation()
@@ -25,22 +25,25 @@ export default function ListEvent() {
   const [visibleModalSms, setVisibleModalSms] = useState(false)
   const [detailData, setDetailData] = useState({})
   const [eventId, setEventId] = useState(0)
-  const [isTemplate, setIsTemplate] = useState(0)
+  const [isTemplate, setIsTemplate] = useState(false)
+  const [titleModal, setTitleModal] = useState('')
   const dispatch = useDispatch()
 
   const columns = [
     {
       title: t('common.stt'),
       key: 'stt',
+      width: '10%',
       render: (text, record, index) => pad((index + 1), 2),
     },
     {
       title: t('common.date'),
       key: 'date',
+      width: '25%',
       render: (record) => {
         return (
-          <span>{moment(record.date).format(FORMAT_DATE)}</span>
-        );
+          <span>{getTimeByTZ(record.date)}</span>
+        )
       }
     },
     {
@@ -59,10 +62,10 @@ export default function ListEvent() {
       render: (record) => {
         return (
           <div className="btn-table">
-            <Button className="btn-table__btn m-r-10" icon={<img src={IconSms} alt=""/>} onClick={() => showModalSms(record.id)}>{t('customer care.sms')}</Button>
-            <Button className="btn-table__btn m-r-10" icon={<img src={IconMessage} alt=""/>} onClick={() => showModalEmail(record.id)}>{t('customer care.email')}</Button>
+            <Button className="btn-table__btn btn-table-sms m-r-10" icon={<img src={IconSms} alt=""/>} onClick={() => showModalSms(record.id)}>{t('customer care.sms')}</Button>
+            <Button className="btn-table__btn btn-table-email m-r-10" icon={<img src={IconMessage} alt=""/>} onClick={() => showModalEmail(record.id)}>{t('customer care.email')}</Button>
             <Popconfirm className="pop-confirm-delete" placement="top" title={t('common.delete title')} onConfirm={() => deleteEvent(record.id)} okText={t('common.delete')}  cancelText={t('common.cancel')} >
-              <Button className="btn-table__btn flex-end" icon={<img src={IconDelete} alt=""/>}></Button>
+              <Button className="btn-table__btn btn-table-del flex-end" icon={<img src={IconDelete} alt=""/>}></Button>
             </Popconfirm>
           </div>
         )
@@ -84,11 +87,14 @@ export default function ListEvent() {
     setVisibleModalAddEvent(true)
     setDetailData({})
     setIsTemplate(val)
+    const title = val ? t('customer care.add template') : t('customer care.add event title');
+    setTitleModal(title)
   }
 
   const editModal = (detail) => {
     setVisibleModalAddEvent(true)
     setDetailData({...detail})
+    setTitleModal(t('customer care.edit event title'))
   }
 
   const deleteEvent = (id) => {
@@ -96,7 +102,7 @@ export default function ListEvent() {
   }
 
   useEffect(() => {
-    dispatch(getData({isTemplate: 0}))
+    dispatch(getData({isTemplate: false}))
   }, [])
 
   useEffect(() => {
@@ -120,12 +126,12 @@ export default function ListEvent() {
         <div className="customer-care__center--list">
           <Table dataSource={eventState.data} columnTable={columns} heightMargin={550}/>
           <div className="customer-care__center--list-footer">
-            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(1))}>{t('customer care.add event template')}</Button>
-            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(0))}>{t('customer care.add event')}</Button>
+            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(true))}>{t('customer care.add event template')}</Button>
+            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(false))}>{t('customer care.add event')}</Button>
           </div>
         </div>
       </Col>
-      <Modal isVisible={visibleModalAddEvent} setIsVisible={setVisibleModalAddEvent} title={Object.keys(detailData).length > 0 ? t(('customer care.edit event title')) : t(('customer care.add event title'))} width={770} content={<AddEventContent detailData={detailData} isTemplate={isTemplate} setVisibleModalAddEvent={setVisibleModalAddEvent}/>} />
+      <Modal isVisible={visibleModalAddEvent} setIsVisible={setVisibleModalAddEvent} title={titleModal} width={770} content={<AddEventContent detailData={detailData} isTemplate={isTemplate} setVisibleModalAddEvent={setVisibleModalAddEvent}/>} />
       <Modal isVisible={visibleModalEmail} setIsVisible={setVisibleModalEmail} title={t(('customer care.email title'))} width={770} content={<SendEmailContent eventId={eventId} setVisibleModalEmail={setVisibleModalEmail}/>} />
       <Modal isVisible={visibleModalSms} setIsVisible={setVisibleModalSms} title={t(('customer care.sms title'))} width={770} content={<SendSmsContent eventId={eventId} setVisibleModalSms={setVisibleModalSms}/>} />
     </>

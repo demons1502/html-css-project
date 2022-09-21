@@ -4,6 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {sendEvent} from '../../../../slices/events';
 import {Col, Form, Input, Row, Button} from "antd";
 import {VALIDATE_MESSAGES} from '../../../../ultis/constant';
+import useFormErrors from "../../../../hooks/useFormErrors";
 
 const { TextArea } = Input;
 
@@ -12,11 +13,11 @@ export default function SendSmsContent(props) {
   const {setVisibleModalEmail, eventId} = props;
   const [form] = Form.useForm();
   const dispatch = useDispatch()
-  const customerId = useSelector((state) => state.customerCare.customerId);
+  const {customerData} = useSelector((state) => state.customerCare);
 
   const sendEmail = (values) => {
     values.type = "email";
-    values.customerId = customerId;
+    values.customerId = customerData.customerId;
     values.eventId = eventId;
     dispatch(sendEvent(values))
   }

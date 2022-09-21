@@ -1,10 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import {createContracts, getAll} from '../services/contractManagement';
+import {createContracts, getAll, update, getCustom, getById} from '../services/contractManagement';
 
 
 const initialState = {
   data: [],
   totalItem: null,
+  custom:[],
+  contractById:null,
+  refreshData: false,
 };
 
 export const createContract = createAsyncThunk(
@@ -15,11 +18,34 @@ export const createContract = createAsyncThunk(
   }
 );
 
+export const getCustoms = createAsyncThunk(
+  'contractManagement/getCustoms',
+  async (payload) => {
+    const res = await getCustom(payload);
+    return res.data;
+  }
+);
+
+// export const getByIds = createAsyncThunk(
+//   'contractManagement/getContractId',
+//   async (payload) => {
+//     const res = await getById(payload);
+//     return res.data;
+//   }
+// );
+
+export const updateContract = createAsyncThunk(
+  'contractManagement/createContract',
+  async ({id,data}) => {
+    const res = await update({id,data});
+    return res.data;
+  }
+);
+
 export const retrieveData = createAsyncThunk(
   'contractManagement/retrieveData',
   async (payload) => {
     const res = await getAll(payload);
-    console.log(res.data.contracts);
     return res.data;
   }
 );
@@ -27,19 +53,32 @@ export const retrieveData = createAsyncThunk(
 const contractManagement = createSlice({
   name: 'contractManagement',
   initialState,
+  reducers:{
+    setRefresh:(state, action)=>{
+      state.refreshData=false
+    },
+  },
   extraReducers: {
     // [searchUser.fulfilled]: (state, action) => {
     //   state.data = [...action.payload.data];
     //   state.totalItem = action.payload.total;
     // },
     [createContract.fulfilled]: (state, action) => {
-      state.data.push(action.payload);
+      state.refreshData = true
     },
     [retrieveData.fulfilled]: (state, action) => {
       state.data = [...action.payload.contracts];
     },
+    [getCustoms.fulfilled]: (state, action) => {
+      state.custom = [...action.payload.data]
+    },
+    [updateContract.fulfilled]: (state, action) => {
+      state.refreshData = true
+    }
   },
 });
+
+export const {setRefresh}= contractManagement.actions
 
 const { reducer } = contractManagement;
 

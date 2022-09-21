@@ -52,6 +52,7 @@ const columns = [
     width: '105px',
     title: 'ID login',
     dataIndex: 'loginId',
+    className:'login-id',
     key: 5,
   },
   {
@@ -172,12 +173,13 @@ export default function UserManagement() {
 
   handleDeleteUser = (e) => {
     const rowOfElement = e.target.parentNode.parentNode;
+    const loginId= rowOfElement.querySelector('.login-id').innerHTML
     const userId = rowOfElement.querySelector('.id-user').innerHTML;
     const id = [];
     id.push(userId);
     ModalConfirm({
       title: 'Xác nhận',
-      content: `Xoá ID: ${id}`,
+      content: `Bạn thực sự muốn xoá tài khoản ${loginId}`,
       callApi: () => dispatch(removeUser(id)),
     });
   };
@@ -259,7 +261,7 @@ export default function UserManagement() {
     if (listId.length != 0) {
       ModalConfirm({
         title: 'Xác nhận',
-        content: `Xoá ${listId.length} ID?`,
+        content: `Bạn thức sự muốn xoá ${listId.length} tài khoản không?`,
         callApi: () => dispatch(removeUserIds({ userIds: listId })),
       });
     }

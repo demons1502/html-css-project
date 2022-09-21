@@ -4,6 +4,7 @@ import { create, getUser, getAll, update, getSearch, remove, removeUsers, upload
 const initialState = {
   data: [],
   totalItem: null,
+  messageError: null,
 };
 
 export const searchUser = createAsyncThunk('userManagement/getSearch', async (payload) => {
@@ -62,7 +63,6 @@ export const removeUserIds = createAsyncThunk(
   'userManagement/removeUser',
   async (data) => {
     const res = await removeUsers(data);
-    console.log(res.data);
     return res.data;
   }
 );
@@ -76,7 +76,11 @@ const useManagement = createSlice({
       state.totalItem = action.payload.total;
     },
     [createUser.fulfilled]: (state, action) => {
-      state.data.push(action.payload);
+      // state.data.push(action.payload);
+      retrieveData()
+    },
+    [createUser.rejected]: (state, action) => {
+      state.messageError = action.payload;
     },
     [retrieveData.fulfilled]: (state, action) => {
       state.data = [...action.payload.data];

@@ -9,6 +9,7 @@ const {Option} = Select;
 function Create_user(props) {
   const [dataCity, setDataCity]= useState([])
   const dispatch= useDispatch()
+  const messageError=useSelector((state)=>state.userManagement.messageError)
   useEffect(() => {
     axios.get('https://provinces.open-api.vn/api/')
       .then(function (response) {
@@ -82,7 +83,20 @@ function Create_user(props) {
           <Col span={8}>
             <Form.Item
               label="ID login"
-              name="loginId">
+              name="loginId"
+              rules={[
+                {
+                  message: messageError,
+                  validator: (_) => {
+                    if (!messageError) {
+                      return Promise.resolve();
+                    } else {
+                      return Promise.reject(messageError);
+                    }
+                  }
+                }
+              ]}
+            >
               <Input type="text" placeholder='Nhập' />
             </Form.Item>
           </Col>

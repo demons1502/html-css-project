@@ -7,7 +7,7 @@ export const AdminLayout = () => {
   return (
     <Fragment>
       <Header />
-      <Nav />
+      {/* <Nav /> */}
       <div className='main-wrapper'>
         <Suspense fallback={null}>
           <Outlet />;

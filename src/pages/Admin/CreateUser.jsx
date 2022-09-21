@@ -1,20 +1,33 @@
-import React from 'react'
-import { Col, Row, Checkbox, Button, Form, Input } from 'antd';
+import {React, useState, useEffect} from 'react'
+import { Col, Row, Checkbox, Button, Form, Input, Select } from 'antd';
 import "../../assets/scss/Admin/create-user.scss"
+import { useDispatch, useSelector } from 'react-redux';
+import {createUser} from '../../slices/userManagement';
+import axios from 'axios';
+const {Option} = Select;
 
 function Create_user(props) {
-
+  const [dataCity, setDataCity]= useState([])
+  const dispatch= useDispatch()
+  useEffect(() => {
+    axios.get('https://provinces.open-api.vn/api/')
+      .then(function (response) {
+        console.log(response.data);
+        setDataCity(response.data)
+      })
+  },[])
+  
   const handleClose = () => {
     props.closeCreateUser()
   }
   const onFinish = (values) => {
-    console.log('Success:', values);
-    //call api create user
+    dispatch(createUser(values))
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
   return (
     <div className='container_create-user'>
       <div className="creater_user-title">
@@ -40,7 +53,7 @@ function Create_user(props) {
           <Col span={8}>
             <Form.Item
               label="Họ và tên"
-              name="username"
+              name="fullname"
               rules={[
                 {
                   required: true,
@@ -54,7 +67,7 @@ function Create_user(props) {
           <Col span={8}>
             <Form.Item
               label="Sô điện thoại"
-              name="number"
+              name="phone"
               rules={[
                 {
                   required: true,
@@ -69,7 +82,7 @@ function Create_user(props) {
           <Col span={8}>
             <Form.Item
               label="ID login"
-              name="idLogin">
+              name="loginId">
               <Input type="text" placeholder='Nhập' />
             </Form.Item>
           </Col>
@@ -93,7 +106,7 @@ function Create_user(props) {
           </Col>
           <Col span={5}>
             <Form.Item
-              name="isQuestion"
+              name="qna"
               valuePropName="checked"
             >
               <Checkbox className='checkbox-primary'>Hỏi đáp</Checkbox>
@@ -101,7 +114,7 @@ function Create_user(props) {
           </Col>
           <Col span={6}>
             <Form.Item
-              name="isPayment"
+              name="isPaid"
               valuePropName="checked"
             >
               <Checkbox className='checkbox-primary'>Thanh toán</Checkbox>
@@ -112,14 +125,26 @@ function Create_user(props) {
           <Col span={16}>
             <Form.Item
               label="Vùng hoạt động"
-              name="area"
+              name="location"
             >
-              <Input type="text" placeholder='Nhập' />
+              <Select
+                placeholder="Nhập"
+                style={{
+                  
+                }}
+                // onChange={handleChangeSelect}
+              >
+                {dataCity != [] && dataCity.map(item=>{
+                  return(
+                    <Option key={item.code} value={item.codename}>{item.name}</Option>
+                  )
+                })}
+              </Select>
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item
-              name="idLoginUser"
+              name="idLoginUserManager"
               label="ID login người quản lý"
             >
               <Input type="text" placeholder='Nhập' />

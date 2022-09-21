@@ -1,13 +1,30 @@
 import {React, useEffect} from 'react'
 import { Button, Form, Input, Row, Col, Select, DatePicker } from 'antd';
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { createContract, retrieveData } from '../../slices/contractManagement';
 import "../../assets/scss/ContractManagement/createContractStyle.scss"
+import { useState } from 'react';
 
 function CreateContract(props) {
-  console.log(props);
+  const dispatch= useDispatch()
   const onFinish = (values) => {
-    console.log('Success:', values);
+    const data={
+      "contractNumber": Number(values.contractNumber),
+      "customerId": 123,
+      "insured": values.insured,
+      "beneficiary": values.beneficiary,
+      "value": Number(values.value),
+      "startDate": moment(values.startDate),
+      "duration": Number(values.duration),
+      "depositTerm": Number(values.depositTerm),
+      "makeFirstDeposit": true,
+      "depositValue": 123,
+      "depositNote": "dasdas"
+    }
+    (props.func == 'edit') ? dispatch(createContract(data)) : dispatch(retrieveData())
   };
+
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
@@ -41,7 +58,7 @@ function CreateContract(props) {
             <Col span={6}>
               <Form.Item
                 label="Mã số"
-                name="id-contract"
+                name="contractNumber"
                 initialValue={props.data?.id_contract || null}
                 rules={[
                   {
@@ -56,7 +73,7 @@ function CreateContract(props) {
             <Col span={6}>
               <Form.Item
                 label="Tên người mua"
-                name="contract-name"
+                name="insured"
                 initialValue={props.data?.name_payment || null}
                 rules={[
                   {
@@ -70,7 +87,7 @@ function CreateContract(props) {
             </Col><Col span={6}>
               <Form.Item
                 label="Tên người hưởng"
-                name="contract-beneficiary"
+                name="beneficiary"
                 initialValue={props.data?.beneficiary || null}
                 rules={[
                   {
@@ -84,7 +101,7 @@ function CreateContract(props) {
             </Col><Col span={6}>
               <Form.Item
                 label="Giá trị"
-                name="contract-price"
+                name="value"
                 initialValue={props.data?.price || null}
                 rules={[
                   {
@@ -100,7 +117,7 @@ function CreateContract(props) {
             props.data?.effective_date ?
               <Form.Item
                 label="Ngày hiệu lực"
-                name="effective_date"
+                name="startDate"
                 initialValue={moment(props.data?.effective_date) || 'DD/MM/YYYY'}
                 rules={[
                   {
@@ -114,7 +131,7 @@ function CreateContract(props) {
               :
               <Form.Item
                 label="Ngày hiệu lực"
-                name="effective_date"
+                name="startDate"
                 rules={[
                   {
                     required: true,
@@ -129,7 +146,7 @@ function CreateContract(props) {
             </Col><Col span={6}>
               <Form.Item
                 label="Số năm nộp phí"
-                name="year_payment"
+                name="duration"
                 initialValue={props.data?.year_payment || null}
                 rules={[
                   {
@@ -143,7 +160,7 @@ function CreateContract(props) {
             </Col><Col span={6}>
               <Form.Item
                 label="Chu kỳ nộp phí"
-                name="submission_cycle"
+                name="depositTerm"
                 initialValue={props.data?.submission_cycle}
                 rules={[
                   {

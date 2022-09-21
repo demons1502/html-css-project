@@ -54,15 +54,18 @@
         }
     }
 }
-.ant-table-content{
-    overflow: scroll;
-    .ant-table-thead{
-        th{
+
+.ant-table-content {
+    overflow-x: scroll;
+
+    .ant-table-thead {
+        th {
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
         }
     }
+
     .ant-table-row {
         td {
             text-overflow: ellipsis;
@@ -71,6 +74,7 @@
         }
     }
 }
+
 .ant-pagination-options {
     position: absolute;
     left: 0px;
@@ -133,6 +137,7 @@
 
 .ant-modal-content {
     border-radius: 20px;
+
     .ant-modal-body {
         padding: 0px 30px;
     }

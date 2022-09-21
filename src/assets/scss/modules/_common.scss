@@ -1,8 +1,6 @@
 .modal-custom {
   .ant-modal-content {
     border-radius: 20px;
-    height: 450px;
-    width: 600px;
   }
 
   .ant-modal-header {
@@ -172,5 +170,27 @@
 .ant-popconfirm {
   .ant-popover-inner-content {
     padding: 18px 18px 18px 20px !important;
+
+    .ant-btn-default {
+      background: $white-color;
+      border-color: $green-color;
+      -webkit-border-radius: 1rem;
+      -moz-border-radius: 1rem;
+      border-radius: 1rem;
+      padding: 0 18px;
+    }
+
+    .ant-btn-primary {
+      background: $red-color;
+      border: none;
+      -webkit-border-radius: 1rem;
+      -moz-border-radius: 1rem;
+      border-radius: 1rem;
+      padding: 0 18px;
+    }
   }
+}
+
+.ant-spin-nested-loading>div>.ant-spin {
+  max-height: 100%;
 }

@@ -1,4 +1,11 @@
 import { sendGet } from './axios';
+import { ENDPOINT } from '../config/endpoint';
 
-export const getAll = (params) => sendGet(`api/articles`, params);
-export const getMostView = () => sendGet('api/articles/most-view');
+export const getAll = (params) =>
+  sendGet(ENDPOINT.financeKnowledge.getArticles, params);
+export const getMostView = () =>
+  sendGet(
+    `${ENDPOINT.financeKnowledge.getArticles}/${ENDPOINT.financeKnowledge.getMostView}`
+  );
+export const view = (id) =>
+  sendGet(`${ENDPOINT.financeKnowledge.getArticles}/view/${id}`);

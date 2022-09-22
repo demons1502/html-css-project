@@ -15,9 +15,16 @@ export const searchUser = createAsyncThunk('userManagement/getSearch', async (pa
 
 export const createUser = createAsyncThunk(
   'userManagement/createUser',
-  async (payload) => {
-    const res = await create(payload);
-    return res.data;
+  async (payload,{rejectWithValue}) => {
+    try {
+      const res = await create(payload);
+      return {
+        data: res.data,
+        message: "Tạo user thành công"
+      };
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
   }
 );
 export const getUserProfile = createAsyncThunk('userManagement/getUser', async () => {
@@ -41,7 +48,6 @@ export const resetUserId = createAsyncThunk(
 export const uploadFiles = createAsyncThunk(
   'userManagement/uploadFile',
   async (data) => {
-    console.log(data);
     const res = await uploadFile(data);
     return res.data;
   }
@@ -80,9 +86,9 @@ const useManagement = createSlice({
     [createUser.fulfilled]: (state) => {
       state.refreshList=true
     },
-    [createUser.rejected]: (state, action) => {
-      state.messageError = action.payload;
-    },
+    // [createUser.rejected]: (state, action) => {
+    //   state.messageError = action.payload;
+    // },
     [retrieveData.fulfilled]: (state, action) => {
       state.totalItem = action.payload.total;
       state.data = action.payload.data;

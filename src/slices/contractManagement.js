@@ -4,7 +4,7 @@ import {createContracts, getAll, update, getCustom, getById} from '../services/c
 
 const initialState = {
   data: [],
-  totalItem: null,
+  totalItem: 0,
   custom:[],
   contractById:null,
   refreshData: false,
@@ -59,20 +59,17 @@ const contractManagement = createSlice({
     },
   },
   extraReducers: {
-    // [searchUser.fulfilled]: (state, action) => {
-    //   state.data = [...action.payload.data];
-    //   state.totalItem = action.payload.total;
-    // },
-    [createContract.fulfilled]: (state, action) => {
+    [createContract.fulfilled]: (state) => {
       state.refreshData = true
     },
     [retrieveData.fulfilled]: (state, action) => {
       state.data = [...action.payload.contracts];
+      state.totalItem=action.payload.contractsCount
     },
     [getCustoms.fulfilled]: (state, action) => {
       state.custom = [...action.payload.data]
     },
-    [updateContract.fulfilled]: (state, action) => {
+    [updateContract.fulfilled]: (state) => {
       state.refreshData = true
     }
   },

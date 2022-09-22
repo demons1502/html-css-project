@@ -15,5 +15,5 @@ export default function PaginationCommon(props) {
     setPaginate({limit: pageSize, offset: page - 1})
   }
 
-  return (total > DEFAULT_SIZE && <Pagination onChange={onChange} pageSize={pageSize} total={total} pageSizeOptions={pageSizeOptions} showSizeChanger={showSizeChanger}/>)
+  return (total > DEFAULT_SIZE && <Pagination onChange={onChange} defaultPageSize={pageSize} total={total} pageSizeOptions={pageSizeOptions} showSizeChanger={showSizeChanger}/>)
 }

@@ -12,8 +12,7 @@ import Modal from "../../components/common/Modal";
 import AddEventContent from "../../components/common/Modal/CustomerCare/AddEventContent";
 import SendSmsContent from "../../components/common/Modal/CustomerCare/SendSmsContent";
 import SendEmailContent from "../../components/common/Modal/CustomerCare/SendEmailContent";
-import moment from 'moment';
-import {FORMAT_DATE, LOADING_STATUS} from '../../ultis/constant';
+import {LOADING_STATUS} from '../../ultis/constant';
 import {getTimeByTZ, pad} from '../../helper'
 
 export default function ListEvent() {

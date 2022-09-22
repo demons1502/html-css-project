@@ -27,7 +27,7 @@ export default function History() {
       title: t('common.date'),
       dataIndex: 'date',
       key: 'date',
-      width: '18%',
+      width: '20%',
       render: (record) => {
         return (
           <span>{getTimeByTZ(record.date)}</span>
@@ -52,12 +52,14 @@ export default function History() {
     {
       title: '',
       key: 'info',
-      width: '15%',
+      width: '18%',
       render: (record) => {
         if (ARR_INFO_REDIRECT.includes(record.info)) {
-          return <Link to={INFO_PATH[record.info]} className="btn-bgWhite-textGreen-borGreen pd-btn">
-            <span>Xem</span>
-          </Link>
+          return (<div className="d-flex-end">
+            <Link to={INFO_PATH[record.info]} className="btn-bgWhite-textGreen-borGreen pd-btn">
+              <span>Xem</span>
+            </Link>
+          </div>)
         }
       }
     }

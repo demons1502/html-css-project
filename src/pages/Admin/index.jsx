@@ -148,7 +148,7 @@ export default function UserManagement() {
       render: (record) => (
         <img
           className='dustbin_icon'
-          src='./images/dustbin.svg'
+          src='./images/dustbin_icon.svg'
           onClick={() => handleDeleteUser(record)}
         />
       ),

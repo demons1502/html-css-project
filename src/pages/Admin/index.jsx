@@ -153,8 +153,9 @@ export default function UserManagement() {
   const [isSettingLog, setIssettingLog] = useState(false)
   const [dataTable, setDataTable]= useState(useSelector((state)=>state.userManagement.data))
   const [inputText, setInputText]= useState('')
+
   const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(10)
+  const [pageSize, setPageSize] = useState(10)
 
   const dispatch= useDispatch()
   const userData=useSelector((state)=>state.userManagement.data)
@@ -166,7 +167,7 @@ export default function UserManagement() {
 
   useEffect(() => {
     input_file.current.style.display = 'none'
-    dispatch(retrieveData({page:page,limit:limit}))
+    dispatch(retrieveData({page:page,limit:pageSize}))
   },[])
 
   useEffect(()=>{
@@ -272,21 +273,21 @@ export default function UserManagement() {
   };
   useEffect(() => {
     if (inputText) {
-      dispatch(searchUser({ q: inputText, page: page, limit: limit }));
+      dispatch(searchUser({ q: inputText, page: page, limit: pageSize }));
     } else {
-      dispatch(searchUser({ q: inputText, page: page, limit: limit }));
+      dispatch(searchUser({ q: inputText, page: page, limit: pageSize }));
     }
-  },[inputText,page,limit])
+  },[inputText,page,pageSize])
 
   useEffect(()=>{
     if(refreshData){
-      dispatch(searchUser({ q: inputText, page: page, limit: limit }));
+      dispatch(searchUser({ q: inputText, page: page, limit: pageSize }));
     }
   },[refreshData])
 
   const setPaginate = (e) => {
     setPage(e.offset + 1);
-    setLimit(e.limit);
+    setPageSize(e.limit);
   };
 
   return (

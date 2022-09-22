@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {Col, Checkbox, Button} from 'antd';
@@ -15,11 +15,13 @@ import {Link} from "react-router-dom";
 
 export default function History() {
   const {t} = useTranslation();
+  const ref = useRef(null)
   const loading = useSelector((state) => state.loading.loading);
   const {data, customerData} = useSelector((state) => state.customerCare);
   const [visibleModalAddInfo, setVisibleModalAddInfo] = useState(false)
   const [detailData, setDetailData] = useState({})
   const [optionsFilter, setOptionsFilter] = useState('')
+  const [scrollConfig, setScrollConfig] = useState({})
   const dispatch = useDispatch();
 
   const columns = [
@@ -87,6 +89,13 @@ export default function History() {
       setVisibleModalAddInfo(false)
     }
   }, [loading])
+
+  useEffect(() => {
+    if (ref.current.clientHeight > window.innerHeight*0.5) {
+      const scroll = {y: `calc(100vh - 550px)`, scrollToFirstRowOnChange: false}
+      setScrollConfig(scroll)
+    }
+  })
   
   return (
     <>
@@ -100,8 +109,8 @@ export default function History() {
             <Filter options={CUSTOMER_CARE_INFO} setPayload={setOptionsFilter} />
           </div>
         </div>
-        <div className="customer-care__right--list">
-          <Table dataSource={data} columnTable={columns} isScroll={true} heightMargin={550}/>
+        <div className="customer-care__right--list" ref={ref}>
+          <Table dataSource={data} columnTable={columns} scroll={scrollConfig}/>
           <div className="customer-care__right--list-footer">
             <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add info title')}</Button>
           </div>

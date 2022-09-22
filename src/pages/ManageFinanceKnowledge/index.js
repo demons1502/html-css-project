@@ -13,6 +13,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { options } from '../../assets/fake-data/data';
 import IconPlus from '../../assets/images/icons/plus.svg';
+import Pagination from '../../components/common/Pagination';
+import ModalConfirm from '../../components/ModalConfirm';
 import Title from '../../components/Title';
 import {
   createContent,
@@ -20,11 +22,9 @@ import {
   retrieveData,
   updateContent,
 } from '../../slices/managementContent';
+import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
-import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
-import ModalConfirm from '../../components/ModalConfirm';
-import Pagination from '../../components/common/Pagination';
 
 const ManageFinanceKnowledge = () => {
   const { t } = useTranslation();
@@ -33,6 +33,7 @@ const ManageFinanceKnowledge = () => {
   const loading = useSelector((state) => state.loading.loading);
 
   const [itemContent, setItemContent] = useState(null);
+  const [prevItem, setPrevItem] = useState(null);
   const [option, setOption] = useState('articles');
   const [paginate, setPaginate] = useState({
     limit: DEFAULT_SIZE,
@@ -43,7 +44,7 @@ const ManageFinanceKnowledge = () => {
     //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
     // },
   ]);
-
+  console.log(itemContent);
   const handleChange = (e) => {
     let values;
     const name = e.target.name;
@@ -56,47 +57,49 @@ const ManageFinanceKnowledge = () => {
     setItemContent({ ...itemContent, image: newFile[0]?.originFileObj });
   };
 
-  // const handleCreate = () => {
-  //   const data = new FormData();
-  //   data.append('title', 'title');
-  //   data.append('subTitle', '');
-  //   data.append('image', '');
-  //   data.append('body', '');
-  //   data.append('url', '');
-  //   dispatch(createContent({ type: option, payload: data }));
-  // };
-
   const handleSave = (item) => {
-    const formData = new FormData();
-    formData.append('image', item.image);
-    formData.append('title', item.title);
-    formData.append('subTitle', item.subTitle);
-    formData.append('url', item.url);
-    formData.append('body', item.body);
-    console.log(item);
-    if (!item.id) {
-      dispatch(createContent({ type: option, payload: formData }));
-      setItemContent(null);
-      setFileList([]);
+    if (!item) {
+      ModalConfirm({
+        content: `Vui lòng nhập nội dung bài viết`,
+        callApi: () => {
+          return;
+        },
+      });
     } else {
-      dispatch(updateContent({ type: option, id: item.id, payload: formData }));
-      setItemContent(null);
-      setFileList([]);
+      const formData = new FormData();
+      formData.append('image', item.image);
+      formData.append('title', item.title);
+      formData.append('subTitle', item.subTitle);
+      formData.append('url', item.url);
+      formData.append('body', item.body);
+      console.log(item);
+      if (!item.id) {
+        dispatch(createContent({ type: option, payload: formData }));
+        setItemContent(null);
+        setFileList([]);
+      } else {
+        dispatch(
+          updateContent({ type: option, id: item.id, payload: formData })
+        );
+        setItemContent(null);
+        setFileList([]);
+      }
     }
   };
 
-  const handleCancel = (item) => {
-    console.log(item);
-    /* setItemContent(item) */
+  const handleCancel = () => {
+    setItemContent(prevItem);
   };
 
   const handleDelete = (item) => {
     if (item) {
       ModalConfirm({
         content: `Xác nhận xóa nội dung`,
-        callApi: () => dispatch(deleteContent({ type: option, id: item.id })),
+        callApi: () => {
+          dispatch(deleteContent({ type: option, id: item.id })),
+          setItemContent(null);
+        },
       });
-      setItemContent(null);
     } else {
       ModalConfirm({
         content: `Chọn nội dung cần xóa`,
@@ -110,7 +113,7 @@ const ManageFinanceKnowledge = () => {
     //fetch data
     dispatch(retrieveData({ type: option, params: paginate }));
   }, [option, contents.isReload, paginate]);
-
+  console.log(itemContent);
   return (
     <div className='manageFinanceKnowledge'>
       <div className='manageFinanceKnowledge-nav'>
@@ -150,7 +153,7 @@ const ManageFinanceKnowledge = () => {
                   footer={
                     <Button
                       type='primary'
-                      shape='circle'
+                      className='btn-add-new'
                       icon={<img src={IconPlus} alt='' />}
                       onClick={() => setItemContent(null)}
                     >
@@ -160,7 +163,10 @@ const ManageFinanceKnowledge = () => {
                   dataSource={contents.data}
                   renderItem={(item) => (
                     <List.Item
-                      onClick={() => setItemContent(item)}
+                      onClick={() => {
+                        setItemContent(item);
+                        setPrevItem(item);
+                      }}
                       className={`${
                         item.id === itemContent?.id ? 'active' : ''
                       }`}

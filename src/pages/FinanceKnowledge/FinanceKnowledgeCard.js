@@ -10,10 +10,47 @@ import { getView } from '../../slices/financeKnowledge';
 import { FORMAT_DATE } from '../../ultis/constant';
 
 const FinanceSupportCard = (props) => {
-  const { wrap, target, content } = props;
+  const { wrap, target, content, showImage = true } = props;
 
   const dispatch = useDispatch();
   const date = moment(content?.createdAt).format(FORMAT_DATE);
+  const [file, setFile] = useState('');
+
+  useEffect(() => {
+    const fetchData = () => {
+      try {
+        fetch(
+          `http://118.71.224.167:8608/api/articles/image/${content.image}`,
+          {
+            headers: {
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pbmhrQGdtYWlsLmNvbSIsImlkIjoiMDk4NGM1ZWYtMzM0NC00ZGM1LWE4NzMtYzMzZTRjZmY3N2YzIiwiaWF0IjoxNjYzODEwMTUzLCJleHAiOjE2NjM4OTY1NTN9.dgRazHe0osNgm_neSu2-TM-2j1NshFJ4c9m3gpBR48M`,
+            },
+          }
+        )
+          .then((res) => res.blob())
+          .then((blob) => {
+            const url = URL.createObjectURL(blob);
+            setFile(url);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    content && fetchData();
+  }, [content]);
+
+  useEffect(() => {
+    const fetchData =async () => {
+      try {
+        const res =await getImage(content.image)
+        const imgUrl=new FileReader(res.data)
+        console.log(imgUrl);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    content && fetchData();
+  }, [content]);
 
   return (
     <Col
@@ -34,20 +71,17 @@ const FinanceSupportCard = (props) => {
             align='stretch'
             className={`content-row ${wrap ? 'content-row_wrap' : ''}`}
           >
-            {props.image && (
+            {showImage && (
               <Col lg={wrap ? 24 : 6} md={24} sm={24} xs={24}>
                 <Image
-                  src={
-                    // content?.image ||
-                    'https://th.bing.com/th/id/R.3242f9c1b5d96e263abe961bfed6527e?rik=2lHe5NGSV1%2f0bg&pid=ImgRaw&r=0'
-                  }
+                  src={file}
                   preview={false}
                   className={`image ${wrap ? 'image-wrap' : ''}`}
                 />
               </Col>
             )}
 
-            <Col lg={wrap ? 24 : props.image ? 18 : 24} md={24} sm={24} xs={24}>
+            <Col lg={wrap ? 24 : showImage ? 18 : 24} md={24} sm={24} xs={24}>
               <Row
                 gutter={[10, 3]}
                 align='stretch'

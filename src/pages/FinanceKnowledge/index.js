@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import commentIcon from '../../assets/images/icons/comment.svg';
+import Pagination from '../../components/common/Pagination';
 import Title from '../../components/Title';
 import {
   getArticlesData,
   mostViewArticles,
 } from '../../slices/financeKnowledge';
-import FinanceKnowledgeCard from './FinanceKnowledgeCard';
 import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
-import Pagination from '../../components/common/Pagination';
+import FinanceKnowledgeCard from './FinanceKnowledgeCard';
 
 const index = () => {
   const [paginate, setPaginate] = useState({
@@ -44,9 +44,8 @@ const index = () => {
             <Col lg={8} md={24} sm={24}>
               <Row>
                 <FinanceKnowledgeCard
-                  content={mostViewData[0]}
+                  content={mostViewData && mostViewData[0]}
                   wrap
-                  image
                   lg={24}
                 />
               </Row>
@@ -56,7 +55,6 @@ const index = () => {
                 {mostViewData.slice(1)?.map((item) => (
                   <FinanceKnowledgeCard
                     content={item}
-                    image
                     key={item.id}
                     lg={12}
                     md={12}
@@ -84,7 +82,12 @@ const index = () => {
             // }}
             renderItem={(item) => (
               <List.Item>
-                <FinanceKnowledgeCard content={item} key={item.id} lg={24} />
+                <FinanceKnowledgeCard
+                  content={item}
+                  key={item.id}
+                  lg={24}
+                  showImage={false}
+                />
               </List.Item>
             )}
           ></List>

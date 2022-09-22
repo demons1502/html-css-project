@@ -11,12 +11,8 @@ export default function TableCommon(props) {
     pagination = false,
     isSelection = false,
     bordered = false,
-    ratioHeight = 0.5,
-    heightMargin = 340,
     setSelectedRowKeys,
   } = props;
-  const ref = useRef(null)
-  const [isScroll, setIsScroll] = useState(false)
 
   const onSelectChange = (selectedRowKeys, selectedRows) => {
     setSelectedRowKeys(selectedRows);
@@ -26,15 +22,8 @@ export default function TableCommon(props) {
     onChange: onSelectChange,
   };
 
-  useEffect(() => {
-    if (ref.current.clientHeight > window.innerHeight*ratioHeight) {
-      setIsScroll(true)
-    }
-  })
-
   return <Table
     {...props}
-    ref={ref}
     loading={loading.loading === LOADING_STATUS.pending ? true : false}
     rowSelection={isSelection ? rowSelection : undefined}
     dataSource={dataSource}
@@ -43,13 +32,7 @@ export default function TableCommon(props) {
     bordered={bordered}
     className='table-common'
     rowKey="id"
-    scroll={isScroll ?
-      {
-        y: `calc(100vh - ${heightMargin}px)`,
-        scrollToFirstRowOnChange: false
-      }
-      : 
-      {}}>
+  >
     {props.children}
   </Table>
 }

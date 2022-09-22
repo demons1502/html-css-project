@@ -1,4 +1,4 @@
-import { Button, Col, notification, Row, Table } from 'antd';
+import { Button, Col, Form, notification, Row, Spin, Table } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ import {
   retrieveData,
   uploadFile,
 } from '../../slices/paymentManagement';
-import { FORMAT_DATE } from '../../ultis/constant';
+import { FORMAT_DATE, LOADING_STATUS } from '../../ultis/constant';
 import CreatePayment from './CreatePayment';
 import PaymentHistory from './PaymentHistory';
 import PaymentManagementHeader from './PaymentManagementHeader';
@@ -30,6 +30,7 @@ const PaymentManagement = () => {
 
   const dispatch = useDispatch();
   const payments = useSelector((state) => state.paymentManagementReducer);
+  const loading = useSelector((state) => state.loading.loading);
 
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -38,7 +39,10 @@ const PaymentManagement = () => {
   const handleDeleteOne = (item) => {
     ModalConfirm({
       content: `Xác nhận xóa ${item.userFullname}`,
-      callApi: () => dispatch(deletePayment({ transactionIds: [item.id] })),
+      callApi: () => {
+        dispatch(deletePayment({ transactionIds: [item.id] })),
+        setHistoryItem(null);
+      },
     });
   };
   const handleDelete = () => {
@@ -46,8 +50,10 @@ const PaymentManagement = () => {
       // const id = [];
       // selectedRowKeys.map((item) => id.push(item.id));
       ModalConfirm({
-        callApi: () =>
+        callApi: () => {
           dispatch(deletePayment({ transactionIds: selectedRowKeys })),
+          setHistoryItem(null);
+        },
       });
     } else {
       notification.warning({
@@ -91,9 +97,12 @@ const PaymentManagement = () => {
     },
     {
       title: 'Số tiền',
-      dataIndex: 'amount',
       key: 'amount',
       className: 'green-color',
+      render: (record) => {
+        const format = new Intl.NumberFormat('vi-VN').format(record.amount);
+        return <span>{format}</span>;
+      },
     },
     {
       title: '',
@@ -167,55 +176,40 @@ const PaymentManagement = () => {
                 search
                 setPayload={setSearchPayload}
               />
-              <Table
-                className='table-common paymentManagement-table'
-                dataSource={payments.data}
-                columns={columns}
-                // pagination={{
-                //   // className: 'payment-pagination',
-                //   total: payments.total,
-                //   onChange: onChangePage,
-                //   pageSizeOptions: [10, 20, 30],
-                // }}
 
-                pagination={
-                  payments.total > limit && {
-                    total: payments.total,
-                    onChange: onChangePage,
-                    //pageSizeOptions: [10, 20, 50],
-                    showSizeChanger: true,
-                    className: 'payment-pagination',
+              <Spin spinning={loading === LOADING_STATUS.pending}>
+                <Table
+                  className='table-common paymentManagement-table'
+                  dataSource={payments.data}
+                  columns={columns}
+                  pagination={
+                    payments.total > limit && {
+                      total: payments.total,
+                      onChange: onChangePage,
+                      //pageSizeOptions: [10, 20, 50],
+                      showSizeChanger: true,
+                      className: 'payment-pagination',
+                    }
                   }
-                }
-                rowSelection={{
-                  selectedRowKeys,
-                  onChange: onSelectChange,
-                }}
-                rowClassName={(record) =>
-                  rowActive === record.id ? 'active' : ''
-                }
-                onRow={(record) => {
-                  return {
-                    onClick: () => {
-                      setRowActive(record.id), setHistoryItem(record);
-                    },
-                  };
-                }}
-                rowKey='id'
-                size='middle'
-                bordered={false}
-              />
-              {/* <Table
-                dataSource={payments.data}
-                columnTable={columns}
-                isSelection
-                setSelectedRowKeys={onSelectChange}
-              ></Table> */}
-              {/* <Pagination
-                total={payments.total}
-                // onShowSizeChange={onChangePage}
-                setPaginate={setPaginate}
-              /> */}
+                  rowSelection={{
+                    selectedRowKeys,
+                    onChange: onSelectChange,
+                  }}
+                  rowClassName={(record) =>
+                    rowActive === record.id ? 'active' : ''
+                  }
+                  onRow={(record) => {
+                    return {
+                      onClick: () => {
+                        setRowActive(record.id), setHistoryItem(record);
+                      },
+                    };
+                  }}
+                  rowKey='id'
+                  size='middle'
+                  bordered={false}
+                />
+              </Spin>
             </div>
           </Col>
           <Col
@@ -238,6 +232,17 @@ const PaymentManagement = () => {
           setIsModalOpen={setIsModalOpen}
         />
       </div>
+      {/* <Table
+        dataSource={payments.data}
+        columnTable={columns}
+        isSelection
+        setSelectedRowKeys={onSelectChange}
+      ></Table> */}
+      {/* <Pagination
+        total={payments.total}
+        // onShowSizeChange={onChangePage}
+        // setPaginate={setPaginate}
+      /> */}
     </div>
   );
 };

@@ -44,7 +44,8 @@ const ManageFinanceKnowledge = () => {
     //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
     // },
   ]);
-  console.log(itemContent);
+
+
   const handleChange = (e) => {
     let values;
     const name = e.target.name;
@@ -113,7 +114,9 @@ const ManageFinanceKnowledge = () => {
     //fetch data
     dispatch(retrieveData({ type: option, params: paginate }));
   }, [option, contents.isReload, paginate]);
-  console.log(itemContent);
+  
+
+  
   return (
     <div className='manageFinanceKnowledge'>
       <div className='manageFinanceKnowledge-nav'>

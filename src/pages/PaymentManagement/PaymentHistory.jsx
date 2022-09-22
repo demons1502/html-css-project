@@ -1,15 +1,15 @@
 import { Table } from 'antd';
-import React from 'react';
-import calendarIcon from '../../assets/images/icons/calendar.svg';
 import moment from 'moment';
-import { FORMAT_DATE, LOADING_STATUS } from '../../ultis/constant';
-import { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
+import calendarIcon from '../../assets/images/icons/calendar.svg';
+import { FORMAT_DATE } from '../../ultis/constant';
 
 const columns = [
   {
     title: 'Ngày',
     dataIndex: 'date',
     key: 'date',
+    width:'140px'
   },
   {
     title: 'Nội dung',
@@ -19,6 +19,18 @@ const columns = [
 ];
 
 const PaymentHistory = ({ customer }) => {
+  const format = new Intl.NumberFormat('vi-VN').format(customer?.amount);
+  const [history, setHistory] = useState(null)
+
+  useEffect(() => {
+    const histories = [];
+    histories.push({
+      date: moment(customer?.dueDate).format(FORMAT_DATE),
+      content: customer?.description,
+    });
+    setHistory(histories)
+  }, [customer]);
+
   return (
     <div className='paymentHistory'>
       {customer ? (
@@ -28,7 +40,7 @@ const PaymentHistory = ({ customer }) => {
               <div className='paymentHistory-title'>
                 <h4>{customer?.userFullname} </h4>
                 <p>
-                  Số tiền: <span>{customer?.amount}</span>
+                  Số tiền: <span>{format}</span>
                 </p>
               </div>
               <div className='paymentHistory-time'>
@@ -72,10 +84,10 @@ const PaymentHistory = ({ customer }) => {
             <Table
               className='table-common'
               size='middle'
-              dataSource={customer?.histories}
+              dataSource={history}
               columns={columns}
               pagination={false}
-              rowKey={(record) => record.id}
+              rowKey='date'
             />
           </div>
         </>

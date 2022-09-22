@@ -72,7 +72,10 @@ const index = () => {
             className='financeKnowledge-list'
             grid={{
               gutter: 10,
-              column: 3,
+              xxl: 3,
+              xl: 3,
+              lg: 3,
+              md: 2,
             }}
             dataSource={articlesData.articles}
             // pagination={{

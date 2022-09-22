@@ -27,6 +27,8 @@ export const createPayment = createAsyncThunk(
       const res = await create(params);
       return { data: res.data, message: 'Tạo thanh toán thành công' };
     } catch (error) {
+      console.log(error)
+      return {message:error.response.data.message}
       return rejectWithValue(error.response.data);
     }
   }
@@ -70,6 +72,9 @@ const paymentManagementSlice = createSlice({
       state.data = action.payload.data;
       state.total = action.payload.total;
       state.isReload = false;
+    },
+    [uploadFile.fulfilled]: (state, action) => {
+      state.isReload = true;
     },
     [deletePayment.fulfilled]: (state, action) => {
       // let index = state.data.findIndex(({ id }) =>

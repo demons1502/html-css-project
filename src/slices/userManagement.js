@@ -73,7 +73,7 @@ const useManagement = createSlice({
   initialState,
   extraReducers: {
     [searchUser.fulfilled]: (state, action) => {
-      state.data = [...action.payload.data];
+      state.data = [...action.payload?.data];
       state.totalItem = action.payload.total;
       state.refreshList=false
     },
@@ -92,22 +92,12 @@ const useManagement = createSlice({
       state.refreshList=true
     },
     [updateUser.fulfilled]: (state, action) => {
-      // const index = state.data.findIndex((data) => data.id === action.payload.id);
-      // state.data[index] = {
-      //   ...state.data[index],
-      //   ...action.payload,
-      // };
       state.refreshList=true
     },
     [removeUser.fulfilled]: (state, action) => {
-      // let index = state.data.findIndex(({ id }) => id == action.payload.id);
-      // state.data.splice(index, 1);
       state.refreshList=true
     },
     [removeUserIds.fulfilled]: (state, action) => {
-      // state.data = state.data.filter(
-      //   ({ id }) => action.payload.id.includes(id)
-      // );
       state.refreshList=true
     },
   },

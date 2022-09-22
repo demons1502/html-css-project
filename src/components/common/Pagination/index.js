@@ -12,7 +12,6 @@ export default function PaginationCommon(props) {
   } = props;
 
   const onChange = (page, pageSize) => {
-    console.log('page:',page,'pageSize',pageSize);
     setPaginate({limit: pageSize, offset: page - 1})
   }
 

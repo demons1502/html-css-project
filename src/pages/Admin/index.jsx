@@ -206,10 +206,12 @@ export default function UserManagement() {
     }
     ModalConfirm({
       title: 'Xác nhận',
-      content: `Khởi tạo lại ID: ${id[0]}`,
+      content: `Khởi tạo lại sẽ xóa toàn bộ thông tin liên quan đến khách hàng và những việc đã làm với khách hàng.
+      Thông tin về tài khoản sẽ  vẫn được giữ lại.`,
       callApi: () => dispatch(resetUserId({ userIds: id })),
     });
   };
+  
   const handelResetUsers = () => {
     const listId = [];
     selectedRowKeys.map((item) => {
@@ -218,7 +220,8 @@ export default function UserManagement() {
     if (listId.length != 0) {
       ModalConfirm({
         title: 'Xác nhận',
-        content: `Khởi tạo lại ${listId.length} ID?`,
+        content: `Khởi tạo lại sẽ xóa toàn bộ thông tin liên quan đến khách hàng và những việc đã làm với khách hàng.
+        Thông tin về tài khoản sẽ  vẫn được giữ lại.`,
         callApi: () => dispatch(resetUserId({ userIds: listId })),
       });
     }
@@ -281,14 +284,8 @@ export default function UserManagement() {
     }
   },[refreshData])
 
-  // useEffect(() => {
-  //   const pageTitle = document.querySelector('.ant-select-selection-item').innerHTML
-  //   const pageText = pageTitle.slice(0, 2)
-  //   document.querySelector('.ant-select-selection-item').innerHTML = pageText
-  // }, [])
-
   const setPaginate = (e) => {
-    setPageNum(e.offset++);
+    setPageNum(e.offset + 1);
     setCurrent(e.limit);
   };
 

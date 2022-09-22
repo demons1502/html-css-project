@@ -10,7 +10,7 @@ import Filter from "../../components/common/Filter";
 import AddInfoContent from "../../components/common/Modal/CustomerCare/AddInfoContent";
 import Modal from "../../components/common/Modal";
 import {CUSTOMER_CARE_INFO, LOADING_STATUS, ARR_INFO_REDIRECT, INFO_PATH} from '../../ultis/constant';
-import {getCustomerCareLabel, getTimeByTZ} from "../../helper";
+import {calculateAge, getCustomerCareLabel, getTimeByTZ} from "../../helper";
 import {Link} from "react-router-dom";
 
 export default function History() {
@@ -71,18 +71,12 @@ export default function History() {
     setVisibleModalAddInfo(true)
     setDetailData({})
   }
-
-  useEffect(() => {
-    if (customerData.customerId > 0) {
-      dispatch(getData({customerId: customerData.customerId, info: CUSTOMER_CARE_INFO[0].value}))
-    }
-  }, [customerData.customerId])
-
-  useEffect(() => {
-    if (customerData.customerId > 0) {
-      dispatch(getData({customerId: customerData.customerId, info: optionsFilter[0]}))
-    }
-  }, [optionsFilter])
+ 
+  // useEffect(() => {
+  //   if (customerData.customerId > 0) {
+  //     dispatch(getData({customerId: customerData.customerId, info: optionsFilter[0]}))
+  //   }
+  // }, [optionsFilter])
 
   useEffect(() => {
     if (loading === LOADING_STATUS.succeeded) {
@@ -111,17 +105,23 @@ export default function History() {
         </div>
         <div className="customer-care__right--list" ref={ref}>
           <Table dataSource={data} columnTable={columns} scroll={scrollConfig}/>
-          <div className="customer-care__right--list-footer">
-            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add info title')}</Button>
+          {
+            customerData.customerId !== 0 && <div className="customer-care__right--list-footer">
+              <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add info title')}</Button>
+            </div>
+          }
+        </div>
+        {
+          customerData.customerId !== 0 && <div className="customer-care__right--info">
+            <h3><img src={IconFiles} alt=""/>{t('customer care.sync info')}</h3>
+            <ul>
+              <li>{`${calculateAge(customerData.dob)} tuổi${customerData.maritalStatus == 1 ? ', đã có gia đình' : ', độc thân'}, đang làm nghề: ${customerData.job}`}</li>
+              <li>{`Sở thích: ${customerData.income/1000000}`}</li>
+              <li>{`Quà tặng lần cuối: ${customerData.income/1000000}`}</li>
+              <li>{`Thu nhập ${customerData.income/1000000} triệu`}</li>
+            </ul>
           </div>
-        </div>
-        <div className="customer-care__right--info">
-          <h3><img src={IconFiles} alt=""/>{t('customer care.sync info')}</h3>
-          <ul>
-            <li>27 tuổi, 1 vợ, 2 con, chưa có nhà, đang làm nghề môi giới chứng khóa</li>
-            <li>Thu nhập 62 triệu</li>
-          </ul>
-        </div>
+        }
       </Col>
       <Modal isVisible={visibleModalAddInfo} setIsVisible={setVisibleModalAddInfo} title={Object.keys(detailData).length > 0 ? t(('customer care.edit info title')) : t(('customer care.add info title'))} width={770} content={<AddInfoContent detailData={detailData} setVisibleModalAddInfo={setVisibleModalAddInfo}/>} />
     </>

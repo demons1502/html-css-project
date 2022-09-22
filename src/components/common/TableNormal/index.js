@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import { Table } from 'antd';
 import {useSelector} from 'react-redux';
 import {LOADING_STATUS} from '../../../ultis/constant';

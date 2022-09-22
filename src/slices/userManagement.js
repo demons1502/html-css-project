@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { create, getUser, getAll, update, getSearch, remove, removeUsers, uploadFile, resetUser } from '../services/userManagement';
+import { create, getUser, getAll, updateRole, getSearch, remove, removeUsers, uploadFile, resetUser } from '../services/userManagement';
 
 const initialState = {
   data: [],
@@ -26,13 +26,13 @@ export const getUserProfile = createAsyncThunk('userManagement/getUser', async (
 });
 export const updateUser = createAsyncThunk(
   'userManagement/updateUser',
-  async (data) => {
-    const res = await update(data);
+  async ({id, data}) => {
+    const res = await updateRole({id, data});
     return res.data;
   }
 );
 export const resetUserId = createAsyncThunk(
-  'userManagement/updateUser',
+  'userManagement/resetUser',
   async (data) => {
     const res = await resetUser(data);
     return res.data;
@@ -75,18 +75,21 @@ const useManagement = createSlice({
     [searchUser.fulfilled]: (state, action) => {
       state.data = [...action.payload.data];
       state.totalItem = action.payload.total;
+      state.refreshList=false
     },
     [createUser.fulfilled]: (state) => {
       state.refreshList=true
-      state.refreshList=false
     },
     [createUser.rejected]: (state, action) => {
       state.messageError = action.payload;
     },
     [retrieveData.fulfilled]: (state, action) => {
-      state.refreshList=true
-      state.refreshList=false
       state.totalItem = action.payload.total;
+      state.data = action.payload.data;
+      state.refreshList=false
+    },
+    [resetUserId.fulfilled]: (state, action) => {
+      state.refreshList=true
     },
     [updateUser.fulfilled]: (state, action) => {
       // const index = state.data.findIndex((data) => data.id === action.payload.id);
@@ -95,20 +98,17 @@ const useManagement = createSlice({
       //   ...action.payload,
       // };
       state.refreshList=true
-      state.refreshList=false
     },
     [removeUser.fulfilled]: (state, action) => {
       // let index = state.data.findIndex(({ id }) => id == action.payload.id);
       // state.data.splice(index, 1);
       state.refreshList=true
-      state.refreshList=false
     },
     [removeUserIds.fulfilled]: (state, action) => {
       // state.data = state.data.filter(
       //   ({ id }) => action.payload.id.includes(id)
       // );
       state.refreshList=true
-      state.refreshList=false
     },
   },
 });

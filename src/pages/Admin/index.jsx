@@ -153,20 +153,20 @@ export default function UserManagement() {
   const [isSettingLog, setIssettingLog] = useState(false)
   const [dataTable, setDataTable]= useState(useSelector((state)=>state.userManagement.data))
   const [inputText, setInputText]= useState('')
-  const [pageNum, setPageNum] = useState(10)
-  const [current, setCurrent] = useState(1)
+  const [pageNum, setPageNum] = useState(1)
+  const [current, setCurrent] = useState(10)
 
   const dispatch= useDispatch()
   const userData=useSelector((state)=>state.userManagement.data)
   const totalItem=useSelector((state)=>state.userManagement.totalItem)
-  const refreshData=useSelector((state)=>state.userManagement.refreshData)
+  const refreshData=useSelector((state)=>state.userManagement.refreshList)
   const getSelectedRowKeys = (rowkeys) => {
     setSelectedRowKeys(rowkeys);
   };
 
   useEffect(() => {
     input_file.current.style.display = 'none'
-    dispatch(retrieveData({page:1,limit:10}))
+    dispatch(retrieveData({page:pageNum,limit:current}))
   },[])
 
   useEffect(()=>{
@@ -193,10 +193,9 @@ export default function UserManagement() {
     const itemChange = dataTable.find((item) => item.id === idCheckboxChange);
     console.log(itemChange);
     const dataItem = {
-      id: itemChange.id,
       [data]: !itemChange[data],
     };
-    dispatch(updateUser(dataItem));
+    dispatch(updateUser({id:itemChange.id, data:dataItem}));
   };
 
   handelResetUser = (e) => {
@@ -269,12 +268,18 @@ export default function UserManagement() {
     }
   };
   useEffect(() => {
-    if (inputText || refreshData) {
-      dispatch(searchUser({ q: inputText, page: current, limit: pageNum }));
+    if (inputText) {
+      dispatch(searchUser({ q: inputText, page: pageNum, limit: current }));
     } else {
-      dispatch(retrieveData({ q: inputText, page: current, limit: pageNum }));
+      dispatch(searchUser({ q: inputText, page: pageNum, limit: current }));
     }
-  },[inputText,pageNum,current,refreshData])
+  },[inputText,pageNum,current])
+
+  useEffect(()=>{
+    if(refreshData){
+      dispatch(searchUser({ q: inputText, page: pageNum, limit: current }));
+    }
+  },[refreshData])
 
   // useEffect(() => {
   //   const pageTitle = document.querySelector('.ant-select-selection-item').innerHTML
@@ -283,7 +288,7 @@ export default function UserManagement() {
   // }, [])
 
   const setPaginate = (e) => {
-    setPageNum(e.offset);
+    setPageNum(e.offset++);
     setCurrent(e.limit);
   };
 

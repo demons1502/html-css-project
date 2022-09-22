@@ -140,7 +140,7 @@ const columns = [
     render: () => (
       <img
         className='dustbin_icon'
-        src='./images/dustbin.svg'
+        src='./images/dustbin_icon.svg'
         onClick={handleDeleteUser}
       />
     ),
@@ -309,29 +309,29 @@ export default function UserManagement() {
           </button>
           <input type='file' ref={input_file} />
           <button className='func_import btn-primary' onClick={handleImport}>
-            <img src='./images/import_icon.svg' />
+            <img src='./images/import_icon_admin.svg' />
             Import
           </button>
           <button
             className='func_create-user btn-primary'
             onClick={handleCreateUser}
           >
-            <img src='./images/plus_icon.svg' />
+            <img src='./images/plus_icon_admin.svg' />
             Tạo mới
           </button>
           <img
             className='icon_setting'
-            src='./images/setting_icon.svg'
+            src='./images/setting_icon_admin.svg'
             onClick={handleClickSetting}
           />
           {isSettingLog ? (
             <div className='setting_modal'>
               <div className='watch-log'>
-                <img src='./images/clock.svg' />
+                <img src='./images/clock_icon.svg' />
                 <label>Xem log</label>
               </div>
               <div className='change-language'>
-                <img src='./images/global-earth_icon.svg' />
+                <img src='./images/global_earth_icon.svg' />
                 <label>Cập nhật ngôn ngữ</label>
               </div>
             </div>
@@ -344,10 +344,10 @@ export default function UserManagement() {
         <div className='admin_title'>
           <h3>Danh sách tài khoản</h3>
           <div className='search_box'>
-            <InputSearch setPayload={(e) => setInputText(e)} />
+            <InputSearch setPayload={setInputText} />
           </div>
         </div>
-        <TableCommon dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={getSelectedRowKeys} scroll={false} />
+        <TableCommon dataSource={dataTable} columnTable={columns} isSelection={true} setSelectedRowKeys={getSelectedRowKeys}/>
         <Pagination  total={totalItem}  setPaginate={setPaginate}  />
         {isCreateUser &&
           <Modal centered width={589} closable={false}

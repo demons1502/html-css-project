@@ -8,7 +8,6 @@ import "../../assets/scss/ContractManagement/createContractStyle.scss"
 
 function CreateContract(props) {
   const customerName=useSelector((state) => state.contractManagement.custom)
-  const [optionCustomerName, setOptionCustomerName]= useState(customerName)
   const dispatch = useDispatch()
   const autoCompleteChange = (e)=>{
     dispatch(getCustoms({name:e,limit:10,offset:0}))
@@ -39,14 +38,8 @@ function CreateContract(props) {
     console.log('Failed:', errorInfo);
   };
   const renderItem = (title, count) => ({
-    value: title,
     label: (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
+      <div>
         {title}
         <span>
           {count}
@@ -54,21 +47,13 @@ function CreateContract(props) {
       </div>
     ),
   });
-  const { Option } = Select;
-  var options
+  var { Option } = Select;
+  var options = []
   useEffect(()=>{
-    options=[
-      {
-        options: [optionCustomerName.map(item=>{
-          return item.fullname, item.customerId})
-        ]
-      }
-    ]
-    
-    
-    console.log(options[0]);
-  },[optionCustomerName])
-
+    options = [];
+    console.log(options);
+    console.log(customerName);
+  },[customerName])
   return (
     <div className='create_contract'>
       <div className="create_contract_header">

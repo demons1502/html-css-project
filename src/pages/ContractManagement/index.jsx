@@ -7,7 +7,6 @@ import { retrieveData, setRefresh } from '../../slices/contractManagement';
 import { useDispatch, useSelector } from 'react-redux';
 import TableCommon from '../../components/common/TableNormal'
 import Pagination from "../../components/common/Pagination";
-
 import moment from 'moment';
 import { getByIds } from '../../slices/contractManagement';
 
@@ -71,33 +70,34 @@ const columns = [
   {
     title: '',
     dataIndex: '',
-    render: () => <img className='edit_icon' src='../images/edit-icon.svg' onClick={handleEditUser} />,
+    render: () => <img className='edit_icon' src='../images/edit_icon.svg' onClick={handleEditUser} />,
     key: '11',
   }
 ];
-
-const data = [];
 
 export default function ContractManagement() {
   const [modalCreateContract, setModalCreateContract] = useState(false)
   const [modalEditContract, setModalEditContract] = useState(false)
   const [dataEdit, setDataEdit] = useState(null)
   const [dataTable, setDataTable] = useState([])
+  const [inputText, setInputText]= useState('')
 
   const dispatch = useDispatch()
   const userData = useSelector((state) => state.contractManagement.data)
   const dataEditStore = useSelector((state) => state.contractManagement.contractById)
   const refreshData= useSelector((state) => state.contractManagement.refreshData)
   const totalItem=useSelector((state) => state.contractManagement.totalItem)
-  console.log(totalItem);
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+
   const handleCloseModalCreate = () => {
     setModalCreateContract(false)
     setModalEditContract(false)
   }
   
   useEffect(() => {
-    dispatch(retrieveData({ limit: 10, offset: 0 }))
-  }, [])
+    dispatch(retrieveData({ limit: pageSize, offset: page }))
+  }, [page,pageSize])
 
   useEffect(() => {
     setDataEdit(dataEditStore)
@@ -105,10 +105,11 @@ export default function ContractManagement() {
 
   useEffect(()=>{
     if(refreshData){
-      dispatch(retrieveData({ limit: 10, offset: 0 }))
+      dispatch(retrieveData({ limit: pageSize, offset: page }))
       dispatch(setRefresh())
     }
   },[refreshData])
+
   useEffect(() => {
     // userData.map(item => {
     //   // return { createAt: moment(item.createAt), lastDepositDate: moment(item.lastDepositDate), nextDepositDue: moment(item.nextDepositDue), ...item }
@@ -118,6 +119,15 @@ export default function ContractManagement() {
     setDataTable(userData)
   }, [userData])
 
+  useEffect(() => {
+    if (inputText) {  
+      dispatch(retrieveData({page: page, limit: pageSize }));
+    } else {
+      dispatch(retrieveData({page: page, limit: pageSize }));
+    }
+    console.log(inputText)
+  },[inputText,page,pageSize])
+
   handleEditUser = (e) => {
     const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
     const id = rowHover[0].innerHTML
@@ -126,27 +136,30 @@ export default function ContractManagement() {
     })
     setModalEditContract(true)
   }
-  const onChangePage=(e) => {
-    // setPaginate({limit: pageSize, offset: page})
-    console.log(e);
-  }
 
+  const setPaginate=(e) => {
+    if(totalItem<e.offset*e.limit){
+      setPage(e.offset)
+    }else{
+      setPage(e.offset*e.limit)
+    }
+    setPageSize(e.limit);
+  }
   return (
     <div className='content-box container_contract'>
       <div className="contract_header">
         <h3>Quản lý hợp đồng</h3>
         <div className="header_right">
-          <InputSearch />
+          <InputSearch setPayload={setInputText}/>
           <Button className='btn-primary' onClick={() => setModalCreateContract(true)}>
-            <img src="../images/plus_icon.svg" />
+            <img src="../images/plus_icon_admin.svg" />
             <p>Thêm hợp đồng</p>
           </Button>
         </div>
       </div>
       <div className="contract_list">
-        <TableCommon dataSource={dataTable} columns={columns} size='middle' rowKey='id' />
-        {/* pagination={{ defaultPageSize: 10, total:{totalItem} , showSizeChanger: true, pageSizeOptions: ['10', '20', '30']}} */}
-        
+        <TableCommon dataSource={dataTable} columnTable={columns} isSizeChange='middle' rowKey='id'/>
+        <Pagination total={totalItem}  setPaginate={setPaginate}/>
       </div>
       {
         modalCreateContract ? (

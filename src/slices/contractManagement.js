@@ -54,7 +54,7 @@ const contractManagement = createSlice({
   name: 'contractManagement',
   initialState,
   reducers:{
-    setRefresh:(state, action)=>{
+    setRefresh:(state)=>{
       state.refreshData=false
     },
   },
@@ -70,7 +70,7 @@ const contractManagement = createSlice({
       state.custom = [...action.payload.data]
     },
     [updateContract.fulfilled]: (state) => {
-      state.refreshData = true
+      // state.refreshData = true
     }
   },
 });

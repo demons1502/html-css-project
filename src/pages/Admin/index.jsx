@@ -265,7 +265,7 @@ export default function UserManagement() {
           </button>
           <img
             className='icon_setting'
-            src='./images/setting_icon.svg'
+            src='./images/setting_icon_admin.svg'
             onClick={() => setIssettingLog(!isSettingLog)}
           />
           {isSettingLog && (

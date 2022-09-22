@@ -14,6 +14,7 @@ export default function TableCommon(props) {
     ratioHeight = 0.5,
     heightMargin = 340,
     setSelectedRowKeys,
+    scroll = true,
   } = props;
   const ref = useRef(null)
   const [isScroll, setIsScroll] = useState(false)
@@ -43,7 +44,7 @@ export default function TableCommon(props) {
     bordered={bordered}
     className='table-common'
     rowKey="id"
-    scroll={isScroll ?
+    scroll={scroll && isScroll ?
       {
         y: `calc(100vh - ${heightMargin}px)`,
         scrollToFirstRowOnChange: false

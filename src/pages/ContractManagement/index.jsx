@@ -5,6 +5,9 @@ import { Button, Table, Modal } from 'antd'
 import CreateContract from './CreateContract';
 import { retrieveData, setRefresh } from '../../slices/contractManagement';
 import { useDispatch, useSelector } from 'react-redux';
+import TableCommon from '../../components/common/TableNormal'
+import Pagination from "../../components/common/Pagination";
+
 import moment from 'moment';
 import { getByIds } from '../../slices/contractManagement';
 
@@ -85,13 +88,15 @@ export default function ContractManagement() {
   const userData = useSelector((state) => state.contractManagement.data)
   const dataEditStore = useSelector((state) => state.contractManagement.contractById)
   const refreshData= useSelector((state) => state.contractManagement.refreshData)
+  const totalItem=useSelector((state) => state.contractManagement.totalItem)
+  console.log(totalItem);
   const handleCloseModalCreate = () => {
     setModalCreateContract(false)
     setModalEditContract(false)
   }
   
   useEffect(() => {
-    dispatch(retrieveData({ limit: 20, offset: 0 }))
+    dispatch(retrieveData({ limit: 10, offset: 0 }))
   }, [])
 
   useEffect(() => {
@@ -100,7 +105,7 @@ export default function ContractManagement() {
 
   useEffect(()=>{
     if(refreshData){
-      dispatch(retrieveData({ limit: 20, offset: 0 }))
+      dispatch(retrieveData({ limit: 10, offset: 0 }))
       dispatch(setRefresh())
     }
   },[refreshData])
@@ -121,6 +126,11 @@ export default function ContractManagement() {
     })
     setModalEditContract(true)
   }
+  const onChangePage=(e) => {
+    // setPaginate({limit: pageSize, offset: page})
+    console.log(e);
+  }
+
   return (
     <div className='content-box container_contract'>
       <div className="contract_header">
@@ -134,9 +144,9 @@ export default function ContractManagement() {
         </div>
       </div>
       <div className="contract_list">
-        <Table dataSource={dataTable} columns={columns} size='middle'
-          pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '30'] }}
-        />
+        <TableCommon dataSource={dataTable} columns={columns} size='middle' rowKey='id' />
+        {/* pagination={{ defaultPageSize: 10, total:{totalItem} , showSizeChanger: true, pageSizeOptions: ['10', '20', '30']}} */}
+        
       </div>
       {
         modalCreateContract ? (

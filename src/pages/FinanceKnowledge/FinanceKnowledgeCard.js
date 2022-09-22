@@ -1,11 +1,9 @@
 import { Col, Image, Layout, Row, Typography } from 'antd';
-import axios from 'axios';
 import moment from 'moment';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import eyeIcon from '../../assets/images/icons/eyeIcon.svg';
 import timeIcon from '../../assets/images/icons/timeIcon.svg';
-import { getImage } from '../../services/financeKnowledge';
 import { getView } from '../../slices/financeKnowledge';
 import { FORMAT_DATE } from '../../ultis/constant';
 
@@ -15,7 +13,8 @@ const FinanceSupportCard = (props) => {
   const dispatch = useDispatch();
   const date = moment(content?.createdAt).format(FORMAT_DATE);
   const [file, setFile] = useState('');
-
+  const [imgURL, setImgURL] = useState('');
+ 
   useEffect(() => {
     const fetchData = () => {
       try {
@@ -27,7 +26,7 @@ const FinanceSupportCard = (props) => {
             },
           }
         )
-          .then((res) => res.blob())
+          .then((res) => res.blob()) 
           .then((blob) => {
             const url = URL.createObjectURL(blob);
             setFile(url);
@@ -39,18 +38,19 @@ const FinanceSupportCard = (props) => {
     content && fetchData();
   }, [content]);
 
-  useEffect(() => {
-    const fetchData =async () => {
-      try {
-        const res =await getImage(content.image)
-        const imgUrl=new FileReader(res.data)
-        console.log(imgUrl);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    content && fetchData();
-  }, [content]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await getImage(content.image);
+  //       const blob = res.data.blob()
+  //       const test = URL.createObjectURL(blob);
+  //       setImgURL(test);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   content && fetchData();
+  // }, [content]);
 
   return (
     <Col

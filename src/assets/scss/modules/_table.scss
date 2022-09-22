@@ -106,26 +106,5 @@
       top: 45% !important;
     }
   }
-  &.paymentManagement-table {
-    .ant-table-tbody {
-      .ant-table-row-selected {
-        td {
-          background: $green-table-bg !important;
-          border-bottom: 1px solid $white-color !important;
-          color: $white-color;
-          &.green-color {
-            color: $white-color !important;
-          }
-        }
-      }
-      .ant-table-row {
-        &.active {
-          .ant-table-cell {
-            background: $green-color;
-            color: $white-color;
-          }
-        }
-      }
-    }
-  }
+  
 }

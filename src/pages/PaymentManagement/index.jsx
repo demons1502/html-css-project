@@ -1,4 +1,4 @@
-import { Button, Col, notification, Row } from 'antd';
+import { Button, Col, notification, Row, Table } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,7 +6,7 @@ import deleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import importIcon from '../../assets/images/icons/importIcon.svg';
 import plusIcon from '../../assets/images/icons/plus.svg';
 import Pagination from '../../components/common/Pagination';
-import Table from '../../components/common/TableNormal';
+// import Table from '../../components/common/TableNormal';
 import ModalConfirm from '../../components/ModalConfirm';
 import {
   deletePayment,
@@ -17,6 +17,7 @@ import { FORMAT_DATE } from '../../ultis/constant';
 import CreatePayment from './CreatePayment';
 import PaymentHistory from './PaymentHistory';
 import PaymentManagementHeader from './PaymentManagementHeader';
+import { DeleteOutlined } from '@ant-design/icons';
 
 const PaymentManagement = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -25,7 +26,7 @@ const PaymentManagement = () => {
   const [historyItem, setHistoryItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [limit, setLimit] = useState(10);
 
   const dispatch = useDispatch();
   const payments = useSelector((state) => state.paymentManagementReducer);
@@ -40,13 +41,13 @@ const PaymentManagement = () => {
       callApi: () => dispatch(deletePayment({ transactionIds: [item.id] })),
     });
   };
-
   const handleDelete = () => {
     if (selectedRowKeys.length > 0) {
-      const id = [];
-      selectedRowKeys.map((item) => id.push(item.id));
+      // const id = [];
+      // selectedRowKeys.map((item) => id.push(item.id));
       ModalConfirm({
-        callApi: () => dispatch(deletePayment({ transactionIds: id })),
+        callApi: () =>
+          dispatch(deletePayment({ transactionIds: selectedRowKeys })),
       });
     } else {
       notification.warning({
@@ -61,7 +62,6 @@ const PaymentManagement = () => {
     data.append('file', e.target.files[0]);
     dispatch(uploadFile(data));
   };
-
   const columns = [
     {
       title: 'Họ và tên',
@@ -100,8 +100,7 @@ const PaymentManagement = () => {
       dataIndex: '',
       key: 'x',
       render: (_, record) => (
-        <img
-          src={deleteIcon}
+        <DeleteOutlined
           className='btn-deleteIcon'
           onClick={() => handleDeleteOne(record)}
         />
@@ -111,13 +110,13 @@ const PaymentManagement = () => {
 
   const onChangePage = (current, pageSize) => {
     setPage(current);
-    setPageSize(pageSize);
+    setLimit(pageSize);
   };
 
   useEffect(() => {
-    const params = { q: searchPayload, page: page, limit: pageSize };
+    const params = { q: searchPayload, page: page, limit: limit };
     dispatch(retrieveData(params));
-  }, [searchPayload, page, pageSize, payments.isReload]);
+  }, [searchPayload, page, limit, payments.isReload]);
 
   return (
     <div className='paymentManagement'>
@@ -168,11 +167,26 @@ const PaymentManagement = () => {
                 search
                 setPayload={setSearchPayload}
               />
-              {/* <Table
+              <Table
                 className='table-common paymentManagement-table'
-                dataSource={payments}
+                dataSource={payments.data}
                 columns={columns}
-                pagination={{ className: 'payment-pagination' }}
+                // pagination={{
+                //   // className: 'payment-pagination',
+                //   total: payments.total,
+                //   onChange: onChangePage,
+                //   pageSizeOptions: [10, 20, 30],
+                // }}
+
+                pagination={
+                  payments.total > limit && {
+                    total: payments.total,
+                    onChange: onChangePage,
+                    //pageSizeOptions: [10, 20, 50],
+                    showSizeChanger: true,
+                    className: 'payment-pagination',
+                  }
+                }
                 rowSelection={{
                   selectedRowKeys,
                   onChange: onSelectChange,
@@ -187,20 +201,21 @@ const PaymentManagement = () => {
                     },
                   };
                 }}
-                rowKey={(record) => record.id}
+                rowKey='id'
                 size='middle'
                 bordered={false}
-              /> */}
-              <Table
+              />
+              {/* <Table
                 dataSource={payments.data}
                 columnTable={columns}
                 isSelection
                 setSelectedRowKeys={onSelectChange}
-              ></Table>
-              <Pagination
+              ></Table> */}
+              {/* <Pagination
                 total={payments.total}
-                onShowSizeChange={onChangePage}
-              ></Pagination>
+                // onShowSizeChange={onChangePage}
+                setPaginate={setPaginate}
+              /> */}
             </div>
           </Col>
           <Col

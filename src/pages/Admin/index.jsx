@@ -3,7 +3,7 @@ import { Checkbox, Modal } from 'antd';
 import "../../assets/scss/Admin/stylesAdmin.scss"
 import InputSearch from '../../components/common/InputSearch';
 import CreateUser from './CreateUser';
-import Table from "../../components/common/TableNormal";
+import TableCommon from "../../components/common/TableNormal";
 import Pagination from "../../components/common/Pagination";
 import ModalConfirm from '../../components/ModalConfirm';
 import { useDispatch, useSelector } from 'react-redux';
@@ -111,6 +111,8 @@ const columns = [
         id='idActive'
         defaultChecked={dataIndex}
         onClick={handleCheckboxChange}
+        disabled
+        className='checkbox-disable'
       />
     ),
   },
@@ -279,10 +281,9 @@ export default function UserManagement() {
   //   document.querySelector('.ant-select-selection-item').innerHTML = pageText
   // }, [])
 
-  const setPaginate = (current, page) => {
-    console.log(current, page);
-    setPageNum(page);
-    setCurrent(current);
+  const setPaginate = (e) => {
+    setPageNum(e.offset);
+    setCurrent(e.limit);
   };
 
   return (
@@ -342,8 +343,8 @@ export default function UserManagement() {
             <InputSearch setPayload={(e) => setInputText(e)} />
           </div>
         </div>
-        <Table dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={setSelectedRowKeys} />
-        <Pagination total={totalItem}  setPaginate={setPaginate}  />
+        <TableCommon dataSource={dataTable} columnTable={columns} isSelection={true} isScroll={true} setSelectedRowKeys={getSelectedRowKeys} />
+        <Pagination  total={totalItem}  setPaginate={setPaginate}  />
         {isCreateUser &&
           <Modal centered width={589} closable={false}
             footer={null}

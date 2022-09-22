@@ -77,7 +77,6 @@ const useManagement = createSlice({
     },
     [createUser.fulfilled]: (state, action) => {
       state.data.push(action.payload);
-      // retrieveData()
     },
     [createUser.rejected]: (state, action) => {
       state.messageError = action.payload;

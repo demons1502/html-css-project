@@ -177,10 +177,10 @@ export default function UserManagement() {
   };
 
   const handelResetUsers = () => {
-    const listId = [];
-    selectedRowKeys.map((item) => {
-      listId.push(item.id);
+    const listId = selectedRowKeys.map((item) => {
+      return item.id
     });
+
     if (listId.length != 0) {
       ModalConfirm({
         title: 'Xác nhận',

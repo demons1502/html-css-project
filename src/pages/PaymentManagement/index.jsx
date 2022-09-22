@@ -13,7 +13,7 @@ import {
   retrieveData,
   uploadFile,
 } from '../../slices/paymentManagement';
-import { FORMAT_DATE } from '../../ultis/constant';
+import {DEFAULT_SIZE, FORMAT_DATE} from '../../ultis/constant';
 import CreatePayment from './CreatePayment';
 import PaymentHistory from './PaymentHistory';
 import PaymentManagementHeader from './PaymentManagementHeader';
@@ -24,8 +24,10 @@ const PaymentManagement = () => {
   const [searchPayload, setSearchPayload] = useState('');
   const [historyItem, setHistoryItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [paginate, setPaginate] = useState({
+    limit: DEFAULT_SIZE,
+    offset: 0
+  });
 
   const dispatch = useDispatch();
   const payments = useSelector((state) => state.paymentManagementReducer);
@@ -56,6 +58,7 @@ const PaymentManagement = () => {
       });
     }
   };
+
   const handleImport = (e) => {
     const data = new FormData();
     data.append('file', e.target.files[0]);
@@ -109,15 +112,9 @@ const PaymentManagement = () => {
     },
   ];
 
-  const onChangePage = (current, pageSize) => {
-    setPage(current);
-    setPageSize(pageSize);
-  };
-
   useEffect(() => {
-    const params = { q: searchPayload, page: page, limit: pageSize };
-    dispatch(retrieveData(params));
-  }, [searchPayload, page, pageSize]);
+    const params = { q: searchPayload, page: paginate.offset, limit: paginate.limit };
+  }, [searchPayload, paginate]);
 
   return (
     <div className='paymentManagement'>
@@ -199,7 +196,7 @@ const PaymentManagement = () => {
               ></Table>
               <Pagination
                 total={payments.total}
-                onShowSizeChange={onChangePage}
+                setPaginate={setPaginate}
               ></Pagination>
             </div>
           </Col>

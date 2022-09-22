@@ -43,19 +43,19 @@ const FinanceSupportCard = (props) => {
   //   content && fetchData();
   // }, [content]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await getImage(content?.image);
-        const blob = new Blob([res.data], { type: 'image/jpeg' });
-        const test = URL.createObjectURL(blob);
-        setImgURL(test);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    content && fetchData();
-  }, [content]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await getImage(content?.image);
+  //       const blob = new Blob([res.data], { type: 'image/jpeg' });
+  //       const test = URL.createObjectURL(blob);
+  //       setImgURL(test);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   content && fetchData();
+  // }, [content]);
 
   return (
     <Col
@@ -85,7 +85,7 @@ const FinanceSupportCard = (props) => {
                 className={wrap ? 'col-wrap' : ''}
               >
                 <Image
-                  src={file}
+                  src={'https://suthatbaohiem.com/wp-content/uploads/2022/06/manulife-tuyen-dung-2022.png'}
                   preview={false}
                   className={`image ${wrap ? 'image-wrap' : ''}`}
                   alt=''

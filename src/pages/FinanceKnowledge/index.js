@@ -78,11 +78,11 @@ const index = () => {
               md: 2,
             }}
             dataSource={articlesData.articles}
-            // pagination={{
-            //   pageSize: 12,
-            //   className: 'financeKnowledge-pagination',
-            //   pageSizeOptions: true,
-            // }}
+            pagination={{
+              pageSize: 12,
+              className: 'financeKnowledge-pagination',
+              pageSizeOptions: true,
+            }}
             renderItem={(item) => (
               <List.Item>
                 <FinanceKnowledgeCard

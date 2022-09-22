@@ -159,6 +159,7 @@ export default function UserManagement() {
   const dispatch= useDispatch()
   const userData=useSelector((state)=>state.userManagement.data)
   const totalItem=useSelector((state)=>state.userManagement.totalItem)
+  const refreshData=useSelector((state)=>state.userManagement.refreshData)
   const getSelectedRowKeys = (rowkeys) => {
     setSelectedRowKeys(rowkeys);
   };
@@ -268,12 +269,12 @@ export default function UserManagement() {
     }
   };
   useEffect(() => {
-    if (inputText) {
+    if (inputText || refreshData) {
       dispatch(searchUser({ q: inputText, page: current, limit: pageNum }));
     } else {
       dispatch(retrieveData({ q: inputText, page: current, limit: pageNum }));
     }
-  },[inputText,pageNum,current])
+  },[inputText,pageNum,current,refreshData])
 
   // useEffect(() => {
   //   const pageTitle = document.querySelector('.ant-select-selection-item').innerHTML

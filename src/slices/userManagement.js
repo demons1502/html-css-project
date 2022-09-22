@@ -5,6 +5,7 @@ const initialState = {
   data: [],
   totalItem: null,
   messageError: null,
+  refreshList: false,
 };
 
 export const searchUser = createAsyncThunk('userManagement/getSearch', async (payload) => {
@@ -75,31 +76,39 @@ const useManagement = createSlice({
       state.data = [...action.payload.data];
       state.totalItem = action.payload.total;
     },
-    [createUser.fulfilled]: (state, action) => {
-      state.data.push(action.payload);
+    [createUser.fulfilled]: (state) => {
+      state.refreshList=true
+      state.refreshList=false
     },
     [createUser.rejected]: (state, action) => {
       state.messageError = action.payload;
     },
     [retrieveData.fulfilled]: (state, action) => {
-      state.data = [...action.payload?.data];
+      state.refreshList=true
+      state.refreshList=false
       state.totalItem = action.payload.total;
     },
     [updateUser.fulfilled]: (state, action) => {
-      const index = state.data.findIndex((data) => data.id === action.payload.id);
-      state.data[index] = {
-        ...state.data[index],
-        ...action.payload,
-      };
+      // const index = state.data.findIndex((data) => data.id === action.payload.id);
+      // state.data[index] = {
+      //   ...state.data[index],
+      //   ...action.payload,
+      // };
+      state.refreshList=true
+      state.refreshList=false
     },
     [removeUser.fulfilled]: (state, action) => {
-      let index = state.data.findIndex(({ id }) => id == action.payload.id);
-      state.data.splice(index, 1);
+      // let index = state.data.findIndex(({ id }) => id == action.payload.id);
+      // state.data.splice(index, 1);
+      state.refreshList=true
+      state.refreshList=false
     },
     [removeUserIds.fulfilled]: (state, action) => {
       // state.data = state.data.filter(
       //   ({ id }) => action.payload.id.includes(id)
       // );
+      state.refreshList=true
+      state.refreshList=false
     },
   },
 });

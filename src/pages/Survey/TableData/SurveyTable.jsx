@@ -1,6 +1,6 @@
 import React, { useState, useMemo, Fragment } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Checkbox, Empty, Form, Input } from "antd";
+import { Checkbox, Empty, Form, Input } from "antd";
 import { ClosingModal } from "../Modals/ClosingModal";
 import TableCommon from "../../../components/common/TableNormal";
 const CustomerServeyTable = () => {
@@ -19,7 +19,6 @@ const CustomerServeyTable = () => {
     };
   });
 
-  console.log(rowData);
   const [dataTable, setDataTable] = useState(rowData);
 
   const handleCheckboxChangeFactory = (rowIndex, columnKey) => (event) => {
@@ -39,9 +38,12 @@ const CustomerServeyTable = () => {
       title: "Nền tảng của sự giàu có",
       dataIndex: "type",
       key: "type",
+      width: "25%",
+      fixed: "left",
     },
     {
       title: "infulence level",
+      width: "33%",
       children: [
         {
           title: "Rất quan trọng",
@@ -81,6 +83,7 @@ const CustomerServeyTable = () => {
     },
     {
       title: "Xây dựng vương quốc tài chính",
+      width: "34%",
       children: [
         {
           title: "Chưa có",
@@ -112,6 +115,7 @@ const CustomerServeyTable = () => {
           key: "money",
           render: (value, record, rowIndex) => (
             <Input
+              style={{ backgroundColor: "#F8F8F8", border: 0 }}
               className="radius-10"
               value={value}
               onChange={handleInput(rowIndex, "money")}
@@ -123,10 +127,12 @@ const CustomerServeyTable = () => {
     {
       title: "TT ưu tiên",
       dataIndex: "order",
+      width: "8%",
       key: "order",
       render: (value, record, rowIndex) => (
         <Input
-          className="radius-10"
+          style={{ backgroundColor: "#F8F8F8", border: 0 }}
+          className="radius-10 "
           value={value}
           onChange={handleInput(rowIndex, "order")}
         />
@@ -148,21 +154,98 @@ const CustomerServeyTable = () => {
   }, [dataTable]);
   return (
     <Fragment>
-      <h2 className="title">
-        1. Những quỹ tài chính sau đây có ý nghĩa thế nào với gia đình anh/chị?
-      </h2>
-      <div className="">{table}</div>
-      <div className="container-right-submit">
-        <Form.Item name="remember" valuePropName="checked">
-          <Checkbox>Không còn tiềm năng</Checkbox>
-        </Form.Item>
-        <Form.Item>
-          {/* <Button type="primary" htmlType="submit" className="btn-primary">
+      <Form>
+        <div>
+          {/* table  */}
+          <h2 className="title">{t("survey.formTitle.title1")}</h2>
+          <div className="">{table}</div>
+        </div>
+        {/* inheritance-box-1 */}
+        <div>
+          <h2 className="inheritance-title">{t("survey.formTitle.title2")}</h2>
+          <div className="inheritance-box-1">
+            <Form.Item name="ch1" valuePropName="checked">
+              <Checkbox className="checkbox-item">Có</Checkbox>
+            </Form.Item>
+            <Form.Item name="ch2" valuePropName="checked">
+              <Checkbox className="checkbox-item">Trên 1.000.000 USD</Checkbox>
+            </Form.Item>
+            <Form.Item name="ch3" valuePropName="checked">
+              <Checkbox className="checkbox-item">Không</Checkbox>
+            </Form.Item>
+          </div>
+        </div>
+        {/* inheritance-box-2  */}
+        <div>
+          <h2 className="inheritance-title">{t("survey.formTitle.title3")}</h2>
+          <div className="inheritance-box-2">
+            <Form.Item name="ch4" valuePropName="checked">
+              <Checkbox className="checkbox-item">Vàng, đô la</Checkbox>
+            </Form.Item>
+            <Form.Item name="ch5" valuePropName="checked">
+              <Checkbox className="checkbox-item">Ngân hàng</Checkbox>
+            </Form.Item>
+            <Form.Item name="ch6" valuePropName="checked">
+              <Checkbox className="checkbox-item">Bảo hiểm</Checkbox>
+            </Form.Item>
+            <Form.Item name="ch7" valuePropName="checked">
+              <Checkbox className="checkbox-item">Khác</Checkbox>
+            </Form.Item>
+          </div>
+        </div>
+
+        {/* inheritance-box-3  */}
+        <div>
+          <h2 className="inheritance-title">{t("survey.formTitle.title4")}</h2>
+          <div className="inheritance-box-2">
+            <Form.Item name="ch8" valuePropName="checked">
+              <Checkbox className="checkbox-item">Tiết kiệm không đều</Checkbox>
+            </Form.Item>
+            <Form.Item name="ch9" valuePropName="checked">
+              <Checkbox className="checkbox-item">
+                Mất kiểm soát chi tiêu
+              </Checkbox>
+            </Form.Item>
+            <Form.Item name="ch10" valuePropName="checked">
+              <Checkbox className="checkbox-item">Thâm hụt</Checkbox>
+            </Form.Item>
+            <Form.Item name="ch11" valuePropName="checked">
+              <Checkbox className="checkbox-item">Đầu tư sai</Checkbox>
+            </Form.Item>
+          </div>
+        </div>
+
+        {/* inheritance-box-4  */}
+        <div>
+          <h2 className="inheritance-title">{t("survey.formTitle.title5")}</h2>
+          <div className="inheritance-box-1">
+            <Form.Item name="ch11" valuePropName="checked">
+              <Checkbox className="checkbox-item">
+                Đầu tư dần để có tài sản
+              </Checkbox>
+            </Form.Item>
+            <Form.Item name="ch12" valuePropName="checked">
+              <Checkbox className="checkbox-item">
+                Mua tài sản đảm bảo không lãi thanh toán dần với 20% thu nhập
+              </Checkbox>
+            </Form.Item>
+            <Form.Item name="ch13" valuePropName="checked">
+              <Checkbox className="checkbox-item">Khác</Checkbox>
+            </Form.Item>
+          </div>
+        </div>
+        <div className="container-right-submit">
+          <Form.Item name="remember" valuePropName="checked">
+            <Checkbox>Không còn tiềm năng</Checkbox>
+          </Form.Item>
+          <Form.Item>
+            {/* <Button type="primary" htmlType="submit" className="btn-primary">
             {t("survey.save")}
           </Button> */}
-          <ClosingModal />
-        </Form.Item>
-      </div>
+            <ClosingModal />
+          </Form.Item>
+        </div>
+      </Form>
     </Fragment>
   );
 };

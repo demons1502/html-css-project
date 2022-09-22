@@ -63,6 +63,7 @@ const PaymentManagement = () => {
       });
     }
   };
+
   const handleImport = (e) => {
     const data = new FormData();
     data.append('file', e.target.files[0]);
@@ -176,7 +177,6 @@ const PaymentManagement = () => {
                 search
                 setPayload={setSearchPayload}
               />
-
               <Spin spinning={loading === LOADING_STATUS.pending}>
                 <Table
                   className='table-common paymentManagement-table'

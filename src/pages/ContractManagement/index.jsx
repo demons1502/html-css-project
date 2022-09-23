@@ -87,8 +87,8 @@ export default function ContractManagement() {
   const dataEditStore = useSelector((state) => state.contractManagement.contractById)
   const refreshData= useSelector((state) => state.contractManagement.refreshData)
   const totalItem=useSelector((state) => state.contractManagement.totalItem)
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
+  const [limit, setLimit] = useState(10)
+  const [offset, setOffset] = useState(0)
 
   const handleCloseModalCreate = () => {
     setModalCreateContract(false)
@@ -96,8 +96,8 @@ export default function ContractManagement() {
   }
   
   useEffect(() => {
-    dispatch(retrieveData({ limit: pageSize, offset: page }))
-  }, [page,pageSize])
+    dispatch(retrieveData({ limit: limit, offset: offset }))
+  }, [])
 
   useEffect(() => {
     setDataEdit(dataEditStore)
@@ -105,7 +105,7 @@ export default function ContractManagement() {
 
   useEffect(()=>{
     if(refreshData){
-      dispatch(retrieveData({ limit: pageSize, offset: page }))
+      dispatch(retrieveData({ limit: limit, offset: offset }))
       dispatch(setRefresh())
     }
   },[refreshData])
@@ -121,12 +121,11 @@ export default function ContractManagement() {
 
   useEffect(() => {
     if (inputText) {  
-      dispatch(retrieveData({page: page, limit: pageSize }));
+      dispatch(retrieveData({limit: limit, offset: offset }));
     } else {
-      dispatch(retrieveData({page: page, limit: pageSize }));
+      dispatch(retrieveData({limit: limit, offset: offset }));
     }
-    console.log(inputText)
-  },[inputText,page,pageSize])
+  },[inputText,limit,offset])
 
   handleEditUser = (e) => {
     const rowHover = document.querySelectorAll('.ant-table-cell-row-hover')
@@ -138,12 +137,13 @@ export default function ContractManagement() {
   }
 
   const setPaginate=(e) => {
-    if(totalItem<e.offset*e.limit){
-      setPage(e.offset)
+    console.log(e);
+    if(totalItem<(e.offset-1)*e.limit){ 
+      setOffset(e.limit)
     }else{
-      setPage(e.offset*e.limit)
+      setOffset((e.offset-1)*e.limit)
     }
-    setPageSize(e.limit);
+    setLimit(e.limit);
   }
   return (
     <div className='content-box container_contract'>

@@ -15,7 +15,7 @@ function CreateContract(props) {
   const onFinish = (values) => {
     const data = {
       "contractNumber": values.contractNumber,
-      "customerId": 1,                       // custom id get in custom api
+      "customerId": 12,                       // custom id get in custom api
       "customerName": values.customerName,
       "beneficiary": values.beneficiary,
       "value": Number(values.value),

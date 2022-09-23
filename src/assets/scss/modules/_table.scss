@@ -18,6 +18,11 @@
   }
 
   .ant-table-tbody {
+    .ant-table-measure-row {
+      td {
+        padding: 0 !important;
+      }
+    }
     tr {
       td {
         font-size: 1.4rem;

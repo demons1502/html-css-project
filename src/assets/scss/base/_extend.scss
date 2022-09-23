@@ -146,6 +146,11 @@
   justify-content: flex-end;
 }
 
+.d-flex-end {
+  display: flex;
+  justify-content: flex-end
+}
+
 .align-items-center {
   @extend %align-items-center;
 }

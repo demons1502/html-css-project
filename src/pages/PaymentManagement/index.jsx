@@ -18,6 +18,7 @@ import CreatePayment from './CreatePayment';
 import PaymentHistory from './PaymentHistory';
 import PaymentManagementHeader from './PaymentManagementHeader';
 import { DeleteOutlined } from '@ant-design/icons';
+import { getTimeByTZ } from '../../helper/index';
 
 const PaymentManagement = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -79,21 +80,21 @@ const PaymentManagement = () => {
       title: 'Ngày thanh toán',
       key: 'startDate',
       render: (record) => {
-        return <span>{moment(record.startDate).format(FORMAT_DATE)}</span>;
+        return <span>{getTimeByTZ(record.startDate)}</span>;
       },
     },
     {
       title: 'Ngày hiệu lực',
       key: 'startDate',
       render: (record) => {
-        return <span>{moment(record.startDate).format(FORMAT_DATE)}</span>;
+        return <span>{getTimeByTZ(record.startDate)}</span>;
       },
     },
     {
       title: 'Ngày kết thúc',
       key: 'dueDate',
       render: (record) => {
-        return <span>{moment(record.dueDate).format(FORMAT_DATE)}</span>;
+        return <span>{getTimeByTZ(record.dueDate)}</span>;
       },
     },
     {

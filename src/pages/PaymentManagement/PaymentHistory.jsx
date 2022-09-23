@@ -1,8 +1,7 @@
 import { Table } from 'antd';
-import moment from 'moment';
 import React, { memo, useEffect, useState } from 'react';
 import calendarIcon from '../../assets/images/icons/calendar.svg';
-import { FORMAT_DATE } from '../../ultis/constant';
+import { getTimeByTZ } from '../../helper/index';
 
 const columns = [
   {
@@ -25,7 +24,7 @@ const PaymentHistory = ({ customer }) => {
   useEffect(() => {
     const histories = [];
     histories.push({
-      date: moment(customer?.dueDate).format(FORMAT_DATE),
+      date: getTimeByTZ(customer?.dueDate),
       content: customer?.description,
     });
     setHistory(histories)
@@ -51,7 +50,7 @@ const PaymentHistory = ({ customer }) => {
                   </div>
                   <div className='paymentHistory-time_date'>
                     <span>
-                      {moment(customer?.startDate).format(FORMAT_DATE)}
+                      {getTimeByTZ(customer?.startDate)}
                     </span>
                   </div>
                 </div>
@@ -63,7 +62,7 @@ const PaymentHistory = ({ customer }) => {
                   </div>
                   <div className='paymentHistory-time_date'>
                     <span>
-                      {moment(customer?.startDate).format(FORMAT_DATE)}
+                      {getTimeByTZ(customer?.startDate)}
                     </span>
                   </div>
                 </div>
@@ -74,7 +73,7 @@ const PaymentHistory = ({ customer }) => {
                     <span>Ngày kết thúc</span>
                   </div>
                   <div className='paymentHistory-time_date'>
-                    <span>{moment(customer?.dueDate).format(FORMAT_DATE)}</span>
+                    <span>{getTimeByTZ(customer?.dueDate)}</span>
                   </div>
                 </div>
               </div>

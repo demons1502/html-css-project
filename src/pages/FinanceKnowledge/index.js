@@ -43,11 +43,13 @@ const index = () => {
           <Row gutter={[10, 10]}>
             <Col lg={8} md={24} sm={24}>
               <Row>
-                <FinanceKnowledgeCard
-                  content={mostViewData && mostViewData[0]}
-                  wrap
-                  lg={24}
-                />
+                {mostViewData[0] && (
+                  <FinanceKnowledgeCard
+                    content={mostViewData[0]}
+                    wrap
+                    lg={24}
+                  />
+                )}
               </Row>
             </Col>
             <Col lg={16} md={24} sm={24}>
@@ -78,11 +80,11 @@ const index = () => {
               md: 2,
             }}
             dataSource={articlesData.articles}
-            pagination={{
-              pageSize: 12,
-              className: 'financeKnowledge-pagination',
-              pageSizeOptions: true,
-            }}
+            // pagination={{
+            //   pageSize: 12,
+            //   className: 'financeKnowledge-pagination',
+            //   pageSizeOptions: true,
+            // }}
             renderItem={(item) => (
               <List.Item>
                 <FinanceKnowledgeCard

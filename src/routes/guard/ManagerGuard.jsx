@@ -9,9 +9,9 @@ const ManagerGuard = ({ element }) => {
     return <Navigate to='/auth' />;
   }
 
-  if (isAuth && !roles?.includes('admin')) {
-    return <Navigate to='/' />;
-  }
+  // if (isAuth && !roles?.includes('admin')) {
+  //   return <Navigate to='/' />;
+  // }
 
   return element;
 };

@@ -191,7 +191,7 @@ export const routes = () => [
       {
         path: 'setting',
         element: <CustomerCare />,
-      },
+      }
     ],
   },
   {

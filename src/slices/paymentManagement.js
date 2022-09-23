@@ -25,10 +25,8 @@ export const createPayment = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const res = await create(params);
-      return { data: res.data, message: 'Tạo thanh toán thành công' };
+      return { data: res.data, message: res.statusText };
     } catch (error) {
-      console.log(error)
-      return {message:error.response.data.message}
       return rejectWithValue(error.response.data);
     }
   }
@@ -39,7 +37,7 @@ export const uploadFile = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const res = await importFile(params);
-      return { data: res.data, message: 'Upload thanh toán thành công' };
+      return { data: res.data, message: res.statusText };
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.response.data);
@@ -51,8 +49,8 @@ export const deletePayment = createAsyncThunk(
   'paymentManagement/delete',
   async (params, { rejectWithValue }) => {
     try {
-      await remove(params);
-      return { id: params.transactionIds, message: 'Xóa thông tin thành công' };
+      const res=await remove(params);
+      return { id: params.transactionIds, message: res.statusText };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

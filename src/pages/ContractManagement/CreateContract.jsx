@@ -7,11 +7,17 @@ import { getCustoms } from '../../slices/contractManagement';
 import "../../assets/scss/ContractManagement/createContractStyle.scss"
 
 function CreateContract(props) {
-  const customerName=useSelector((state) => state.contractManagement.custom)
+  const [options, setOptions] = useState([]);
+  const [name, setName] = useState("");
+  const customerName = useSelector((state) => state.contractManagement.custom)
   const dispatch = useDispatch()
-  const autoCompleteChange = (e)=>{
-    dispatch(getCustoms({name:e,limit:10,offset:0}))
+  const autoCompleteChange = (e) => {
+    dispatch(getCustoms({ name: e, limit: 10, offset: 0 }))
   }
+  useEffect(() => {
+    dispatch(getCustoms({ name: '', limit: 10, offset: 0 }))
+  }, [])
+  var { Option } = Select;
   const onFinish = (values) => {
     const data = {
       "contractNumber": values.contractNumber,
@@ -19,7 +25,7 @@ function CreateContract(props) {
       "customerName": values.customerName,
       "beneficiary": values.beneficiary,
       "value": Number(values.value),
-      "startDate":moment(values.startDate),
+      "startDate": moment(values.startDate),
       "duration": Number(values.duration),
       "depositTerm": Number(values.depositTerm),
       "makeFirstDeposit": true,
@@ -27,9 +33,9 @@ function CreateContract(props) {
       "depositNote": "dasdas",
       "insured": "sadasd"
     }
-    if(props.func == 'edit'){
-      dispatch(updateContract({id:props.data.id,data:data}))
-    }else{
+    if (props.func == 'edit') {
+      dispatch(updateContract({ id: props.data.id, data: data }))
+    } else {
       dispatch(createContract(data))
     }
   };
@@ -38,8 +44,14 @@ function CreateContract(props) {
     console.log('Failed:', errorInfo);
   };
   const renderItem = (title, count) => ({
+    value: title,
     label: (
-      <div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
         {title}
         <span>
           {count}
@@ -47,13 +59,19 @@ function CreateContract(props) {
       </div>
     ),
   });
-  var { Option } = Select;
-  var options = []
-  useEffect(()=>{
-    options = [];
-    console.log(options);
-    console.log(customerName);
-  },[customerName])
+  //autoComplete
+  const onSearch = (searchText) => {
+    dispatch(getCustoms({ name: searchText, limit: 10, offset: 0 }))
+    if (customerName) {
+      setOptions(
+        !searchText ? [] : customerName.map(item => {
+          return { value: item.fullname }
+        })
+      );
+      console.log(options);
+    }
+  }
+
   return (
     <div className='create_contract'>
       <div className="create_contract_header">
@@ -105,15 +123,27 @@ function CreateContract(props) {
                   },
                 ]}
               >
-                <AutoComplete
-                  onChange={autoCompleteChange}
-                  popupClassName="certain-category-search-dropdown"
-                  dropdownMatchSelectWidth={500}
+                {/* <AutoComplete
+                  // onChange={autoCompleteChange}
+                  // popupClassName="certain-category-search-dropdown"
+                  dropdownMatchSelectWidth={200}
                   style={{
                     width: 250,
                   }}
-                  options= {options}
+                  options={options}
+                  onSearch={onSearch}
                 >
+                </AutoComplete> */}
+                <AutoComplete onSearch={onSearch} dropdownMatchSelectWidth={200}
+                  style={{
+                    width: 250,
+                  }}>
+                  {customerName && customerName.map((item, index) => (
+                    <Option key={index} value={item.fullname} label={(<span>{item.fullname}</span>)}>
+                      <p>{item.fullname}</p>
+                      <p>{item.id}</p>
+                    </Option>
+                  ))}
                 </AutoComplete>
               </Form.Item>
             </Col><Col span={6}>

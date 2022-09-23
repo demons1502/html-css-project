@@ -1,5 +1,5 @@
 import moment from 'moment'
-import {FORMAT_DATE, CUSTOMER_CARE_INFO} from '../ultis/constant'
+import {CUSTOMER_CARE_INFO} from '../ultis/constant'
 import _ from 'lodash'
 
 export const formatDataNumber = (number) => {
@@ -14,10 +14,8 @@ export const pad = (num, size) => {
   return num
 }
 
-export const getTimeByTZ = (date, format) => {
-  const formatL = format ? format : moment.localeData().longDateFormat('L');
-
-  return moment(date).local().format(formatL)
+export const getTimeByTZ = (date, format = moment.localeData().longDateFormat('L')) => {
+  return moment(date).local().format(format)
 }
 
 export const getCustomerCareLabel = (customerValue) => {

@@ -111,11 +111,6 @@ export default function ContractManagement() {
   },[refreshData])
 
   useEffect(() => {
-    // userData.map(item => {
-    //   // return { createAt: moment(item.createAt), lastDepositDate: moment(item.lastDepositDate), nextDepositDue: moment(item.nextDepositDue), ...item }
-    //   console.log(item);
-    // })
-    // console.log(moment('2022-09-21T07:19:42.220Z'));
     setDataTable(userData)
   }, [userData])
 
@@ -158,7 +153,7 @@ export default function ContractManagement() {
         </div>
       </div>
       <div className="contract_list">
-        <TableCommon dataSource={dataTable} columnTable={columns} isSizeChange='middle' rowKey='id'/>
+        <TableCommon dataSource={dataTable} columnTable={columns} size='middle' rowKey='id'/>
         <Pagination total={totalItem}  setPaginate={setPaginate}/>
       </div>
       {

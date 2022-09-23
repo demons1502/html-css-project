@@ -16,7 +16,7 @@ export const DayEvent = ({ event }, eventActive) => {
   const startDate = new Date(event.start);
   const endDate = new Date(event.end);
   const nowDate = new Date();
-  const diffTime = Math.abs(endDate - startDate);
+  const diffTime = endDate - startDate;
   const start = moment(event.start).format('LT');
   const startSchedular = moment.duration(diffTime, 'milliseconds').asMinutes();
   const isEventActive = event.apptId === eventActive.apptId;

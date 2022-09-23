@@ -8,3 +8,5 @@ export { default as user } from './user';
 export { default as Users } from './Users';
 export { default as UserCircle } from './UserCircle';
 export { default as Note } from './Note';
+export { default as ArrowDown } from './ArrowDown';
+export { default as Add } from './Add';

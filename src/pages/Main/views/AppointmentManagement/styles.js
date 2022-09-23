@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const WrapContainer = styled.div`
-  padding: 10px 20px;
+  padding: 10px 0;
 `;
 
 export const WrapTitle = styled.h3`

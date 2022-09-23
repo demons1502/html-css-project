@@ -56,6 +56,12 @@
     "contractId": "Số HD: ",
     "money": "Số tiền: "
   },
+  "missed-appointment": {
+    "note": "Tư vấn hợp đồng"
+  },
+  "top-potential-customer": {
+    "potentialPoint": "Điểm tiềm năng"
+  },
 
   "financial solution": {
     "title": "Giải pháp tài chính"

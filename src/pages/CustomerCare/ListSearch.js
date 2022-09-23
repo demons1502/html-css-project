@@ -42,7 +42,6 @@ export default function ListSearch() {
       setTotal(data?.count)
       setSelectId(data?.data[0].customerId)
     } else {
-      console.log('aa');
       dispatch(resetCustomerData())
     }
   }

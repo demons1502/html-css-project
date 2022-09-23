@@ -10,6 +10,7 @@ const initialState = {
 };
 
 export const setCustomerData = createAction('customerCare/setCustomerData')
+export const resetCustomerData = createAction('customerCare/resetCustomerData')
 
 export const getData = createAsyncThunk('customerCare/get', async (payload, { rejectWithValue }) => {
   try {
@@ -74,9 +75,14 @@ const customerCareSlice = createSlice({
     [setCustomerData]: (state, action) => {
       state.customerData = action.payload
     },
+    [resetCustomerData]: (state) => {
+      state.data = []
+      state.customerData = {customerId: 0}
+      state.payloadGet = {}
+    },
     [getData.fulfilled]: (state, action) => {
-      state.data = action.payload.data
       state.payloadGet = action.payload.payload
+      state.data = action.payload.data
     },
     [createData.fulfilled]: (state, action) => {
       state.data = action.payload.data

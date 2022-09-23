@@ -21,7 +21,9 @@ export const pad = (num, size) => {
 }
 
 export const getTimeByTZ = (date, format = FORMAT_DATE) => {
-  return moment(date).utc().format(format)
+  const formatL = moment.localeData().longDateFormat('L');
+
+  return moment(date).utc().format(formatL)
 }
 
 export const getCustomerCareLabel = (customerValue) => {

@@ -58,9 +58,10 @@ const PaymentManagement = () => {
       });
     } else {
       notification.warning({
-        message: 'Vui lòng chọn thanh toán cần xóa',
+        message: 'Vui lòng chọn bản ghi bạn cần xóa',
         duration: 2,
         placement: 'topLeft',
+        icon:false
       });
     }
   };

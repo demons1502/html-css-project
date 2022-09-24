@@ -3,7 +3,7 @@ import { Input } from "antd";
 import SearchIcon from "../../../assets/images/icons/green-search.svg";
 
 export default function SearchInputBox(props) {
-  const { classStyle = "input-item-search", setPayload } = props;
+  const { classStyle = "top-search-input", setPayload } = props;
 
   const handleSearch = (e) => {
     setPayload(e.target.value);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import PaginationCommon from '../../components/PaginationCommon';
+import PaginationCommon from '../../components/common/Pagination';
 import MissedItemDateTime from './commons/MissedAppointment/missed-item-col-date-time';
 import MissedItemName from './commons/MissedAppointment/missed-item-col-name';
 import * as S from './styles';
@@ -75,7 +75,7 @@ export default function MissedAppointment() {
   const [toggle, setToggle] = useState(false);
 
   return (
-    <S.WrapContainer $toggle={toggle} $maxHeight="432px">
+    <S.WrapContainer $toggle={toggle} $maxHeight="442px">
       <S.WrapTitle $toggle={toggle}>
         <S.IconDown onClick={() => setToggle(!toggle)} />
         <S.Title>{t('dashboard-page.missed-appointment')}</S.Title>
@@ -89,7 +89,7 @@ export default function MissedAppointment() {
           scroll={{ scrollToFirstRowOnChange: false }}
           showHeader={false}
         />
-        <PaginationCommon />
+        <PaginationCommon total={50} showSizeChanger={false} setPaginate={{ limit: 10, offset: 0 }} />
       </S.WrapContent>
     </S.WrapContainer>
   );

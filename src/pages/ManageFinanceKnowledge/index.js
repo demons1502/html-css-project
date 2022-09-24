@@ -1,42 +1,52 @@
-import { Button, Col, Layout, List, Row, Segmented, Typography } from 'antd';
-import _ from 'lodash';
+import {
+  Button,
+  Col,
+  Layout,
+  List,
+  Row,
+  Segmented,
+  Spin,
+  Typography,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
-import { finances, options } from '../../assets/fake-data/data';
-import IconPlus from '../../assets/images/icons/plus.svg';
-import Title from '../../components/Title';
-import FinanceKnowledgeContent from './FinanceKnowledgeContent';
-import QuestionAnswerContent from './QuestionAnswerContent';
-// import PaymentManagement from '../PaymentManagement';
-import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { options } from '../../assets/fake-data/data';
+import IconPlus from '../../assets/images/icons/plus.svg';
+import Pagination from '../../components/common/Pagination';
+import ModalConfirm from '../../components/ModalConfirm';
+import Title from '../../components/Title';
 import {
   createContent,
+  deleteContent,
   retrieveData,
   updateContent,
-  deleteContent,
 } from '../../slices/managementContent';
-import PaymentManagement from '../PaymentManagement';
+import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
+import FinanceKnowledgeContent from './FinanceKnowledgeContent';
+import QuestionAnswerContent from './QuestionAnswerContent';
 
 const ManageFinanceKnowledge = () => {
-  const [itemContent, setItemContent] = useState({});
-  const [option, setOption] = useState('articles');
-  const [buttonState, setButtonState] = useState(true);
-  const [lists, setLists] = useState(finances);
-  const [fileList, setFileList] = useState([
-    {
-      uid: '-1',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-  ]);
   const { t } = useTranslation();
-
   const dispatch = useDispatch();
   const contents = useSelector((state) => state.managementContentReducer);
+  const loading = useSelector((state) => state.loading.loading);
+
+  const [itemContent, setItemContent] = useState(null);
+  const [prevItem, setPrevItem] = useState(null);
+  const [option, setOption] = useState('articles');
+  const [paginate, setPaginate] = useState({
+    limit: DEFAULT_SIZE,
+    offset: 0,
+  });
+  const [fileList, setFileList] = useState([
+    // {
+    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    // },
+  ]);
+
 
   const handleChange = (e) => {
-    setButtonState(false);
     let values;
     const name = e.target.name;
     values = { ...itemContent, [name]: e.target.value };
@@ -45,53 +55,68 @@ const ManageFinanceKnowledge = () => {
 
   const handleFileList = ({ fileList: newFile }) => {
     setFileList(newFile);
-    setItemContent({ ...itemContent, image: newFile });
-  };
-
-  const addList = () => {
-    const itemData = {
-      id: 0,
-      title: '',
-      img: '',
-      date: '20/09/2012',
-      desc: 'asd',
-      views: 0,
-      link: 'link',
-    };
-    let lastId = _.last(lists);
-    itemData.id = lastId?.id ? lastId.id + 1 : 1;
-    setLists([...lists, itemData]);
-    setItemContent(itemData);
-    dispatch(createContent({ option: option, payload: { ...itemData } }));
-  };
-
-  const handleIndex = (index) => {
-    const indexS = index >= 10 ? `${index}` : `0${index}`;
-    return indexS;
-  };
-
-  const handleDelete = (id) => {
-    dispatch(deleteContent({ option: option, id: id }));
+    setItemContent({ ...itemContent, image: newFile[0]?.originFileObj });
   };
 
   const handleSave = (item) => {
-    dispatch(updateContent({ option: option, id: item.id, payload: item }));
+    if (!item) {
+      ModalConfirm({
+        content: `Vui lòng nhập nội dung bài viết`,
+        callApi: () => {
+          return;
+        },
+      });
+    } else {
+      const formData = new FormData();
+      formData.append('image', item.image);
+      formData.append('title', item.title);
+      formData.append('subTitle', item.subTitle);
+      formData.append('url', item.url);
+      formData.append('body', item.body);
+      console.log(item);
+      if (!item.id) {
+        dispatch(createContent({ type: option, payload: formData }));
+        setItemContent(null);
+        setFileList([]);
+      } else {
+        dispatch(
+          updateContent({ type: option, id: item.id, payload: formData })
+        );
+        setItemContent(null);
+        setFileList([]);
+      }
+    }
   };
 
-  const dataSource = [];
-  for (let i = 0; i <= 20; i++) {
-    dataSource.push({ ...finances[0], id: i });
-  }
-  useEffect(() => {
-    setItemContent(dataSource[0]);
-  }, [option]);
+  const handleCancel = () => {
+    setItemContent(prevItem);
+  };
+
+  const handleDelete = (item) => {
+    if (item) {
+      ModalConfirm({
+        content: `Xác nhận xóa nội dung`,
+        callApi: () => {
+          dispatch(deleteContent({ type: option, id: item.id })),
+          setItemContent(null);
+        },
+      });
+    } else {
+      ModalConfirm({
+        content: `Chọn nội dung cần xóa`,
+        callApi: () => {
+          return;
+        },
+      });
+    }
+  };
   useEffect(() => {
     //fetch data
-    dispatch(
-      retrieveData({ option: option, params: { limit: 10, offset: 0 } })
-    );
-  }, [option]);
+    dispatch(retrieveData({ type: option, params: paginate }));
+  }, [option, contents.isReload, paginate]);
+  
 
+  
   return (
     <div className='manageFinanceKnowledge'>
       <div className='manageFinanceKnowledge-nav'>
@@ -99,7 +124,7 @@ const ManageFinanceKnowledge = () => {
       </div>
       <Layout className='manageFinanceKnowledge-container'>
         <Row gutter={[16, 10]} justify='start' align='stretch'>
-          <Col lg={6} md={24} sm={24} xs={24}>
+          <Col lg={7} md={24} sm={24} xs={24}>
             <Layout.Content>
               <div className='list-option'>
                 <Segmented
@@ -109,52 +134,60 @@ const ManageFinanceKnowledge = () => {
                   value={option}
                 />
               </div>
-
-              <List
-                className='manageFinanceKnowledge-container_list'
-                size='small'
-                pagination={{
-                  className: 'manageFinanceKnowledge-pagination',
-                  pageSize: 7,
-                  showLessItems: true,
-                }}
-                header={
-                  <Title
-                    title={
-                      option !== 'q&a'
-                        ? 'Danh sách bài viết'
-                        : 'Danh sách câu hỏi'
-                    }
-                  />
-                }
-                footer={
-                  <Button
-                    type='primary'
-                    shape='circle'
-                    icon={<img src={IconPlus} alt='' />}
-                    onClick={addList}
-                  >
-                    Thêm mới
-                  </Button>
-                }
-                dataSource={dataSource}
-                renderItem={(item, index) => (
-                  <List.Item
-                    onClick={() => setItemContent(item)}
-                    className={`${item.id === itemContent.id ? 'active' : ''}`}
-                  >
-                    <Typography.Text ellipsis>
-                      {option !== 'q&a'
-                        ? `Bài viết ${handleIndex(index + 1)}: ${item.title}`
-                        : `Câu hỏi ${handleIndex(index + 1)}: ${item.title}`}
-                    </Typography.Text>
-                  </List.Item>
-                )}
-              />
+              <Spin spinning={loading === LOADING_STATUS.pending}>
+                <List
+                  locale={{ emptyText: 'Không có dữ liệu' }}
+                  className='manageFinanceKnowledge-container_list'
+                  size='small'
+                  // pagination={{
+                  //   className: 'manageFinanceKnowledge-pagination',
+                  //   pageSize: 7,
+                  //   showLessItems: true,
+                  // }}
+                  header={
+                    <Title
+                      title={
+                        option !== 'q&a'
+                          ? t('manage content.articles list title')
+                          : t('manage content.q&a list title')
+                      }
+                    />
+                  }
+                  footer={
+                    <Button
+                      type='primary'
+                      className='btn-add-new'
+                      icon={<img src={IconPlus} alt='' />}
+                      onClick={() => setItemContent(null)}
+                    >
+                      Thêm mới
+                    </Button>
+                  }
+                  dataSource={contents.data}
+                  renderItem={(item) => (
+                    <List.Item
+                      onClick={() => {
+                        setItemContent(item);
+                        setPrevItem(item);
+                      }}
+                      className={`${
+                        item.id === itemContent?.id ? 'active' : ''
+                      }`}
+                    >
+                      <Typography.Text ellipsis>{item.title}</Typography.Text>
+                    </List.Item>
+                  )}
+                ></List>
+              </Spin>
+              <Pagination
+                total={contents.totalItem}
+                setPaginate={setPaginate}
+                showSizeChanger={false}
+              ></Pagination>
             </Layout.Content>
           </Col>
 
-          <Col lg={18} flex={1}>
+          <Col lg={16} flex={1}>
             <Layout.Content className='manageContent'>
               {option !== 'q&a' ? (
                 <FinanceKnowledgeContent
@@ -163,6 +196,8 @@ const ManageFinanceKnowledge = () => {
                   onUpload={handleFileList}
                   fileList={fileList}
                   onClick={handleSave}
+                  onDelete={handleDelete}
+                  onCancel={handleCancel}
                 />
               ) : (
                 <QuestionAnswerContent
@@ -176,7 +211,6 @@ const ManageFinanceKnowledge = () => {
           </Col>
         </Row>
       </Layout>
-      <PaymentManagement />
     </div>
   );
 };

@@ -1,12 +1,12 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {Col, Checkbox, Button, Empty, Popover} from 'antd';
-import {createData, retrieveData} from '../../../slices/customerCare';
-import TableCommon from '../../../components/TableCommon';
+import {Col, Checkbox, Button, Empty} from 'antd';
+import {createData} from '../../../slices/customerCare';
+import Table from '../../../components/common/TableNormal';
 import IconPlus from '../../../assets/images/icons/plus.svg';
 import _ from 'lodash';
-import FilterCommon from "../../../components/FilterCommon";
+import Filter from "../../../components/common/Filter";
 
 const content = (
   <div>
@@ -75,7 +75,6 @@ export default function SpendingForm() {
   ];
 
   const initFetch = useCallback(() => {
-    dispatch(retrieveData());
   }, [dispatch]);
 
   useEffect(() => {
@@ -108,7 +107,7 @@ export default function SpendingForm() {
 
   const table = useMemo(() => {
     if (!!dataTable && dataTable.length > 0) {
-      return <TableCommon dataSource={dataTable} columnTable={columns}></TableCommon>
+      return <Table dataSource={dataTable} columnTable={columns} />
     } else {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
     }
@@ -123,7 +122,7 @@ export default function SpendingForm() {
       <div className="finance-consultant__right--event">
         <div className="finance-consultant__right--event--left">
           <h5>{t('customer care.history title')}</h5>
-          <FilterCommon options={options}></FilterCommon>
+          <Filter options={options} />
         </div>
         <Button type="primary" className="btn-primary" onClick={saveData}>{t('common.save')}</Button>
       </div>

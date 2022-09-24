@@ -8,22 +8,22 @@ const FooterPassword = ({
   textSubmit,
   handleCancel,
   handleSubmit,
+  typeSubmit,
 }) => {
   return (
     <div className="footer-password">
       <Button
         danger
-        key="cancel"
         className="btn-danger footer-password__btn"
         onClick={handleCancel}
       >
         {textCancel}
       </Button>
       <Button
-        key="sendEmail"
         className="btn-primary footer-password__btn"
         type="primary"
-        onClick={handleSubmit}
+        onClick={handleSubmit && handleSubmit}
+        htmlType={typeSubmit ? "submit" : "button"}
       >
         {textSubmit}
       </Button>
@@ -36,6 +36,7 @@ FooterPassword.propTypes = {
   textSubmit: PropTypes.string,
   handleCancel: PropTypes.func,
   handleSubmit: PropTypes.func,
+  typeSubmit: PropTypes.bool,
 };
 
 export default FooterPassword;

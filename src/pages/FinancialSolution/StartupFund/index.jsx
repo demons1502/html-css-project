@@ -1,14 +1,15 @@
 import { Col, Layout, List, Row, Typography } from "antd";
-import _ from "lodash";
 import React, { useEffect, useState } from "react";
-// import { finances, options } from "../../assets/fake-data/data";
 import { sideBarMenuItems } from "../../../assets/fake-data/QuyDuPhongData";
 import SearchInputBox from "./SearchInputBox";
 import ListCalculation from "./ListCalculation";
 import ListDetails from "./ListDetails";
+import { Link, useLocation } from "react-router-dom";
 const StartupFund = () => {
-  const [itemContent, setItemContent] = useState({});
+  const location = useLocation();
+  const [title] = useState(location?.state?.title);
 
+  const [itemContent, setItemContent] = useState({});
   const [lists, setLists] = useState(sideBarMenuItems);
   const [payload, setPayload] = useState("");
 
@@ -20,20 +21,22 @@ const StartupFund = () => {
     <div className="quyduphone">
       {/* quyduphone-nav start */}
       <div className="quyduphone-nav">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="42"
-          height="42"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="feather feather-chevron-left quyduphone-nav-icon">
-          <polyline points="15 18 9 12 15 6" />
-        </svg>
-        <h3>Quỹ khởi nghiệp</h3>
+        <Link className="quyduphone-nav-icon" to="/advise/financial-solutions">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="feather feather-chevron-left">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </Link>
+        <h3>{`${title ? title : "Quỹ khởi nghiệp"}`}</h3>
       </div>
 
       {/* quyduphone-nav end  */}

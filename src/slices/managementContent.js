@@ -1,40 +1,53 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { create, getAll, remove, update } from '../services/manageContent';
 
-const initialState = [];
+const initialState = { isReload: false, data: [], totalItem: 0 };
 
 export const retrieveData = createAsyncThunk(
   'manageContent/getAll',
-  async ({ option = 'articles', params }) => {
-    console.log(option, '------>', params);
-    const res = await getAll(option, params);
-    return res.data;
+  async ({ type = 'articles', params }, { rejectWithValue }) => {
+    try {
+      const res = await getAll(type, params);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 export const createContent = createAsyncThunk(
   'manageContent/create',
-  async ({ option, payload }) => {
-    console.log(option, '-------', payload);
-    const res = await create(option, payload);
-    return res.data;
+  async ({ type, payload }, { rejectWithValue }) => {
+    try {
+      const res = await create(type, payload);
+
+      return { data: res.data, message: res.statusText };
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 export const updateContent = createAsyncThunk(
   'manageContent/update',
-  async ({ option, id, payload }) => {
-    console.log(option, '---', id, '---', payload);
-    const res = await update(option, id, payload);
-    return res.data;
+  async ({ type, id, payload }, { rejectWithValue }) => {
+    try {
+      const res = await update(type, id, payload);
+      return { data: { ...res.data }, message: res.statusText };
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 export const deleteContent = createAsyncThunk(
   'manageContent/delete',
-  async ({ option, id }) => {
-    console.log(option, '------------>', id);
-    const res = await remove(option, id);
-    return res.data;
+  async ({ type, id }, { rejectWithValue }) => {
+    try {
+      const res = await remove(type, id);
+      return { id, message: res.statusText };
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -44,22 +57,28 @@ const manageContentSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createContent.fulfilled]: (state, action) => {
-      state.push(action.payload);
+      state.isReload = true;
+      // state.data.push(action.payload.article);
     },
     [retrieveData.fulfilled]: (state, action) => {
-      console.log('success');
-      /*  return [...action.payload]; */
+      state.data = action.payload.articles;
+      state.totalItem = action.payload.articlesCount;
+      state.isReload = false;
     },
     [updateContent.fulfilled]: (state, action) => {
-      const index = state.findIndex((data) => data.id === action.payload.id);
+      /* const index = state.findIndex(
+        (data) => data.id === action.payload.data.article.id
+      );
       state[index] = {
         ...state[index],
-        ...action.payload,
-      };
+        ...action.payload.article,
+      }; */
+      state.isReload = true;
     },
     [deleteContent.fulfilled]: (state, action) => {
-      let index = state.findIndex(({ id }) => id === action.payload.id);
-      state.splice(index, 1);
+      // let index = state.findIndex(({ id }) => id == action.payload.id);
+      // state.splice(index, 1);
+      state.isReload = true;
     },
   },
 });

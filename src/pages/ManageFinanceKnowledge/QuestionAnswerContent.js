@@ -42,7 +42,7 @@ const QuestionAnswerContent = (props) => {
             <Title title='Nội dung' />
             <div className='manageContent-header_icon'>
               <img src={EditIcon} />
-              <img src={DeleteIcon} onClick={() => onDelete(content?.id)} />
+              <img src={DeleteIcon} onClick={() => onDelete(content)} />
             </div>
           </div>
         }
@@ -56,7 +56,6 @@ const QuestionAnswerContent = (props) => {
                 type='primary'
                 className='btn-save'
                 onClick={() => onSave(content)}
-                /* disabled={buttonState} */
               >
                 Lưu
               </Button>
@@ -78,7 +77,7 @@ const QuestionAnswerContent = (props) => {
             title='Công việc'
             placeholder='Nhập nội dung công việc'
             onChange={onChange}
-            value={content?.date}
+            value={content?.title}
           />
 
           <div className='questionAnswerContent-answer'>
@@ -96,7 +95,7 @@ const QuestionAnswerContent = (props) => {
                   name='desc'
                   textarea
                   onChange={onChange}
-                  value={content?.desc}
+                  value={content?.subTitle || content?.desc}
                   input={false}
                 />
               </div>

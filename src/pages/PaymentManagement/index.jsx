@@ -1,110 +1,134 @@
-import { Button, Col, Row, Table } from 'antd';
+import { Button, Col, Form, notification, Row, Spin, Table } from 'antd';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import deleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import importIcon from '../../assets/images/icons/importIcon.svg';
 import plusIcon from '../../assets/images/icons/plus.svg';
+import Pagination from '../../components/common/Pagination';
+// import Table from '../../components/common/TableNormal';
+import ModalConfirm from '../../components/ModalConfirm';
+import {
+  deletePayment,
+  retrieveData,
+  uploadFile,
+} from '../../slices/paymentManagement';
+import { FORMAT_DATE, LOADING_STATUS } from '../../ultis/constant';
 import CreatePayment from './CreatePayment';
-import { customers } from './data';
 import PaymentHistory from './PaymentHistory';
 import PaymentManagementHeader from './PaymentManagementHeader';
+import { DeleteOutlined } from '@ant-design/icons';
+import { getTimeByTZ } from '../../helper/index';
 
 const PaymentManagement = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [data, setData] = useState(customers);
   const [rowActive, setRowActive] = useState({});
-  const [searchPayload, setSearchPayload] = useState(null);
-  const [historyItem, setHistoryItem] = useState({});
+  const [searchPayload, setSearchPayload] = useState('');
+  const [historyItem, setHistoryItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+
+  const dispatch = useDispatch();
+  const payments = useSelector((state) => state.paymentManagementReducer);
+  const loading = useSelector((state) => state.loading.loading);
 
   const onSelectChange = (newSelectedRowKeys) => {
-    /* console.log('selectedRowKeys changed: ', selectedRowKeys); */
     setSelectedRowKeys(newSelectedRowKeys);
   };
-  const dataSource = [];
-  for (let i = 0; i < 100; i++) {
-    dataSource.push({ ...data[0], id: i });
-  }
 
-  const handleDeleteOne = (id) => {
-    const newData = data.filter((item) => item.id !== id);
-    setData(newData);
-    setHistoryItem({});
+  const handleDeleteOne = (item) => {
+    ModalConfirm({
+      content: `Xác nhận xóa ${item.userFullname}`,
+      callApi: () => {
+        dispatch(deletePayment({ transactionIds: [item.id] })),
+        setHistoryItem(null);
+      },
+    });
   };
-
   const handleDelete = () => {
     if (selectedRowKeys.length > 0) {
-      const newData = data.filter((item) => !selectedRowKeys.includes(item.id));
-      setHistoryItem({});
-      setData(newData);
+      // const id = [];
+      // selectedRowKeys.map((item) => id.push(item.id));
+      ModalConfirm({
+        callApi: () => {
+          dispatch(deletePayment({ transactionIds: selectedRowKeys })),
+          setHistoryItem(null);
+        },
+      });
     } else {
-      alert('not selection');
+      notification.warning({
+        message: 'Vui lòng chọn bản ghi bạn cần xóa',
+        duration: 2,
+        placement: 'topLeft',
+        icon:false
+      });
     }
   };
 
+  const handleImport = (e) => {
+    const data = new FormData();
+    data.append('file', e.target.files[0]);
+    dispatch(uploadFile(data));
+  };
   const columns = [
     {
       title: 'Họ và tên',
-      dataIndex: 'username',
-      key: 'username',
+      dataIndex: 'userFullname',
+      key: 'userFullname',
     },
     {
       title: 'Ngày thanh toán',
-      dataIndex: 'dateOfPayment',
-      key: 'dateOfPayment',
+      key: 'startDate',
+      render: (record) => {
+        return <span>{getTimeByTZ(record.startDate)}</span>;
+      },
     },
     {
       title: 'Ngày hiệu lực',
-      dataIndex: 'effectiveDate',
-      key: 'effectiveDate',
+      key: 'startDate',
+      render: (record) => {
+        return <span>{getTimeByTZ(record.startDate)}</span>;
+      },
     },
     {
       title: 'Ngày kết thúc',
-      dataIndex: 'endDate',
-      key: 'endDate',
+      key: 'dueDate',
+      render: (record) => {
+        return <span>{getTimeByTZ(record.dueDate)}</span>;
+      },
     },
     {
       title: 'Số tiền',
-      dataIndex: 'money',
-      key: 'money',
+      key: 'amount',
       className: 'green-color',
+      render: (record) => {
+        const format = new Intl.NumberFormat('vi-VN').format(record.amount);
+        return <span>{format}</span>;
+      },
     },
     {
       title: '',
       dataIndex: '',
       key: 'x',
       render: (_, record) => (
-        <img
-          src={deleteIcon}
+        <DeleteOutlined
           className='btn-deleteIcon'
-          onClick={() => handleDeleteOne(record.id)}
+          onClick={() => handleDeleteOne(record)}
         />
       ),
     },
   ];
 
-  const handleAdd = (values) => {
-    const payment = values.payment;
-    const newPayment = {
-      ...payment,
-      dateOfPayment: payment.dateOfPayment?._d,
-      effectiveDate: payment.dateOfPayment?._d,
-      endDate: payment.endDate?._d,
-      money: +payment.money,
-      histories: [
-        {
-          id: '1-1',
-          date: payment.dateOfPayment?._d,
-          content: payment.content,
-        },
-      ],
-    };
-    console.log(newPayment);
+  const onChangePage = (current, pageSize) => {
+    setPage(current);
+    setLimit(pageSize);
   };
 
   useEffect(() => {
-    setRowActive(data[0]?.id);
-    setHistoryItem(data[0]);
-  }, []);
+    const params = { q: searchPayload, page: page, limit: limit };
+    dispatch(retrieveData(params));
+  }, [searchPayload, page, limit, payments.isReload]);
 
   return (
     <div className='paymentManagement'>
@@ -117,7 +141,12 @@ const PaymentManagement = () => {
           <Button type='primary'>
             <label htmlFor='import'>
               <img src={importIcon} alt='' />
-              <input type='file' id='import' style={{ display: 'none' }} />
+              <input
+                type='file'
+                id='import'
+                style={{ display: 'none' }}
+                onChange={handleImport}
+              />
               Import
             </label>
           </Button>
@@ -150,29 +179,39 @@ const PaymentManagement = () => {
                 search
                 setPayload={setSearchPayload}
               />
-              <Table
-                className='table-common paymentManagement-table'
-                dataSource={dataSource}
-                columns={columns}
-                pagination={{ className: 'payment-pagination' }}
-                rowSelection={{
-                  selectedRowKeys,
-                  onChange: onSelectChange,
-                }}
-                rowClassName={(record) =>
-                  rowActive === record.id ? 'active' : ''
-                }
-                onRow={(record) => {
-                  return {
-                    onClick: () => {
-                      setRowActive(record.id), setHistoryItem(record);
-                    },
-                  };
-                }}
-                rowKey={(record) => record.id}
-                size='middle'
-                bordered={false}
-              />
+              <Spin spinning={loading === LOADING_STATUS.pending}>
+                <Table
+                  className='table-common paymentManagement-table'
+                  dataSource={payments.data}
+                  columns={columns}
+                  pagination={
+                    payments.total > limit && {
+                      total: payments.total,
+                      onChange: onChangePage,
+                      //pageSizeOptions: [10, 20, 50],
+                      showSizeChanger: true,
+                      className: 'payment-pagination',
+                    }
+                  }
+                  rowSelection={{
+                    selectedRowKeys,
+                    onChange: onSelectChange,
+                  }}
+                  rowClassName={(record) =>
+                    rowActive === record.id ? 'active' : ''
+                  }
+                  onRow={(record) => {
+                    return {
+                      onClick: () => {
+                        setRowActive(record.id), setHistoryItem(record);
+                      },
+                    };
+                  }}
+                  rowKey='id'
+                  size='middle'
+                  bordered={false}
+                />
+              </Spin>
             </div>
           </Col>
           <Col
@@ -190,12 +229,22 @@ const PaymentManagement = () => {
           </Col>
         </Row>
         <CreatePayment
-          users={data}
+          users={payments.data}
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          onClick={handleAdd}
         />
       </div>
+      {/* <Table
+        dataSource={payments.data}
+        columnTable={columns}
+        isSelection
+        setSelectedRowKeys={onSelectChange}
+      ></Table> */}
+      {/* <Pagination
+        total={payments.total}
+        // onShowSizeChange={onChangePage}
+        // setPaginate={setPaginate}
+      /> */}
     </div>
   );
 };

@@ -6,7 +6,7 @@ import alarmGray from '../../assets/images/icons/alarmGray.svg';
 import calendar from '../../assets/images/icons/calendar.svg';
 import company from '../../assets/images/icons/company.svg';
 import location from '../../assets/images/icons/location.svg';
-import FilterCommon from '../../components/FilterCommon';
+import Filter from '../../components/common/Filter';
 import * as S from './styles';
 
 const options = [
@@ -59,7 +59,7 @@ export default function AppointmentSchedule() {
           </Row>
         </Col>
         <Col>
-          <FilterCommon options={options} setPayload={setPayload}></FilterCommon>
+          <Filter options={options} setPayload={setPayload}></Filter>
         </Col>
       </S.WrapTitle>
       <S.WrapContent $padding="15px">

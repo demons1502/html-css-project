@@ -1,141 +1,145 @@
-import React, {useState, useEffect, useCallback, useMemo} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {Col, Checkbox, Button, Empty} from 'antd';
-import {createData, retrieveData, searchData} from '../../slices/customerCare';
-import TableCommon from '../../components/TableCommon';
+import {Col, Checkbox, Button} from 'antd';
+import {getData} from '../../slices/customerCare';
+import Table from '../../components/common/TableNormal';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconFiles from '../../assets/images/icons/files.svg';
-import FilterCommon from "../../components/FilterCommon";
-import SendSmsContent from "../../components/ModalCommon/SendSmsContent";
-import ModalCommon from "../../components/ModalCommon";
-
-const dataSource = [
-  {
-    key: 0,
-    date: '12/04/2022',
-    info: 'Thông tin thu nhập',
-    content: '10 Downing Street'
-  },
-  {
-    key: 1,
-    date: '12/04/2022',
-    info: 'Thông tin thu nhập',
-    content: '10 Downing Street'
-  },
-  {
-    key: 2,
-    date: '12/04/2022',
-    info: 'Thông tin thu nhập',
-    content: '10 Downing Street'
-  },
-  {
-    key: 3,
-    date: '12/04/2022',
-    info: 'Thông tin thu nhập',
-    content: '10 Downing Street'
-  },
-]
-
-const options = [
-  { label: 'Chưa gọi điện', value: 1 },
-  { label: 'Đã gọi điện lần 1, cần gọi lần 2', value: 2 },
-  { label: 'Đã gọi điện từ 2 lần', value: 3 },
-  { label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 4 },
-  { label: 'Đã tư vấn giải pháp, chờ chốt kết quả', value: 5 },
-  { label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 6 },
-];
+import Filter from "../../components/common/Filter";
+import AddInfoContent from "../../components/common/Modal/CustomerCare/AddInfoContent";
+import Modal from "../../components/common/Modal";
+import {CUSTOMER_CARE_INFO, LOADING_STATUS, ARR_INFO_REDIRECT, INFO_PATH, GIFT} from '../../ultis/constant';
+import {calculateAge, getCustomerCareLabel, getTimeByTZ} from "../../helper";
+import {Link} from "react-router-dom";
 
 export default function History() {
   const {t} = useTranslation();
-  const customerCare = useSelector((state) => state.customerCare);
-  const [dataTable, setDataTable] = useState(dataSource);
-  const [payload, setPayload] = useState('');
-  const [sendSms, setSendSms] = useState(false);
+  const ref = useRef(null)
+  const loading = useSelector((state) => state.loading.loading);
+  const {data, customerData} = useSelector((state) => state.customerCare);
+  const [visibleModalAddInfo, setVisibleModalAddInfo] = useState(false)
+  const [detailData, setDetailData] = useState({})
+  const [optionsFilter, setOptionsFilter] = useState('')
+  const [lastGift, setLastGift] = useState('')
+  const [scrollConfig, setScrollConfig] = useState({})
   const dispatch = useDispatch();
 
   const columns = [
     {
       title: t('common.date'),
-      dataIndex: 'date',
-      key: 'stt',
+      key: 'date',
+      width: '20%',
+      render: (record) => {
+        return (
+          <span>{getTimeByTZ(record.date)}</span>
+        );
+      }
     },
     {
       title: t('common.type info'),
-      dataIndex: 'info',
-      key: 'date',
+      key: 'info',
+      width: '25%',
+      render: (record) => {
+        return (
+          <span>{getCustomerCareLabel(record.info)}</span>
+        );
+      }
     },
     {
       title: t('common.content'),
       dataIndex: 'content',
       key: 'content',
+    },
+    {
+      title: '',
+      key: 'info',
+      width: '18%',
+      render: (record) => {
+        if (ARR_INFO_REDIRECT.includes(record.info)) {
+          return (<div className="d-flex-end">
+            <Link to={INFO_PATH[record.info]} className="btn-bgWhite-textGreen-borGreen pd-btn">
+              <span>Xem</span>
+            </Link>
+          </div>)
+        }
+      }
     }
   ];
 
-  const initFetch = useCallback(() => {
-    dispatch(retrieveData());
-  }, [dispatch]);
-
-  useEffect(() => {
-    initFetch();
-  }, [initFetch]);
-
-  useEffect(() => {
-    console.log(payload)
-    dispatch(searchData())
-  }, [payload])
-
-  useEffect(() => {
-    //re render
-  }, [customerCare]);
-
-  const addRow = () => {
-    setSendSms(true);
+  const addModal = (detail) => {
+    setVisibleModalAddInfo(true)
+    setDetailData({})
   }
-
-  const saveData = (e) => {
-    dispatch(createData({
-      id: 1,
-      title: e.target.value,
-    }));
-  };
-
-  const table = useMemo(() => {
-    if (!!dataTable && dataTable.length > 0) {
-      return <TableCommon dataSource={dataTable} columnTable={columns}></TableCommon>
-    } else {
-      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
+ 
+  useEffect(() => {
+    if (customerData.customerId > 0) {
+      dispatch(getData({customerId: customerData.customerId, info: optionsFilter[0]}))
     }
-  }, [dataTable])
+  }, [optionsFilter])
 
+  useEffect(() => {
+    if (loading === LOADING_STATUS.succeeded) {
+      setVisibleModalAddInfo(false)
+    }
+  }, [loading])
+
+  useEffect(() => {
+    if (ref.current.clientHeight > window.innerHeight*0.5) {
+      const scroll = {y: `calc(100vh - 600px)`, scrollToFirstRowOnChange: false}
+      setScrollConfig(scroll)
+    }
+  })
+
+  useEffect(() => {
+    setLastGift('')
+    if (data.length > 0) {
+      let arrayGift = _.filter(data, (element) => {
+        if (element.info === GIFT) {
+          return {content: element.content, date: element.date}
+        }
+      })
+      if (arrayGift.length > 0) {
+        setLastGift(`Quà tặng lần cuối: Quà tặng lần cuối ${_.last(arrayGift).content} vào ngày ${getTimeByTZ(_.last(arrayGift).date)}`)
+      }
+    }
+  }, [data])
+  
   return (
     <>
       <Col span={11} className="customer-care__right">
         <div className="customer-care__right--top">
-          <Checkbox className="checkbox-item">{t('customer care.no more potential')}</Checkbox>
+          <Checkbox className="checkbox-item" checked={!customerData.isPotential}>{t('customer care.no more potential')}</Checkbox>
         </div>
         <div className="customer-care__right--event">
           <div className="customer-care__right--event--left">
             <h5>{t('customer care.history title')}</h5>
-            <FilterCommon options={options} setPayload={setPayload}></FilterCommon>
+            <Filter options={CUSTOMER_CARE_INFO} setPayload={setOptionsFilter} />
           </div>
         </div>
-        <div className="customer-care__right--list">
-          {table}
-          <div className="customer-care__right--list-footer">
-            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={addRow}>{t('customer care.add event')}</Button>
+        <div className="customer-care__right--list" ref={ref}>
+          <Table dataSource={data} columnTable={columns} scroll={scrollConfig}/>
+          {
+            customerData.customerId !== 0 && <div className="customer-care__right--list-footer">
+              <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add info title')}</Button>
+            </div>
+          }
+        </div>
+        {
+          customerData.customerId !== 0 && <div className="customer-care__right--info">
+            <h3><img src={IconFiles} alt=""/>{t('customer care.sync info')}</h3>
+            <ul>
+              <li>Gia đình: {calculateAge(customerData.dob)} tuổi, {customerData.maritalStatus == 1 ? ' đã có gia đình' : ', độc thân'}</li>
+              {customerData.income > 0 && <li>Thu nhập: {customerData.income/1000000} triệu đồng/tháng</li>}
+              {!!customerData.job && <li>Nghề nghiệp: <span className="capitalize">{customerData.job}</span></li>}
+              {!!customerData.concerns && <li>Sở thích: <span className="capitalize">{customerData.concerns}</span></li>}
+              {!!lastGift && <li>{lastGift}</li>}
+              {!!customerData.note && <li>Khác: <span className="capitalize">{customerData.note}</span></li>}
+            </ul>
           </div>
-        </div>
-        <div className="customer-care__right--info">
-          <h3><img src={IconFiles} alt=""/>{t('customer care.sync info')}</h3>
-          <ul>
-            <li>27 tuổi, 1 vợ, 2 con, chưa có nhà, đang làm nghề môi giới chứng khóa</li>
-            <li>Thu nhập 62 triệu</li>
-          </ul>
-        </div>
+        }
       </Col>
-      <ModalCommon isVisible={sendSms} setIsVisible={setSendSms} title="Gửi SMS/Email" content={<SendSmsContent />}></ModalCommon>
+      <Modal isVisible={visibleModalAddInfo} setIsVisible={setVisibleModalAddInfo} title={Object.keys(detailData).length > 0 ? t(('customer care.edit info title')) : t(('customer care.add info title'))} width={770} content={<AddInfoContent detailData={detailData} setVisibleModalAddInfo={setVisibleModalAddInfo}/>} />
     </>
-
   );
 }

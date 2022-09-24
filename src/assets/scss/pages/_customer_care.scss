@@ -30,7 +30,12 @@
   }
 
   .ant-row {
-    height: calc(100% - 50px);
+    height: calc(100vh - 200px);
+
+    .list-item {
+      overflow-y: scroll;
+      max-height: calc(100vh - 380px);
+    }
   }
 
   &__left {
@@ -43,6 +48,10 @@
 
     .filter {
       margin-bottom: 13px;
+    }
+
+    .ant-pagination {
+      padding: 3rem 0 0 0;
     }
   }
 
@@ -65,14 +74,11 @@
     }
 
     &--list {
-      .ant-table-tbody {
-        tr {
-          &:last-child {
-            td {
-              border-bottom: none;
-            }
-          }
-        }
+      &-footer {
+        display: flex;
+        column-gap: 26px;
+        justify-content: flex-end;
+        padding: 15px 20px 29px 0;
       }
     }
   }
@@ -111,12 +117,10 @@
       background: $gray-1;
 
       &-footer {
-        padding: 0 20px 26px 0;
+        display: flex;
+        justify-content: flex-end;
+        padding: 15px 20px 29px 0;
         background: $gray-1;
-
-        .btn-add-new {
-          background: $gray-1;
-        }
       }
     }
     &--info {

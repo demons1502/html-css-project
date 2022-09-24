@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Col} from 'antd';
-import InputSearch from '../../../components/InputSearch';
-import FilterCommon from '../../../components/FilterCommon';
-import ListCommon from '../../../components/ListCommon';
+import InputSearch from '../../../components/common/InputSearch';
+import Filter from '../../../components/common/Filter';
+import List from '../../../components/common/List';
 import {useDispatch} from "react-redux";
-import {searchData} from "../../../slices/customerCare";
 
 const dataSource = [
   {
@@ -37,8 +36,6 @@ export default function Participant() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(payload)
-    dispatch(searchData())
   }, [payload])
 
   useEffect(() => {
@@ -48,8 +45,8 @@ export default function Participant() {
 
   return (
     <Col span={4} className="customer-care__left">
-      <InputSearch setPayload={setPayload}></InputSearch>
-      <ListCommon dataList={dataSource} selectId={selectId} setSelectId={setSelectId}></ListCommon>
+      <InputSearch setPayload={setPayload} />
+      <List dataList={dataSource} selectId={selectId} setSelectId={setSelectId} />
     </Col>
   );
 }

@@ -1,8 +1,6 @@
-import { Checkbox, Tooltip } from 'antd';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import call from '../../assets/images/icons/call.svg';
-import PaginationCommon from '../../components/PaginationCommon';
+import PaginationCommon from '../../components/common/Pagination';
 import CallScheduleItemCall from './commons/CallSchedule/call-schedule-item-call';
 import * as S from './styles';
 
@@ -155,7 +153,7 @@ export default function CallSchedule() {
           bordered={false}
           scroll={{ scrollToFirstRowOnChange: false }}
         />
-        <PaginationCommon />
+        <PaginationCommon total={50} showSizeChanger={false} setPaginate={{ limit: 10, offset: 0 }} />
       </S.WrapContent>
     </S.WrapContainer>
   );

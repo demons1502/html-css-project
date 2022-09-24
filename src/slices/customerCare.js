@@ -1,17 +1,24 @@
-import {createSlice, createAction, createAsyncThunk} from '@reduxjs/toolkit';
+import {createSlice, createAction, createAsyncThunk, isFulfilled} from '@reduxjs/toolkit';
 import {getCustomerCare, addCustomerCare, patchCustomerCare, deleteCustomerCare} from '../services/customerCare';
 
 const initialState = {
   data: [],
-  customerId: 0,
+  customerData: {
+    customerId: 0
+  },
+  payloadGet: {}
 };
 
-export const setCustomerId = createAction('customerCare/setCustomerId')
+export const setCustomerData = createAction('customerCare/setCustomerData')
+export const resetCustomerData = createAction('customerCare/resetCustomerData')
 
 export const getData = createAsyncThunk('customerCare/get', async (payload, { rejectWithValue }) => {
   try {
     const res = await getCustomerCare(payload);
-    return res.data;
+    return {
+      data: res.data,
+      payload: payload
+    }
   } catch (error) {
     return rejectWithValue(error.response.data)
   }
@@ -19,9 +26,10 @@ export const getData = createAsyncThunk('customerCare/get', async (payload, { re
 
 export const createData = createAsyncThunk(
   'customerCare/create',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, getState }) => {
     try {
-      const res = await addCustomerCare(payload);
+      await addCustomerCare(payload);
+      const res = await getCustomerCare(getState().customerCare.payloadGet);
       return {
         data: res.data,
         message: "Tạo thông tin thành công"
@@ -64,27 +72,22 @@ const customerCareSlice = createSlice({
   name: 'customerCare',
   initialState,
   extraReducers: {
-    [setCustomerId]: (state, action) => {
-      state.customerId = action.payload
+    [setCustomerData]: (state, action) => {
+      state.customerData = action.payload
+    },
+    [resetCustomerData]: (state) => {
+      state.data = []
+      state.customerData = {customerId: 0}
+      state.payloadGet = {}
     },
     [getData.fulfilled]: (state, action) => {
-      state.data = action.payload
+      state.payloadGet = action.payload.payload
+      state.data = action.payload.data
     },
     [createData.fulfilled]: (state, action) => {
-      state.data.push(action.payload.data)
-    },
-    [updateData.fulfilled]: (state, action) => {
-      const index = state.data.findIndex((data) => data.id === action.payload.data.id);
-      state.data[index] = {
-        ...state[index],
-        ...action.payload.data,
-      }
-    },
-    [deleteData.fulfilled]: (state, action) => {
-      let index = state.data.findIndex(({id}) => id === action.payload.id);
-      state.data.splice(index, 1)
+      state.data = action.payload.data
     }
-  },
+  }
 });
 
 const {reducer} = customerCareSlice;

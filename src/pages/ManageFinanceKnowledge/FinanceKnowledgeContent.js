@@ -1,9 +1,9 @@
 import { Button, List } from 'antd';
 import React from 'react';
-import ManageContentInput from './ManageContentInput';
-import Title from '../../components/Title';
 import DeleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import EditIcon from '../../assets/images/icons/edit-green.svg';
+import Title from '../../components/Title';
+import ManageContentInput from './ManageContentInput';
 
 const FinanceKnowledgeContent = (props) => {
   const { content, onChange, fileList, onClick, onDelete, onUpload, onCancel } =

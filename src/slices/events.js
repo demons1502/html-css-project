@@ -1,7 +1,5 @@
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk, isFulfilled} from '@reduxjs/toolkit';
 import {getEvents, addEvents, patchEvents, deleteEvents, sendEvents} from '../services/events';
-import {FORMAT_DATE} from '../ultis/constant'
-import moment from 'moment'
 
 const initialState = {
   data: []
@@ -9,21 +7,25 @@ const initialState = {
 
 export const sendEvent = createAsyncThunk('events/send', async (payload) => {
   const res = await sendEvents(payload);
-  return res.data;
+  return {
+    data: res.data,
+    message: `Gửi ${payload.type} thành công`
+  };
 });
 
 export const getData = createAsyncThunk('events/get', async (payload) => {
   const res = await getEvents(payload);
-  return res.data;
+  return res;
 });
 
 export const createData = createAsyncThunk(
   'events/create',
   async (payload, {rejectWithValue}) => {
     try {
-      const res = await addEvents(payload);
+      await addEvents(payload);
+      const resGet = await getEvents({isTemplate: 0});
       return {
-        data: res.data,
+        data: resGet.data,
         message: "Tạo sự kiện thành công"
       };
     } catch (error) {
@@ -35,9 +37,10 @@ export const updateData = createAsyncThunk(
   'events/update', 
   async (payload, {rejectWithValue}) => {
     try {
-      const res = await patchEvents(payload.id, payload);
+      await patchEvents(payload.id, payload);
+      const resGet = await getEvents({isTemplate: 0});
       return {
-        data: payload,
+        data: resGet.data,
         message: "Thay đổi sự kiện thành công"
       };
     } catch (error) {
@@ -50,8 +53,9 @@ export const deleteData = createAsyncThunk(
   async (id, {rejectWithValue}) => {
     try {
       await deleteEvents(id);
+      const resGet = await getEvents({isTemplate: 0});
       return {
-        id: id,
+        data: resGet.data,
         message: "Xóa sự kiện thành công"
       };
     } catch (error) {
@@ -63,24 +67,13 @@ export const deleteData = createAsyncThunk(
 const eventsSlice = createSlice({
   name: 'events',
   initialState,
-  extraReducers: {
-    [getData.fulfilled]: (state, action) => {
-      state.data = action.payload
-    },
-    [createData.fulfilled]: (state, action) => {
-      state.data.push(action.payload.data)
-    },
-    [updateData.fulfilled]: (state, action) => {
-      const index = state.data.findIndex((data) => data.id === action.payload.data.id);
-      state.data[index] = {
-        ...state.data[index],
-        ...action.payload.data,
+  extraReducers: builder => {
+    builder.addMatcher(
+      isFulfilled(getData, createData, updateData, deleteData),
+      (state, action) => {
+        state.data = action.payload.data
       }
-    },
-    [deleteData.fulfilled]: (state, action) => {
-      let index = state.data.findIndex(({id}) => id === action.payload.id);
-      state.data.splice(index, 1)
-    }
+    )
   }
 });
 

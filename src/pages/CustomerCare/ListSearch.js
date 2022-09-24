@@ -3,10 +3,10 @@ import {Col} from 'antd';
 import InputSearch from '../../components/common/InputSearch';
 import Filter from '../../components/common/Filter';
 import List from '../../components/common/List';
-import {TYPE_LIST_CUSTOMERS, DEFAULT_SIZE} from '../../ultis/constant';
+import {TYPE_LIST_CUSTOMERS, DEFAULT_SIZE, CUSTOMER_CARE_INFO} from '../../ultis/constant';
 import {getCustomers} from '../../services/customers';
 import Pagination from '../../components/common/Pagination';
-import {setCustomerId} from '../../slices/customerCare';
+import {getData, setCustomerData, resetCustomerData} from '../../slices/customerCare';
 import {useDispatch} from "react-redux";
 
 const options = [
@@ -24,23 +24,26 @@ const options = [
 ];
 
 export default function ListSearch() {
-  const [selectId, setSelectId] = useState(0);
-  const [keyword, setKeyword] = useState('');
-  const [optionsFilter, setOptionsFilter] = useState('');
-  const [dataSource, setDataSource] = useState([]);
-  const [total, setTotal] = useState([]);
-  const dispatch = useDispatch();
+  const [selectId, setSelectId] = useState(0)
+  const [keyword, setKeyword] = useState('')
+  const [optionsFilter, setOptionsFilter] = useState('')
+  const [listCustomer, setListCustomer] = useState([])
+  const [total, setTotal] = useState([])
+  const dispatch = useDispatch()
   const [paginate, setPaginate] = useState({
     limit: DEFAULT_SIZE,
     offset: 0
   });
 
   const getDataCustomer = async (payload) => {
-    const {data} = await getCustomers(payload);
-    setDataSource(data?.data);
-    setTotal(data?.count);
-    dispatch(setCustomerId(data?.data[0].customerId))
-    setSelectId(data?.data[0].customerId)
+    const {data} = await getCustomers(payload)
+    if (data?.data.length > 0) {
+      setListCustomer(data?.data)
+      setTotal(data?.count)
+      setSelectId(data?.data[0].customerId)
+    } else {
+      dispatch(resetCustomerData())
+    }
   }
 
   useEffect(() => {
@@ -48,18 +51,23 @@ export default function ListSearch() {
   }, [optionsFilter])
 
   useEffect(() => {
-    dispatch(setCustomerId(selectId))
+    if (selectId > 0) {
+      const customerData = listCustomer.find((data) => data.customerId === selectId)
+      dispatch(setCustomerData(customerData))
+      dispatch(getData({customerId: customerData.customerId, info: CUSTOMER_CARE_INFO[0].value}))
+    }
   }, [selectId])
 
   useEffect(() => {
-    getDataCustomer({...{name: keyword}, ...paginate})
+    let offset = paginate.offset*paginate.limit;
+    getDataCustomer({...{name: keyword}, ...{offset: offset, limit: paginate.limit}})
   }, [keyword, paginate])
 
   return (
     <Col span={4} className="customer-care__left">
       <InputSearch setPayload={setKeyword} />
       <Filter options={options} setPayload={setOptionsFilter} />
-      <List type={TYPE_LIST_CUSTOMERS} dataList={dataSource} selectId={selectId} setSelectId={setSelectId} />
+      <List type={TYPE_LIST_CUSTOMERS} dataList={listCustomer} selectId={selectId} setSelectId={setSelectId} />
       <Pagination total={total} showSizeChanger={false} setPaginate={setPaginate} />
     </Col>
   );

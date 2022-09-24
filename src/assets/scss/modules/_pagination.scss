@@ -35,6 +35,8 @@
     min-width: 25px;
     height: 25px;
     margin: 0px;
+    background: transparent;
+    font-size: 1.2rem;
 
     &-active {
       background-color: $green-color;
@@ -45,11 +47,20 @@
     }
   }
 
+  .ant-pagination-item-link {
+    background: transparent;
+
+    svg {
+      height: 10px;
+    }
+  }
+
   .ant-pagination-prev {
     .ant-pagination-item-link:after {
       content: 'Trước';
       opacity: 0.7;
       margin-right: 8px;
+      font-size: 1.1rem;
     }
   }
 
@@ -58,6 +69,7 @@
       content: 'Tiếp';
       opacity: 0.7;
       margin-left: 8px;
+      font-size: 1.1rem;
     }
   }
 

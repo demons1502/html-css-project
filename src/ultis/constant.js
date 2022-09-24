@@ -26,7 +26,7 @@ export const GIFT = "GIFT"
 export const CUSTOMER_CARE_INFO = [
   { label: 'Thu nhập', value: "INCOME" },
   { label: 'Lịch hẹn', value: "APPOINTMENT_SCHEDULE" },
-  { label: 'Quà', value: 'GIFT' },
+  { label: 'Quà', value: "GIFT" },
   { label: 'Ký hợp đồng', value: "CONTRACT" },
   { label: 'Tư vấn', value: "ADVISE" },
   { label: 'Khảo sát', value: "SURVEY" },

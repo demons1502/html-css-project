@@ -99,7 +99,9 @@ export default function History() {
           return {content: element.content, date: element.date}
         }
       })
-      setLastGift(`Quà tặng lần cuối: Quà tặng lần cuối ${_.last(arrayGift).content} vào ngày ${getTimeByTZ(_.last(arrayGift).date)}`)
+      if (arrayGift.length > 0) {
+        setLastGift(`Quà tặng lần cuối: Quà tặng lần cuối ${_.last(arrayGift).content} vào ngày ${getTimeByTZ(_.last(arrayGift).date)}`)
+      }
     }
   }, [data])
   

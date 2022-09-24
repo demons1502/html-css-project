@@ -61,7 +61,7 @@ export default function ListSearch() {
   }, [selectId])
 
   useEffect(() => {
-    let offset = paginate.offset*paginate.limit;
+    let offset = (paginate.offset - 1) * paginate.limit;
     getDataCustomer({...{name: keyword}, ...{offset: offset, limit: paginate.limit}})
   }, [keyword, paginate])
 

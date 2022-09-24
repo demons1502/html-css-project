@@ -7,6 +7,7 @@ import {TYPE_LIST_CUSTOMERS, DEFAULT_SIZE, CUSTOMER_CARE_INFO} from '../../ultis
 import {getCustomers} from '../../services/customers';
 import Pagination from '../../components/common/Pagination';
 import {getData, setCustomerData, resetCustomerData} from '../../slices/customerCare';
+import {resetEvents} from '../../slices/events';
 import {useDispatch} from "react-redux";
 
 const options = [
@@ -43,6 +44,7 @@ export default function ListSearch() {
       setSelectId(data?.data[0].customerId)
     } else {
       dispatch(resetCustomerData())
+      dispatch(resetEvents())
     }
   }
 
@@ -59,7 +61,7 @@ export default function ListSearch() {
   }, [selectId])
 
   useEffect(() => {
-    let offset = paginate.offset*paginate.limit;
+    let offset = (paginate.offset - 1) * paginate.limit;
     getDataCustomer({...{name: keyword}, ...{offset: offset, limit: paginate.limit}})
   }, [keyword, paginate])
 

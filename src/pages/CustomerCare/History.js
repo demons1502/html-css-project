@@ -9,7 +9,7 @@ import IconFiles from '../../assets/images/icons/files.svg';
 import Filter from "../../components/common/Filter";
 import AddInfoContent from "../../components/common/Modal/CustomerCare/AddInfoContent";
 import Modal from "../../components/common/Modal";
-import {CUSTOMER_CARE_INFO, LOADING_STATUS, ARR_INFO_REDIRECT, INFO_PATH} from '../../ultis/constant';
+import {CUSTOMER_CARE_INFO, LOADING_STATUS, ARR_INFO_REDIRECT, INFO_PATH, GIFT} from '../../ultis/constant';
 import {calculateAge, getCustomerCareLabel, getTimeByTZ} from "../../helper";
 import {Link} from "react-router-dom";
 
@@ -21,13 +21,13 @@ export default function History() {
   const [visibleModalAddInfo, setVisibleModalAddInfo] = useState(false)
   const [detailData, setDetailData] = useState({})
   const [optionsFilter, setOptionsFilter] = useState('')
+  const [lastGift, setLastGift] = useState('')
   const [scrollConfig, setScrollConfig] = useState({})
   const dispatch = useDispatch();
 
   const columns = [
     {
       title: t('common.date'),
-      dataIndex: 'date',
       key: 'date',
       width: '20%',
       render: (record) => {
@@ -39,7 +39,7 @@ export default function History() {
     {
       title: t('common.type info'),
       key: 'info',
-      width: '23%',
+      width: '25%',
       render: (record) => {
         return (
           <span>{getCustomerCareLabel(record.info)}</span>
@@ -72,11 +72,11 @@ export default function History() {
     setDetailData({})
   }
  
-  // useEffect(() => {
-  //   if (customerData.customerId > 0) {
-  //     dispatch(getData({customerId: customerData.customerId, info: optionsFilter[0]}))
-  //   }
-  // }, [optionsFilter])
+  useEffect(() => {
+    if (customerData.customerId > 0) {
+      dispatch(getData({customerId: customerData.customerId, info: optionsFilter[0]}))
+    }
+  }, [optionsFilter])
 
   useEffect(() => {
     if (loading === LOADING_STATUS.succeeded) {
@@ -86,16 +86,30 @@ export default function History() {
 
   useEffect(() => {
     if (ref.current.clientHeight > window.innerHeight*0.5) {
-      const scroll = {y: `calc(100vh - 550px)`, scrollToFirstRowOnChange: false}
+      const scroll = {y: `calc(100vh - 600px)`, scrollToFirstRowOnChange: false}
       setScrollConfig(scroll)
     }
   })
+
+  useEffect(() => {
+    setLastGift('')
+    if (data.length > 0) {
+      let arrayGift = _.filter(data, (element) => {
+        if (element.info === GIFT) {
+          return {content: element.content, date: element.date}
+        }
+      })
+      if (arrayGift.length > 0) {
+        setLastGift(`Quà tặng lần cuối: Quà tặng lần cuối ${_.last(arrayGift).content} vào ngày ${getTimeByTZ(_.last(arrayGift).date)}`)
+      }
+    }
+  }, [data])
   
   return (
     <>
       <Col span={11} className="customer-care__right">
         <div className="customer-care__right--top">
-          <Checkbox className="checkbox-item" checked={customerData.isPotential}>{t('customer care.no more potential')}</Checkbox>
+          <Checkbox className="checkbox-item" checked={!customerData.isPotential}>{t('customer care.no more potential')}</Checkbox>
         </div>
         <div className="customer-care__right--event">
           <div className="customer-care__right--event--left">
@@ -115,10 +129,12 @@ export default function History() {
           customerData.customerId !== 0 && <div className="customer-care__right--info">
             <h3><img src={IconFiles} alt=""/>{t('customer care.sync info')}</h3>
             <ul>
-              <li>{`${calculateAge(customerData.dob)} tuổi${customerData.maritalStatus == 1 ? ', đã có gia đình' : ', độc thân'}, đang làm nghề: ${customerData.job}`}</li>
-              <li>{`Sở thích: ${customerData.income/1000000}`}</li>
-              <li>{`Quà tặng lần cuối: ${customerData.income/1000000}`}</li>
-              <li>{`Thu nhập ${customerData.income/1000000} triệu`}</li>
+              <li>Gia đình: {calculateAge(customerData.dob)} tuổi, {customerData.maritalStatus == 1 ? ' đã có gia đình' : ', độc thân'}</li>
+              {customerData.income > 0 && <li>Thu nhập: {customerData.income/1000000} triệu đồng/tháng</li>}
+              {!!customerData.job && <li>Nghề nghiệp: <span className="capitalize">{customerData.job}</span></li>}
+              {!!customerData.concerns && <li>Sở thích: <span className="capitalize">{customerData.concerns}</span></li>}
+              {!!lastGift && <li>{lastGift}</li>}
+              {!!customerData.note && <li>Khác: <span className="capitalize">{customerData.note}</span></li>}
             </ul>
           </div>
         }

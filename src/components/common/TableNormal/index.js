@@ -12,6 +12,7 @@ export default function TableCommon(props) {
     isSelection = false,
     bordered = false,
     setSelectedRowKeys,
+    isSizeChange = 'default'
   } = props;
 
   const onSelectChange = (selectedRowKeys, selectedRows) => {
@@ -32,7 +33,7 @@ export default function TableCommon(props) {
     bordered={bordered}
     className='table-common'
     rowKey="id"
-  >
+    size={isSizeChange}>
     {props.children}
   </Table>
 }

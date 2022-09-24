@@ -47,6 +47,9 @@
     "signed-contract": "Hợp đồng ký được",
     "ratio-contract": "Tỷ lệ hợp đồng/cuộc hẹn"
   },
+  "call-schedule": {
+    "call": "Gọi điện"
+  },
   "customer-care-dashboard": {
     "remind": "Nhắc phí",
     "CSKH": "CSKH",
@@ -60,7 +63,8 @@
     "note": "Tư vấn hợp đồng"
   },
   "top-potential-customer": {
-    "potentialPoint": "Điểm tiềm năng"
+    "potentialPoint": "Điểm tiềm năng",
+    "changeCall": "Chuyển sang lịch gọi điện"
   },
 
   "financial solution": {

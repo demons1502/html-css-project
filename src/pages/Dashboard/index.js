@@ -49,7 +49,7 @@ export default function Dashboard() {
             </Col>
           </Row>
         </Col>
-        <Col span={8}>
+        <Col lg={8} md={24}>
           <AppointmentSchedule />
         </Col>
       </Row>

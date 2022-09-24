@@ -1,8 +1,9 @@
-import { Checkbox } from 'antd';
+import { Checkbox, Tooltip } from 'antd';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import call from '../../assets/images/icons/call.svg';
 import PaginationCommon from '../../components/PaginationCommon';
+import CallScheduleItemCall from './commons/CallSchedule/call-schedule-item-call';
 import * as S from './styles';
 
 const dataSource = [
@@ -129,15 +130,8 @@ export default function CallSchedule() {
       key: 'note',
     },
     {
-      title: '',
-      dataIndex: '',
       key: 'phone',
-      render: ({ phone }) => (
-        <S.WrapTableAction>
-          <img src={call} alt="call" onClick={() => handleCall(phone)} />
-          <Checkbox className="checkbox-item" />
-        </S.WrapTableAction>
-      ),
+      render: (_, record) => <CallScheduleItemCall record={record} />,
     },
   ];
 

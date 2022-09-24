@@ -18,6 +18,7 @@ import {getTimeByTZ, pad} from '../../helper'
 export default function ListEvent() {
   const {t} = useTranslation()
   const ref = useRef(null)
+  const {customerData} = useSelector((state) => state.customerCare);
   const loading = useSelector((state) => state.loading.loading);
   const eventState = useSelector((state) => state.events)
   const [visibleModalAddEvent, setVisibleModalAddEvent] = useState(false)
@@ -103,8 +104,10 @@ export default function ListEvent() {
   }
 
   useEffect(() => {
-    dispatch(getData({isTemplate: false}))
-  }, [])
+    if (customerData.customerId > 0) {
+      dispatch(getData({isTemplate: false}))
+    }
+  }, [customerData])
 
   useEffect(() => {
     if (ref.current.clientHeight > window.innerHeight*0.5) {
@@ -133,10 +136,12 @@ export default function ListEvent() {
         </div>
         <div className="customer-care__center--list" ref={ref}>
           <Table dataSource={eventState.data} columnTable={columns} scroll={scrollConfig}/>
-          <div className="customer-care__center--list-footer">
-            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(true))}>{t('customer care.add event template')}</Button>
-            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(false))}>{t('customer care.add event')}</Button>
-          </div>
+          {
+            customerData.customerId > 0 && <div className="customer-care__center--list-footer">
+              <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(true))}>{t('customer care.add event template')}</Button>
+              <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(false))}>{t('customer care.add event')}</Button>
+            </div>
+          }
         </div>
       </Col>
       <Modal isVisible={visibleModalAddEvent} setIsVisible={setVisibleModalAddEvent} title={titleModal} width={770} content={<AddEventContent detailData={detailData} isTemplate={isTemplate} setVisibleModalAddEvent={setVisibleModalAddEvent}/>} />

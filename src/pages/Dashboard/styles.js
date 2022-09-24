@@ -1,6 +1,16 @@
 /* eslint-disable indent */
-import { CaretDownOutlined as AntDCaretDownOutlined } from '@ant-design/icons';
-import { Button as AntDButton, Col as AntDCol, Row as AntDRow, Select as AntDSelect, Table as AntDTable } from 'antd';
+import {
+  CaretDownOutlined as AntDCaretDownOutlined,
+  ExclamationCircleOutlined as AntDIconTooltip,
+} from '@ant-design/icons';
+import {
+  Button as AntDButton,
+  Col as AntDCol,
+  Row as AntDRow,
+  Select as AntDSelect,
+  Table as AntDTable,
+  Tabs as AntDTabs,
+} from 'antd';
 import styled, { css } from 'styled-components';
 
 const greyColor = '#e6e6e6';
@@ -19,7 +29,7 @@ export const WrapLayout = styled.div`
 export const WrapContainer = styled.div`
   background: #ffffff;
   box-shadow: 0px 4px 30px rgb(0 0 0 / 5%);
-  border-radius: 25px 25px 25px 25px;
+  border-radius: 25px;
   height: 100%;
   width: 100%;
 
@@ -28,6 +38,12 @@ export const WrapContainer = styled.div`
     css`
       height: 60px;
       width: 100%;
+    `};
+
+  ${(props) =>
+    props.$maxHeight &&
+    css`
+      max-height: ${props.$maxHeight};
     `};
 `;
 
@@ -42,6 +58,7 @@ export const WrapTitle = styled(AntDRow)`
   display: flex;
   align-items: center;
   width: 100%;
+  gap: 10px;
 
   ${(props) =>
     props.$toggle &&
@@ -52,18 +69,22 @@ export const WrapTitle = styled(AntDRow)`
   ${(props) =>
     props.$noneIcon &&
     css`
-      padding: 19px 0px 19px 23px;
+      padding: 19px 23px;
     `};
 `;
 
 export const IconDown = styled(AntDCaretDownOutlined)`
   padding-left: 19.96px;
-  padding-right: 9.96px;
   color: #999999;
 `;
 
 export const Title = styled.h3`
   padding-right: 25px;
+  ${(props) =>
+    props.$nonePadding &&
+    css`
+      padding: 0px;
+    `};
 `;
 
 export const Select = styled(AntDSelect)`
@@ -114,6 +135,12 @@ export const WrapContent = styled.div`
     props.$paddingBottom &&
     css`
       padding-bottom: 13px;
+    `};
+
+  ${(props) =>
+    props.$padding &&
+    css`
+      padding: ${props.$padding};
     `};
 `;
 
@@ -240,9 +267,14 @@ export const WrapIconTable = styled.img`
   margin-top: 5px;
 `;
 
-export const IconTooltip = styled.img`
-  width: 16px;
-  height: 16px;
+export const IconTooltip = styled(AntDIconTooltip)`
+  width: 12px;
+  height: 12px;
+  color: #999999;
+
+  &:hover {
+    color: #3dbd78;
+  }
 `;
 
 export const Table = styled(AntDTable)`
@@ -281,7 +313,7 @@ export const Table = styled(AntDTable)`
     tr {
       td {
         font-size: 1.4rem;
-        border-bottom: 1px dotted ${greyTableColor};
+        border-bottom: 1px dashed ${greyTableColor};
         padding: 10px 20px;
         vertical-align: middle;
 
@@ -333,4 +365,122 @@ export const Table = styled(AntDTable)`
 export const WrapIconCenter = styled(AntDCol)`
   display: flex;
   align-items: center;
+`;
+
+export const TextColor = styled.span`
+  color: ${(props) => props.$color || '#fff'};
+`;
+
+export const WrapTooltip = styled.div`
+  padding: 10px;
+`;
+
+export const ItemAppointment = styled(AntDRow)`
+  width: 100%;
+  font-size: 12px;
+  box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.07);
+  border-radius: 15px;
+`;
+
+export const WrapHr = styled.hr`
+  display: block;
+  border: 1px dashed #e6e6e6;
+  width: 100%;
+`;
+
+export const WrapFirstColAppointment = styled(AntDCol)`
+  padding: 8px 15px 0px;
+`;
+
+export const WrapSecondColAppointment = styled(AntDCol)`
+  padding: 0px 15px 10px;
+`;
+
+export const WrapImageAppointment = styled.img`
+  width: ${(props) => props.$width || '12px'};
+  height: ${(props) => props.$height || '10px'};
+  margin-right: ${(props) => props.marginRight || '10px'};
+`;
+
+export const WrapTextCenter = styled(AntDCol)`
+  text-align: center;
+`;
+
+export const WrapTextRight = styled(AntDCol)`
+  text-align: right;
+`;
+
+export const WrapBorderRight = styled(AntDCol)`
+  border-right: 1px solid ${greyColor};
+`;
+
+export const Tabs = styled(AntDTabs)`
+  border-radius: 10px;
+  background-color: #f8f8f8;
+  color: #999999;
+
+  padding: 7px 5px;
+  width: 100%;
+  height: 100%;
+  max-height: 37px;
+
+  display: flex;
+  justify-content: center;
+
+  .ant-tabs-nav {
+    margin: 0;
+
+    &:before {
+      border: none;
+    }
+  }
+
+  .ant-tabs-tab {
+    padding: 0px;
+    margin: 0px;
+
+    &:before {
+      border: none;
+    }
+  }
+
+  .ant-tabs-nav-list {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .ant-tabs-content {
+    margin-top: 10px;
+  }
+
+  .ant-tabs-tab-btn {
+    padding: 5px 9px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #ffffff;
+    padding: 5px 9px;
+    background-color: ${primaryColor};
+    border-radius: 9px;
+    max-height: 24px;
+  }
+  .ant-tabs-tab {
+    &:hover {
+      color: ${primaryColor};
+    }
+  }
+  .ant-tabs-nav .ant-tabs-ink-bar {
+    height: 0px;
+  }
+`;
+
+export const WrapTextItem = styled(AntDCol)`
+  color: #333333;
+  font-size: ${(props) => props.$fontSize || '12px'};
+  font-weight: ${(props) => props.$fontWeight || '500'};
+  line-height: ${(props) => props.$lineHeight || '15px'};
 `;

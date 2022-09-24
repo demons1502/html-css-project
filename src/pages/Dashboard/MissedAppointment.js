@@ -75,7 +75,7 @@ export default function MissedAppointment() {
   const [toggle, setToggle] = useState(false);
 
   return (
-    <S.WrapContainer $toggle={toggle}>
+    <S.WrapContainer $toggle={toggle} $maxHeight="432px">
       <S.WrapTitle $toggle={toggle}>
         <S.IconDown onClick={() => setToggle(!toggle)} />
         <S.Title>{t('dashboard-page.missed-appointment')}</S.Title>

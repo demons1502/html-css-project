@@ -1,9 +1,7 @@
-import { Col, Empty, Row, Tooltip } from 'antd';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import groupCall from '../../assets/images/icons/groupCalll.svg';
-import noteCircle from '../../assets/images/icons/noteCircle.svg';
-import TableCardCommon from '../../components/TableCardCommon';
+import PotentialItemCall from './commons/TopPotentialCustomer/potential-item-col-call';
+import PotentialItemTooltip from './commons/TopPotentialCustomer/potential-item-col-tooltip';
 import * as S from './styles';
 
 const dataSource = [
@@ -54,14 +52,14 @@ const dataSource = [
     name: 'Cameron Williamson',
     type: 'Cá nhân',
     phone: '0293 893 920',
-    potentialPoint: '78% quỹ hưu trí',
+    potentialPoint: '38% quỹ hưu trí',
   },
   {
     key: 8,
     name: 'Jane Cooper',
     type: 'Doanh nghiệp',
     phone: '0392 439 344',
-    potentialPoint: '78% quỹ hưu trí',
+    potentialPoint: '58% quỹ hưu trí',
   },
   {
     key: 9,
@@ -84,10 +82,6 @@ export default function TopPotentialCustomer() {
   const [dataTable, setDataTable] = useState(dataSource);
   const [toggle, setToggle] = useState(false);
 
-  const handleCall = (value) => {
-    console.log('Call,', value);
-  };
-
   const columns = [
     {
       title: t('common.customer name'),
@@ -108,34 +102,13 @@ export default function TopPotentialCustomer() {
       title: t('top-potential-customer.potentialPoint'),
       dataIndex: 'potentialPoint',
       key: 'potentialPoint',
-      render: (text, record) => (
-        <Row gutter={10}>
-          <Col>{text}</Col>
-          <S.WrapIconCenter>
-            <Tooltip placement="bottomRight" title={text}>
-              <S.IconTooltip src={noteCircle} />
-            </Tooltip>
-          </S.WrapIconCenter>
-        </Row>
-      ),
+      render: (_, record) => <PotentialItemTooltip record={record} />,
     },
     {
       key: 'phone',
-      render: ({ phone }) => (
-        <S.WrapTableAction>
-          <img src={groupCall} alt="" onClick={() => handleCall(phone)} />
-        </S.WrapTableAction>
-      ),
+      render: (_, record) => <PotentialItemCall record={record} />,
     },
   ];
-
-  const table = useMemo(() => {
-    if (!!dataTable && dataTable.length > 0) {
-      return <TableCardCommon dataSource={dataTable} columnTable={columns}></TableCardCommon>;
-    } else {
-      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
-    }
-  }, [dataTable]);
 
   return (
     <S.WrapContainer $toggle={toggle}>

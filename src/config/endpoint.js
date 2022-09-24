@@ -13,4 +13,5 @@ export const ENDPOINT = {
     getArticles: 'articles',
     getMostView: 'most-view'
   },
+  userSearch: 'users/search'
 }

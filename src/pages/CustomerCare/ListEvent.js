@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {Col, Progress, Button, Popconfirm} from 'antd';
@@ -12,12 +12,12 @@ import Modal from "../../components/common/Modal";
 import AddEventContent from "../../components/common/Modal/CustomerCare/AddEventContent";
 import SendSmsContent from "../../components/common/Modal/CustomerCare/SendSmsContent";
 import SendEmailContent from "../../components/common/Modal/CustomerCare/SendEmailContent";
-import moment from 'moment';
-import {FORMAT_DATE, LOADING_STATUS} from '../../ultis/constant';
+import {LOADING_STATUS} from '../../ultis/constant';
 import {getTimeByTZ, pad} from '../../helper'
 
 export default function ListEvent() {
   const {t} = useTranslation()
+  const ref = useRef(null)
   const loading = useSelector((state) => state.loading.loading);
   const eventState = useSelector((state) => state.events)
   const [visibleModalAddEvent, setVisibleModalAddEvent] = useState(false)
@@ -26,6 +26,7 @@ export default function ListEvent() {
   const [detailData, setDetailData] = useState({})
   const [eventId, setEventId] = useState(0)
   const [isTemplate, setIsTemplate] = useState(false)
+  const [scrollConfig, setScrollConfig] = useState({})
   const [titleModal, setTitleModal] = useState('')
   const dispatch = useDispatch()
 
@@ -39,7 +40,7 @@ export default function ListEvent() {
     {
       title: t('common.date'),
       key: 'date',
-      width: '22%',
+      width: '24%',
       render: (record) => {
         return (
           <span>{getTimeByTZ(record.date)}</span>
@@ -106,6 +107,13 @@ export default function ListEvent() {
   }, [])
 
   useEffect(() => {
+    if (ref.current.clientHeight > window.innerHeight*0.5) {
+      const scroll = {y: `calc(100vh - 450px)`, scrollToFirstRowOnChange: false}
+      setScrollConfig(scroll)
+    }
+  })
+
+  useEffect(() => {
     if (loading === LOADING_STATUS.succeeded) {
       setVisibleModalAddEvent(false)
       setVisibleModalEmail(false)
@@ -123,8 +131,8 @@ export default function ListEvent() {
         <div className="customer-care__center--event">
           <h5>{t('customer care.event title')}</h5>
         </div>
-        <div className="customer-care__center--list">
-          <Table dataSource={eventState.data} columnTable={columns} heightMargin={430}/>
+        <div className="customer-care__center--list" ref={ref}>
+          <Table dataSource={eventState.data} columnTable={columns} scroll={scrollConfig}/>
           <div className="customer-care__center--list-footer">
             <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(true))}>{t('customer care.add event template')}</Button>
             <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(false))}>{t('customer care.add event')}</Button>

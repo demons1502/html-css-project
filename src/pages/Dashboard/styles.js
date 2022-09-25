@@ -10,6 +10,7 @@ import {
   Select as AntDSelect,
   Table as AntDTable,
   Tabs as AntDTabs,
+  DatePicker as AntDDatePicker,
 } from 'antd';
 import styled, { css } from 'styled-components';
 
@@ -44,6 +45,12 @@ export const WrapContainer = styled.div`
     props.$maxHeight &&
     css`
       max-height: ${props.$maxHeight};
+    `};
+
+  ${(props) =>
+    props.$height &&
+    css`
+      height: ${props.$height};
     `};
 `;
 
@@ -369,6 +376,11 @@ export const WrapIconCenter = styled(AntDCol)`
 
 export const TextColor = styled.span`
   color: ${(props) => props.$color || '#fff'};
+  ${(props) =>
+    props.$fontSize &&
+    css`
+      font-size: ${props.$fontSize};
+    `};
 `;
 
 export const WrapTooltip = styled.div`
@@ -396,7 +408,7 @@ export const WrapSecondColAppointment = styled(AntDCol)`
   padding: 0px 15px 10px;
 `;
 
-export const WrapImageAppointment = styled.img`
+export const WrapIconImage = styled.img`
   width: ${(props) => props.$width || '12px'};
   height: ${(props) => props.$height || '10px'};
   margin-right: ${(props) => props.marginRight || '10px'};
@@ -483,4 +495,33 @@ export const WrapTextItem = styled(AntDCol)`
   font-size: ${(props) => props.$fontSize || '12px'};
   font-weight: ${(props) => props.$fontWeight || '500'};
   line-height: ${(props) => props.$lineHeight || '15px'};
+`;
+
+export const WrapTextAlign = styled(AntDCol)`
+  display: flex;
+  align-items: center;
+`;
+
+export const WrapIconImageCalendar = styled.img`
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  position: relative;
+`;
+
+export const DatePicker = styled(AntDDatePicker)`
+  position: absolute;
+  display: ${(props) => (props.$display ? props.$display : 'none')};
+  border: 1px solid red;
+  width: 280px;
+  height: 40px;
+`;
+
+export const WrapRatio = styled(AntDRow)`
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

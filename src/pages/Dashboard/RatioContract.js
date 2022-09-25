@@ -12,7 +12,9 @@ export default function RatioContract() {
         <S.Title>{t('dashboard-page.ratio-contract')}</S.Title>
       </S.WrapTitle>
       <S.WrapContent>
-        <RatioContractPie />
+        <S.WrapRatio>
+          <RatioContractPie />
+        </S.WrapRatio>
       </S.WrapContent>
     </S.WrapContainer>
   );

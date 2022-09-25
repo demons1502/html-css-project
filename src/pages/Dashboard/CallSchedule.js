@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import PaginationCommon from '../../components/common/Pagination';
 import CallScheduleItemCall from './commons/CallSchedule/call-schedule-item-call';
 import * as S from './styles';
+import { menuItems } from './constants';
+import { randomColor } from './constants';
 
 const dataSource = [
   {
@@ -52,30 +54,11 @@ const dataSource = [
   },
 ];
 
-const menuItems = [
-  {
-    value: 'today',
-    label: 'Hôm nay',
-  },
-  {
-    value: 'week',
-    label: 'Tuần này',
-  },
-  {
-    value: 'month',
-    label: 'Tháng nay',
-  },
-  {
-    value: 'all',
-    label: 'Tất cả',
-  },
-];
-
 export default function CallSchedule() {
   const { t } = useTranslation();
   const [dataTable, setDataTable] = useState(dataSource);
   const [toggle, setToggle] = useState(false);
-  const randomColor = ['green', 'yellow', 'blue', 'orange', 'purple'];
+
   const useColor = [];
 
   const handleSelect = (value) => {

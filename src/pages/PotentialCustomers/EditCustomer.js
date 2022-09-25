@@ -10,6 +10,7 @@ import { acquaintanceLevel, marriageStatus } from "../../constants/common";
 import { useDispatch, useSelector } from "react-redux";
 import { updatePotentialCustomer } from "../../slices/potentialCustomersSlice";
 import { useEffect } from "react";
+import { REGEX_PHONE } from "./constants";
 
 export default function EditCustomer({ isModalOpen, handleCancel, data }) {
   const { Option } = Select;
@@ -133,6 +134,10 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                       required: true,
                       message: `${t("potential customers.message.phone1")}`,
                     },
+                    {
+                      pattern: REGEX_PHONE,
+                      message: "Vui lòng nhập đúng số điện thoại",
+                    },
                   ]}
                 >
                   <Input />
@@ -185,6 +190,10 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                       required: true,
                       message: `${t("potential customers.message.phone1")}`,
                     },
+                    {
+                      pattern: REGEX_PHONE,
+                      message: "Vui lòng nhập đúng số điện thoại",
+                    },
                   ]}
                 >
                   <Input />
@@ -195,6 +204,12 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   label="Số điện thoại 2"
                   name="phoneNumber2"
                   initialValue={data.phone2}
+                  rules={[
+                    {
+                      pattern: REGEX_PHONE,
+                      message: "Vui lòng nhập đúng số điện thoại",
+                    },
+                  ]}
                 >
                   <Input />
                 </Form.Item>
@@ -204,6 +219,12 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   label="Số điện thoại 3"
                   name="phoneNumber3"
                   initialValue={data.phone3}
+                  rules={[
+                    {
+                      pattern: REGEX_PHONE,
+                      message: "Vui lòng nhập đúng số điện thoại",
+                    },
+                  ]}
                 >
                   <Input />
                 </Form.Item>
@@ -242,6 +263,14 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                     {
                       required: true,
                       message: `${t("potential customers.message.income")}`,
+                    },
+                    {
+                      validator: (_, value) =>
+                        value >= 10000000
+                          ? Promise.resolve()
+                          : Promise.reject(
+                            new Error("Thu nhập tối thiểu 10.000.000đ"),
+                          ),
                     },
                   ]}
                 >
@@ -283,6 +312,16 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                       required: true,
                       message: `${t("potential customers.message.birthday")}`,
                     },
+                    {
+                      validator: (_, value) =>
+                        new Date().getFullYear() -
+                          new Date(value).getFullYear() >
+                        18
+                          ? Promise.resolve()
+                          : Promise.reject(
+                            new Error("Số tuổi phải lớn hơn 18"),
+                          ),
+                    },
                   ]}
                 >
                   <DatePicker
@@ -318,7 +357,12 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Email" name="email" initialValue={data.email}>
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  initialValue={data.email}
+                  rules={[{ type: "email" }]}
+                >
                   <Input />
                 </Form.Item>
               </Col>

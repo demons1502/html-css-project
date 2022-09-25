@@ -75,5 +75,5 @@ export const Button = styled(AntDButton)`
 `;
 
 export const WrapFilter = styled.div`
-  padding: 10px 20px 0;
+  padding: 10px 20px;
 `;

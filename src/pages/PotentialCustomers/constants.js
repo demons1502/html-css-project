@@ -3,13 +3,19 @@ export const columns = [
     title: "STT",
     dataIndex: "stt",
     key: "stt",
-    render: (text, record, index) => index + 1,
+    render: (_, __, index) => index + 1,
     align: "center",
   },
   {
     title: "Họ và tên",
     dataIndex: "fullname",
     key: "fullname",
+    align: "center",
+  },
+  {
+    title: "Tuổi",
+    dataIndex: "age",
+    key: "age",
     align: "center",
   },
   {

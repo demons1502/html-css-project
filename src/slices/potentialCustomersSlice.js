@@ -26,6 +26,7 @@ export const createPotentialCustomers = createAsyncThunk(
     try {
       const response = await createPotentialCustomersApi(data);
       dispatch(getPotentialCustomers());
+      dispatch(getCompanies())
       return response.data;
     } catch (error) {
       return Promise.reject(error.data);
@@ -39,6 +40,7 @@ export const deletePotentialCustomers = createAsyncThunk(
     try {
       const response = await deletePotentialCustomerApi(data);
       dispatch(getPotentialCustomers());
+      dispatch(getCompanies())
       return response.data;
     } catch (error) {
       return Promise.reject(error.data);
@@ -72,9 +74,10 @@ export const getPotentialCustomer = createAsyncThunk(
 
 export const updatePotentialCustomer = createAsyncThunk(
   "potentialCustomers/UPDATE_POTENTIAL_CUSTOMER",
-  async (data) => {
+  async (data, {dispatch}) => {
     try {
       const res = await updatePotentialCustomerApi(data);
+      dispatch(getPotentialCustomers())
       return res;
     } catch (error) {
       return Promise.reject(error.data);

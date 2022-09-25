@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
+import moment from "moment";
 import { Col, Form, Row } from "antd";
 import Modal from "../../components/common/ModalSelect";
 import Select from "../../components/common/Select";
@@ -7,43 +8,20 @@ import DatePicker from "../../components/common/DatePicker";
 import { useTranslation } from "react-i18next";
 import { acquaintanceLevel, marriageStatus } from "../../constants/common";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getPotentialCustomer,
-  updatePotentialCustomer,
-} from "../../slices/potentialCustomersSlice";
+import { updatePotentialCustomer } from "../../slices/potentialCustomersSlice";
+import { useEffect } from "react";
 
 export default function EditCustomer({ isModalOpen, handleCancel, data }) {
   const { Option } = Select;
   const [form] = Form.useForm();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const potentialCustomer = useSelector(
-    (state) => state.potentialCustomersReducer.potentialCustomer,
-  );
   const [maritalStatusF, setMaritalStatusF] = useState();
   const [acquaintanceLevelStatus, setAcquaintanceLevelStatus] = useState();
-  const [dob, setDob] = useState();
-
-  const { customerId, typeId } = data;
-
-  useEffect(() => {
-    dispatch(getPotentialCustomer({ customerId, typeId }));
-  }, [dispatch]);
-
-  const {
-    fullname,
-    name,
-    phone1,
-    phone2,
-    phone3,
-    address,
-    job,
-    dob: birthday,
-    email,
-    note,
-    income,
-    maritalStatus,
-  } = potentialCustomer;
+  const [typeId, setTypeId] = useState(data.typedId);
+  const companies = useSelector(
+    (state) => state.potentialCustomersReducer.companies,
+  );
 
   const marriageOptions = useMemo(
     () =>
@@ -65,20 +43,40 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
     [acquaintanceLevel],
   );
 
-  const handleChangeSelectCustomer = () => {};
+  const companyOptions = useMemo(
+    () =>
+      companies.map(({ name, companyId }) => (
+        <Option key={companyId} value={companyId}>
+          {name}
+        </Option>
+      )),
+    [companies],
+  );
 
-  const onChangeDate = () => {};
+  const handleChangeSelectCustomer = (value) => {
+    setTypeId(value);
+  };
 
   const onFinish = (value) => {
-    console.log(value);
-    dispatch(updatePotentialCustomer({ ...value, customerId }));
+    dispatch(
+      updatePotentialCustomer({
+        ...value,
+        customerId: data.customerId,
+        typeId,
+      }),
+    );
+    handleCancel();
   };
 
   const onCancel = () => {
     handleCancel();
   };
 
-  console.log(birthday?.substring(0, 10));
+  useEffect(() => {
+    if (data) {
+      setTypeId(data.typeId);
+    }
+  }, [data]);
 
   return (
     <Modal
@@ -90,13 +88,19 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
       okText="Cập nhật khách hàng"
       renderSelect={
         <Select
-          defaultValue={typeId}
+          value={typeId}
           onChange={(selected) => handleChangeSelectCustomer(selected)}
           style={{ width: "150px" }}
         >
-          <Option value={1}>Cá nhân</Option>
-          <Option value={3}>Doanh nghiệp</Option>
-          <Option value={2}>NV doanh nghiệp</Option>
+          <Option disabled={data.typeId === 3} value={1}>
+            Cá nhân
+          </Option>
+          <Option disabled value={3}>
+            Doanh nghiệp
+          </Option>
+          <Option disabled={data.typeId === 3} value={2}>
+            NV doanh nghiệp
+          </Option>
         </Select>
       }
     >
@@ -107,8 +111,8 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
               <Col span={16}>
                 <Form.Item
                   label="Tên doanh nghiệp"
-                  name="name"
-                  initialValue={name}
+                  name="fullname"
+                  initialValue={data.name}
                   rules={[
                     {
                       required: true,
@@ -123,7 +127,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 <Form.Item
                   label="Số điện thoại"
                   name="phone1"
-                  initialValue={phone1}
+                  initialValue={data.phone1}
                   rules={[
                     {
                       required: true,
@@ -140,7 +144,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 <Form.Item
                   label="Địa chỉ"
                   name="address"
-                  initialValue={address}
+                  initialValue={data.address}
                   rules={[
                     {
                       required: true,
@@ -160,7 +164,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 <Form.Item
                   label="Họ và tên"
                   name="name"
-                  initialValue={fullname}
+                  initialValue={data.fullname}
                   rules={[
                     {
                       required: true,
@@ -175,7 +179,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 <Form.Item
                   label="Số điện thoại 1"
                   name="phone1"
-                  initialValue={phone1}
+                  initialValue={data.phone1}
                   rules={[
                     {
                       required: true,
@@ -190,7 +194,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 <Form.Item
                   label="Số điện thoại 2"
                   name="phoneNumber2"
-                  initialValue={phone2}
+                  initialValue={data.phone2}
                 >
                   <Input />
                 </Form.Item>
@@ -199,7 +203,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 <Form.Item
                   label="Số điện thoại 3"
                   name="phoneNumber3"
-                  initialValue={phone3}
+                  initialValue={data.phone3}
                 >
                   <Input />
                 </Form.Item>
@@ -210,7 +214,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 <Form.Item
                   label="Hôn nhân"
                   name="maritalStatus"
-                  initialValue={Number(maritalStatus)}
+                  initialValue={+data.maritalStatus}
                   rules={[
                     {
                       required: true,
@@ -233,7 +237,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 <Form.Item
                   label="Thu nhập"
                   name="income"
-                  initialValue={income}
+                  initialValue={data.income}
                   rules={[
                     {
                       required: true,
@@ -248,7 +252,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 <Form.Item
                   label="Mức độ thân quen"
                   name="acquaintanceLevel"
-                  initialValue={acquaintanceLevel}
+                  initialValue={+data.acquaintanceLevel}
                   rules={[
                     {
                       required: true,
@@ -273,7 +277,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 <Form.Item
                   label="Ngày sinh"
                   name="dob"
-                  initialValue={dob}
+                  initialValue={moment(data.dob)}
                   rules={[
                     {
                       required: true,
@@ -282,22 +286,30 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   ]}
                 >
                   <DatePicker
-                    value={dob}
-                    onChange={onChangeDate}
                     style={{ width: "100%" }}
-                    defaultValue={dob}
+                    defaultValue={moment(data.dob, "YYYY-MM-DD")}
                   />
                 </Form.Item>
               </Col>
             </Row>
             <Row gutter={12}>
               <Col span={6}>
-                <Form.Item label="Nghề nghiệp" name="job" initialValue={job}>
+                <Form.Item
+                  label="Nghề nghiệp"
+                  name="job"
+                  initialValue={data.job}
+                >
                   <Input />
                 </Form.Item>
               </Col>
               <Col span={6}>
-                <Form.Item label="Doanh nghiệp" name="companyId">
+                <Form.Item
+                  label="Doanh nghiệp"
+                  initialValue={
+                    typeId === 2 ? data.companyId : data.companyText
+                  }
+                  name={`${typeId === 2 ? "companyId" : "companyText"}`}
+                >
                   {typeId === 2 ? (
                     <Select placeholder="Chọn">{companyOptions}</Select>
                   ) : (
@@ -306,7 +318,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Email" name="email" initialValue={email}>
+                <Form.Item label="Email" name="email" initialValue={data.email}>
                   <Input />
                 </Form.Item>
               </Col>
@@ -316,7 +328,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 <Form.Item
                   label="Địa chỉ"
                   name="address"
-                  initialValue={address}
+                  initialValue={data.address}
                 >
                   <Input />
                 </Form.Item>
@@ -329,7 +341,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
             </Row>
             <Row gutter={12}>
               <Col span={24}>
-                <Form.Item label="Khác" name="note" initialValue={note}>
+                <Form.Item label="Khác" name="note" initialValue={data.note}>
                   <Input />
                 </Form.Item>
               </Col>

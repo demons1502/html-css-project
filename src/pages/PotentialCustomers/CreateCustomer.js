@@ -10,14 +10,14 @@ import {
   getCompanies,
 } from "../../slices/potentialCustomersSlice";
 import { useTranslation } from "react-i18next";
-import { acquaintanceLevel, marriageStatus } from "../../constants/common";
+import { acquaintanceLevel, gender, marriageStatus } from "../../constants/common";
 
 export default function CreateCustomer({ isModalOpen, handleCancel }) {
   const { Option } = Select;
   const [form] = Form.useForm();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [typeId, setTypeId] = useState(1);
+  const [typeId, setTypeId] = useState();
   const [maritalStatus, setMaritalStatus] = useState(1);
   const [acquaintanceLevelStatus, setAcquaintanceLevelStatus] = useState();
   const [dob, setDob] = useState();
@@ -51,6 +51,16 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
       companies.map(({ name, companyId }) => (
         <Option key={companyId} value={companyId}>
           {name}
+        </Option>
+      )),
+    [companies],
+  );
+
+  const genderOptions = useMemo(
+    () =>
+      gender.map(({ label, value }) => (
+        <Option key={value} value={value}>
+          {label}
         </Option>
       )),
     [companies],
@@ -94,7 +104,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
       okText="Tạo khách hàng"
       renderSelect={
         <Select
-          defaultValue={typeId}
+          defaultValue={1}
           onChange={(selected) => handleChangeSelectCustomer(selected)}
           style={{ width: "150px" }}
         >
@@ -193,6 +203,15 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
               <Col span={6}>
                 <Form.Item label="Số điện thoại 3" name="phoneNumber3">
                   <Input />
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item label="Giới tính" name="gender">
+                  <Select
+                    placeholder="Chọn"
+                  >
+                    {genderOptions}
+                  </Select>
                 </Form.Item>
               </Col>
             </Row>

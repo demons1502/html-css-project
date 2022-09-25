@@ -22,6 +22,7 @@ import TableActions from "../../components/TableActions";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deletePotentialCustomers,
+  getPotentialCustomer,
   getPotentialCustomers,
 } from "../../slices/potentialCustomersSlice";
 import {
@@ -36,17 +37,39 @@ import {
 import Modal from "../../components/common/ModalSelect";
 import { convertToCurrency } from "../../ultis/convertToCurrency";
 import EditCustomer from "./EditCustomer";
+import Filter from "../../components/common/Filter";
+
+const options = [
+  { label: "Không còn tiềm năng, dừng tư vấn", value: 1 },
+  { label: "Chưa gọi điện", value: 2 },
+  { label: "Đã gọi điện lần 1, cần gọi lần 2", value: 3 },
+  { label: "Đã có lịch hẹn gặp khảo sát", value: 4 },
+  { label: "Đã khảo sát, chờ lịch tư vấn tài chính", value: 5 },
+  { label: "Đã có lịch tư vấn tài chính", value: 6 },
+  { label: "Đã tư vấn tài chính, chờ lịch hẹn tư vấn  giải pháp", value: 7 },
+  { label: "Đã tư vấn giải pháp, chờ chốt kết quả", value: 8 },
+  { label: "Đã chốt kết quả, chờ thông tin hợp đồng", value: 9 },
+  { label: "Đã có hợp đồng", value: 10 },
+  { label: "Chăm sóc khách hàng cho hợp đồng tiếp theo", value: 11 },
+];
 
 export default function PotentialCustomers() {
   const potentialCustomers = useSelector(
     (state) => state.potentialCustomersReducer.potentialCustomers,
   );
+  const potentialCustomer = useSelector(
+    (state) => state.potentialCustomersReducer.potentialCustomer,
+  );
+  const loading = useSelector(
+    (state) => state.potentialCustomersReducer.loading,
+  );
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [openModalEdit, setOpenModalEdit] = useState(false);
   const [search, setSearch] = useState("");
-  const [dataDetail, setDataDetail] = useState();
+  const [optionsFilter, setOptionsFilter] = useState("");
 
   const { Option } = Select;
 
@@ -94,7 +117,13 @@ export default function PotentialCustomers() {
   );
 
   const handleEdit = (value) => {
-    setDataDetail(value);
+    dispatch(
+      getPotentialCustomer({
+        customerId: value.customerId,
+        typeId: value.typeId,
+      }),
+    );
+    setOpenModalEdit(true);
   };
 
   const dataWithActions = potentialCustomers?.map((item) => ({
@@ -158,6 +187,7 @@ export default function PotentialCustomers() {
   };
 
   const onDelete = (value) => {
+    setSelectedRowKeys(value);
     value.length && setOpenModalDelete(true);
   };
 
@@ -174,8 +204,12 @@ export default function PotentialCustomers() {
     dispatch(getPotentialCustomers({ name: search }));
   }, [dispatch, search]);
 
+  useEffect(() => {
+    // setPercent(optionsFilter.slice(-1)[0] * 10)
+  }, [optionsFilter]);
+
   return (
-    <>
+    <div className="content-box" style={{ marginTop: "16px" }}>
       <S.WrapHeader>
         <S.WrapSearch>
           <h3>Danh sách khách hàng</h3>
@@ -199,6 +233,7 @@ export default function PotentialCustomers() {
                 Import
               </S.Button>
             </Upload>
+            <Filter options={options} setPayload={setOptionsFilter} />
             <S.Button onClick={showModal}>
               <img src={Import} alt="" />
               Tạo mới
@@ -257,6 +292,7 @@ export default function PotentialCustomers() {
         </Form>
       </S.WrapFilter>
       <Table
+        loading={loading}
         rowSelection={rowSelection}
         columns={columns}
         dataSource={dataWithActions}
@@ -264,11 +300,11 @@ export default function PotentialCustomers() {
         rowKey={(row) => row.customerId}
       />
       <CreateCustomer isModalOpen={isModalOpen} handleCancel={handleCancel} />
-      {dataDetail && (
+      {!loading && openModalEdit && (
         <EditCustomer
-          isModalOpen={true}
-          handleCancel={() => setDataDetail("")}
-          data={dataDetail}
+          isModalOpen={openModalEdit}
+          handleCancel={() => setOpenModalEdit(false)}
+          data={potentialCustomer}
         />
       )}
       {openModalDelete && (
@@ -283,6 +319,6 @@ export default function PotentialCustomers() {
           <p>Bạn có chắc chắn muốn xoá thông tin này?</p>
         </Modal>
       )}
-    </>
+    </div>
   );
 }

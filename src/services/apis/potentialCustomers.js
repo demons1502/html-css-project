@@ -4,7 +4,7 @@ export const getPotentialCustomersApi = (data) => sendGet("/customers", data);
 export const createPotentialCustomersApi = (data) =>
   sendPost("/customer", data);
 export const deletePotentialCustomerApi = (data) =>
-  sendDelete("/customer", data);
+  sendDelete("/customers", data);
 export const getCompaniesApi = () => sendGet("/companies");
 export const getPotentialCustomerApi = (data) =>
   sendGet(`customers/${data.customerId}/${data.typeId}`);

@@ -1,7 +1,7 @@
 import { Checkbox, Tooltip } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import call from '../../../../assets/images/icons/call.svg';
+import call from '../../../../assets/images/icons/callDashboard.svg';
 import * as S from '../../styles';
 
 export default function CallScheduleItemCall(props) {

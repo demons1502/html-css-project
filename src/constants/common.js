@@ -57,3 +57,18 @@ export const typeCustomer = [
     value: 3,
   },
 ];
+
+export const gender = [
+  {
+    label: "Nam",
+    value: 1,
+  },
+  {
+    label: "Nữ",
+    value: 1,
+  },
+  {
+    label: "Khác",
+    value: 1,
+  },
+]

@@ -12,6 +12,7 @@ export default function TableCommon(props) {
     isSelection = false,
     bordered = false,
     setSelectedRowKeys,
+    isScroll,
   } = props;
 
   const onSelectChange = (selectedRowKeys, selectedRows) => {
@@ -33,14 +34,13 @@ export default function TableCommon(props) {
       bordered={bordered}
       className='table-common'
       rowKey='id'
-      // scroll={
-      //   isScroll
-      //     ? {
-      //         y: `calc(100vh - ${heightMargin}px)`,
-      //         scrollToFirstRowOnChange: false,
-      //       }
-      //     : {}
-      // }
+      // scroll={isScroll ?
+      //   {
+      //     y: `calc(100vh - ${heightMargin}px)`,
+      //     scrollToFirstRowOnChange: false
+      //   }
+      //   :
+      //   {}}
     >
       {props.children}
     </Table>

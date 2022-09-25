@@ -40,6 +40,7 @@ const EducationFoundation = lazy(() =>
 const IllustrateFiduciary = lazy(() =>
   import('../pages/FinancialSolution/IllustrateFiduciary')
 );
+const PotentialCustomers = lazy(() => import('../pages/PotentialCustomers'));
 
 const AppointmentManagement = lazy(() =>
   import('../pages/Main/views/AppointmentManagement')
@@ -67,10 +68,9 @@ export const routes = () => [
         path: 'dashboard',
         element: <GuestGuard element={<CustomerCare />} />,
       },
-      // no page yet
       {
         path: 'potential-customers',
-        element: <GuestGuard element={<CustomerCare />} />,
+        element: <GuestGuard element={<PotentialCustomers />} />,
       },
       // no page yet
       {
@@ -195,7 +195,7 @@ export const routes = () => [
       {
         path: 'setting',
         element: <CustomerCare />,
-      }
+      },
     ],
   },
   {

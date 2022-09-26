@@ -183,7 +183,7 @@ const ManageFinanceKnowledge = () => {
             </Layout.Content>
           </Col>
 
-          <Col lg={16} flex={1}>
+          <Col xs={16} lg={17} flex={1}>
             <Layout.Content className='manageContent'>
               {option !== 'q&a' ? (
                 <FinanceKnowledgeContent

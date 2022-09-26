@@ -10,7 +10,7 @@ import Filter from "../../components/common/Filter";
 import AddInfoContent from "../../components/common/Modal/CustomerCare/AddInfoContent";
 import Modal from "../../components/common/Modal";
 import {CUSTOMER_CARE_INFO, LOADING_STATUS, ARR_INFO_REDIRECT, INFO_PATH, GIFT} from '../../ultis/constant';
-import {calculateAge, getCustomerCareLabel, getTimeByTZ} from "../../helper";
+import {calculateAge, getCustomerCareLabel, getTimeByTZ, capitalizeFirstLetter} from "../../helper";
 import {Link} from "react-router-dom";
 
 export default function History() {
@@ -100,7 +100,7 @@ export default function History() {
         }
       })
       if (arrayGift.length > 0) {
-        setLastGift(`Quà tặng lần cuối: Quà tặng lần cuối ${_.last(arrayGift).content} vào ngày ${getTimeByTZ(_.last(arrayGift).date)}`)
+        setLastGift(`Quà tặng lần cuối ${capitalizeFirstLetter(_.last(arrayGift).content)} vào ngày ${getTimeByTZ(_.last(arrayGift).date)}`)
       }
     }
   }, [data])
@@ -129,10 +129,10 @@ export default function History() {
           customerData.customerId !== 0 && <div className="customer-care__right--info">
             <h3><img src={IconFiles} alt=""/>{t('customer care.sync info')}</h3>
             <ul>
-              <li>Gia đình: {calculateAge(customerData.dob)} tuổi, {customerData.maritalStatus == 1 ? ' đã có gia đình' : ', độc thân'}</li>
-              {customerData.income > 0 && <li>Thu nhập: {customerData.income/1000000} triệu đồng/tháng</li>}
-              {!!customerData.job && <li>Nghề nghiệp: <span className="capitalize">{customerData.job}</span></li>}
-              {!!customerData.concerns && <li>Sở thích: <span className="capitalize">{customerData.concerns}</span></li>}
+              <li>{calculateAge(customerData.dob)} tuổi, {customerData.maritalStatus == 1 ? ' đã có gia đình' : ', độc thân'}</li>
+              {customerData.income > 0 && <li>Thu nhập {customerData.income/1000000} triệu đồng/tháng</li>}
+              {!!customerData.job && <li>Nghề nghiệp <span className="capitalize">{customerData.job}</span></li>}
+              {!!customerData.concerns && <li>Sở thích <span className="capitalize">{customerData.concerns}</span></li>}
               {!!lastGift && <li>{lastGift}</li>}
               {!!customerData.note && <li>Khác: <span className="capitalize">{customerData.note}</span></li>}
             </ul>

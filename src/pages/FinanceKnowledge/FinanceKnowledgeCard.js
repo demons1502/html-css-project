@@ -1,18 +1,15 @@
 import { Col, Image, Layout, Row, Typography } from 'antd';
-import moment from 'moment';
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import eyeIcon from '../../assets/images/icons/eyeIcon.svg';
 import timeIcon from '../../assets/images/icons/timeIcon.svg';
 import { getTimeByTZ } from '../../helper/index';
 import { getView } from '../../slices/financeKnowledge';
-import { FORMAT_DATE } from '../../ultis/constant';
 
 const FinanceSupportCard = (props) => {
   const { wrap, target, content, showImage = true } = props;
 
   const dispatch = useDispatch();
-  const date = moment(content?.createdAt).format(FORMAT_DATE);
   const [file, setFile] = useState('');
   const [imgURL, setImgURL] = useState('');
 
@@ -128,8 +125,9 @@ const FinanceSupportCard = (props) => {
                     )}
                     {wrap && <span className='line'>|</span>}
                     <Typography.Text className='card-item'>
-                      <img src={timeIcon} alt={date} />
-                      <span>{getTimeByTZ(content?.date) }</span>
+                      aa
+                      <img src={timeIcon} alt={getTimeByTZ(content?.date)} />
+                      <span>{getTimeByTZ(content?.date)}</span>
                     </Typography.Text>
                   </div>
                 </Col>

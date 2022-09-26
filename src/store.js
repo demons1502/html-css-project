@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
   loading: loading,
   customerCare: customerCare,
   auth: authReducer,
-  financeKnowledge: financeKnowledge,
+  financeKnowledgeReducer: financeKnowledgeReducer,
   managementContentReducer: managementContentReducer,
   events: events,
   userManagement: userManagement,

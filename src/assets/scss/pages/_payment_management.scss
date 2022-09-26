@@ -3,11 +3,10 @@
   width: 100%;
   &-nav {
     background-color: $white-color;
-    width: 100%;
     min-height: 66px;
     height: auto;
     padding: 10px 32px;
-    margin-bottom: 12px;
+    margin: 0 -30px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;

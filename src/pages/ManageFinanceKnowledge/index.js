@@ -39,11 +39,7 @@ const ManageFinanceKnowledge = () => {
     limit: DEFAULT_SIZE,
     offset: 0,
   });
-  const [fileList, setFileList] = useState([
-    // {
-    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    // },
-  ]);
+  const [fileList, setFileList] = useState(null);
 
 
   const handleChange = (e) => {
@@ -136,7 +132,6 @@ const ManageFinanceKnowledge = () => {
               </div>
               <Spin spinning={loading === LOADING_STATUS.pending}>
                 <List
-                  locale={{ emptyText: 'Không có dữ liệu' }}
                   className='manageFinanceKnowledge-container_list'
                   size='small'
                   // pagination={{
@@ -169,6 +164,7 @@ const ManageFinanceKnowledge = () => {
                       onClick={() => {
                         setItemContent(item);
                         setPrevItem(item);
+                        setFileList([{url:item.image}])
                       }}
                       className={`${
                         item.id === itemContent?.id ? 'active' : ''

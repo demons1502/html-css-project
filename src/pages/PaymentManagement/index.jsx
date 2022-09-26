@@ -1,24 +1,22 @@
-import { Button, Col, Form, notification, Row, Spin, Table } from 'antd';
-import moment from 'moment';
+import { Button, Col, notification, Row, Spin, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import deleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import importIcon from '../../assets/images/icons/importIcon.svg';
 import plusIcon from '../../assets/images/icons/plus.svg';
 import Pagination from '../../components/common/Pagination';
 // import Table from '../../components/common/TableNormal';
+import { DeleteOutlined } from '@ant-design/icons';
 import ModalConfirm from '../../components/ModalConfirm';
+import { getTimeByTZ } from '../../helper/index';
 import {
   deletePayment,
   retrieveData,
-  uploadFile,
+  uploadFile
 } from '../../slices/paymentManagement';
-import { FORMAT_DATE, LOADING_STATUS } from '../../ultis/constant';
+import { LOADING_STATUS } from '../../ultis/constant';
 import CreatePayment from './CreatePayment';
 import PaymentHistory from './PaymentHistory';
 import PaymentManagementHeader from './PaymentManagementHeader';
-import { DeleteOutlined } from '@ant-design/icons';
-import { getTimeByTZ } from '../../helper/index';
 
 const PaymentManagement = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -48,8 +46,6 @@ const PaymentManagement = () => {
   };
   const handleDelete = () => {
     if (selectedRowKeys.length > 0) {
-      // const id = [];
-      // selectedRowKeys.map((item) => id.push(item.id));
       ModalConfirm({
         callApi: () => {
           dispatch(deletePayment({ transactionIds: selectedRowKeys })),
@@ -61,7 +57,7 @@ const PaymentManagement = () => {
         message: 'Vui lòng chọn bản ghi bạn cần xóa',
         duration: 2,
         placement: 'topLeft',
-        icon:false
+        icon: false,
       });
     }
   };
@@ -71,6 +67,7 @@ const PaymentManagement = () => {
     data.append('file', e.target.files[0]);
     dispatch(uploadFile(data));
   };
+
   const columns = [
     {
       title: 'Họ và tên',
@@ -120,9 +117,15 @@ const PaymentManagement = () => {
     },
   ];
 
-  const onChangePage = (current, pageSize) => {
-    setPage(current);
-    setLimit(pageSize);
+  // const onChangePage = (current, pageSize) => {
+  //   setPage(current);
+  //   setLimit(pageSize);
+  // };
+
+
+  const onChangePage = (e) => {
+    setPage(e.offset)
+    setLimit(e.limit)
   };
 
   useEffect(() => {
@@ -184,15 +187,7 @@ const PaymentManagement = () => {
                   className='table-common paymentManagement-table'
                   dataSource={payments.data}
                   columns={columns}
-                  pagination={
-                    payments.total > limit && {
-                      total: payments.total,
-                      onChange: onChangePage,
-                      //pageSizeOptions: [10, 20, 50],
-                      showSizeChanger: true,
-                      className: 'payment-pagination',
-                    }
-                  }
+                  pagination={false}
                   rowSelection={{
                     selectedRowKeys,
                     onChange: onSelectChange,
@@ -210,6 +205,10 @@ const PaymentManagement = () => {
                   rowKey='id'
                   size='middle'
                   bordered={false}
+                />
+                <Pagination
+                  total={payments.total}
+                  setPaginate={onChangePage}
                 />
               </Spin>
             </div>
@@ -240,11 +239,6 @@ const PaymentManagement = () => {
         isSelection
         setSelectedRowKeys={onSelectChange}
       ></Table> */}
-      {/* <Pagination
-        total={payments.total}
-        // onShowSizeChange={onChangePage}
-        // setPaginate={setPaginate}
-      /> */}
     </div>
   );
 };

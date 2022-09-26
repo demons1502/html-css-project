@@ -6,7 +6,7 @@ import loading from "./slices/loading";
 import authReducer from "./slices/auth";
 import events from "./slices/events";
 import customerCare from "./slices/customerCare";
-import financeKnowledgeReducer from "./slices/financeKnowledge";
+import financeKnowledge from "./slices/financeKnowledge";
 import managementContentReducer from "./slices/managementContent";
 import userManagement from "./slices/userManagement";
 import contractManagement from "./slices/contractManagement";

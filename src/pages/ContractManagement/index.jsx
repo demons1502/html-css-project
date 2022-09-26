@@ -1,232 +1,114 @@
-import { React, useState, useEffect } from 'react';
-import InputSearch from '../../components/common/InputSearch';
-import '../../assets/scss/ContractManagement/styleContract.scss';
-import { Button, Table, Modal } from 'antd';
-import CreateContract from './CreateContract';
-import { retrieveData, setRefresh } from '../../slices/contractManagement';
+import { React, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import TableCommon from '../../components/common/TableNormal';
-import Pagination from '../../components/common/Pagination';
-import moment from 'moment';
-import { getByIds } from '../../slices/contractManagement';
-import { getTimeByTZ } from '../../helper/index';
-
-var handleEditUser;
-
-const columns = [
-  {
-    title: 'Mã số',
-    dataIndex: 'contractNumber',
-    className: 'id-contract',
-    key: '1',
-  },
-  {
-    title: 'Người mua',
-    dataIndex: 'customerName',
-    key: '2',
-  },
-  {
-    title: 'Người hưởng',
-    dataIndex: 'beneficiary',
-    key: '3',
-  },
-  {
-    title: 'Giá trị',
-    className: 'value',
-    // dataIndex: 'value',
-    key: '4',
-    render:(record)=>{
-      const formatValue=new Intl.NumberFormat('vi-VN').format(record.value)
-      return <span>{formatValue}</span>
-    }
-  },
-  {
-    title: 'Ngày hiệu lực',
-    // dataIndex: 'startDate',
-    key: '5',
-    render: (record) => {
-      return <span>{getTimeByTZ(record.startDate)}</span>;
-    },
-  },
-  {
-    title: 'Số năm nộp phí',
-    dataIndex: 'duration',
-    key: '6',
-  },
-  {
-    title: 'Chu kì nộp phí',
-    dataIndex: 'depositTerm',
-    key: '7',
-  },
-  {
-    title: 'Lần cuối nộp phí',
-    // dataIndex: 'lastDepositDate',
-    key: '8',
-    render: (record) => {
-      return <span>{getTimeByTZ(record.lastDepositDate)}</span>;
-    },
-  },
-  {
-    title: 'Hạn nộp phí tiếp theo',
-    // dataIndex: 'nextDepositDue',
-    key: '9',
-    render: (record) => {
-      return <span>{getTimeByTZ(record.nextDepositDue)}</span>;
-    },
-  },
-  {
-    title: '',
-    dataIndex: '',
-    width: '118px',
-    render: () => (
-      <button className='btn_modal_example btn-bgWhite-textGreen-borGreen'>
-        Bảng minh hoạ
-      </button>
-    ),
-    key: '10',
-  },
-  {
-    title: '',
-    dataIndex: '',
-    render: () => (
-      <img
-        className='edit_icon'
-        src='../images/edit_icon.svg'
-        onClick={handleEditUser}
-      />
-    ),
-    key: '11',
-  },
-];
+import { Button } from 'antd'
+import IconPlus from '../../assets/images/icons/plus.svg';
+import IconEdit from '../../assets/images/icons/edit-green.svg';
+import InputSearch from '../../components/common/InputSearch'
+import Table from '../../components/common/TableNormal'
+import Pagination from '../../components/common/Pagination'
+import Modal from '../../components/common/Modal';
+import CreateContract from './CreateContract';
+import { retrieveData } from '../../slices/contractManagement';
+import { DEFAULT_SIZE } from '../../ultis/constant'
 
 export default function ContractManagement() {
-  const [modalCreateContract, setModalCreateContract] = useState(false);
-  const [modalEditContract, setModalEditContract] = useState(false);
-  const [dataEdit, setDataEdit] = useState(null);
-  const [dataTable, setDataTable] = useState([]);
-  const [inputText, setInputText] = useState('');
+  const dispatch = useDispatch()
+  const {data, totalItem} = useSelector((state)=>state.contractManagement)
+  const [visibleModal, setVisibleModal] = useState(false)
+  const [dataEdit, setDataEdit] = useState(null)
+  const [titleModal, setTitleModal] = useState('')
+  const [paginate, setPaginate] = useState({
+    limit: DEFAULT_SIZE,
+    offset: 1
+  });
+  const [inputText, setInputText]= useState('')
 
-  const dispatch = useDispatch();
-  const userData = useSelector((state) => state.contractManagement.data);
+  const columns = [
+    {
+      title: 'Mã số',
+      dataIndex: 'contractNumber',
+      className: 'id-contract',
+    },
+    {
+      title: 'Người mua',
+      dataIndex: 'insured',
+    },
+    {
+      title: 'Người hưởng',
+      dataIndex: 'beneficiary',
+    },
+    {
+      title: 'Giá trị',
+      className: 'value',
+      dataIndex: 'price',
+    },
+    {
+      title: 'Ngày hiệu lực',
+      dataIndex: 'startDate',
+    },
+    {
+      title: 'Số năm nộp phí',
+      dataIndex: 'duration',
+    },
+    {
+      title: 'Chu kì nộp phí',
+      dataIndex: 'depositTerm',
+    },
+    {
+      title: 'Lần cuối nộp phí',
+      dataIndex: 'lastDepositDate',
+    },
+    {
+      title: 'Hạn nộp phí tiếp theo',
+      dataIndex: 'nextDepositDue',
+    },
+    {
+      title: '',
+      dataIndex: '',
+      width:'118px',
+      render: () => <button className='btn_modal_example btn-bgWhite-textGreen-borGreen'>Bảng minh hoạ</button>
+    },
+    {
+      title: '',
+      render: (record) => <img className='edit_icon' src={IconEdit} onClick={() => handleEditUser(record)} />,
+    }
+  ];
   
-  const dataEditStore = useSelector(
-    (state) => state.contractManagement.contractById
-  );
-  const refreshData = useSelector(
-    (state) => state.contractManagement.refreshData
-  );
-  const totalItem = useSelector((state) => state.contractManagement.totalItem);
-  const [limit, setLimit] = useState(10);
-  const [offset, setOffset] = useState(0);
-
-  const handleCloseModalCreate = () => {
-    setModalCreateContract(false);
-    setModalEditContract(false);
-  };
-
   useEffect(() => {
-    dispatch(retrieveData({ limit: limit, offset: offset }));
-  }, []);
+    let offset = (paginate.offset - 1) * paginate.limit;
+    dispatch(retrieveData({userSearch: inputText, limit: paginate.limit, offset:offset}))
+  },[inputText])
 
-  useEffect(() => {
-    setDataEdit(dataEditStore);
-  }, [dataEditStore]);
+  const handleEditUser = (record) => {
+    setDataEdit({...record})
+    setVisibleModal(true)
+    setTitleModal('Thay đổi nội dung hợp đồng')
+  }
 
-  useEffect(() => {
-    if (refreshData) {
-      dispatch(retrieveData({ limit: limit, offset: offset }));
-      dispatch(setRefresh());
-    }
-  }, [refreshData]);
+  const handleCreateContract = () => {
+    setDataEdit({})
+    setVisibleModal(true)
+    setTitleModal('Thêm hợp đồng')
+  }
 
-  useEffect(() => {
-    setDataTable(userData);
-  }, [userData]);
-
-  useEffect(() => {
-    if (inputText) {
-      dispatch(retrieveData({ limit: limit, offset: offset }));
-    } else {
-      dispatch(retrieveData({ limit: limit, offset: offset }));
-    }
-  }, [inputText, limit, offset]);
-
-  handleEditUser = (e) => {
-    const rowHover = document.querySelectorAll('.ant-table-cell-row-hover');
-    const id = rowHover[0].innerHTML;
-    dataTable.map((item) => {
-      item.contractNumber == id ? setDataEdit(item) : null;
-    });
-    setModalEditContract(true);
-  };
-
-  const setPaginate = (e) => {
-    console.log(e);
-    if (totalItem < (e.offset - 1) * e.limit) {
-      setOffset(e.limit);
-    } else {
-      setOffset((e.offset - 1) * e.limit);
-    }
-    setLimit(e.limit);
-  };
-  return (
+  return <>
     <div className='content-box container_contract'>
-      <div className='contract_header'>
+      <div className="contract_header">
         <h3>Quản lý hợp đồng</h3>
-        <div className='header_right'>
-          <InputSearch setPayload={setInputText} />
-          <Button
-            className='btn-primary'
-            onClick={() => setModalCreateContract(true)}
-          >
-            <img src='../images/plus_icon_admin.svg' />
-            <p>Thêm hợp đồng</p>
+        <div className="header_right">
+          <InputSearch setPayload={setInputText}/>
+          <Button className='btn-primary' onClick={handleCreateContract}>
+            <img src={IconPlus} alt="" />
+            Thêm hợp đồng
           </Button>
         </div>
       </div>
-      <div className='contract_list'>
-        <TableCommon
-          dataSource={dataTable}
-          columnTable={columns}
-          size='middle'
-          rowKey='id'
-        />
-        <Pagination total={totalItem} setPaginate={setPaginate} />
+      <div className="contract_list">
+        <Table dataSource={data} columnTable={columns} size='middle' />
+        <Pagination total={totalItem} pageSize={paginate.limit} setPaginate={setPaginate} />
       </div>
-      {modalCreateContract ? (
-        <Modal
-          width='800px'
-          centered
-          footer={null}
-          closable={false}
-          open={modalCreateContract}
-          onOk={() => setModalCreateContract(false)}
-          onCancel={() => setModalCreateContract(false)}
-        >
-          <CreateContract handleCloseModalCreate={handleCloseModalCreate} />
-        </Modal>
-      ) : (
-        <></>
-      )}
-      {modalEditContract ? (
-        <Modal
-          width='800px'
-          centered
-          footer={null}
-          closable={false}
-          open={modalEditContract}
-          onOk={() => setModalEditContract(false)}
-          onCancel={() => setModalEditContract(false)}
-        >
-          <CreateContract
-            handleCloseModalCreate={handleCloseModalCreate}
-            data={dataEdit}
-            func={'edit'}
-          />
-        </Modal>
-      ) : (
-        <></>
-      )}
     </div>
-  );
+    <Modal isVisible={visibleModal} setIsVisible={setVisibleModal} title={titleModal} width={800} content={<CreateContract dataEdit={dataEdit} setVisibleModal={setVisibleModal} />} />
+  </> 
 }
+

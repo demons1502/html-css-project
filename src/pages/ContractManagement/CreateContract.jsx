@@ -20,16 +20,12 @@ import { getCustoms } from '../../slices/contractManagement';
 import '../../assets/scss/ContractManagement/createContractStyle.scss';
 
 function CreateContract(props) {
-  const [options, setOptions] = useState([]);
+  console.log(props)
   const [name, setName] = useState('');
   const [id, setId] = useState(null);
 
   const customerName = useSelector((state) => state.contractManagement.custom);
   const dispatch = useDispatch();
-  const autoCompleteChange = (e) => {
-    console.log(e);
-    // dispatch(getCustoms({ name: e, limit: 10, offset: 0 }));
-  };
 
   useEffect(() => {
     dispatch(getCustoms({ name: '', limit: 10, offset: 0 }));
@@ -84,15 +80,6 @@ function CreateContract(props) {
   //autoComplete
   const onSearch = (searchText) => {
     dispatch(getCustoms({ name: searchText, limit: 10, offset: 0 }));
-    // if (customerName) {
-    //   setOptions(
-    //     !searchText
-    //       ? []
-    //       : customerName.map((item) => {
-    //         return { value: item.fullname };
-    //       })
-    //   );
-    // }
   };
 
   const onSelect = (value, option) => {
@@ -103,7 +90,7 @@ function CreateContract(props) {
   return (
     <div className='create_contract'>
       <div className='create_contract_header'>
-        <h3>{props.data?.title ? props.data.title : 'Thêm hợp đồng'}</h3>
+        <h3>{props.data?.titleModal ? props.data.titleModal : 'Thêm hợp đồng'}</h3>
       </div>
       <div className='line'></div>
       <div className='create_contract_content'>

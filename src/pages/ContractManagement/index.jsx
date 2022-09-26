@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import InputSearch from '../../components/common/InputSearch';
 import '../../assets/scss/ContractManagement/styleContract.scss';
-import { Button, Table, Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import CreateContract from './CreateContract';
 import { retrieveData, setRefresh } from '../../slices/contractManagement';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,8 +10,6 @@ import Pagination from '../../components/common/Pagination';
 import moment from 'moment';
 import { getByIds } from '../../slices/contractManagement';
 import { getTimeByTZ } from '../../helper/index';
-
-var handleEditUser;
 
 const columns = [
   {
@@ -100,11 +98,11 @@ const columns = [
 ];
 
 export default function ContractManagement() {
-  const [modalCreateContract, setModalCreateContract] = useState(false);
-  const [modalEditContract, setModalEditContract] = useState(false);
+  const [visitModal, setVisibleModal] = useState(false);
   const [dataEdit, setDataEdit] = useState(null);
   const [dataTable, setDataTable] = useState([]);
   const [inputText, setInputText] = useState('');
+  const [titleModal, setTitleModal] = useState('')
 
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.contractManagement.data);
@@ -157,7 +155,9 @@ export default function ContractManagement() {
     dataTable.map((item) => {
       item.contractNumber == id ? setDataEdit(item) : null;
     });
-    setModalEditContract(true);
+    setVisibleModal(true)
+    setTitleModal('Thêm hợp đồng')
+
   };
 
   const setPaginate = (e) => {
@@ -193,35 +193,35 @@ export default function ContractManagement() {
         />
         <Pagination total={totalItem} setPaginate={setPaginate} />
       </div>
-      {modalCreateContract ? (
+      {visitModal ? (
         <Modal
           width='800px'
           centered
           footer={null}
           closable={false}
-          open={modalCreateContract}
-          onOk={() => setModalCreateContract(false)}
-          onCancel={() => setModalCreateContract(false)}
+          open={visitModal}
+          onOk={() => setVisibleModal(false)}
+          onCancel={() => setVisibleModal(false)}
         >
           <CreateContract handleCloseModalCreate={handleCloseModalCreate} />
         </Modal>
       ) : (
         <></>
       )}
-      {modalEditContract ? (
+      {visitModal ? (
         <Modal
           width='800px'
           centered
           footer={null}
           closable={false}
           open={modalEditContract}
-          onOk={() => setModalEditContract(false)}
-          onCancel={() => setModalEditContract(false)}
+          onOk={() => setVisibleModal(false)}
+          onCancel={() => setVisibleModal(false)}
         >
           <CreateContract
             handleCloseModalCreate={handleCloseModalCreate}
             data={dataEdit}
-            func={'edit'}
+            title={titleModal}
           />
         </Modal>
       ) : (

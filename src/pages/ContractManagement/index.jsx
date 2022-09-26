@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { React, useState, useEffect } from 'react';
 import InputSearch from '../../components/common/InputSearch';
 import '../../assets/scss/ContractManagement/styleContract.scss';
@@ -107,10 +108,85 @@ export default function ContractManagement() {
   const [inputText, setInputText] = useState('');
   const [titleModal, setTitleModal] = useState('')
   const [func, setFunc] = useState(0)
+=======
+import { React, useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from 'antd'
+import IconPlus from '../../assets/images/icons/plus.svg';
+import IconEdit from '../../assets/images/icons/edit-green.svg';
+import InputSearch from '../../components/common/InputSearch'
+import Table from '../../components/common/TableNormal'
+import Pagination from '../../components/common/Pagination'
+import Modal from '../../components/common/Modal';
+import CreateContract from './CreateContract';
+import { retrieveData } from '../../slices/contractManagement';
+import { DEFAULT_SIZE } from '../../ultis/constant'
 
-  const dispatch = useDispatch();
-  const userData = useSelector((state) => state.contractManagement.data);
+export default function ContractManagement() {
+  const dispatch = useDispatch()
+  const {data, totalItem} = useSelector((state)=>state.contractManagement)
+  const [visibleModal, setVisibleModal] = useState(false)
+  const [dataEdit, setDataEdit] = useState(null)
+  const [titleModal, setTitleModal] = useState('')
+  const [paginate, setPaginate] = useState({
+    limit: DEFAULT_SIZE,
+    offset: 1
+  });
+  const [inputText, setInputText]= useState('')
+>>>>>>> 0c4b0b4fd2d037ecba8b70733f062a49e18234a0
+
+  const columns = [
+    {
+      title: 'Mã số',
+      dataIndex: 'contractNumber',
+      className: 'id-contract',
+    },
+    {
+      title: 'Người mua',
+      dataIndex: 'insured',
+    },
+    {
+      title: 'Người hưởng',
+      dataIndex: 'beneficiary',
+    },
+    {
+      title: 'Giá trị',
+      className: 'value',
+      dataIndex: 'price',
+    },
+    {
+      title: 'Ngày hiệu lực',
+      dataIndex: 'startDate',
+    },
+    {
+      title: 'Số năm nộp phí',
+      dataIndex: 'duration',
+    },
+    {
+      title: 'Chu kì nộp phí',
+      dataIndex: 'depositTerm',
+    },
+    {
+      title: 'Lần cuối nộp phí',
+      dataIndex: 'lastDepositDate',
+    },
+    {
+      title: 'Hạn nộp phí tiếp theo',
+      dataIndex: 'nextDepositDue',
+    },
+    {
+      title: '',
+      dataIndex: '',
+      width:'118px',
+      render: () => <button className='btn_modal_example btn-bgWhite-textGreen-borGreen'>Bảng minh hoạ</button>
+    },
+    {
+      title: '',
+      render: (record) => <img className='edit_icon' src={IconEdit} onClick={() => handleEditUser(record)} />,
+    }
+  ];
   
+<<<<<<< HEAD
   const dataEditStore = useSelector(
     (state) => state.contractManagement.contractById
   );
@@ -126,21 +202,26 @@ export default function ContractManagement() {
     setVisibleModal(false);
   };
 
+=======
+>>>>>>> 0c4b0b4fd2d037ecba8b70733f062a49e18234a0
   useEffect(() => {
-    dispatch(retrieveData({ limit: limit, offset: offset }));
-  }, []);
+    let offset = (paginate.offset - 1) * paginate.limit;
+    dispatch(retrieveData({userSearch: inputText, limit: paginate.limit, offset:offset}))
+  },[inputText])
 
-  useEffect(() => {
-    setDataEdit(dataEditStore);
-  }, [dataEditStore]);
+  const handleEditUser = (record) => {
+    setDataEdit({...record})
+    setVisibleModal(true)
+    setTitleModal('Thay đổi nội dung hợp đồng')
+  }
 
-  useEffect(() => {
-    if (refreshData) {
-      dispatch(retrieveData({ limit: limit, offset: offset }));
-      dispatch(setRefresh());
-    }
-  }, [refreshData]);
+  const handleCreateContract = () => {
+    setDataEdit({})
+    setVisibleModal(true)
+    setTitleModal('Thêm hợp đồng')
+  }
 
+<<<<<<< HEAD
   useEffect(() => {
     setDataTable(userData);
   }, [userData]);
@@ -181,9 +262,13 @@ export default function ContractManagement() {
     setLimit(e.limit);
   };
   return (
+=======
+  return <>
+>>>>>>> 0c4b0b4fd2d037ecba8b70733f062a49e18234a0
     <div className='content-box container_contract'>
-      <div className='contract_header'>
+      <div className="contract_header">
         <h3>Quản lý hợp đồng</h3>
+<<<<<<< HEAD
         <div className='header_right'>
           <InputSearch setPayload={setInputText} />
           <Button
@@ -192,18 +277,21 @@ export default function ContractManagement() {
           >
             <img src='../images/plus_icon_admin.svg' />
             <p>Thêm hợp đồng</p>
+=======
+        <div className="header_right">
+          <InputSearch setPayload={setInputText}/>
+          <Button className='btn-primary' onClick={handleCreateContract}>
+            <img src={IconPlus} alt="" />
+            Thêm hợp đồng
+>>>>>>> 0c4b0b4fd2d037ecba8b70733f062a49e18234a0
           </Button>
         </div>
       </div>
-      <div className='contract_list'>
-        <TableCommon
-          dataSource={dataTable}
-          columnTable={columns}
-          size='middle'
-          rowKey='id'
-        />
-        <Pagination total={totalItem} setPaginate={setPaginate} />
+      <div className="contract_list">
+        <Table dataSource={data} columnTable={columns} size='middle' />
+        <Pagination total={totalItem} pageSize={paginate.limit} setPaginate={setPaginate} />
       </div>
+<<<<<<< HEAD
       {visitModal ? (
         <Modal
           width='800px'
@@ -223,6 +311,10 @@ export default function ContractManagement() {
       ) : (
         <></>
       )}
+=======
+>>>>>>> 0c4b0b4fd2d037ecba8b70733f062a49e18234a0
     </div>
-  );
+    <Modal isVisible={visibleModal} setIsVisible={setVisibleModal} title={titleModal} width={800} content={<CreateContract dataEdit={dataEdit} setVisibleModal={setVisibleModal} />} />
+  </> 
 }
+

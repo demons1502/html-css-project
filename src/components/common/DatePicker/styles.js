@@ -1,8 +1,8 @@
-import { DatePicker as AntDatePicker } from "antd";
-import styled from "styled-components";
+import { DatePicker as AntDatePicker } from 'antd';
+import styled from 'styled-components';
 
 export const DatePicker = styled(AntDatePicker)`
-  background: #f8f8f8;
+  background-color: #f8f8f8 !important;
   border-radius: 5px;
   border: none;
   &:focus {

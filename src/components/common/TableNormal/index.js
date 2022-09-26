@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'antd';
-import {useSelector} from 'react-redux';
-import {LOADING_STATUS} from '../../../ultis/constant';
+import { useSelector } from 'react-redux';
+import { LOADING_STATUS } from '../../../ultis/constant';
 
 export default function TableCommon(props) {
   const loading = useSelector((state) => state.loading);
@@ -12,7 +12,7 @@ export default function TableCommon(props) {
     isSelection = false,
     bordered = false,
     setSelectedRowKeys,
-    isScroll
+    isScroll,
   } = props;
 
   const onSelectChange = (selectedRowKeys, selectedRows) => {
@@ -23,24 +23,26 @@ export default function TableCommon(props) {
     onChange: onSelectChange,
   };
 
-  return <Table
-    {...props}
-    loading={loading.loading === LOADING_STATUS.pending ? true : false}
-    rowSelection={isSelection ? rowSelection : undefined}
-    dataSource={dataSource}
-    columns={columnTable}
-    pagination={pagination}
-    bordered={bordered}
-    className='table-common'
-    rowKey="id"
-    // scroll={isScroll ?
-    //   {
-    //     y: `calc(100vh - ${heightMargin}px)`,
-    //     scrollToFirstRowOnChange: false
-    //   }
-    //   : 
-    //   {}}
-  >
-    {props.children}
-  </Table>
+  return (
+    <Table
+      {...props}
+      loading={loading.loading === LOADING_STATUS.pending ? true : false}
+      rowSelection={isSelection ? rowSelection : undefined}
+      dataSource={dataSource}
+      columns={columnTable}
+      pagination={pagination}
+      bordered={bordered}
+      className='table-common'
+      rowKey='id'
+      // scroll={isScroll ?
+      //   {
+      //     y: `calc(100vh - ${heightMargin}px)`,
+      //     scrollToFirstRowOnChange: false
+      //   }
+      //   :
+      //   {}}
+    >
+      {props.children}
+    </Table>
+  );
 }

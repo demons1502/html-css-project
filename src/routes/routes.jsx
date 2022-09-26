@@ -40,8 +40,10 @@ const EducationFoundation = lazy(() =>
 const IllustrateFiduciary = lazy(() =>
   import('../pages/FinancialSolution/IllustrateFiduciary')
 );
-const PotentialCustomers = lazy(() =>
-  import('../pages/PotentialCustomers')
+const PotentialCustomers = lazy(() => import('../pages/PotentialCustomers'));
+
+const AppointmentManagement = lazy(() =>
+  import('../pages/Main/views/AppointmentManagement')
 );
 
 // ADMIN VIEWS
@@ -66,7 +68,6 @@ export const routes = () => [
         path: 'dashboard',
         element: <GuestGuard element={<CustomerCare />} />,
       },
-      // no page yet
       {
         path: 'potential-customers',
         element: <GuestGuard element={<PotentialCustomers />} />,
@@ -74,7 +75,7 @@ export const routes = () => [
       // no page yet
       {
         path: 'appointment-management',
-        element: <GuestGuard element={<CustomerCare />} />,
+        element: <GuestGuard element={<AppointmentManagement />} />,
       },
       {
         path: 'advise',
@@ -118,7 +119,7 @@ export const routes = () => [
       },
       {
         path: 'q&a',
-        element: <GuestGuard element={<CustomerCare />} />,
+        element: <GuestGuard element={<ManageFinanceKnowledge />} />,
       },
       {
         path: 'finance-support',
@@ -194,7 +195,7 @@ export const routes = () => [
       {
         path: 'setting',
         element: <CustomerCare />,
-      }
+      },
     ],
   },
   {

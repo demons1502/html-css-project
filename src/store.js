@@ -13,6 +13,7 @@ import contractManagement from "./slices/contractManagement";
 import paymentManagement from "./slices/paymentManagement";
 import potentialCustomersReducer from "./slices/potentialCustomersSlice";
 
+
 const persistConfig = {
   key: "root",
   storage,
@@ -23,7 +24,7 @@ const rootReducer = combineReducers({
   loading: loading,
   customerCare: customerCare,
   auth: authReducer,
-  financeKnowledgeReducer: financeKnowledgeReducer,
+  financeKnowledge: financeKnowledge,
   managementContentReducer: managementContentReducer,
   events: events,
   userManagement: userManagement,

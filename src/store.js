@@ -11,8 +11,8 @@ import managementContentReducer from "./slices/managementContent";
 import userManagement from "./slices/userManagement";
 import contractManagement from "./slices/contractManagement";
 import paymentManagement from "./slices/paymentManagement";
-import potentialCustomersReducer from "./slices/potentialCustomersSlice";
-
+import surveyReducer from "./slices/surveys";
+import customerReducer from "./slices/customers";
 
 const persistConfig = {
   key: "root",
@@ -24,13 +24,14 @@ const rootReducer = combineReducers({
   loading: loading,
   customerCare: customerCare,
   auth: authReducer,
-  financeKnowledge: financeKnowledge,
+  financeKnowledgeReducer: financeKnowledgeReducer,
   managementContentReducer: managementContentReducer,
   events: events,
   userManagement: userManagement,
   contractManagement: contractManagement,
   paymentManagementReducer: paymentManagement,
-  potentialCustomersReducer: potentialCustomersReducer,
+  surveys: surveyReducer,
+  customers: customerReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

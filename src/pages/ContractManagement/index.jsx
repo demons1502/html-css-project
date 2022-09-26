@@ -10,99 +10,103 @@ import Pagination from '../../components/common/Pagination';
 import moment from 'moment';
 import { getByIds } from '../../slices/contractManagement';
 import { getTimeByTZ } from '../../helper/index';
+import ModalCommon from '../../components/common/Modal';
 
-const columns = [
-  {
-    title: 'Mã số',
-    dataIndex: 'contractNumber',
-    className: 'id-contract',
-    key: '1',
-  },
-  {
-    title: 'Người mua',
-    dataIndex: 'customerName',
-    key: '2',
-  },
-  {
-    title: 'Người hưởng',
-    dataIndex: 'beneficiary',
-    key: '3',
-  },
-  {
-    title: 'Giá trị',
-    className: 'value',
-    // dataIndex: 'value',
-    key: '4',
-    render:(record)=>{
-      const formatValue=new Intl.NumberFormat('vi-VN').format(record.value)
-      return <span>{formatValue}</span>
-    }
-  },
-  {
-    title: 'Ngày hiệu lực',
-    // dataIndex: 'startDate',
-    key: '5',
-    render: (record) => {
-      return <span>{getTimeByTZ(record.startDate)}</span>;
-    },
-  },
-  {
-    title: 'Số năm nộp phí',
-    dataIndex: 'duration',
-    key: '6',
-  },
-  {
-    title: 'Chu kì nộp phí',
-    dataIndex: 'depositTerm',
-    key: '7',
-  },
-  {
-    title: 'Lần cuối nộp phí',
-    // dataIndex: 'lastDepositDate',
-    key: '8',
-    render: (record) => {
-      return <span>{getTimeByTZ(record.lastDepositDate)}</span>;
-    },
-  },
-  {
-    title: 'Hạn nộp phí tiếp theo',
-    // dataIndex: 'nextDepositDue',
-    key: '9',
-    render: (record) => {
-      return <span>{getTimeByTZ(record.nextDepositDue)}</span>;
-    },
-  },
-  {
-    title: '',
-    dataIndex: '',
-    width: '118px',
-    render: () => (
-      <button className='btn_modal_example btn-bgWhite-textGreen-borGreen'>
-        Bảng minh hoạ
-      </button>
-    ),
-    key: '10',
-  },
-  {
-    title: '',
-    dataIndex: '',
-    render: () => (
-      <img
-        className='edit_icon'
-        src='../images/edit_icon.svg'
-        onClick={handleEditUser}
-      />
-    ),
-    key: '11',
-  },
-];
+
 
 export default function ContractManagement() {
+  const columns = [
+    {
+      title: 'Mã số',
+      dataIndex: 'contractNumber',
+      className: 'id-contract',
+      key: '1',
+    },
+    {
+      title: 'Người mua',
+      dataIndex: 'customerName',
+      key: '2',
+    },
+    {
+      title: 'Người hưởng',
+      dataIndex: 'beneficiary',
+      key: '3',
+    },
+    {
+      title: 'Giá trị',
+      className: 'value',
+      // dataIndex: 'value',
+      key: '4',
+      render:(record)=>{
+        const formatValue=new Intl.NumberFormat('vi-VN').format(record.value)
+        return <span>{formatValue}</span>
+      }
+    },
+    {
+      title: 'Ngày hiệu lực',
+      // dataIndex: 'startDate',
+      key: '5',
+      render: (record) => {
+        return <span>{getTimeByTZ(record.startDate)}</span>;
+      },
+    },
+    {
+      title: 'Số năm nộp phí',
+      dataIndex: 'duration',
+      key: '6',
+    },
+    {
+      title: 'Chu kì nộp phí',
+      dataIndex: 'depositTerm',
+      key: '7',
+    },
+    {
+      title: 'Lần cuối nộp phí',
+      // dataIndex: 'lastDepositDate',
+      key: '8',
+      render: (record) => {
+        return <span>{getTimeByTZ(record.lastDepositDate)}</span>;
+      },
+    },
+    {
+      title: 'Hạn nộp phí tiếp theo',
+      // dataIndex: 'nextDepositDue',
+      key: '9',
+      render: (record) => {
+        return <span>{getTimeByTZ(record.nextDepositDue)}</span>;
+      },
+    },
+    {
+      title: '',
+      dataIndex: '',
+      width: '118px',
+      render: () => (
+        <button className='btn_modal_example btn-bgWhite-textGreen-borGreen'>
+          Bảng minh hoạ
+        </button>
+      ),
+      key: '10',
+    },
+    {
+      title: '',
+      dataIndex: '',
+      render: () => (
+        <img
+          className='edit_icon'
+          src='../images/edit_icon.svg'
+          onClick={handleEditContract}
+        />
+      ),
+      key: '11',
+    },
+  ];
+
   const [visitModal, setVisibleModal] = useState(false);
   const [dataEdit, setDataEdit] = useState(null);
   const [dataTable, setDataTable] = useState([]);
   const [inputText, setInputText] = useState('');
   const [titleModal, setTitleModal] = useState('')
+  const [func, setFunc] = useState(0)
 
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.contractManagement.data);
@@ -113,13 +117,13 @@ export default function ContractManagement() {
   const refreshData = useSelector(
     (state) => state.contractManagement.refreshData
   );
+  
   const totalItem = useSelector((state) => state.contractManagement.totalItem);
   const [limit, setLimit] = useState(10);
   const [offset, setOffset] = useState(0);
 
   const handleCloseModalCreate = () => {
-    setModalCreateContract(false);
-    setModalEditContract(false);
+    setVisibleModal(false);
   };
 
   useEffect(() => {
@@ -143,22 +147,29 @@ export default function ContractManagement() {
 
   useEffect(() => {
     if (inputText) {
-      dispatch(retrieveData({ limit: limit, offset: offset }));
+      dispatch(retrieveData({userSearch: inputText , limit: limit, offset: offset}));
     } else {
       dispatch(retrieveData({ limit: limit, offset: offset }));
     }
   }, [inputText, limit, offset]);
 
-  handleEditUser = (e) => {
+  var handleEditContract = (e) => {
     const rowHover = document.querySelectorAll('.ant-table-cell-row-hover');
     const id = rowHover[0].innerHTML;
     dataTable.map((item) => {
       item.contractNumber == id ? setDataEdit(item) : null;
     });
     setVisibleModal(true)
-    setTitleModal('Thêm hợp đồng')
-
+    setTitleModal('Thay đổi nội dung hợp đồng')
+    setFunc(1)
   };
+
+  const handleCreateContract=()=>{
+    setVisibleModal(true)
+    setDataEdit([])
+    setTitleModal('Thêm hợp đồng')
+    setFunc(0)
+  }
 
   const setPaginate = (e) => {
     console.log(e);
@@ -177,7 +188,7 @@ export default function ContractManagement() {
           <InputSearch setPayload={setInputText} />
           <Button
             className='btn-primary'
-            onClick={() => setModalCreateContract(true)}
+            onClick={handleCreateContract}
           >
             <img src='../images/plus_icon_admin.svg' />
             <p>Thêm hợp đồng</p>
@@ -203,25 +214,10 @@ export default function ContractManagement() {
           onOk={() => setVisibleModal(false)}
           onCancel={() => setVisibleModal(false)}
         >
-          <CreateContract handleCloseModalCreate={handleCloseModalCreate} />
-        </Modal>
-      ) : (
-        <></>
-      )}
-      {visitModal ? (
-        <Modal
-          width='800px'
-          centered
-          footer={null}
-          closable={false}
-          open={modalEditContract}
-          onOk={() => setVisibleModal(false)}
-          onCancel={() => setVisibleModal(false)}
-        >
-          <CreateContract
-            handleCloseModalCreate={handleCloseModalCreate}
+          <CreateContract handleCloseModalCreate={handleCloseModalCreate} 
             data={dataEdit}
             title={titleModal}
+            func={func}
           />
         </Modal>
       ) : (

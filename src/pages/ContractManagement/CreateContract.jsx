@@ -24,6 +24,7 @@ function CreateContract(props) {
   const [name, setName] = useState('');
   const [id, setId] = useState(null);
 
+  const loading = useSelector((state) => state.loading.loading);
   const customerName = useSelector((state) => state.contractManagement.custom);
   const dispatch = useDispatch();
 
@@ -35,13 +36,6 @@ function CreateContract(props) {
 
   const onFinish = (values) => {
     const data = {
-      // contractNumber: values.contractNumber,
-      // customerId: id, // custom id get in custom api
-      // beneficiary: values.beneficiary,
-      // value: Number(values.value),
-      // startDate: moment(values.startDate._d).format(),
-      // duration: Number(values.duration),
-      // depositTerm: Number(values.depositTerm),
       contractNumber: values.contractNumber,
       customerId: +id,
       solutionId: +id,
@@ -51,13 +45,14 @@ function CreateContract(props) {
       duration: +values.duration,
       depositTerm: +values.depositTerm,
     };
-    if (props.func == 'edit') {
+    if (props.func == 1) {
       dispatch(updateContract({ id: props.data.id, data: data }));
     } else {
       dispatch(createContract(data));
     }
     // console.log(data);
   };
+  console.log(loading);
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -90,7 +85,7 @@ function CreateContract(props) {
   return (
     <div className='create_contract'>
       <div className='create_contract_header'>
-        <h3>{props.data?.titleModal ? props.data.titleModal : 'Thêm hợp đồng'}</h3>
+        <h3>{props.title ? props.title : 'Thêm hợp đồng'}</h3>
       </div>
       <div className='line'></div>
       <div className='create_contract_content'>
@@ -150,7 +145,7 @@ function CreateContract(props) {
                         }}
                       >
                         <span>{item.fullname}</span>
-                        <span>ID: {item.customerId}</span>
+                        <span>Phone: {item.phone1}</span>
                       </div>
                     </Option>
                   ))}

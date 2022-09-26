@@ -46,13 +46,18 @@ const AppointmentManagement = lazy(() =>
   import('../pages/Main/views/AppointmentManagement')
 );
 
+
 // ADMIN VIEWS
 const Admin = lazy(() => import('../pages/Admin/index'));
 const ManageFinanceKnowledge = lazy(() =>
   import('../pages/ManageFinanceKnowledge')
 );
-const PaymentManagement = lazy(() => import('../pages/PaymentManagement'));
-
+const PaymentManagement = lazy(() => 
+  import('../pages/PaymentManagement')
+);
+const ConfigUser =lazy(()=>
+  import('../pages/ConfigUser/index')
+);
 // NOT FOUND
 import NotFound from '../pages/NotFound';
 
@@ -183,6 +188,10 @@ export const routes = () => [
       {
         path: 'operation-history',
         element: <ManagerGuard element={<CustomerCare />} />,
+      },
+      {
+        path: 'config-user',
+        element: <ManagerGuard element={<ConfigUser />} />,
       },
     ],
   },

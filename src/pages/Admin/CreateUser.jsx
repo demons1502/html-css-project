@@ -51,7 +51,7 @@ function Create_user(props) {
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng nhập Họ và tên.',
+                  // message: 'Vui lòng nhập Họ và tên.',
                 },
               ]}
             >
@@ -65,7 +65,7 @@ function Create_user(props) {
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng nhập số điện thoai.',
+                  // message: 'Vui lòng nhập số điện thoai.',
                 },
               ]}
             >

@@ -7,7 +7,7 @@ import Nav from '../../components/Nav';
 
 export const AdminLayout = () => {
   return (
-    <Fragment>
+    <Fragment> 
       <Header />
       {/* <Nav /> */}
       <div className='main-wrapper'>

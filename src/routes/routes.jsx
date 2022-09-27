@@ -68,10 +68,6 @@ export const routes = () => [
         element: <GuestGuard element={<AppointmentManagement />} />,
       },
       {
-        path: 'payment',
-        element: <GuestGuard element={<PaymentManagement />} />,
-      },
-      {
         path: 'advise',
         children: [
           {
@@ -157,10 +153,10 @@ export const routes = () => [
     element: <AdminLayout />,
     children: [
       { path: '', element: <ManagerGuard element={<Admin />} /> },
-      // {
-      //   path: 'payment',
-      //   element: <ManagerGuard element={<PaymentManagement />} />,
-      // },
+      {
+        path: 'payment',
+        element: <ManagerGuard element={<PaymentManagement />} />,
+      },
       // no page yet
       {
         path: 'log',

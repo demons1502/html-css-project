@@ -5,7 +5,7 @@ import Header from '../../components/Header';
 import Nav from '../../components/Nav';
 
 export const MainLayout = () => {
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuth,me } = useSelector((state) => state.auth);
 
   if (!isAuth) {
     return <Navigate to='/auth' />;
@@ -13,7 +13,9 @@ export const MainLayout = () => {
   return (
     <Fragment>
       <Header />
+      {me.isPaid || me.isAdmin || me.qna ? null : 
       <Nav />
+      }
       <div className='main-wrapper'>
         <Suspense fallback={null}>
           <Outlet />

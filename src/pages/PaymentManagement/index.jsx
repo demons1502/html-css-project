@@ -1,12 +1,12 @@
-import { Button, Col, notification, Row, Spin, Table } from 'antd';
+import { Col, notification, Row, Spin, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import importIcon from '../../assets/images/icons/importIcon.svg';
-import plusIcon from '../../assets/images/icons/plus.svg';
 import Pagination from '../../components/common/Pagination';
 // import Table from '../../components/common/TableNormal';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteFilled, DownloadOutlined, PlusOutlined } from '@ant-design/icons';
+import { useRef } from 'react';
 import ModalConfirm from '../../components/ModalConfirm';
+import * as S from '../../components/styles';
 import { getTimeByTZ } from '../../helper/index';
 import {
   deletePayment,
@@ -28,6 +28,8 @@ const PaymentManagement = () => {
   const [limit, setLimit] = useState(10);
 
   const dispatch = useDispatch();
+  const inputRef = useRef();
+
   const payments = useSelector((state) => state.paymentManagementReducer);
   const loading = useSelector((state) => state.loading.loading);
 
@@ -62,10 +64,21 @@ const PaymentManagement = () => {
     }
   };
 
-  const handleImport = (e) => {
-    const data = new FormData();
-    data.append('file', e.target.files[0]);
-    dispatch(uploadFile(data));
+  const handleImport = () => {
+    inputRef.current.click();
+    
+    const input = inputRef.current;
+    const handleFile= (e)=> {
+      const file = e.target.files[0]
+      if (file) {
+        const data = new FormData();
+        data.append('file', file);
+        dispatch(uploadFile(data));
+      }
+    };
+
+    input.addEventListener('change', handleFile);
+    removeEventListener('change',handleFile)
   };
 
   const columns = [
@@ -109,10 +122,9 @@ const PaymentManagement = () => {
       dataIndex: '',
       key: 'x',
       render: (_, record) => (
-        <DeleteOutlined
+        <DeleteFilled 
           className='btn-deleteIcon'
-          onClick={() => handleDeleteOne(record)}
-        />
+          onClick={() => handleDeleteOne(record)}/>
       ),
     },
   ];
@@ -122,10 +134,9 @@ const PaymentManagement = () => {
   //   setLimit(pageSize);
   // };
 
-
   const onChangePage = (e) => {
-    setPage(e.offset)
-    setLimit(e.limit)
+    setPage(e.offset);
+    setLimit(e.limit);
   };
 
   useEffect(() => {
@@ -135,33 +146,35 @@ const PaymentManagement = () => {
 
   return (
     <div className='paymentManagement'>
-      <div className='paymentManagement-nav'>
-        <div className='paymentManagement-title'>
-          <h3>Quản lý thanh toán khách hàng Manulife</h3>
-        </div>
-        <div className='paymentManagement-option'>
-          <Button onClick={handleDelete}>Xóa</Button>
-          <Button type='primary'>
-            <label htmlFor='import'>
-              <img src={importIcon} alt='' />
-              <input
-                type='file'
-                id='import'
-                style={{ display: 'none' }}
-                onChange={handleImport}
-              />
-              Import
-            </label>
-          </Button>
-          <Button
+      <input type='file' ref={inputRef} style={{ display: 'none' }} />
+      <S.PageHeader
+        className='site-page-header-responsive'
+        backIcon={false}
+        onBack={() => window.history.back()}
+        title='Quản lý thanh toán khách hàng Manulife'
+        extra={[
+          <S.Button key='1' onClick={handleDelete}>
+            Xóa
+          </S.Button>,
+          <S.Button
+            key='3'
             type='primary'
-            icon={<img src={plusIcon} alt='' />}
+            icon={<DownloadOutlined style={{ fontSize: '14px' }} />}
+            onClick={handleImport}
+          >
+            Import
+          </S.Button>,
+          <S.Button
+            key='4'
+            type='primary'
+            icon={<PlusOutlined />}
             onClick={() => setIsModalOpen(!isModalOpen)}
           >
             Thanh toán mới
-          </Button>
-        </div>
-      </div>
+          </S.Button>,
+        ]}
+      ></S.PageHeader>
+
       <div className='paymentManagement-container'>
         <Row
           gutter={[15, 15]}
@@ -206,10 +219,7 @@ const PaymentManagement = () => {
                   size='middle'
                   bordered={false}
                 />
-                <Pagination
-                  total={payments.total}
-                  setPaginate={onChangePage}
-                />
+                <Pagination total={payments.total} setPaginate={onChangePage} />
               </Spin>
             </div>
           </Col>

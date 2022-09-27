@@ -14,7 +14,6 @@ const CreatePayment = (props) => {
 
   const handleAddNew = (values) => {
     const newPayment = {
-     
       loginId:values.loginId,
       startDate: moment(values.time[0]?._d).format(),
       dueDate: moment(values.time[1]?._d).format(),

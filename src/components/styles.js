@@ -5,6 +5,7 @@ export const PageHeader = styled(AntPageHeader)`
   &.ant-page-header {
     background-color: #fff; 
     padding: 7px 28px;
+    margin: 0 -28px 13px -28px;
     & .ant-page-header-heading-title {
       font-weight: 700;
       font-size: 18px;

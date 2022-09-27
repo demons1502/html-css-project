@@ -14,8 +14,8 @@ function Create_user(props) {
   useFormErrors(form);
   const [dataCity, setDataCity]= useState([])
   const loading = useSelector((state)=>state.loading)
-  console.log(loading);
   const dispatch= useDispatch()
+  
   useEffect(() => {
     axios.get('https://provinces.open-api.vn/api/')
       .then(function (response) {
@@ -24,6 +24,7 @@ function Create_user(props) {
   },[])
 
   const onFinish = (values) => {
+    console.log(values);
     dispatch(createUser(values))
   };
 
@@ -83,6 +84,7 @@ function Create_user(props) {
                     if (loading.message == "user_exist") {
                       return Promise.reject('Tài khoản đã tồn tại');
                     }
+                    return Promise.resolve();
                   },
                 }
               ]}
@@ -100,6 +102,7 @@ function Create_user(props) {
                     if (loading.message == "user_exist") {
                       return Promise.reject('Tài khoản đã tồn tại');
                     }
+                    return Promise.resolve();
                   },
                 }
               ]}

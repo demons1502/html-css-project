@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Checkbox } from 'antd';
+import { Checkbox, Image} from 'antd';
 import Modal from '../../components/common/Modal'
 import "../../assets/scss/Admin/stylesAdmin.scss"
 import InputSearch from '../../components/common/InputSearch';
@@ -8,6 +8,10 @@ import TableCommon from "../../components/common/TableNormal";
 import Pagination from "../../components/common/Pagination";
 import ModalConfirm from '../../components/ModalConfirm';
 import { useDispatch, useSelector } from 'react-redux';
+import * as S from "../../components/styles";
+import Icon, {DeleteFilled} from '@ant-design/icons';
+import TrashSvg from '../../assets/images/icons/deleteIcon.svg';
+
 import {
   searchUser,
   uploadFiles,
@@ -32,6 +36,8 @@ export default function UserManagement() {
     limit: DEFAULT_SIZE,
     offset: 1
   });
+
+  const TrashIcon = (props) => <Icon component={TrashSvg} {...props} />;
 
   const columns = [
     {
@@ -128,16 +134,29 @@ export default function UserManagement() {
     {
       title: '',
       dataIndex: '',
-      width: '110px',
+      width: '80px',
       key: 10,
       align: 'center',
       render: (record) => (
-        <button
-          className='btn_reset-user btn-bgWhite-textGreen-borGreen'
-          onClick={() => handelResetUser(record.id)}
-        >
-          Khởi tạo lại
-        </button>
+        // <button
+        //   className='btn_reset-user btn-bgWhite-textGreen-borGreen'
+        //   onClick={() => handelResetUser(record.id)}
+        // >
+        //   Khởi tạo lại
+        // </button>
+        <div>
+          <S.Button
+            size={'small'}
+            onClick={() => handleDeleteUser(record)}
+          >
+            Khởi tạo lại
+          </S.Button>
+          <S.Button
+            className='btn-hover-danger'
+            icon={<DeleteFilled />}
+            onClick={() => handleDeleteUser(record)}
+          />
+        </div>
       ),
     },
     {
@@ -145,10 +164,17 @@ export default function UserManagement() {
       width: '30px',
       align: 'center',
       key: 11,
+      // render: (record) => (
+      //   <img
+      //     className='dustbin_icon'
+      //     src='./images/dustbin_icon.svg'
+      //     onClick={() => handleDeleteUser(record)}
+      //   />
+      // ),
       render: (record) => (
-        <img
-          className='dustbin_icon'
-          src='./images/dustbin_icon.svg'
+        <S.Button
+          className='btn-hover-danger'
+          icon={<DeleteFilled />}
           onClick={() => handleDeleteUser(record)}
         />
       ),
@@ -236,6 +262,7 @@ export default function UserManagement() {
 
   return (
     <>
+      
       <div className='admin_header'>
         <h3>Admin quản lý khách hàng Manulife</h3>
         <div className='admin_header_func'>

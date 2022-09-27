@@ -25,6 +25,7 @@ import {
 import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
+import * as S from '../../components/styles';
 
 const ManageFinanceKnowledge = () => {
   const { t } = useTranslation();
@@ -115,9 +116,12 @@ const ManageFinanceKnowledge = () => {
   
   return (
     <div className='manageFinanceKnowledge'>
-      <div className='manageFinanceKnowledge-nav'>
-        <h3>{t('manage content.title')}</h3>
-      </div>
+      <S.PageHeader
+        className='site-page-header-responsive'
+        backIcon={false}
+        onBack={() => window.history.back()}
+        title={t('manage content.title')}
+      ></S.PageHeader>
       <Layout className='manageFinanceKnowledge-container'>
         <Row gutter={[16, 10]} justify='start' align='stretch'>
           <Col lg={7} md={24} sm={24} xs={24}>
@@ -183,7 +187,7 @@ const ManageFinanceKnowledge = () => {
             </Layout.Content>
           </Col>
 
-          <Col lg={16} flex={1}>
+          <Col xs={16} lg={17} flex={1}>
             <Layout.Content className='manageContent'>
               {option !== 'q&a' ? (
                 <FinanceKnowledgeContent

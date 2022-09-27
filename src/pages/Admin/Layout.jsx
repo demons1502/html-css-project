@@ -12,7 +12,7 @@ export const AdminLayout = () => {
   return (
     <Fragment>
       <Header />
-      <S.PageHeader
+      {/* <S.PageHeader
         className="site-page-header-responsive"
         backIcon={false}
         onBack={() => window.history.back()}
@@ -30,7 +30,7 @@ export const AdminLayout = () => {
            
         ]}
       >
-      </S.PageHeader>
+      </S.PageHeader> */}
       {/* <Nav /> */}
       <div className='main-wrapper'>
         <Suspense fallback={null}>

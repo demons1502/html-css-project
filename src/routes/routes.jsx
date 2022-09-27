@@ -130,6 +130,7 @@ export const routes = () => [
         path: 'health-foundation',
         element: <GuestGuard element={<HealthFoundation />} />,
       },
+
     ],
   },
   // AUTHLAYOUT
@@ -149,7 +150,7 @@ export const routes = () => [
       { path: '', element: <ManagerGuard element={<Admin />} /> },
       {
         path: 'payment',
-        element: <ManagerGuard permission="payment" element={<PaymentManagement />} />,
+        element: <ManagerGuard element={<PaymentManagement />} />,
       },
       // no page yet
       {
@@ -171,6 +172,7 @@ export const routes = () => [
       },
     ],
   },
+  
   // PUBLICLAYOUT
   {
     path: '',

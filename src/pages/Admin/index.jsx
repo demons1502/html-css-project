@@ -262,6 +262,25 @@ export default function UserManagement() {
 
   return (
     <>
+      {/* <S.PageHeader
+        className="site-page-header-responsive"
+        backIcon={false}
+        onBack={() => window.history.back()}
+        title="Admin quản lý khách hàng Manulife"
+        extra={[
+          <S.Button key="1">Xóa</S.Button>,
+          <S.Button key="2">Khởi tạo lại</S.Button>,
+          <S.Button key="3" type="primary" icon={<DownloadOutlined style={{ fontSize: '14px' }}/>}>
+            Import
+          </S.Button>,
+          <S.Button key="4" type="primary" icon={<PlusOutlined />}>
+            Tạo mới
+          </S.Button>,
+          <S.Button key="5" className='btn-hover-primary' icon={<SettingOutlined key="6" style={{ fontSize: '20px' }}/>}></S.Button>
+           
+        ]}
+      >
+      </S.PageHeader> */}
       
       <div className='admin_header'>
         <h3>Admin quản lý khách hàng Manulife</h3>

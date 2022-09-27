@@ -129,10 +129,6 @@ const PaymentManagement = () => {
     },
   ];
 
-  // const onChangePage = (current, pageSize) => {
-  //   setPage(current);
-  //   setLimit(pageSize);
-  // };
 
   const onChangePage = (e) => {
     setPage(e.offset);

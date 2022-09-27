@@ -13,9 +13,7 @@ export const MainLayout = () => {
   return (
     <Fragment>
       <Header />
-      {me.isPaid || me.isAdmin || me.qna ? null : 
       <Nav />
-      }
       <div className='main-wrapper'>
         <Suspense fallback={null}>
           <Outlet />

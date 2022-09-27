@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAll } from '../services/advice';
+import { getAll } from '../services/consult';
 
 const initialState = { isReload: false, data: [] };
 
-export const getAdvice = createAsyncThunk(
-  'advice/getall',
+export const getConsult = createAsyncThunk(
+  'consult/getall',
   async (params, { rejectWithValue }) => {
     try {
       const res = await getAll(params);
+      console.log(res)
       return { data: res.data, message: '' };
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -15,17 +16,17 @@ export const getAdvice = createAsyncThunk(
   }
 );
 
-const adviceSlice = createSlice({
-  name: 'advice',
+const ConsultSlice = createSlice({
+  name: 'consult',
   initialState,
   extraReducers: {
-    [getAdvice.fulfilled]: (state, action) => {
+    [getConsult.fulfilled]: (state, action) => {
       state.data = action.payload.data;
       state.isReload = false;
     },
   },
 });
 
-const { reducer } = adviceSlice;
+const { reducer } = ConsultSlice;
 
 export default reducer;

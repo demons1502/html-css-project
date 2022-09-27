@@ -5,7 +5,7 @@ const ManagerGuard = ({ element }) => {
   const { isAuth, me } = useSelector((state) => state.auth);
   const { permissions } = me;
   const location = useLocation();
-  console.log(location);
+
   if (!isAuth) {
     return <Navigate to='/auth' />;
   }

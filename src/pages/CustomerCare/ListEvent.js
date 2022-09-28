@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {Progress, Button, Popconfirm} from 'antd';
@@ -13,7 +13,7 @@ import AddEventContent from "./Modal/AddEventContent";
 import SendSmsContent from "./Modal/SendSmsContent";
 import SendEmailContent from "./Modal/SendEmailContent";
 import {LOADING_STATUS} from '../../ultis/constant';
-import {getTimeByTZ, pad, scrollTableConfig} from '../../helper'
+import {getTimeByTZ, pad} from '../../helper'
 import useScrollTableConfig from '../../hooks/useScrollTableConfig'
 
 export default function ListEvent() {
@@ -30,7 +30,6 @@ export default function ListEvent() {
   const [eventId, setEventId] = useState(0)
   const [isTemplate, setIsTemplate] = useState(false)
   const [titleModal, setTitleModal] = useState('')
-  // const [scrollConfig, setScrollConfig] = useState({})
   const dispatch = useDispatch()
 
   const columns = [
@@ -111,10 +110,6 @@ export default function ListEvent() {
     }
   }, [customerData])
 
-  // useLayoutEffect(() => {
-  //   // const scroll = scrollTableConfig(ref)
-  // }, [eventState.data])
-
   useEffect(() => {
     if (loading === LOADING_STATUS.succeeded) {
       setVisibleModalAddEvent(false)
@@ -132,7 +127,7 @@ export default function ListEvent() {
       <div className="customer-care__center--event">
         <h5>{t('customer care.event title')}</h5>
       </div>
-      <div className="customer-care__center--list" ref={ref} >
+      <div className="customer-care__center--list" ref={ref}>
         <Table dataSource={eventState.data} columnTable={columns} scroll={scrollConfig}/>
       </div>
       {

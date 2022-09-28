@@ -37,7 +37,7 @@ export default function ListSearch() {
     if (selectId > 0) {
       const customerData = listCustomer.find((data) => data.customerId === selectId)
       dispatch(setCustomerData(customerData))
-      dispatch(getData({customerId: customerData.customerId, info: CUSTOMER_CARE_INFO[0].value}))
+      dispatch(getData({customerId: customerData.customerId, info: []}))
     }
   }, [selectId])
 

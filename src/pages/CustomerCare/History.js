@@ -10,19 +10,21 @@ import Filter from "../../components/common/Filter";
 import AddInfoContent from ".//Modal/AddInfoContent";
 import Modal from "../../components/common/Modal";
 import {CUSTOMER_CARE_INFO, LOADING_STATUS, ARR_INFO_REDIRECT, INFO_PATH, GIFT} from '../../ultis/constant';
-import {calculateAge, getCustomerCareLabel, getTimeByTZ, capitalizeFirstLetter} from "../../helper";
+import {calculateAge, getCustomerCareLabel, getTimeByTZ, capitalizeFirstLetter, scrollTableConfig} from "../../helper";
 import {Link} from "react-router-dom";
+import useScrollTableConfig from '../../hooks/useScrollTableConfig'
 
 export default function History() {
   const {t} = useTranslation();
   const ref = useRef(null)
   const loading = useSelector((state) => state.loading.loading);
   const {data, customerData} = useSelector((state) => state.customerCare);
+  // const scrollConfig = useScrollTableConfig(ref, data);
   const [visibleModalAddInfo, setVisibleModalAddInfo] = useState(false)
   const [detailData, setDetailData] = useState({})
   const [optionsFilter, setOptionsFilter] = useState('')
   const [lastGift, setLastGift] = useState('')
-  const [scrollConfig, setScrollConfig] = useState({})
+  // const [scrollConfig, setScrollConfig] = useState({})
   const dispatch = useDispatch();
 
   const columns = [
@@ -96,21 +98,9 @@ export default function History() {
         setLastGift(`Quà tặng lần cuối ${capitalizeFirstLetter(_.last(arrayGift).content)} vào ngày ${getTimeByTZ(_.last(arrayGift).date)}`)
       }
     }
-    const parentHeight = ref.current.parentElement.parentElement.clientHeight;
-    const windowWith = window.innerWidth;
-    if (windowWith < 992) {
-      if (ref.current.clientHeight > (parentHeight/2 - 500)) {
-        const heightScroll = parentHeight/2 - 400;
-        const scroll = {y: heightScroll, scrollToFirstRowOnChange: false}
-        setScrollConfig(scroll)
-      }
-    } else {
-      if (ref.current.clientHeight > (parentHeight - 500)) {
-        const heightScroll = parentHeight - 400;
-        const scroll = {y: heightScroll, scrollToFirstRowOnChange: false}
-        setScrollConfig(scroll)
-      }
-    }
+
+    // const scroll = scrollTableConfig(ref)
+    // setScrollConfig(scroll)
   }, [data])
   
   return (
@@ -125,13 +115,13 @@ export default function History() {
         </div>
       </div>
       <div className="customer-care__right--list" ref={ref}>
-        <Table dataSource={data} columnTable={columns} scroll={scrollConfig}/>
-        {
-          customerData.customerId !== 0 && <div className="customer-care__right--list-footer">
-            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add info title')}</Button>
-          </div>
-        }
+        {/* <Table dataSource={data} columnTable={columns} scroll={scrollConfig}/> */}
       </div>
+      {
+        customerData.customerId !== 0 && <div className="customer-care__right--footer">
+          <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add info title')}</Button>
+        </div>
+      }
       {
         customerData.customerId !== 0 && <div className="customer-care__right--info">
           <h3><img src={IconFiles} alt=""/>{t('customer care.sync info')}</h3>

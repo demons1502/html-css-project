@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {Col, Progress, Button, Popconfirm} from 'antd';
+import {Progress, Button, Popconfirm} from 'antd';
 import {getData, deleteData} from '../../slices/events';
 import Table from '../../components/common/TableNormal';
 import IconPlus from '../../assets/images/icons/plus.svg';
@@ -13,7 +13,8 @@ import AddEventContent from "./Modal/AddEventContent";
 import SendSmsContent from "./Modal/SendSmsContent";
 import SendEmailContent from "./Modal/SendEmailContent";
 import {LOADING_STATUS} from '../../ultis/constant';
-import {getTimeByTZ, pad} from '../../helper'
+import {getTimeByTZ, pad, scrollTableConfig} from '../../helper'
+import useScrollTableConfig from '../../hooks/useScrollTableConfig'
 
 export default function ListEvent() {
   const {t} = useTranslation()
@@ -21,14 +22,15 @@ export default function ListEvent() {
   const {customerData} = useSelector((state) => state.customerCare);
   const loading = useSelector((state) => state.loading.loading);
   const eventState = useSelector((state) => state.events)
+  const scrollConfig = useScrollTableConfig(ref, eventState.data);
   const [visibleModalAddEvent, setVisibleModalAddEvent] = useState(false)
   const [visibleModalEmail, setVisibleModalEmail] = useState(false)
   const [visibleModalSms, setVisibleModalSms] = useState(false)
   const [detailData, setDetailData] = useState({})
   const [eventId, setEventId] = useState(0)
   const [isTemplate, setIsTemplate] = useState(false)
-  const [scrollConfig, setScrollConfig] = useState({})
   const [titleModal, setTitleModal] = useState('')
+  // const [scrollConfig, setScrollConfig] = useState({})
   const dispatch = useDispatch()
 
   const columns = [
@@ -109,23 +111,9 @@ export default function ListEvent() {
     }
   }, [customerData])
 
-  useEffect(() => {
-    const parentHeight = ref.current.parentElement.parentElement.clientHeight;
-    const windowWith = window.innerWidth;
-    if (windowWith < 992) {
-      if (ref.current.clientHeight > (parentHeight/2 - 100)) {
-        const heightScroll = parentHeight/2 - 200;
-        const scroll = {y: heightScroll, scrollToFirstRowOnChange: false}
-        setScrollConfig(scroll)
-      }
-    } else {
-      if (ref.current.clientHeight > (parentHeight - 100)) {
-        const heightScroll = parentHeight - 200;
-        const scroll = {y: heightScroll, scrollToFirstRowOnChange: false}
-        setScrollConfig(scroll)
-      }
-    }
-  }, [eventState.data])
+  // useLayoutEffect(() => {
+  //   // const scroll = scrollTableConfig(ref)
+  // }, [eventState.data])
 
   useEffect(() => {
     if (loading === LOADING_STATUS.succeeded) {
@@ -144,15 +132,15 @@ export default function ListEvent() {
       <div className="customer-care__center--event">
         <h5>{t('customer care.event title')}</h5>
       </div>
-      <div className="customer-care__center--list" ref={ref}>
+      <div className="customer-care__center--list" ref={ref} >
         <Table dataSource={eventState.data} columnTable={columns} scroll={scrollConfig}/>
-        {
-          customerData.customerId > 0 && <div className="customer-care__center--list-footer">
-            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(true))}>{t('customer care.add event template')}</Button>
-            <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(false))}>{t('customer care.add event')}</Button>
-          </div>
-        }
       </div>
+      {
+        customerData.customerId > 0 && <div className="customer-care__center--footer">
+          <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(true))}>{t('customer care.add event template')}</Button>
+          <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(false))}>{t('customer care.add event')}</Button>
+        </div>
+      }
       <Modal isVisible={visibleModalAddEvent} setIsVisible={setVisibleModalAddEvent} title={titleModal} width={770} content={<AddEventContent detailData={detailData} isTemplate={isTemplate} setVisibleModalAddEvent={setVisibleModalAddEvent}/>} />
       <Modal isVisible={visibleModalEmail} setIsVisible={setVisibleModalEmail} title={t(('customer care.email title'))} width={770} content={<SendEmailContent eventId={eventId} setVisibleModalEmail={setVisibleModalEmail}/>} />
       <Modal isVisible={visibleModalSms} setIsVisible={setVisibleModalSms} title={t(('customer care.sms title'))} width={770} content={<SendSmsContent eventId={eventId} setVisibleModalSms={setVisibleModalSms}/>} />

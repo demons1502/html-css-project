@@ -35,3 +35,32 @@ export const calculateAge = (dob) => {
 
 export const capitalizeFirstLetter = ([ first, ...rest ], locale = navigator.language) =>
 first === undefined ? '' : first.toLocaleUpperCase(locale) + rest.join('')
+
+export const scrollTableConfig = (ref) => {
+  const tabletWith = 992;
+  const windowWith = window.innerWidth
+  let parentHeight = ref.current.parentElement.parentElement.clientHeight
+  const allEl = ref.current.parentNode.childNodes
+  let totalHeight = 0
+  let siblingHeight = 0
+  let scroll = {}
+  console.log(allEl)
+  allEl.forEach(element => {
+    if (ref.current !== element) {
+      siblingHeight += element.clientHeight
+    }
+    console.log(element, element.offsetHeight, element.clientHeight);
+    totalHeight += element.clientHeight
+  })
+
+  if (windowWith < tabletWith) {
+    parentHeight = parentHeight/2
+  }
+
+  if (totalHeight > parentHeight) {
+    const heightScroll = parentHeight - (siblingHeight + 70);
+    scroll = {y: heightScroll, scrollToFirstRowOnChange: false}
+  }
+  
+  return scroll 
+}

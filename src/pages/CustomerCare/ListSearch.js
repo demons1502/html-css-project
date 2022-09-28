@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {Col} from 'antd';
 import InputSearch from '../../components/common/InputSearch';
 import Filter from '../../components/common/Filter';
 import List from '../../components/common/List';

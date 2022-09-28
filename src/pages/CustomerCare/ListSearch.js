@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import InputSearch from '../../components/common/InputSearch';
 import Filter from '../../components/common/Filter';
 import List from '../../components/common/List';
-import {TYPE_LIST_CUSTOMERS, DEFAULT_SIZE, CUSTOMER_CARE_INFO, CUSTOMER_FILTER_OPTIONS} from '../../ultis/constant';
+import {TYPE_LIST_CUSTOMERS, DEFAULT_SIZE, CUSTOMER_FILTER_OPTIONS} from '../../ultis/constant';
 import {getCustomers} from '../../services/customers';
 import Pagination from '../../components/common/Pagination';
 import {getData, setCustomerData, resetCustomerData} from '../../slices/customerCare';
@@ -18,24 +18,27 @@ export default function ListSearch() {
   const dispatch = useDispatch()
   const [paginate, setPaginate] = useState({
     limit: DEFAULT_SIZE,
-    offset: 0
+    offset: 1
   });
 
   const getDataCustomer = async (payload) => {
     const {data} = await getCustomers(payload)
-    if (data?.data.length > 0) {
-      setListCustomer(data?.data)
-      setTotal(data?.count)
-      setSelectId(data?.data[0].customerId)
+    if (data?.customers.length > 0) {
+      setListCustomer(data?.customers)
+      setSelectId(data?.customers[0].customerId)
     } else {
       dispatch(resetCustomerData())
       dispatch(resetEvents())
+      setListCustomer([])
+      setSelectId(0)
     }
+    setTotal(data?.count)
   }
 
   useEffect(() => {
     if (selectId > 0) {
       const customerData = listCustomer.find((data) => data.customerId === selectId)
+      
       dispatch(setCustomerData(customerData))
       dispatch(getData({customerId: customerData.customerId, info: []}))
     }
@@ -43,7 +46,7 @@ export default function ListSearch() {
 
   useEffect(() => {
     let offset = (paginate.offset - 1) * paginate.limit;
-    getDataCustomer({...{name: keyword}, ...{offset: offset, limit: paginate.limit, status: optionsFilter}})
+    getDataCustomer({...{search: keyword}, ...{offset: offset, limit: paginate.limit, status: optionsFilter}})
   }, [keyword, paginate, optionsFilter])
 
   return (

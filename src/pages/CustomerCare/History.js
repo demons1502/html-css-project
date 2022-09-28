@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {Col, Checkbox, Button} from 'antd';
+import {Checkbox} from 'antd';
 import {getData} from '../../slices/customerCare';
 import Table from '../../components/common/TableNormal';
 import IconPlus from '../../assets/images/icons/plus.svg';
@@ -13,6 +13,7 @@ import {CUSTOMER_CARE_INFO, LOADING_STATUS, ARR_INFO_REDIRECT, INFO_PATH, GIFT} 
 import {calculateAge, getCustomerCareLabel, getTimeByTZ, capitalizeFirstLetter} from "../../helper";
 import {Link} from "react-router-dom";
 import useScrollTableConfig from '../../hooks/useScrollTableConfig'
+import * as S from '../../components/styles'
 
 export default function History() {
   const {t} = useTranslation();
@@ -115,14 +116,14 @@ export default function History() {
       </div>
       {
         customerData.customerId !== 0 && <div className="customer-care__right--footer">
-          <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add info title')}</Button>
+          <S.ButtonAdd icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal())}>{t('customer care.add info title')}</S.ButtonAdd>
         </div>
       }
       {
         customerData.customerId !== 0 && <div className="customer-care__right--info">
           <h3><img src={IconFiles} alt=""/>{t('customer care.sync info')}</h3>
           <ul>
-            <li>{calculateAge(customerData.dob)} tuổi, {customerData.maritalStatus == 1 ? ' đã có gia đình' : ', độc thân'}</li>
+            <li>{calculateAge(customerData.dob)} tuổi, {customerData.maritalStatus == 1 ? ' đã có gia đình' : ' độc thân'}</li>
             {customerData.income > 0 && <li>Thu nhập {customerData.income/1000000} triệu đồng/tháng</li>}
             {!!customerData.job && <li>Nghề nghiệp <span className="capitalize">{customerData.job}</span></li>}
             {!!customerData.concerns && <li>Sở thích <span className="capitalize">{customerData.concerns}</span></li>}

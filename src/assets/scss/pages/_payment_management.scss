@@ -183,41 +183,27 @@
         .ant-form-item-control,
         .ant-picker {
           width: 100%;
-          input,
-          textarea,
-          .ant-select-selection-item {
-            font-size: $font-size-base;
-            font-weight: $font-weight-semibold;
-            color: $black-color;
-            /* &:hover {
-              border-color: $green-color;
-            } */
-          }
-          textarea {
-            min-height: 100px;
-          }
+          // input,
+          // textarea,
+          // .ant-select-selection-item {
+          //   font-size: $font-size-base;
+          //   font-weight: $font-weight-semibold;
+          //   color: $black-color;
+          // }
+          // textarea {
+          //   min-height: 100px;
+          //   color: $black-color;
+          //   background: #f8f8f8;
+          //   border: none;
+          //   border-radius: 5px;
+          //   &:focus {
+          //     border-color: #30a867;
+          //     box-shadow: 0 0 0 2px rgba(48, 168, 103,0 / 20%);
+          //   }
+          // }
         }
-        /*  .ant-picker-focused,
-        .ant-picker:hover {
-          border-color: $green-color;
-        } */
         .ant-picker-focused {
           box-shadow: 0 0 0 2px rgba($color: $green-color, $alpha: 0.2);
-        }
-        /* .ant-form-item-control-input {
-          width: 100%;
-        } */
-      }
-      .ant-btn {
-        width: 150px;
-        font-size: $font-size-base;
-        color: $white-color;
-        font-size: $font-size-base;
-        font-weight: $font-weight-bold;
-        border: 1px solid $green-color;
-        border-radius: 999px;
-        &.ant-btn-primary {
-          background-color: $green-table-bg;
         }
       }
     }

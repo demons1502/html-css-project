@@ -34,6 +34,16 @@ export const Button = styled(AntButton)`
     }
     
   }
+  &.ant-btn-dangerous {
+    color: #ff5855 !important;
+    border: 1px solid #ff5855 !important;
+    &:hover,
+    &:focus {
+      opacity: 0.8;
+      background: #fff  !important;
+    }
+    
+  }
   &.ant-btn-default {
     border: 1px solid #3DBD78;
     color: #3DBD78;

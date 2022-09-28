@@ -6,7 +6,7 @@ import { createPayment } from '../../slices/paymentManagement';
 import { LOADING_STATUS } from '../../ultis/constant';
 import Input from '../../components/common/Input';
 import DatePicker from '../../components/common/DatePicker';
-import { Button } from '../../components/styles';
+import * as S from '../../components/styles';
 
 import styled from 'styled-components';
 
@@ -33,7 +33,6 @@ const CreatePayment = (props) => {
   const { isModalOpen, setIsModalOpen } = props;
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  // const {TextArea}=Input
 
   const loading = useSelector((state) => state.loading.loading);
 
@@ -45,13 +44,18 @@ const CreatePayment = (props) => {
       amount: +values.amount,
       description: values.description,
     };
-    // console.log(newPayment);
     dispatch(createPayment(newPayment));
     if (loading === LOADING_STATUS.succeeded) {
       setIsModalOpen(false);
       form.resetFields();
     }
   };
+
+
+  const handleCancel=()=>{
+    form.resetFields()
+    setIsModalOpen(false)
+  }
 
   return (
     <div className="createPayment">
@@ -78,29 +82,6 @@ const CreatePayment = (props) => {
           >
             <Input placeholder="ID login" />
           </Form.Item>
-          {/* <Form.Item
-            name='userFullname'
-            label='Họ và tên:'
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Input placeholder='Nhập' />
-          </Form.Item> */}
-
-          {/* <Form.Item
-            name="time"
-            label="Thời gian:"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <DatePicker.RangePicker placeholder={['Ngày thanh toán', 'Ngày kết thúc']} />
-          </Form.Item> */}
 
           <Form.Item
             name="startDate"
@@ -133,10 +114,14 @@ const CreatePayment = (props) => {
             <Textarea autoSize placeholder="Content" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Thêm mới
-            </Button>
-            <Button>Hủy</Button>
+            <S.PageHeader
+              extra={[
+                <S.Button type="primary" htmlType="submit" key={'1'}>
+                  Thêm mới
+                </S.Button>,
+                <S.Button className='btn-danger' key={'2'} onClick={handleCancel}>Hủy</S.Button>,
+              ]}
+            />
           </Form.Item>
         </Form>
       </Modal>

@@ -104,7 +104,7 @@ export default function FinanceConsultant() {
 
   const dispatch = useDispatch();
 
-  const handleCount = useCallback(() => {
+  const handleCount = () => {
     let cks = 0;
     for (let i = 0; i < consults.data.length; i++) {
       if (consults.data[i].status === 'NOT_CALL_YET') {
@@ -112,7 +112,7 @@ export default function FinanceConsultant() {
       }
     }
     return cks;
-  }, [consults.data]);
+  }
 
   useEffect(() => {
     const offset = (paginate.offset - 1) * paginate.limit;

@@ -11,8 +11,7 @@ export default function TableCommon(props) {
     pagination = false,
     isSelection = false,
     bordered = false,
-    setSelectedRowKeys,
-    isScroll,
+    setSelectedRowKeys
   } = props;
 
   const onSelectChange = (selectedRowKeys, selectedRows) => {

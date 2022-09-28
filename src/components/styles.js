@@ -39,9 +39,17 @@ export const Button = styled(AntButton)`
     color: #3DBD78;
     &:hover,
     &:focus {
-      background: linear-gradient(180deg, #36b872, #30a867);
-      color: #fff;
-      border-color: #30a867;
+      color: #40a9ff;
+      border-color: #40a9ff;
+    }
+    &.btn-danger {
+      border: 1px solid #ff5855;
+      color: #ff5855;
+      &:hover,
+      &:focus {
+        color: #40a9ff;
+        border-color: #40a9ff;
+      }
     }
   }
   &.ant-btn-icon-only {
@@ -53,7 +61,7 @@ export const Button = styled(AntButton)`
       width:20px;
       height:20px;
     }
-    & . anticon {
+    .anticon {
       font-size: 20px;
     }
     &.btn-hover-danger {

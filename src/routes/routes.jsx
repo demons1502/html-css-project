@@ -179,6 +179,8 @@ export const routes = () => [
       {
         path: 'config-user',
         element: <ManagerGuard element={<ConfigUser />} />,
+      },
+      {
         path: 'q&a',
         element: <ManagerGuard element={<ManageFinanceKnowledge />} />,
       },

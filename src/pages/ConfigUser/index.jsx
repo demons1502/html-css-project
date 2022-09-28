@@ -1,8 +1,32 @@
-import React from 'react'
-import {Form, Upload, Row, Col, Input, Checkbox} from 'antd'
+import {React, useEffect} from 'react'
+import { Form, Upload, Row, Col, Input, Checkbox, Button } from 'antd'
 import { CameraOutlined } from '@ant-design/icons';
+import useFormErrors from "../../hooks/useFormErrors";
+import { useDispatch, useSelector } from 'react-redux';
+import { changePasswords, updateUsers, sendAvatars } from '../../slices/configUser';
+
 
 function ConfigUser() {
+
+
+  const userInfo= useSelector((state)=>state.auth.me)
+  console.log(userInfo);
+  const [form] = Form.useForm();
+  useFormErrors(form);
+
+  const onFinish = (values) => {
+    console.log(values);
+  };
+
+
+  useEffect(() => {
+    if (Object.keys(userInfo).length > 0) {
+      form.setFieldsValue({ ...userInfo})
+    } else {
+      form.resetFields()
+    }
+    
+  }, [userInfo])
   return (
     <div>
       <div className="config_header">
@@ -12,7 +36,14 @@ function ConfigUser() {
           Đổi mật khẩu
         </button>
       </div>
-      <Form>
+      <Form form={form}
+        name="basic"
+        initialValues={{
+          remember: true
+        }}
+        onFinish={onFinish}
+        autoComplete="off"
+      >
         <div className="config_content">
           <div className="config_content_title">
             <h2>Thông tin cá nhân</h2>
@@ -24,12 +55,12 @@ function ConfigUser() {
                 // name={name}
                 listType='picture-card'
                 className='avatar-uploader'
-                // showUploadList
-                // onChange={onChange}
-                /* beforeUpload={() => { return false }} */
-                // beforeUpload={Upload.LIST_IGNORE}
-                // fileList={fileList}
-                /* disabled={fileList.length > 0 ? true : false} */
+              // showUploadList
+              // onChange={onChange}
+              /* beforeUpload={() => { return false }} */
+              // beforeUpload={Upload.LIST_IGNORE}
+              // fileList={fileList}
+              /* disabled={fileList.length > 0 ? true : false} */
               >
                 <div className='upload-content'>
                   <CameraOutlined />
@@ -42,51 +73,65 @@ function ConfigUser() {
                 <Col span={5}>
                   <Form.Item
                     label="Họ và tên"
+                    name="fullname"
+                    rules={[{
+                      required: true,
+                    }]}
                   >
-                    <Input/>
+                    <Input type='text'/>
                   </Form.Item>
                 </Col>
                 <Col span={5}>
                   <Form.Item
                     label="Số điện thoại"
+                    name="phone"
                     rules={[{
                       required: true,
-                      message: 'Please input your password!',
-                    }]}   
+                    }]}
                   >
-                    <Input/>
+                    <Input type='number' />
                   </Form.Item>
                 </Col>
                 <Col span={5}>
                   <Form.Item
                     label="ID login"
-                    rules={[{
-                      required: true,
-                      message: 'Please input your password!',
-                    }]} 
+                    name="loginId"
                   >
-                    <Input/>
+                    <Input disabled />
                   </Form.Item>
                 </Col>
                 <Col span={9}>
                   <Form.Item
                     label="Địa chỉ email"
+                    name="email"
+                    rules={[{
+                      required: true,
+                    },
+                    ]}
                   >
-                    <Input/>
+                    <Input type='text' />
                   </Form.Item>
                 </Col>
                 <Col span={5}>
                   <Form.Item
                     label="ID của người quản lý"
+                    name="managerId"
+                    rules={[{
+                      required: true,
+                    }]}
                   >
-                    <Input/>
+                    <Input type='text' />
                   </Form.Item>
                 </Col>
                 <Col span={5}>
                   <Form.Item
                     label="Vùng hoạt động"
+                    name="location"
+                    rules={[{
+                      required: true,
+                    }]}
                   >
-                    <Input/>
+                    <Input />
                   </Form.Item>
                 </Col>
               </Row>
@@ -94,21 +139,44 @@ function ConfigUser() {
             <div className="config_content_body_checkbox-group">
               <Row>
                 <Col span={11} className="border_right">
-                  <Checkbox className='checkbox-primary'>Chế độ trợ giúp mặc định (hiện lời thoại trên các giao diện)</Checkbox>
+                  <Form.Item
+                    name="isDefaultHelper"
+                  >
+                    <Checkbox className='checkbox-primary'
+                      // id='isAdmin'
+                      // defaultChecked={record.isAdmin}
+                    >
+                      Chế độ trợ giúp mặc định (hiện lời thoại trên các giao diện)
+                    </Checkbox>
+                  </Form.Item>
                 </Col>
                 <Col span={5} className="border_right">
-                  <Checkbox className='checkbox-primary'>Chế độ đào tạo</Checkbox>
+                  <Form.Item
+                    name="isTraining"
+                  >
+                    <Checkbox className='checkbox-primary'>
+                      Chế độ đào tạo
+                    </Checkbox>
+                  </Form.Item>
                 </Col>
                 <Col span={8} className="border_right">
-                  <Checkbox className='checkbox-primary'>Chế độ ngôn ngữ theo vùng</Checkbox>
+                  <Form.Item
+                    name="isLanguageBaseLocation"
+                  >
+                    <Checkbox className='checkbox-primary'>
+                      Chế độ ngôn ngữ theo vùng
+                    </Checkbox>
+                  </Form.Item>
                 </Col>
               </Row>
             </div>
             <div className="config_content_body_button-group">
-              <button className='btn-primary'>Về trang chủ</button>
+              <Button className='btn-primary'>Về trang chủ</Button>
               <div className="config_content_body_button-group_right">
-                <button className='btn-danger'>Huỷ</button>
-                <button className='btn-primary'>Lưu thay đổi</button>
+                <Button className='btn-danger'>Huỷ</Button>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit" className='btn-primary'>Lưu thay đổi</Button>
+                </Form.Item>
               </div>
             </div>
           </div>

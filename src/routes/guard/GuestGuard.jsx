@@ -9,14 +9,12 @@ const GuestGuard = ({ element }) => {
     return <Navigate to="/auth" />;
   }
 
-  if (isAuth && isAdmin) {
-    if (permissions.includes('payment')) {
-      return <Navigate to="/admin/payment" />;
-    } else if (permissions.includes('qa')) {
-      return <Navigate to="/admin/q&a" />;
-    } else {
-      return <Navigate to="/admin" />;
-    }
+  if (permissions.includes('payment')) {
+    return <Navigate to="/admin/payment" />;
+  } else if (permissions.includes('qa')) {
+    return <Navigate to="/admin/q&a" />;
+  } else if (permissions.includes('admin')) {
+    return <Navigate to="/admin" />;
   }
 
   return element;

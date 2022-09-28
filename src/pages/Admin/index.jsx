@@ -37,7 +37,7 @@ export default function UserManagement() {
     limit: DEFAULT_SIZE,
     offset: 1
   });
-
+  
   const TrashIcon = (props) => <Icon component={TrashSvg} {...props} />;
 
   const columns = [
@@ -82,8 +82,8 @@ export default function UserManagement() {
       render: (record) => (
         <Checkbox
           id='qna'
-          defaultChecked={record.qna}
-          onChange={(e) => handleCheckboxChange(e, record.id, 'qna')}
+          defaultChecked={record.permissions.includes('qa')}
+          onChange={(e) => {handleCheckboxChange(e, record.id, 'qna'),console.log(record)}}
         />
       ),
     },
@@ -96,7 +96,7 @@ export default function UserManagement() {
       render: (record) => (
         <Checkbox
           id='isPaid'
-          defaultChecked={record.isPaid}
+          defaultChecked={record.permissions.includes('payment')}
           onChange={(e ) => handleCheckboxChange(e, record.id, 'isPaid')}
         />
       ),
@@ -110,7 +110,7 @@ export default function UserManagement() {
       render: (record) => (
         <Checkbox
           id='isAdmin'
-          defaultChecked={record.isAdmin}
+          defaultChecked={record.permissions.includes('admin')}
           onChange={(e) => handleCheckboxChange(e, record.id, 'isAdmin')}
         />
       ),

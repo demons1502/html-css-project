@@ -45,7 +45,7 @@ const CreatePayment = (props) => {
       amount: +values.amount,
       description: values.description,
     };
-    console.log(newPayment);
+    // console.log(newPayment);
     dispatch(createPayment(newPayment));
     if (loading === LOADING_STATUS.succeeded) {
       setIsModalOpen(false);

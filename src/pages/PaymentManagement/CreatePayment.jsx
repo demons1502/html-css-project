@@ -51,81 +51,78 @@ const CreatePayment = (props) => {
     }
   };
 
-
-  const handleCancel=()=>{
-    form.resetFields()
-    setIsModalOpen(false)
-  }
+  const handleCancel = () => {
+    form.resetFields();
+    setIsModalOpen(false);
+  };
 
   return (
-    <div className="createPayment">
-      <Modal
-        className="paymentManagement-modal"
-        title={<h3>Thanh toán mới</h3>}
-        open={isModalOpen}
-        footer={false}
-        keyboard={false}
-        centered
-        onCancel={() => {
-          setIsModalOpen(false), form.resetFields();
-        }}
-      >
-        <Form name="nest-messages" onFinish={handleAddNew} form={form}>
-          <Form.Item
-            name="loginId"
-            label="ID Login"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Input placeholder="ID login" />
-          </Form.Item>
+    <Modal
+      className="createPayment-modal"
+      title={<h3>Thanh toán mới</h3>}
+      open={isModalOpen}
+      footer={false}
+      keyboard={false}
+      centered
+      onCancel={() => {
+        setIsModalOpen(false), form.resetFields();
+      }}
+    >
+      <Form name="nest-messages" onFinish={handleAddNew} form={form}>
+        <Form.Item
+          name="loginId"
+          label="ID Login"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input placeholder="ID login" />
+        </Form.Item>
 
-          <Form.Item
-            name="startDate"
-            label="Ngày thanh toán"
-            rules={[
-              {
-                required: true,
-                type: 'date',
-              },
-            ]}
-          >
-            <DatePicker placeholder="DD/MM/YYYY" />
-          </Form.Item>
-          <Form.Item
-            name="dueDate"
-            label="Ngày kết thúc"
-            rules={[
-              {
-                type: 'date',
-                required: true,
-              },
-            ]}
-          >
-            <DatePicker placeholder="DD/MM/YYYY" />
-          </Form.Item>
-          <Form.Item name="amount" label="Số tiền" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="description" label="Nội dung">
-            <Textarea autoSize placeholder="Content" />
-          </Form.Item>
-          <Form.Item>
-            <S.PageHeader
-              extra={[
-                <S.Button type="primary" htmlType="submit" key={'1'}>
-                  Thêm mới
-                </S.Button>,
-                <S.Button className='btn-danger' key={'2'} onClick={handleCancel}>Hủy</S.Button>,
-              ]}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
-    </div>
+        <Form.Item
+          name="startDate"
+          label="Ngày thanh toán"
+          rules={[
+            {
+              required: true,
+              type: 'date',
+            },
+          ]}
+        >
+          <DatePicker placeholder="DD/MM/YYYY" />
+        </Form.Item>
+        <Form.Item
+          name="dueDate"
+          label="Ngày kết thúc"
+          rules={[
+            {
+              type: 'date',
+              required: true,
+            },
+          ]}
+        >
+          <DatePicker placeholder="DD/MM/YYYY" />
+        </Form.Item>
+        <Form.Item name="amount" label="Số tiền" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item name="description" label="Nội dung">
+          <Textarea autoSize placeholder="Content" />
+        </Form.Item>
+        <Form.Item>
+          <div className="createPayment-modal_button">
+            <S.Button type="primary" htmlType="submit" key={'1'}>
+              Thêm mới
+            </S.Button>
+            <S.Button className="btn-danger" key={'2'} onClick={handleCancel}>
+              Hủy
+            </S.Button>
+          </div>
+        </Form.Item>
+      </Form>
+    </Modal>
   );
 };
 

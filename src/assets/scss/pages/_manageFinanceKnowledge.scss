@@ -63,10 +63,10 @@
         border-top: 1px solid $grey-border-color;
         .btn-add-new {
           margin-left: auto;
-        }
-        .ant-btn-primary:focus,
-        .ant-btn-primary:hover {
-          background: unset;
+          &:focus,
+          &:hover {
+            background: unset;
+          }
         }
       }
 

@@ -1,10 +1,11 @@
-import { Button, List } from 'antd';
+import {  List } from 'antd';
 import React from 'react';
 import { useState } from 'react';
 import DeleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import EditIcon from '../../assets/images/icons/edit-green.svg';
 import Title from '../../components/Title';
 import ManageContentInput from './ManageContentInput';
+import {Button} from '../../components/styles'
 
 const FinanceKnowledgeContent = (props) => {
   const { content, onChange, fileList, onClick, onDelete, onUpload, onCancel } =
@@ -40,17 +41,14 @@ const FinanceKnowledgeContent = (props) => {
             />
             <div className='manageContent-footer_button'>
               <Button
-                danger
-                className='btn-cancer'
+                className="btn-danger"
                 onClick={() => onCancel(content)}
               >
                 Hủy
               </Button>
               <Button
                 type='primary'
-                className='btn-save'
                 onClick={() => onClick(content)}
-                /* disabled={buttonState} */
               >
                 Lưu
               </Button>

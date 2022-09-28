@@ -52,6 +52,8 @@
     border-bottom: 1px solid $grey-border-color;
   }
 
+ 
+
   &-option {
     display: flex;
     justify-content: flex-start;
@@ -161,50 +163,43 @@
       }
     }
   }
-  &-modal {
-    width: 700px !important;
-    .ant-modal-content {
-      border-radius: 10px;
-      overflow: hidden;
+  
+}
+.ant-modal.createPayment-modal {
+  width: 700px !important;
+  .ant-modal-content {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .ant-modal-body {
+    padding: 20px;
+  }
+  .ant-form-item {
+    margin-bottom: 10px;
+    &:last-child {
+      margin: unset;
     }
-    .ant-modal-body {
-      padding: 20px;
-    }
-    .ant-form-item {
-      margin-bottom: 10px;
-      &:last-child {
-        margin: unset;
+    .ant-row {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-direction: column;
+      .ant-form-item-control,
+      .ant-picker {
+        width: 100%;
       }
-      .ant-row {
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        flex-direction: column;
-        .ant-form-item-control,
-        .ant-picker {
-          width: 100%;
-          // input,
-          // textarea,
-          // .ant-select-selection-item {
-          //   font-size: $font-size-base;
-          //   font-weight: $font-weight-semibold;
-          //   color: $black-color;
-          // }
-          // textarea {
-          //   min-height: 100px;
-          //   color: $black-color;
-          //   background: #f8f8f8;
-          //   border: none;
-          //   border-radius: 5px;
-          //   &:focus {
-          //     border-color: #30a867;
-          //     box-shadow: 0 0 0 2px rgba(48, 168, 103,0 / 20%);
-          //   }
-          // }
-        }
-        .ant-picker-focused {
-          box-shadow: 0 0 0 2px rgba($color: $green-color, $alpha: 0.2);
-        }
+      .ant-picker-focused {
+        box-shadow: 0 0 0 2px rgba($color: $green-color, $alpha: 0.2);
+      }
+    }
+  }
+  .createPayment-modal_button{
+    display: flex !important;
+    justify-content: flex-end;
+    align-items: center;
+    button{
+      &:first-child{
+        margin-right: 10px;
       }
     }
   }

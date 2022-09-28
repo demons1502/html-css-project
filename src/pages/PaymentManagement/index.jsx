@@ -241,12 +241,6 @@ const PaymentManagement = () => {
           setIsModalOpen={setIsModalOpen}
         />
       </div>
-      {/* <Table
-        dataSource={payments.data}
-        columnTable={columns}
-        isSelection
-        setSelectedRowKeys={onSelectChange}
-      ></Table> */}
     </div>
   );
 };

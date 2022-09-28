@@ -12,8 +12,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@parcel/core": "^2.7.0",
+    "@parcel/transformer-sass": "^2.7.0",
+    "@popperjs/core": "^2.11.6",
+    "bootstrap": "^5.2.1",
+    "eslint": "^8.24.0",
     "parcel": "^2.7.0",
     "posthtml-doctype": "^1.1.1",
-    "posthtml-include": "^1.7.4"
+    "posthtml-include": "^1.7.4",
+    "sass": "^1.55.0"
   }
 }

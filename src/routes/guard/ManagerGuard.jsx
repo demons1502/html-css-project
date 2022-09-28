@@ -10,15 +10,15 @@ const ManagerGuard = ({ element }) => {
     return <Navigate to='/auth' />;
   }
 
-  if (isAuth && !location.pathname.includes('/admin')) {
-    if (permissions.includes('payment')) {
-      return <Navigate to="/admin/payment" />;
-    } else if (permissions.includes('qa')) {
-      return <Navigate to="/admin/q&a" />;
-    } else if (permissions.includes('admin')) {
-      return <Navigate to="/admin" />;
-    }
+  if (!(permissions.includes('payment') || permissions.includes('qa') || permissions.includes('admin'))) {
+    return <Navigate to="/" />;
   }
+
+  if (permissions.includes('payment') && !location.pathname.includes('/admin/payment')) {
+    return <Navigate to="/admin/payment" />;
+  } else if (permissions.includes('qa') && !location.pathname.includes('/admin/q&a')) {
+    return <Navigate to="/admin/q&a" />;
+  } 
 
   return element;
 };

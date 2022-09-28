@@ -1,11 +1,4 @@
-import { Col } from 'antd';
-import React, { useEffect, useState } from 'react';
-import FilterCommon from '../../components/common/Filter';
-import { getCustomers } from '../../services/customers';
-// import { setCustomerId } from "../../slices/customerCare";
-import { useDispatch } from 'react-redux';
-
-const options = [
+export const options = [
   { label: 'Không còn tiềm năng, dừng tư vấn', value: 'STOP_CONSULTING' },
   { label: 'Chưa gọi điện', value: 'NOT_CALL_YET' },
   { label: 'Đã gọi điện lần 1, cần gọi lần 2', value: 'CALL_1_CALL_2' },
@@ -19,22 +12,3 @@ const options = [
   { label: 'Đã có hợp đồng', value: 'CONTRACTED' },
   { label: 'Chăm sóc khách hàng cho hợp đồng tiếp theo', value: 'CUSTOMER_CARE' },
 ];
-
-const TableFilter = (props) => {
-  const { setStatus } = props;
-
-  return (
-    <Col span={4} className="">
-      <FilterCommon options={options} setPayload={setStatus}></FilterCommon>
-      {/* <ListCommon
-        type={TYPE_LIST_CUSTOMERS}
-        dataList={dataSource}
-        selectId={selectId}
-        setSelectId={setSelectId}
-      ></ListCommon>
-      <PaginationCommon total={total} showSizeChanger={false} /> */}
-    </Col>
-  );
-};
-
-export default TableFilter

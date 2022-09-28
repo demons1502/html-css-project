@@ -1,191 +1,34 @@
-import { Table } from 'antd';
-import { React } from 'react';
-import { TableFilter } from './TableFilter';
-import { Button } from '../../components/styles';
+import { Spin, Table } from 'antd';
+import { React, useCallback, useMemo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import FilterCommon from '../../components/common/Filter';
+import Pagination from '../../components/common/Pagination';
+import TableCommon from '../../components/common/TableNormal';
+import { Button } from '../../components/styles';
 import { getConsult } from '../../slices/consult';
-import { useEffect } from 'react';
-import TableCommon from "../../components/common/TableNormal";
-import Pagination from "../../components/common/Pagination";
-
-
-const dataSource = [
-  {
-    id: '01',
-    fullName: 'Robert Fox',
-    phone: '093 8992 990',
-    age: 50,
-    familiar: 'Thân quen',
-    income: '100.000.000',
-    like: '1 vợ, 2 con',
-    job: 'Kinh doanh',
-    type: 'Cá nhân',
-    status: 'Đã có hợp đồng',
-    appointment_schedule: '22/08/2022 8:40',
-  },
-  {
-    id: '02',
-    fullName: 'Robert Fox',
-    phone: '093 8992 990',
-    age: 50,
-    familiar: 'Thân quen',
-    income: '100.000.000',
-    like: '1 vợ, 2 con',
-    job: 'Kinh doanh',
-    type: 'Cá nhân',
-    status: 'Đã có hợp đồng',
-    appointment_schedule: '22/08/2022 8:40',
-  },
-  {
-    id: '03',
-    fullName: 'Robert Fox',
-    phone: '093 8992 990',
-    age: 50,
-    familiar: 'Thân quen',
-    income: '100.000.000',
-    like: '1 vợ, 2 con',
-    job: 'Kinh doanh',
-    type: 'Cá nhân',
-    status: 'Đã có hợp đồng',
-    appointment_schedule: '22/08/2022 8:40',
-  },
-  {
-    id: '04',
-    fullName: 'Robert Fox',
-    phone: '093 8992 990',
-    age: 50,
-    familiar: 'Thân quen',
-    income: '100.000.000',
-    like: '1 vợ, 2 con',
-    job: 'Kinh doanh',
-    type: 'Cá nhân',
-    status: 'Đã có hợp đồng',
-    appointment_schedule: '22/08/2022 8:40',
-  },
-  {
-    id: '05',
-    fullName: 'Robert Fox',
-    phone: '093 8992 990',
-    age: 50,
-    familiar: 'Thân quen',
-    income: '100.000.000',
-    like: '1 vợ, 2 con',
-    job: 'Kinh doanh',
-    type: 'Cá nhân',
-    status: 'Đã có hợp đồng',
-    appointment_schedule: '22/08/2022 8:40',
-  },
-  {
-    id: '06',
-    fullName: 'Robert Fox',
-    phone: '093 8992 990',
-    age: 50,
-    familiar: 'Thân quen',
-    income: '100.000.000',
-    like: '1 vợ, 2 con',
-    job: 'Kinh doanh',
-    type: 'Cá nhân',
-    status: 'Đã có hợp đồng',
-    appointment_schedule: '22/08/2022 8:40',
-  },
-  {
-    id: '07',
-    fullName: 'Robert Fox',
-    phone: '093 8992 990',
-    age: 50,
-    familiar: 'Thân quen',
-    income: '100.000.000',
-    like: '1 vợ, 2 con',
-    job: 'Kinh doanh',
-    type: 'Cá nhân',
-    status: 'Đã có hợp đồng',
-    appointment_schedule: '22/08/2022 8:40',
-  },
-  {
-    id: '08',
-    fullName: 'Robert Fox',
-    phone: '093 8992 990',
-    age: 50,
-    familiar: 'Thân quen',
-    income: '100.000.000',
-    like: '1 vợ, 2 con',
-    job: 'Kinh doanh',
-    type: 'Cá nhân',
-    status: 'Đã có hợp đồng',
-    appointment_schedule: '22/08/2022 8:40',
-  },
-  {
-    id: '09',
-    fullName: 'Robert Fox',
-    phone: '093 8992 990',
-    age: 50,
-    familiar: 'Thân quen',
-    income: '100.000.000',
-    like: '1 vợ, 2 con',
-    job: 'Kinh doanh',
-    type: 'Cá nhân',
-    status: 'Đã có hợp đồng',
-    appointment_schedule: '22/08/2022 8:40',
-  },
-  {
-    id: '10',
-    fullName: 'Robert Fox',
-    phone: '093 8992 990',
-    age: 50,
-    familiar: 'Thân quen',
-    income: '100.000.000',
-    like: '1 vợ, 2 con',
-    job: 'Kinh doanh',
-    type: 'Cá nhân',
-    status: 'Đã có hợp đồng',
-    appointment_schedule: '22/08/2022 8:40',
-  },
-  {
-    id: '11',
-    fullName: 'Robert Fox',
-    phone: '093 8992 990',
-    age: 50,
-    familiar: 'Thân quen',
-    income: '100.000.000',
-    like: '1 vợ, 2 con',
-    job: 'Kinh doanh',
-    type: 'Cá nhân',
-    status: 'Đã có hợp đồng',
-    appointment_schedule: '22/08/2022 8:40',
-  },
-  {
-    id: '12',
-    fullName: 'Robert Fox',
-    phone: '093 8992 990',
-    age: 50,
-    familiar: 'Thân quen',
-    income: '100.000.000',
-    like: '1 vợ, 2 con',
-    job: 'Kinh doanh',
-    type: 'Cá nhân',
-    status: 'Đã có hợp đồng',
-    appointment_schedule: '22/08/2022 8:40',
-  },
-];
-
-var handleEditUser;
+import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
+import { options } from './options';
+import { formatDataNumber } from '../../helper/index';
+import { marriageStatus, acquaintanceLevel, typeCustomer } from '../../constants/common';
 
 const columns = [
   {
     title: 'STT',
-    // dataIndex: 'id',
-    render: (_, record, index) => {
-      return <span>{index + 1}</span>;
-    },
+    dataIndex: 'customerId',
+    // render: (_, record, index) => {
+    //   return <span>{index + 1}</span>;
+    // },
   },
   {
     title: 'Họ và tên',
-    dataIndex: 'fullName',
+    dataIndex: 'fullname',
   },
   {
     title: 'Số điện thoại',
-    dataIndex: 'phone',
-    render:(record)=>{}
+    // dataIndex: 'phone1',
+    render: (record) => {
+      return <span>{record.phone1 || record.phone2}</span>;
+    },
   },
   {
     title: 'Tuổi',
@@ -193,15 +36,26 @@ const columns = [
   },
   {
     title: 'Thân quen',
-    dataIndex: 'familiar',
+    // dataIndex: 'acquaintanceLevel',
+    render: (record) => {
+      const index = acquaintanceLevel.findIndex((item) => item.value === +record.acquaintanceLevel);
+      return <span>{acquaintanceLevel[index].label}</span>;
+    },
   },
   {
     title: 'Thu nhập',
-    dataIndex: 'income',
+    // dataIndex: 'income',
+    render: (record) => {
+      return <span>{formatDataNumber(record.income)}</span>;
+    },
   },
   {
     title: 'Hôn nhân',
-    dataIndex: 'like',
+    // dataIndex: 'maritalStatus',
+    render: (record) => {
+      const index = marriageStatus.findIndex((item) => item.value === +record.maritalStatus);
+      return <span>{marriageStatus[index].label}</span>;
+    },
   },
   {
     title: 'Nghề nghiệp',
@@ -209,11 +63,19 @@ const columns = [
   },
   {
     title: 'Loại',
-    dataIndex: 'type',
+    // dataIndex: 'typeId',
+    render: (record) => {
+      const index = typeCustomer.findIndex((item) => item.value === +record.typeId);
+      return <span>{typeCustomer[index]?.label || 'Cá nhân'}</span>;
+    },
   },
   {
     title: 'Trạng thái',
-    dataIndex: 'status',
+    // dataIndex: 'status',
+    render: (record) => {
+      const index = options.findIndex((item) => item.value === record.status);
+      return <span>{options[index].label}</span>;
+    },
   },
   {
     title: 'Lịch hẹn sắp tới',
@@ -222,22 +84,41 @@ const columns = [
   {
     title: '',
     dataIndex: '',
-    render: () => (
-      <Button size="small">Nhắc lịch</Button>
-    ),
+    render: (record) =>
+      record.status === 'NOT_CALL_YET' ? (
+        <Button size="small">Nhắc lịch</Button>
+      ) : (
+        <Button size="small" type="primary">
+          Đặt lịch
+        </Button>
+      ),
   },
 ];
 
 export default function FinanceConsultant() {
-  const consults  = useSelector((state) => state.consultReducer);
-  console.log(consults);
+  const [status, setStatus] = useState(null);
+  const [paginate, setPaginate] = useState({ limit: DEFAULT_SIZE, offset: 1 });
+
+  const consults = useSelector((state) => state.consultReducer);
+  const loading = useSelector((state) => state.loading.loading);
 
   const dispatch = useDispatch();
 
+  const handleCount = useCallback(() => {
+    let cks = 0;
+    for (let i = 0; i < consults.data.length; i++) {
+      if (consults.data[i].status === 'NOT_CALL_YET') {
+        cks += 1;
+      }
+    }
+    return cks;
+  }, [consults.data]);
+
   useEffect(() => {
-    const params = { limit: 20, offset: 0 };
+    const offset = (paginate.offset - 1) * paginate.limit;
+    const params = { limit: paginate.limit, offset: offset, status };
     dispatch(getConsult({ params }));
-  }, []);
+  }, [paginate, status]);
 
   return (
     <div className="content-box consultant_container">
@@ -254,7 +135,7 @@ export default function FinanceConsultant() {
                 </span>
               </li>
               <li>
-                <span className="list_item_badge">12</span>
+                <span className="list_item_badge">{handleCount()}</span>
                 <span> Chờ tư vấn</span>
               </li>
               <li>
@@ -265,23 +146,14 @@ export default function FinanceConsultant() {
           </div>
         </div>
         <div className="header_right">
-          <TableFilter />
+          <FilterCommon options={options} setPayload={setStatus} />
         </div>
       </div>
       <div className="contract_list">
-        {/* <Table
-          dataSource={dataSource}
-          columns={columns}
-          size="middle"
-          rowKey="id"
-          pagination={{
-            defaultPageSize: 10,
-            showSizeChanger: true,
-            pageSizeOptions: ['10', '20', '30'],
-          }}
-        /> */}
-        <TableCommon dataSource={dataSource} columnTable={columns}/>
-        <Pagination total={dataSource.length}/>
+        <Spin spinning={loading === LOADING_STATUS.pending}>
+          <TableCommon dataSource={consults.data} columnTable={columns} />
+        </Spin>
+        <Pagination total={100} setPaginate={setPaginate} />
       </div>
     </div>
   );

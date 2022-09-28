@@ -45,6 +45,7 @@ export const sendAvatars = createAsyncThunk(
   }
 );
 
+
 const configUser = createSlice({
   name: 'configUser',
   initialState,

@@ -30,7 +30,7 @@ const HealthFoundation = lazy(() => import('../pages/FinancialSolution/HealthFou
 const EducationFoundation = lazy(() => import('../pages/FinancialSolution/EducationFoundation'));
 const IllustrateFiduciary = lazy(() => import('../pages/FinancialSolution/IllustrateFiduciary'));
 const PotentialCustomers = lazy(() => import('../pages/PotentialCustomers'));
-const Consult = lazy(() => import('../pages/Consult'));
+const Consult = lazy(() => import('../pages/consult'));
 
 const AppointmentManagement = lazy(() => import('../pages/Main/views/AppointmentManagement'));
 
@@ -139,7 +139,10 @@ export const routes = () => [
       {
         path: 'health-foundation',
         element: <GuestGuard element={<HealthFoundation />} />,
-      },
+      },{
+        path: 'config-user',
+        element: <GuestGuard element={<ConfigUser />} />,
+      }
 
     ],
   },
@@ -176,10 +179,7 @@ export const routes = () => [
         path: 'operation-history',
         element: <ManagerGuard element={<CustomerCare />} />,
       },
-      {
-        path: 'config-user',
-        element: <ManagerGuard element={<ConfigUser />} />,
-      },
+      
       {
         path: 'q&a',
         element: <ManagerGuard element={<ManageFinanceKnowledge />} />,

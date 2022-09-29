@@ -1,7 +1,8 @@
-import { Input as AntInput } from 'antd';
-import styled from 'styled-components';
+import { InputNumber as AntInputNumber } from "antd";
+import styled from "styled-components";
 
-export const Input = styled(AntInput)`
+export const InputNumber = styled(AntInputNumber)`
+  width: 100%;
   background: #f8f8f8;
   border-radius: 5px;
   border: none;
@@ -9,9 +10,6 @@ export const Input = styled(AntInput)`
   font-size: 14px;
   line-height: 18px;
   color: #999999;
-  .ant-input{
-  background-color: #f8f8f8;
-  }
   &:focus {
     border-color: #30a867;
     box-shadow: 0 0 0 2px rgba(48 168 103 / 20%);

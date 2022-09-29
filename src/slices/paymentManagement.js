@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { create, getAll, remove, importFile,getHistories } from '../services/paymentManagement';
 
-const initialState = { isReload: false, data: [], histories: [], total: 0 };
+const initialState = { isReload: false, data: [], histories: {data:[],count:0}, total: 0 };
 
 export const retrieveData = createAsyncThunk('paymentManagement/getAll', async (params, { rejectWithValue }) => {
   try {
@@ -69,7 +69,8 @@ const paymentManagementSlice = createSlice({
     },
 
     [getHistoriesData.fulfilled]: (state, action) => {
-      state.histories = action.payload.data;
+      state.histories.data = action.payload.data;
+      state.histories.count = action.payload.total;
       state.isReload = false;
     },
 

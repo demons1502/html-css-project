@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import calendarIcon from '../../assets/images/icons/calendar.svg';
 import { getTimeByTZ } from '../../helper/index';
 import { getHistoriesData } from '../../slices/paymentManagement';
-import { LOADING_STATUS } from '../../ultis/constant';
+import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import TableCommon from '../../components/common/TableNormal';
+import PaginationCommon from '../../components/common/Pagination';
 
 const columns = [
   {
@@ -24,14 +25,24 @@ const columns = [
 const PaymentHistory = ({ customer }) => {
   const format = new Intl.NumberFormat('vi-VN').format(customer?.amount);
 
-  const histories = useSelector((state) => state.paymentManagementReducer);
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(10)
+  const [paginate, setPaginate] = useState({page:1,limit:DEFAULT_SIZE})
+
+  const {histories} = useSelector((state) => state.paymentManagementReducer);
   const loading = useSelector((state) => state.loading.loading);
   const dispatch = useDispatch();
 
+
+  const onChangePage = (e) => {
+    
+  };
+
+
   useEffect(() => {
-    const params = { page: 1, limit: 10 };
+    const params = { page: paginate.page, limit: paginate.limit };
     customer && dispatch(getHistoriesData({ loginId: customer?.loginId, params: params }));
-  }, [customer]);
+  }, [customer,paginate]);
 
   return (
     <div className="paymentHistory">
@@ -81,11 +92,12 @@ const PaymentHistory = ({ customer }) => {
           <div className="paymentHistory-group">
             <Spin spinning={loading === LOADING_STATUS.pending}>
               <TableCommon
-                dataSource={histories.histories}
+                dataSource={histories.data}
                 columnTable={columns}
-
               />
             </Spin>
+            <PaginationCommon total={histories.count} setPaginate={setPaginate}/>
+            {/* <Pagination total={payments.total} setPaginate={onChangePage} /> */}
           </div>
         </>
       ) : (

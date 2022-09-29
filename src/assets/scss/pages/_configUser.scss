@@ -1,8 +1,9 @@
 .config_header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: $white-color;
-    padding: 16px 32px;
+    padding: 10px 32px;
     margin: 0px -30px;
 
     h3 {
@@ -131,41 +132,75 @@
 }
 
 .form_change_password {
+    position: relative;
+    margin: -18px 0 -18px -20px;
+
+    .header_form, .body_form, .footer_form{
+        padding: 0px 36px 0px 33px;
+    }
     .header_form {
-        padding: 12px 37px 12px 32px;
         text-align: center;
+        padding: 12px 37px 12px 32px;
+        margin-bottom: 50px;
+    }
+
+    .linear {
+        text-align: center;
+        font-weight: 700;
+        font-size: 20px;
+        position: absolute;
+        top: 90px;
+        height: 158px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        border-top-left-radius: 50%;
+        border-top-right-radius: 50%;
+        width: 335px;
+        padding: 20px 0px 0px 0px;
+        background: linear-gradient(182.43deg, rgba(53, 179, 111, 0.3) 2.03%, rgba(217, 217, 217, 0) 17.22%);
     }
 
     .body_form {
         border-top: 1px solid $grey-border-color;
         border-bottom: 1px solid $grey-border-color;
-
+        font-weight: 600;
+        font-size: 13px;
         &-content {
             // padding: 21px 37px 11px 32px;
             padding: 21px 0px 11px 0px;
-            .ant-form-item{
+
+            .ant-form-item {
                 margin-bottom: 10px;
-                .ant-space-vertical{
+                width: 267px;
+                .ant-form-item-label{
+                    padding: 0px !important;
+                }
+                .ant-space-vertical {
                     width: 100%;
                 }
-                .ant-input-password{
+
+                .ant-input-password {
                     padding: 8px 12px;
                     background-color: $secondary-color;
                     border: none;
                     border-radius: 5px;
-                    &:focus{
-                        // box-shadow: none !important;
-                        // border: 1px solid $green-color !important;
+
+                    &:hover {
+                        background-color: $secondary-color;
+
                     }
-                    input{
+
+                    input {
                         background-color: $secondary-color
                     }
                 }
+
                 // .ant-input-affix-wrapper-focus{
                 //     box-shadow: none !important;
                 //     border: 1px solid $green-color !important;
                 // }
             }
+
             .ant-form-item-row {
                 display: flex;
                 flex-direction: column;
@@ -178,9 +213,10 @@
         }
     }
 
-    .footer_form{
+    .footer_form {
         display: flex;
         justify-content: space-around;
-        padding: 12px 0px;
+        padding-top: 12px;
+        padding-bottom: 17px;
     }
 }

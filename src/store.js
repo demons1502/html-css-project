@@ -14,6 +14,7 @@ import paymentManagement from "./slices/paymentManagement";
 import surveyReducer from "./slices/surveys";
 import customerReducer from "./slices/customers";
 import consultReducer from "./slices/consult";
+import configUser from "./slices/configUser"
 
 const persistConfig = {
   key: "root",
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   surveys: surveyReducer,
   customers: customerReducer,
   consultReducer: consultReducer,
+  configUser: configUser
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

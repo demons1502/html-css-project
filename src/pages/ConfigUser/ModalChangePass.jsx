@@ -2,23 +2,23 @@ import { React, useState, useEffect } from 'react'
 import { Form, Input, Button, Select, notification, Space } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import useFormErrors from "../../hooks/useFormErrors";
-import { login } from '../../slices/auth';
-import { ResetPassword } from '../../slices/auth';
-import { changePasswords } from '../../slices/configUser';
+import { changePassword, login, resetPassword } from '../../slices/configUser'
 import { useDispatch, useSelector } from 'react-redux';
+import Lock from '../../assets/images/icons/lock.svg'
 
 
 function ModalChangePass(props) {
-  const {closeCreateUser} = props
-  const dispatch= useDispatch()
+  const { closeCreateUser } = props
+  const dispatch = useDispatch()
   const userInfo = useSelector((state) => state.auth.me)
+  const resetCode = useSelector((state) => state.configUser.resetCode)
 
-  const onFinishChangePass = (values) => {
-    if(values.newPassword === values.confirmPassword){
-      dispatch(ResetPassword({loginId:userInfo.loginId}))
-      dispatch(login({username:userInfo.loginId,password:values.password}))
-      dispatch(changePasswords({loginId:userInfo.loginId, code:userInfo.resetCode,password:values.newPassword}))
-      console.log(values);
+  const onFinishChangePass =async (values) => {
+    if (values.newPassword === values.confirmPassword) {
+      dispatch(resetPassword({ loginId: userInfo.loginId }))
+      dispatch(login({ username: userInfo.loginId, password: values.password }))
+      dispatch(changePassword({ loginId: userInfo.loginId, code: resetCode, password: values.newPassword }))
+      // console.log(values);
     }
   }
   const [form] = Form.useForm();
@@ -27,6 +27,9 @@ function ModalChangePass(props) {
     <div>
       <div className='form_change_password'>
         <div className="header_form">
+          <img src={Lock} alt="" />
+        </div>
+        <div className="linear">
           <p>Đổi mật khẩu</p>
         </div>
         <Form form={form}
@@ -77,7 +80,7 @@ function ModalChangePass(props) {
             </div>
           </div>
           <div className="footer_form">
-            <Button className='btn-danger' onClick={ () => closeCreateUser(false)}>Huỷ</Button>
+            <Button className='btn-danger' onClick={() => { closeCreateUser(false); setTimeout(() => form.resetFields(), 200) }}>Huỷ</Button>
             <Form.Item>
               <Button type="primary" htmlType="submit" className='btn-primary'>Lưu mật khẩu</Button>
             </Form.Item>

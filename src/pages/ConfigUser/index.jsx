@@ -1,12 +1,12 @@
 import { React, useState, useEffect } from 'react'
 import Modal from '../../components/common/Modal'
-import { Form, Row, Col, Input, Checkbox, notification, Link } from 'antd'
+import { Form, Row, Col, Input, Checkbox, notification, Popover, Link } from 'antd'
 import { CameraOutlined } from '@ant-design/icons';
 import useFormErrors from "../../hooks/useFormErrors";
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { changePasswords, updateUsers, sendAvatars } from '../../slices/configUser';
-import { Button, Upload, Select} from "../../components/styles";
+import { Button, Upload, Select } from "../../components/styles";
 import ModalChangePass from './ModalChangePass';
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +16,8 @@ const { Option } = Select;
 function ConfigUser() {
   const [dataCity, setDataCity] = useState([])
   const [fileList, setFileList] = useState(null);
-  const [showModal, setShowModal]= useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [fileChange, setFileChange] = useState(false)
 
   const dispatch = useDispatch()
   const userInfo = useSelector((state) => state.auth.me)
@@ -25,10 +26,10 @@ function ConfigUser() {
   useFormErrors(form);
 
   const onFinish = (values) => {
-    if (fileList.length != 0) {
+    if (fileList && fileList.length != 0 && fileChange ) {
       const formData = new FormData();
       formData.append('file', fileList[0].originFileObj)
-      dispatch(sendAvatars(formData))
+      dispatch(sendAvatars(formData)) 
     }
     dispatch(updateUsers(values))
   };
@@ -50,7 +51,6 @@ function ConfigUser() {
   }, [userInfo])
 
   const handleFileList = ({ fileList: newFile }) => {
-    console.log(newFile);
     if (newFile[0]?.originFileObj?.size > 2000000) {
       notification['warning']({
         message: 'Warning',
@@ -59,9 +59,16 @@ function ConfigUser() {
     }
     else {
       setFileList(newFile);
+      setFileChange(true)
     }
+    console.log(newFile);
   };
 
+  const content = (
+    <div>
+      <ModalChangePass closeCreateUser={() => setShowModal(false)} />
+    </div>
+  );
   const navigate = useNavigate();
   const goHome = () => {
     navigate('/');
@@ -72,13 +79,15 @@ function ConfigUser() {
     <div>
       <div className="config_header">
         <h3>Cấu hình</h3>
-        <Button type='primary' onClick={()=>setShowModal(true)}>
-          <img src='../images/lock_icon.svg' />
-          Đổi mật khẩu
-        </Button>
+        <Popover content={content} placement="bottomRight" trigger='click'
+          open={showModal}
+        >
+          <Button type="primary" onClick={() => setShowModal(!showModal)}>
+            <img src='../images/lock_icon.svg' />
+            Đổi mật khẩu
+          </Button>
+        </Popover>
       </div>
-      <Modal isVisible={showModal} setIsVisible={setShowModal} width={335} className="modal_change_pass"
-        content={ <ModalChangePass closeCreateUser={()=>setShowModal(false)}/>} />
       <Form form={form}
         name="basic"
         initialValues={{
@@ -94,7 +103,7 @@ function ConfigUser() {
           <div className="config_content_body">
             <div className="config_content_body-avatar">
               <p className='avatar-title'>Ảnh đại diện:</p>
-              <div className='manageContentInput-upload' style={{borderRadius: 1 + 'rem' }}>
+              <div className='manageContentInput-upload' style={{ borderRadius: 1 + 'rem' }}>
                 <Upload
                   name='image'
                   listType='picture-card'
@@ -123,7 +132,7 @@ function ConfigUser() {
                       required: true,
                     }]}
                   >
-                    <Input type='text' />
+                    <Input type='text' placeholder="Họ và tên"/>
                   </Form.Item>
                 </Col>
                 <Col span={5}>
@@ -134,7 +143,7 @@ function ConfigUser() {
                       required: true,
                     }]}
                   >
-                    <Input type='number' />
+                    <Input type='number' placeholder="Số điện thoại"/>
                   </Form.Item>
                 </Col>
                 <Col span={5}>
@@ -151,10 +160,11 @@ function ConfigUser() {
                     name="email"
                     rules={[{
                       required: true,
+                      type: "email",
                     },
                     ]}
                   >
-                    <Input type='text' />
+                    <Input placeholder="Email"/>
                   </Form.Item>
                 </Col>
                 <Col span={5}>
@@ -165,7 +175,7 @@ function ConfigUser() {
                       required: true,
                     }]}
                   >
-                    <Input type='text' />
+                    <Input type='text' placeholder="ID của người quản lý"/>
                   </Form.Item>
                 </Col>
                 <Col span={5}>

@@ -145,6 +145,7 @@ export default function CustomerCareDashBoard() {
           bordered={false}
           scroll={{ scrollToFirstRowOnChange: false }}
           showHeader={false}
+          $borderBottom={true}
         />
         <PaginationCommon total={50} showSizeChanger={false} setPaginate={{ limit: 10, offset: 0 }} />
       </S.WrapContent>

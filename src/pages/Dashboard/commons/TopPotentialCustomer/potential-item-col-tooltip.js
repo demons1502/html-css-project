@@ -10,18 +10,16 @@ export default function PotentialItemTooltip(props) {
 
   return (
     <Row gutter={10}>
-      <S.TextColor
-        $color={
-          record.potentialPoint.split('%')[0] >= 70
-            ? '#3DBD78'
-            : record.potentialPoint.split('%')[0] >= 50
-            ? '#F6CF47'
-            : '#FF5855'
-        }
-      >
-        {record.potentialPoint}
+      <S.TextColor $color={record.successfulProb > 9 ? '#3DBD78' : record.successfulProb > 6 ? '#F6CF47' : '#FF5855'}>
+        {record.successfulProb > 9
+          ? 'Rất tiềm năng'
+          : record.successfulProb > 6
+          ? 'Có tiềm năng'
+          : record.successfulProb > 4
+          ? 'Hơi tiềm năng'
+          : ''}
       </S.TextColor>
-      <S.WrapIconCenter>
+      {/* <S.WrapIconCenter>
         <Tooltip
           placement="bottomRight"
           color="#fff"
@@ -42,7 +40,7 @@ export default function PotentialItemTooltip(props) {
         >
           <S.IconTooltip src={noteCircle} />
         </Tooltip>
-      </S.WrapIconCenter>
+      </S.WrapIconCenter> */}
     </Row>
   );
 }

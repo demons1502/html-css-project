@@ -139,10 +139,11 @@ export const routes = () => [
       {
         path: 'health-foundation',
         element: <GuestGuard element={<HealthFoundation />} />,
-      },{
-        path: 'config-user',
-        element: <GuestGuard element={<ConfigUser />} />,
-      }
+      },
+      // {
+      //   path: 'config-user',
+      //   element: <GuestGuard element={<ConfigUser />} />,
+      // }
 
     ],
   },
@@ -195,7 +196,7 @@ export const routes = () => [
       // no page yet
       {
         path: 'setting',
-        element: <CustomerCare />,
+        element: <ConfigUser />,
       },
     ],
   },

@@ -1,4 +1,4 @@
-import { Button as AntButton, PageHeader as AntPageHeader } from 'antd';
+import { Button as AntButton, PageHeader as AntPageHeader, Upload as AntUpload, Select as AntSelect } from 'antd';
 import styled from 'styled-components';
 
 export const PageHeader = styled(AntPageHeader)`
@@ -94,3 +94,48 @@ export const Button = styled(AntButton)`
     padding: 0 10px;
   }
 `;
+
+export const ButtonAdd = styled(AntButton)`
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  color: #3dbd78;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-weight: 700;
+  font-size: 14px;
+  &:hover,
+  &:focus {
+    opacity: 0.8;
+    color: #3dbd78;
+    background-color: transparent;
+  }
+
+  img {
+    background: #3dbd78;
+    padding: 4px;
+    border-radius: 50%;
+  }
+`;
+
+export const Upload = styled(AntUpload)`
+  &.ant-upload-picture-card-wrapper {
+    .ant-upload-select {
+      &.ant-upload-select-picture-card {
+        border-radius: 10px;
+      }
+    }
+  }
+`;
+
+export const Select = styled(AntSelect)`
+  &.ant-select .ant-select-selector {
+    background: #F8F8F8;
+    border-radius: 5px;
+  }
+`;
+
+
+
+

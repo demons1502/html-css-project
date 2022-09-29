@@ -11,7 +11,7 @@ export default function ListCustomer(props) {
       setSelectId(data?.customerId)
     }
   }
-
+ 
   return (
     <div className={`list-customer ${selectId === data.customerId ? 'list-customer-active' : ''}`} onClick={selectItem}>
       <div className="list-customer__content">
@@ -24,11 +24,11 @@ export default function ListCustomer(props) {
           <p className="list-customer__content-gender--right"><span className="before">{t('common.old')}</span> {calculateAge(data?.dob)}</p>
         </div>
         {
-          !!data.contractNumber && <><p className={`${selectId === data.customerId ? 'color-green' : ''} list-customer__content-contract`}>
-            <span className="before">{t('common.contract')}</span>{data?.contractNumber}
+          !!data.contracts[0] && <><p className={`${selectId === data.customerId ? 'color-green' : ''} list-customer__content-contract`}>
+            <span className="before">{t('common.contract')}</span>{data.contracts[0]?.contractNumber}
           </p>
           <p className="list-customer__content-date">
-            <span className="before">{t('common.sign date')}</span>{getTimeByTZ(data?.createdAt)}
+            <span className="before">{t('common.sign date')}</span>{getTimeByTZ(data.contracts[0]?.startDate)}
           </p></>
         }
       </div>

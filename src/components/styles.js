@@ -126,6 +126,9 @@ export const Upload = styled(AntUpload)`
         border-radius: 10px;
       }
     }
+    .ant-upload-list-picture-card-container .ant-upload-list-item {
+      border-radius: 10px;
+    }
   }
 `;
 

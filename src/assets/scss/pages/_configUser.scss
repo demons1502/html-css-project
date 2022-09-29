@@ -82,6 +82,9 @@
                 border-radius: 5px;
                 font-weight: 700;
                 font-size: 1.4rem;
+                &.ant-input-disabled {
+                    border: none;
+                }
             }
         }
 
@@ -89,7 +92,7 @@
             border-bottom: 1px solid $grey-border-color;
 
             .border_right {
-                padding: 19px 27px;
+                padding: 15px 27px;
                 border-right: 1px dashed $grey-border-color;
             }
 

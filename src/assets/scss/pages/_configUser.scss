@@ -75,7 +75,7 @@
 
         .config_content_body-infoUser {
             padding: 9px 27px 19px 27px;
-            border-bottom: 1px dotted $grey-border-color;
+            border-bottom: 1px dashed $grey-border-color;
 
             input {
                 height: 40px !important;
@@ -90,7 +90,7 @@
 
             .border_right {
                 padding: 19px 27px;
-                border-right: 1px dotted $grey-border-color;
+                border-right: 1px dashed $grey-border-color;
             }
 
             .ant-checkbox-wrapper {

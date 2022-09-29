@@ -1,12 +1,15 @@
 import { React, useState, useEffect } from 'react'
 import Modal from '../../components/common/Modal'
-import { Form, Upload, Row, Col, Input, Checkbox, Button, Select, notification } from 'antd'
+import { Form, Row, Col, Input, Checkbox, notification, Link } from 'antd'
 import { CameraOutlined } from '@ant-design/icons';
 import useFormErrors from "../../hooks/useFormErrors";
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { changePasswords, updateUsers, sendAvatars } from '../../slices/configUser';
+import { Button, Upload, Select} from "../../components/styles";
 import ModalChangePass from './ModalChangePass';
+import { useNavigate } from "react-router-dom";
+
 const { Option } = Select;
 
 
@@ -59,15 +62,20 @@ function ConfigUser() {
     }
   };
 
+  const navigate = useNavigate();
+  const goHome = () => {
+    navigate('/');
+  };
+
 
   return (
     <div>
       <div className="config_header">
         <h3>Cấu hình</h3>
-        <button className='btn-primary' onClick={()=>setShowModal(true)}>
+        <Button type='primary' onClick={()=>setShowModal(true)}>
           <img src='../images/lock_icon.svg' />
           Đổi mật khẩu
-        </button>
+        </Button>
       </div>
       <Modal isVisible={showModal} setIsVisible={setShowModal} width={335} className="modal_change_pass"
         content={ <ModalChangePass closeCreateUser={()=>setShowModal(false)}/>} />
@@ -86,7 +94,7 @@ function ConfigUser() {
           <div className="config_content_body">
             <div className="config_content_body-avatar">
               <p className='avatar-title'>Ảnh đại diện:</p>
-              <div className='manageContentInput-upload'>
+              <div className='manageContentInput-upload' style={{borderRadius: 1 + 'rem' }}>
                 <Upload
                   name='image'
                   listType='picture-card'
@@ -215,11 +223,11 @@ function ConfigUser() {
               </Row>
             </div>
             <div className="config_content_body_button-group">
-              <Button className='btn-primary'>Về trang chủ</Button>
+              <Button type='primary' onClick={goHome}>Về trang chủ</Button>
               <div className="config_content_body_button-group_right">
                 <Button className='btn-danger'>Huỷ</Button>
                 <Form.Item>
-                  <Button type="primary" htmlType="submit" className='btn-primary'>Lưu thay đổi</Button>
+                  <Button type="primary" htmlType="submit">Lưu thay đổi</Button>
                 </Form.Item>
               </div>
             </div>

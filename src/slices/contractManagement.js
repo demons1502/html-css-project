@@ -1,14 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  createContracts,
-  getAll,
-  update,
-  getCustom,
-  getById,
-} from '../services/contractManagement';
+import { createContracts, getAll, update, getCustom, getById } from '../services/contractManagement';
 
 const initialState = {
   data: [],
+  dataEdit:[],
   totalItem: 0,
   custom: [],
   contractById: null,
@@ -35,13 +30,13 @@ export const getCustoms = createAsyncThunk(
   }
 );
 
-// export const getByIds = createAsyncThunk(
-//   'contractManagement/getContractId',
-//   async (payload) => {
-//     const res = await getById(payload);
-//     return res.data;
-//   }
-// );
+export const getByIdApi = createAsyncThunk(
+  'contractManagement/getContractId',
+  async (payload) => {
+    const res = await getById(payload);
+    return res.data;
+  }
+);
 
 export const updateContract = createAsyncThunk(
   'contractManagement/updateContract',
@@ -75,7 +70,7 @@ const contractManagement = createSlice({
       state.data = [...action.payload.contracts];
       state.totalItem = action.payload.count;
       state.refreshData = true;
-      state.refreshData=false
+      state.refreshData = false
     },
     [getCustoms.fulfilled]: (state, action) => {
       state.custom = [...action.payload.data];
@@ -84,6 +79,9 @@ const contractManagement = createSlice({
       state.refreshData = true;
       state.refreshData = false;
 
+    },
+    [getByIdApi.fulfilled]: (state, action) => {
+      state.dataEdit= action.payload
     },
   },
 });

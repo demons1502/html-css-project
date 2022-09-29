@@ -100,7 +100,7 @@ export default function ContractManagement() {
     setVisibleModal(true)
     setTitleModal('Thêm hợp đồng')
   }
-
+  
   return <>
     <div className='content-box container_contract'>
       <div className="contract_header">
@@ -115,7 +115,7 @@ export default function ContractManagement() {
       </div>
       <div className="contract_list">
         <Table dataSource={data} columnTable={columns} size='middle' />
-        <Pagination total={50} pageSize={paginate.limit} setPaginate={setPaginate} />
+        <Pagination total={totalItem} pageSize={paginate.limit} setPaginate={setPaginate} />
       </div>
     </div>
     <Modal isVisible={visibleModal} setIsVisible={setVisibleModal} title={titleModal} width={800} content={<CreateContract dataEdit={dataEdit} setVisibleModal={setVisibleModal} />} />

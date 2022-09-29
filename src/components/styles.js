@@ -1,4 +1,4 @@
-import { Button as AntButton, PageHeader as AntPageHeader, Upload as AntUpload, Select as AntSelect } from 'antd';
+import { Button as AntButton, PageHeader as AntPageHeader, Upload as AntUpload, Select as AntSelect ,Input as AntInput } from 'antd';
 import styled from 'styled-components';
 
 export const PageHeader = styled(AntPageHeader)`
@@ -139,6 +139,20 @@ export const Select = styled(AntSelect)`
   }
 `;
 
-
+export const Input = styled(AntInput)`
+  &.ant-input {
+    background: #F8F8F8;
+    border-radius: 5px;
+    border: unset;
+    &.ant-input-lg {
+      border-radius: 10px;
+      font-size: 14px;
+    }
+    &.ant-input-sm {
+      border-radius: 3px;
+    }
+  }
+   
+`;
 
 

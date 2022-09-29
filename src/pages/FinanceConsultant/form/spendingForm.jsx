@@ -1,142 +1,138 @@
-import React, {useState, useEffect, useCallback, useMemo} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {useTranslation} from 'react-i18next';
-import {Col, Checkbox, Button, Empty} from 'antd';
-import {createData} from '../../../slices/customerCare';
-import Table from '../../../components/common/TableNormal';
-import IconPlus from '../../../assets/images/icons/plus.svg';
-import _ from 'lodash';
-import Filter from "../../../components/common/Filter";
+import { Form } from 'antd';
+import React from 'react';
+import Input from '../../../components/common/Input';
+import { Button } from '../../../components/styles';
+import DotImg from '../../../assets/images/icons/dot.svg';
+import {formatDataNumber} from '../../../helper'
 
-const content = (
-  <div>
-    <p>Content</p>
-    <p>Content</p>
-  </div>
-);
-const dataSource = [
-  {
-    key: 1,
-    date: '12/04/2022',
-    info: 'Thông tin thu nhập',
-    content: '10 Downing Street',
-  },
-  {
-    key: 2,
-    date: '12/04/2022',
-    info: 'Thông tin thu nhập',
-    content: '10 Downing Street',
-  },
-  {
-    key: 3,
-    date: '12/04/2022',
-    info: 'Thông tin thu nhập',
-    content: '10 Downing Street',
-  },
-  {
-    key: 4,
-    date: '12/04/2022',
-    info: 'Thông tin thu nhập',
-    content: '10 Downing Street',
-  },
-]
+const spendingForm = () => {
 
-const options = [
-  { label: 'Chưa gọi điện', value: 'Apple' },
-  { label: 'Chưa gọi điện', value: 'Pear' },
-  { label: 'Chưa gọi điện', value: 'Orange' },
-  { label: 'Chưa gọi điện', value: 'Orange' },
-  { label: 'Chưa gọi điện', value: 'Orange' },
-  { label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 'Orange' },
-];
-
-export default function SpendingForm() {
-  const {t} = useTranslation();
-  const customerCare = useSelector((state) => state.customerCare);
-  const [dataTable, setDataTable] = useState(dataSource);
-  const dispatch = useDispatch();
-
-  const columns = [
-    {
-      title: t('common.date'),
-      dataIndex: 'date',
-      key: 'stt',
-    },
-    {
-      title: t('common.type info'),
-      dataIndex: 'info',
-      key: 'date',
-    },
-    {
-      title: t('common.content'),
-      dataIndex: 'content',
-      key: 'content',
-    }
-  ];
-
-  const initFetch = useCallback(() => {
-  }, [dispatch]);
-
-  useEffect(() => {
-    initFetch();
-  }, [initFetch]);
-
-  useEffect(() => {
-    //re render
-  }, [customerCare]);
-
-  const addRow = () => {
-    const rowData = {
-      key: 0,
-      name: '',
-      age: 42,
-      address: '10 Downing Street',
-    }
-
-    let lastValue = _.last(dataTable);
-    rowData.key = lastValue.key + 1;
-    setDataTable([rowData, ...dataTable]);
+  const handleFinish=(values)=>{
+    console.log(values)
   }
 
-  const saveData = (e) => {
-    dispatch(createData({
-      id: 1,
-      title: e.target.value,
-    }));
-  };
-
-  const table = useMemo(() => {
-    if (!!dataTable && dataTable.length > 0) {
-      return <Table dataSource={dataTable} columnTable={columns} />
-    } else {
-      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
-    }
-  }, [dataTable])
-
   return (
-    <Col span={4} className="finance-consultant__right">
-      <div className="finance-consultant__right--top">
-
-        <Checkbox className="checkbox-item">{t('customer care.no more potential')}</Checkbox>
+    <div className="financialConsultant-content">
+      <div className="financialConsultant-form_header">
+        <h3>Danh mục chi tiêu</h3>
       </div>
-      <div className="finance-consultant__right--event">
-        <div className="finance-consultant__right--event--left">
-          <h5>{t('customer care.history title')}</h5>
-          <Filter options={options} />
+      <Form
+        labelCol={{
+          span: 19,
+        }}
+        wrapperCol={{
+          span: 5,
+        }}
+        layout="horizontal"
+        onFinish={handleFinish}
+        className="financialConsultant-form"
+      >
+        <Form.Item
+          label={
+            <p>
+              <img src={DotImg} alt="dot" /> <span>Tiền chợ</span>
+            </p>
+          }
+          labelAlign="left"
+          name='marketMoney'
+        >
+          <Input placeholder='Nhập'/>
+        </Form.Item>
+        <Form.Item
+          label={
+            <p>
+              <img src={DotImg} alt="dot" /> <span>Tiền học</span>
+            </p>
+          }
+          labelAlign="left"
+          name='studyMoney'
+        >
+          <Input placeholder='Nhập'/>
+        </Form.Item>
+        <Form.Item
+          label={
+            <p>
+              <img src={DotImg} alt="dot" /> <span>Tiền bỉm, sữa, quà vặt cho con</span>
+            </p>
+          }
+          labelAlign="left"
+          name='giftMoney'
+        >
+          <Input placeholder='Nhập'/>
+        </Form.Item>
+        <Form.Item
+          label={
+            <p>
+              <img src={DotImg} alt="dot" /> <span>Tiền ga, điện, nước, mạng</span>
+            </p>
+          }
+          labelAlign="left"
+          name='gasMoney'
+        >
+          <Input placeholder='Nhập'/>
+        </Form.Item>
+        <Form.Item
+          label={
+            <p>
+              <img src={DotImg} alt="dot" /> <span>Chi phí giao tế</span>
+            </p>
+          }
+          labelAlign="left"
+          name=''
+        >
+          <Input placeholder='Nhập'/>
+        </Form.Item>
+        <Form.Item
+          label={
+            <p>
+              <img src={DotImg} alt="dot" /> <span>Chi phí cá nhân</span>
+            </p>
+          }
+          labelAlign="left"
+        >
+          <Input placeholder='Nhập'/>
+        </Form.Item>
+        <Form.Item
+          label={
+            <p>
+              <img src={DotImg} alt="dot" /> <span>Thanh toán lãi vay, thẻ tín dụng</span>
+            </p>
+          }
+          labelAlign="left"
+        >
+          <Input placeholder='Nhập'/>
+        </Form.Item>
+        <Form.Item
+          label={
+            <p>
+              <img src={DotImg} alt="dot" /> <span>Quỹ nuôi dưỡng cha mẹ già yếu</span>
+            </p>
+          }
+          labelAlign="left"
+        >
+          <Input placeholder='Nhập'/>
+        </Form.Item>
+        <Form.Item
+          label={
+            <p>
+              <img src={DotImg} alt="dot" /> <span>Chi phí khác....</span>
+            </p>
+          }
+          labelAlign="left"
+        >
+          <Input placeholder='Nhập'/>
+        </Form.Item>
+        <div className="financialConsultant-total">
+          <p>Tổng chi tiêu: </p>
+          <span>{formatDataNumber(123000000)}</span>
         </div>
-        <Button type="primary" className="btn-primary" onClick={saveData}>{t('common.save')}</Button>
-      </div>
-      <div className="finance-consultant__right--list">
-        {table}
-        <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={addRow}>{t('customer care.add event')}</Button>
-      </div>
-      <div className="finance-consultant__right--info">
-        <h3>{t('customer care.sync info')}</h3>
-        <ul>
-          <li>27 tuổi, 1 vợ, 2 con, chưa có nhà, đang làm nghề môi giới chứng khóa</li>
-          <li>Thu nhập 62 triệu</li>
-        </ul>
-      </div>
-    </Col>
+        <Form.Item>
+          <Button type="primary" htmlType='submit'>Lưu thông tin</Button>
+        </Form.Item>
+      </Form>
+    </div>
+    // <div className='financialConsultant-form'>spendingForm</div>
   );
-}
+};
+
+export default spendingForm;

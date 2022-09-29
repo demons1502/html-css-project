@@ -31,7 +31,7 @@ export default function TableCommon(props) {
       columns={columnTable}
       pagination={pagination}
       bordered={bordered}
-      className='table-common'
+      className={`table-common ${props.className}`}
       rowKey='id'
       // scroll={isScroll ?
       //   {

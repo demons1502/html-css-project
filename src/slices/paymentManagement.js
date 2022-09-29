@@ -59,9 +59,8 @@ const paymentManagementSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [createPayment.fulfilled]: (state, action) => {
+    [createPayment.fulfilled]: (state) => {
       state.isReload = true;
-      // state.data.push(action.payload);
     },
     [retrieveData.fulfilled]: (state, action) => {
       state.data = action.payload.data;
@@ -70,24 +69,15 @@ const paymentManagementSlice = createSlice({
     },
 
     [getHistoriesData.fulfilled]: (state, action) => {
-      // console.log(action.payload)
       state.histories = action.payload.data;
-      // state.total = action.payload.total;
-      // state.isReload = false;
+      state.isReload = false;
     },
 
-    [uploadFile.fulfilled]: (state, action) => {
+    [uploadFile.fulfilled]: (state) => {
       state.isReload = true;
     },
-    [deletePayment.fulfilled]: (state, action) => {
-      // let index = state.data.findIndex(({ id }) =>
-      //   action.payload.id.includes(id)
-      // );
-      // state.data.splice(index, 1);
+    [deletePayment.fulfilled]: (state) => {
       state.isReload = true;
-      // state.data = state.data.filter(
-      //   ({ id }) => !action.payload.id.includes(id)
-      // );
     },
   },
 });

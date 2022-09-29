@@ -7,4 +7,4 @@ export const importFile = (params) =>
   sendPost('transactions/bulk-create-upload', params, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
-export const getHistories = (loginId,params) => sendGet(`transactions/users/${loginId}`, params);
+export const getHistories = (loginId, params) => sendGet(`transactions/users/${loginId}`, params);

@@ -33,7 +33,6 @@ const CreatePayment = (props) => {
   const { isModalOpen, setIsModalOpen } = props;
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  // const {TextArea}=Input
 
   const loading = useSelector((state) => state.loading.loading);
 
@@ -45,12 +44,16 @@ const CreatePayment = (props) => {
       amount: +values.amount,
       description: values.description,
     };
-    console.log(newPayment);
-    // dispatch(createPayment(newPayment));
-    // if (loading === LOADING_STATUS.succeeded) {
-    //   setIsModalOpen(false);
-    //   form.resetFields();
-    // }
+    dispatch(createPayment(newPayment));
+    if (loading === LOADING_STATUS.succeeded) {
+      setIsModalOpen(false);
+      form.resetFields();
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    form.resetFields();
   };
 
   return (
@@ -109,11 +112,11 @@ const CreatePayment = (props) => {
           <Form.Item name="description" label="Nội dung">
             <Textarea autoSize placeholder="Content" />
           </Form.Item>
-          <Form.Item>
+          <Form.Item className='paymentManagement-modal_button'>
+            <Button className="btn-danger" onClick={handleCancel}>Hủy</Button>
             <Button type="primary" htmlType="submit">
               Thêm mới
             </Button>
-            <Button className='button-danger'>Hủy</Button>
           </Form.Item>
         </Form>
       </Modal>

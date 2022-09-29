@@ -1,17 +1,18 @@
-import { Empty, Spin, Table } from 'antd';
+import { Empty, Spin, } from 'antd';
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import calendarIcon from '../../assets/images/icons/calendar.svg';
 import { getTimeByTZ } from '../../helper/index';
 import { getHistoriesData } from '../../slices/paymentManagement';
 import { LOADING_STATUS } from '../../ultis/constant';
+import TableCommon from '../../components/common/TableNormal';
 
 const columns = [
   {
     title: 'Ngày',
     dataIndex: 'startDate',
     key: 'startDate',
-    width: '140px',
+    width: '130px',
   },
   {
     title: 'Nội dung',
@@ -26,7 +27,6 @@ const PaymentHistory = ({ customer }) => {
   const histories = useSelector((state) => state.paymentManagementReducer);
   const loading = useSelector((state) => state.loading.loading);
   const dispatch = useDispatch();
-  console.log(histories.histories)
 
   useEffect(() => {
     const params = { page: 1, limit: 10 };
@@ -80,13 +80,10 @@ const PaymentHistory = ({ customer }) => {
           </div>
           <div className="paymentHistory-group">
             <Spin spinning={loading === LOADING_STATUS.pending}>
-              <Table
-                className="table-common"
-                size="middle"
+              <TableCommon
                 dataSource={histories.histories}
-                columns={columns}
-                pagination={false}
-                rowKey="id"
+                columnTable={columns}
+
               />
             </Spin>
           </div>

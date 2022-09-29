@@ -6,10 +6,12 @@ export default function useScrollTableConfig(ref, depends) {
   const [scrollConfig, setScrollConfig] = useState({});
   
   useEffect(() => {
-    let parentHeight = ref.current.parentElement.parentElement.clientHeight
     const allEl = ref.current.parentNode.childNodes
+    let parentHeight = ref.current.parentElement.parentElement.clientHeight
+    let tableHeight = ref.current.getElementsByClassName('ant-table-tbody')
     let siblingHeight = 0
     let scroll = {}
+
     allEl.forEach(element => {
       if (ref.current !== element) {
         siblingHeight += element.offsetHeight
@@ -19,8 +21,8 @@ export default function useScrollTableConfig(ref, depends) {
     if (size.width < size.height) {
       parentHeight = parentHeight/2
     }
-  
-    if ((siblingHeight + (depends.length * 41)) > parentHeight) {
+
+    if ((siblingHeight + tableHeight[0].clientHeight + 50) > parentHeight) {
       const heightScroll = parentHeight - (siblingHeight + 70);
       scroll = {y: heightScroll, scrollToFirstRowOnChange: false}
     }

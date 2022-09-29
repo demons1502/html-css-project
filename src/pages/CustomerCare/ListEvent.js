@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {Progress, Button, Popconfirm} from 'antd';
@@ -15,6 +15,7 @@ import SendEmailContent from "./Modal/SendEmailContent";
 import {LOADING_STATUS} from '../../ultis/constant';
 import {getTimeByTZ, pad} from '../../helper'
 import useScrollTableConfig from '../../hooks/useScrollTableConfig'
+import * as S from '../../components/styles'
 
 export default function ListEvent() {
   const {t} = useTranslation()
@@ -132,8 +133,8 @@ export default function ListEvent() {
       </div>
       {
         customerData.customerId > 0 && <div className="customer-care__center--footer">
-          <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(true))}>{t('customer care.add event template')}</Button>
-          <Button className="btn-add-new" icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(false))}>{t('customer care.add event')}</Button>
+          <S.ButtonAdd icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(true))}>{t('customer care.add event template')}</S.ButtonAdd>
+          <S.ButtonAdd icon={<img src={IconPlus} alt=""/>} onClick={(() => addModal(false))}>{t('customer care.add event')}</S.ButtonAdd>
         </div>
       }
       <Modal isVisible={visibleModalAddEvent} setIsVisible={setVisibleModalAddEvent} title={titleModal} width={770} content={<AddEventContent detailData={detailData} isTemplate={isTemplate} setVisibleModalAddEvent={setVisibleModalAddEvent}/>} />

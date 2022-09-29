@@ -1,11 +1,14 @@
-import { Row, Col, Space } from 'antd';
-import React from 'react';
+import { Row, Col, Space, Checkbox } from 'antd';
+import { LeftOutlined, RightOutlined, CopyOutlined, FileDoneOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
 import * as S from './styles';
+import { Link } from 'react-router-dom';
 
 const TEXT_VOICES = [
   'Thưa chị xxxx, Manulife hiện đang có công cụ tài chính đặc biệt giúp khách hàng quản trị tốt vận may và chuyển giao sự thịnh vượng cho thế hệ thứ 2 một cách trọn vẹn.',
   'Thưa chị xxxx, Manulife hiện đang có công cụ tài chính đặc biệt giúp khách hàng quản trị tốt vận may và chuyển giao sự thịnh vượng cho thế hệ thứ 2 một cách trọn vẹn.',
   'Thưa chị xxxx, Manulife hiện đang có công cụ tài chính đặc biệt giúp khách hàng quản trị tốt vận may và chuyển giao sự thịnh vượng cho thế hệ thứ 2 một cách trọn vẹn.',
+  'Chính vì thế em muốn chia sẻ những lợi ích này cùng chị và gia đình. Việc khảo sát này chỉ mất khoảng 10 phút mà thôi trừ khi chị muốn tim hieu them thong tin.',
   'Chính vì thế em muốn chia sẻ những lợi ích này cùng chị và gia đình. Việc khảo sát này chỉ mất khoảng 10 phút mà thôi trừ khi chị muốn tim hieu them thong tin.',
   'Chính vì thế em muốn chia sẻ những lợi ích này cùng chị và gia đình. Việc khảo sát này chỉ mất khoảng 10 phút mà thôi trừ khi chị muốn tim hieu them thong tin.',
 ];
@@ -15,10 +18,12 @@ const CUSTOMER_INFO_SUMARY = [
 ]
 
 export default function CallDetails() {
+  const [currentCheck, setCurrentCheck] = useState('');
+
   return (
     <div>
-      <Space>
-        <div>btn</div>
+      <Space align='center' size={14} style={{ padding: '16px 0' }}>
+        <Link to='/dashboard'><S.BtnIcon><LeftOutlined /></S.BtnIcon></Link>
         <S.WrapHeader>
           <h3>{`Goi dien`}</h3>
         </S.WrapHeader>
@@ -44,9 +49,31 @@ export default function CallDetails() {
                           </Space>
                         </S.FlexContent>
                         <S.WrapContent $padding='15px' $borderColor={S.green100} $borderRadius='15px'>
-
+                          <Space direction='vertical'>
+                            <Space size={50}>
+                              <Space direction='vertical' size={4}>
+                                <Space align='center'>
+                                  <div style={{ width: 4, height: 4, borderRadius: '50%', background: S.green100 }}></div>
+                                  <S.WrapText>So dien thoai:</S.WrapText>
+                                </Space>
+                                <S.WrapText $fontWeight='700' style={{ marginLeft: 12 }}>0906 168 949</S.WrapText>
+                              </Space>
+                              <Space direction='vertical' size={4}>
+                                <Space align='center'>
+                                  <div style={{ width: 4, height: 4, borderRadius: '50%', background: S.green100 }}></div>
+                                  <S.WrapText>Loai khach hang:</S.WrapText>
+                                </Space>
+                                <S.WrapText $fontWeight='700' style={{ marginLeft: 12 }}>Ca nhan</S.WrapText>
+                              </Space>
+                            </Space>
+                            <Space style={{ marginTop: 16 }}>
+                              <div style={{ fontSize: 16, color: S.gray200 }}><FileDoneOutlined /></div>
+                              <S.WrapText>Ghi chu: </S.WrapText>
+                              <S.WrapText $fontWeight='700'>Da goi dien 2 lan</S.WrapText>
+                            </Space>
+                          </Space>
                         </S.WrapContent>
-                        <Space>
+                        <Space align='center'>
                           <S.WrapBtn $variant='outlined' $borderRadius='5px'>Dat hen</S.WrapBtn>
                           <S.WrapBtn $variant='outlined' $borderRadius='5px'>Khao sat</S.WrapBtn>
                           <S.WrapBtn $variant='outlined' $borderRadius='5px'>Tu van</S.WrapBtn>
@@ -54,13 +81,24 @@ export default function CallDetails() {
                         </Space>
                       </Space>
                     </S.WrapContent>
+                    <Space size={40} align='center'>
+                      <S.WrapCheckbox checked={currentCheck === '1'} onChange={() => setCurrentCheck('1')} style={{ }}>
+                        Goi them lan sau
+                      </S.WrapCheckbox>
+                      <S.WrapCheckbox checked={currentCheck === '2'} onChange={() => setCurrentCheck('2')}>
+                        Khong con tiem nang
+                      </S.WrapCheckbox>
+                    </Space>
                   </Space>
                 </S.WrapContent>
               </S.WrapContainer>
             </Col>
             <Col span={24}>
               <S.WrapContainer>
-                <S.WrapText $fontSize='16px' $fontWeight='600' $padding='15px 30px'>Thong tin tong hop Khach hang</S.WrapText>
+                <Space size={12} style={{ padding: '15px 30px' }}>
+                  <div style={{ color: S.green100, fontSize: 16 }}><CopyOutlined /></div>
+                  <S.WrapText $fontSize='16px' $fontWeight='600'>Thong tin tong hop Khach hang</S.WrapText>
+                </Space>
                 <Space direction='vertical' size={6} style={{ padding: '15px 30px', borderTop: `1px solid ${S.gray100}` }}>
                   {CUSTOMER_INFO_SUMARY?.map((v, i) => (
                     <Space key={i} align='start'>
@@ -87,8 +125,13 @@ export default function CallDetails() {
                 ))}
               </Space>
             </div>
-            <div style={{ padding: 30 }}>
-              pagelist
+            <div style={{ padding: '15px 30px', display: 'flex', justifyContent: 'flex-end' }}>
+              <Space size={10}>
+                <S.WrapText>Truoc</S.WrapText>
+                <div style={{ borderRadius: 5, padding: 8, background: S.green50, color: S.green100, fontSize: 16 }}><LeftOutlined /></div>
+                <div style={{ borderRadius: 5, padding: 8, background: S.green50, color: S.green100, fontSize: 16 }}><RightOutlined /></div>
+                <S.WrapText>Tiep</S.WrapText>
+              </Space>
             </div>
           </S.WrapContainer>
         </Col>

@@ -1,3 +1,4 @@
+import { Checkbox } from 'antd';
 import styled, { css } from 'styled-components';
 
 const greyColor = '#e6e6e6';
@@ -7,6 +8,7 @@ const secondaryColor = '#f8f8f8';
 const disabledColor = '#f4f4f4';
 const fontSize = '1.4rem';
 
+export const green50 = '#EFF9F8';
 export const green100 = '#3DBD78';
 export const green200 = '#3CBD77';
 export const green300 = '#34B16D';
@@ -165,5 +167,21 @@ export const WrapBtn = styled.div`
     }
   }}
 `;
+
+export const BtnIcon = styled.div`
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  border-radius: 50%;
+  background-color: white;
+  cursor: pointer;
+  color: #333333;
+`;
+
+export const WrapCheckbox = styled(Checkbox)`
+  .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: ${green100};
+    border-color: ${green100};
+  }
+`
 
 

@@ -6,6 +6,7 @@ export const ENDPOINT = {
     resetPassword: 'reset-password',
   },
   customers: 'customers',
+  customersContracts: 'customers/contracts',
   customerCare: 'customer-care', 
   events: 'events',
   eventsSend: 'events/send',

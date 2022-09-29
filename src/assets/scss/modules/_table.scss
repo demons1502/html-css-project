@@ -35,13 +35,11 @@
       }
     }
 
-    // .ant-table-row-selected {
-    //   td {
-    //     background: $green-table-bg  !important;
-    //     border-bottom: 1px solid $white-color  !important;
-    //     color: $white-color;
-    //   }
-    // }
+    .ant-table-measure-row {
+      td {
+        padding: 0 !important;
+      }
+    }
   }
   //check box color
   .ant-checkbox-checked .ant-checkbox-inner {

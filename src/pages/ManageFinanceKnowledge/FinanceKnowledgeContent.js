@@ -1,5 +1,6 @@
 import { Button, List } from 'antd';
 import React from 'react';
+import { useState } from 'react';
 import DeleteIcon from '../../assets/images/icons/deleteIcon.svg';
 import EditIcon from '../../assets/images/icons/edit-green.svg';
 import Title from '../../components/Title';
@@ -9,6 +10,8 @@ const FinanceKnowledgeContent = (props) => {
   const { content, onChange, fileList, onClick, onDelete, onUpload, onCancel } =
     props;
 
+  const [edit, setEdit] = useState(true)
+
   return (
     <div className='financeKnowledgeContent'>
       <List
@@ -16,10 +19,14 @@ const FinanceKnowledgeContent = (props) => {
         header={
           <div className='manageContent-header'>
             <Title title='Nội dung' />
+            {content && 
             <div className='manageContent-header_icon'>
-              <img src={EditIcon} />
+              {edit && 
+              <img src={EditIcon} onClick={()=>setEdit(false)}/>
+              }
               <img src={DeleteIcon} onClick={() => onDelete(content)} />
             </div>
+            }
           </div>
         }
         footer={

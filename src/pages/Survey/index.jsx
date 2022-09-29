@@ -12,6 +12,8 @@ import { getCustomerList, setSelectedCustomer } from "../../slices/customers";
 import { isEmpty } from "lodash";
 import calender from "../../assets/images/icons/calendar.svg";
 import left_arrow from "../../assets/images/icons/left-arrow.svg";
+import * as S from '../../components/styles';
+
 
 const Survey = () => {
   const { t } = useTranslation();
@@ -86,20 +88,20 @@ const Survey = () => {
                     {isEmpty(surveys?.survey) ? (
                       <div className="container-right-header">
                         <div>
-                          <Button type="primary" className="btn-primary" onClick={historyHandler}>
+                          <S.Button type="primary" onClick={historyHandler}>
                             {t("common.history")}
-                          </Button>
+                          </S.Button>
                         </div>
                         <div className="right">
-                          <Button type="primary" className="btn-primary" onClick={solutionHandler}>
+                          <S.Button type="primary" onClick={solutionHandler}>
                             {t("common.solution")}
-                          </Button>
-                          <Button type="primary" className="btn-primary" onClick={counselHandler}>
+                          </S.Button>
+                          <S.Button type="primary" onClick={counselHandler}>
                             {t("common.consultant")}
-                          </Button>
-                          <Button type="primary" className="btn-primary" onClick={appointmentHandler}>
+                          </S.Button>
+                          <S.Button type="primary" onClick={appointmentHandler}>
                             {t("common.booking")}
-                          </Button>
+                          </S.Button>
                         </div>
                       </div>
                     ) : (

@@ -162,7 +162,7 @@
     }
   }
   &-modal {
-    width: 700px !important;
+    width: 600px !important;
     .ant-modal-content {
       border-radius: 10px;
       overflow: hidden;
@@ -183,27 +183,22 @@
         .ant-form-item-control,
         .ant-picker {
           width: 100%;
-          // input,
-          // textarea,
-          // .ant-select-selection-item {
-          //   font-size: $font-size-base;
-          //   font-weight: $font-weight-semibold;
-          //   color: $black-color;
-          // }
-          // textarea {
-          //   min-height: 100px;
-          //   color: $black-color;
-          //   background: #f8f8f8;
-          //   border: none;
-          //   border-radius: 5px;
-          //   &:focus {
-          //     border-color: #30a867;
-          //     box-shadow: 0 0 0 2px rgba(48, 168, 103,0 / 20%);
-          //   }
-          // }
         }
         .ant-picker-focused {
           box-shadow: 0 0 0 2px rgba($color: $green-color, $alpha: 0.2);
+        }
+      }
+    }
+    &_button{
+      margin-top: 20px !important;
+      .ant-form-item-control-input-content{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        button{
+          &:first-child{
+            margin-right: 15px;
+          }
         }
       }
     }

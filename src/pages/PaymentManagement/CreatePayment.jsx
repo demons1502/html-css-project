@@ -33,24 +33,27 @@ const CreatePayment = (props) => {
   const { isModalOpen, setIsModalOpen } = props;
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  // const {TextArea}=Input
 
   const loading = useSelector((state) => state.loading.loading);
 
   const handleAddNew = (values) => {
     const newPayment = {
       loginId: values.loginId,
-      startDate: moment(values.time[0]?._d).format(),
-      dueDate: moment(values.time[1]?._d).format(),
+      startDate: moment(values.startDate?._d).format(),
+      dueDate: moment(values.dueDate?._d).format(),
       amount: +values.amount,
       description: values.description,
     };
-    // console.log(newPayment);
     dispatch(createPayment(newPayment));
     if (loading === LOADING_STATUS.succeeded) {
       setIsModalOpen(false);
       form.resetFields();
     }
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    form.resetFields();
   };
 
   return (
@@ -78,29 +81,6 @@ const CreatePayment = (props) => {
           >
             <Input placeholder="ID login" />
           </Form.Item>
-          {/* <Form.Item
-            name='userFullname'
-            label='Họ và tên:'
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Input placeholder='Nhập' />
-          </Form.Item> */}
-
-          {/* <Form.Item
-            name="time"
-            label="Thời gian:"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <DatePicker.RangePicker placeholder={['Ngày thanh toán', 'Ngày kết thúc']} />
-          </Form.Item> */}
 
           <Form.Item
             name="startDate"
@@ -132,11 +112,11 @@ const CreatePayment = (props) => {
           <Form.Item name="description" label="Nội dung">
             <Textarea autoSize placeholder="Content" />
           </Form.Item>
-          <Form.Item>
+          <Form.Item className='paymentManagement-modal_button'>
+            <Button className="btn-danger" onClick={handleCancel}>Hủy</Button>
             <Button type="primary" htmlType="submit">
               Thêm mới
             </Button>
-            <Button>Hủy</Button>
           </Form.Item>
         </Form>
       </Modal>

@@ -11,7 +11,8 @@ export const green100 = '#3DBD78';
 export const green200 = '#3CBD77';
 export const green300 = '#34B16D';
 export const error = '#E9726F';
-export const gray = '#999999';
+export const gray100 = '#F1F1F1';
+export const gray200 = '#999999';
 
 export const WrapHeader = styled.div`
   padding-top: 6px;
@@ -76,9 +77,38 @@ export const WrapContent = styled.div`
     css`
       border: 1px solid ${$borderColor};
     `};
+
+  ${({ $backgroundColor }) =>
+    $backgroundColor &&
+    css`
+      background-color: ${$backgroundColor};
+    `};
+
+	${({ $borderRadius }) =>
+    $borderRadius &&
+    css`
+      border-radius: ${$borderRadius};
+    `};
+
+  ${({ $wFull }) =>
+    $wFull &&
+    css`
+      width: 100%;
+    `};
+`;
+
+export const FlexContent = styled.div`
+  display: flex;
+	align-items: center;
+  ${({ $justifyContent }) =>
+    $justifyContent &&
+    css`
+  justify-content: ${$justifyContent};
+  `}
 `;
 
 export const WrapText = styled.div`
+  line-height: 20px;
   ${({ $color }) =>
     $color &&
     css`
@@ -89,4 +119,51 @@ export const WrapText = styled.div`
     css`
       font-size: ${$fontSize};
     `}
+  ${({ $fontWeight }) =>
+    $fontWeight &&
+    css`
+      font-weight: ${$fontWeight === true ? 'bold' : $fontWeight};
+    `}
+  ${({ $padding }) =>
+    $padding &&
+    css`
+      padding: ${$padding};
+    `}
 `;
+
+const btnColorScheme = {
+  green100: green100,
+  green200: green200,
+  green300: green300,
+  error: error
+}
+
+export const WrapBtn = styled.div`
+  cursor: pointer;
+	padding: ${({ $padding }) => $padding ? $padding : '8px'};
+	border-radius: ${({ $borderRadius }) => $borderRadius ? $borderRadius : '8px'};
+	font-size: ${({ $fontSize }) => $fontSize ? $fontSize : '12px'};
+	width: ${({ $width }) => $width ? $width : 'initial'};
+	${({ $variant, $colorScheme }) => {
+    switch ($variant) {
+      case 'outlined':
+        return css`
+					border: 1px solid ${green100};
+					color: ${green100};
+          &:hover {
+            background-color: ${green300};
+            color: white;
+          };
+				`;
+      case 'filled':
+        return css`
+          background-color: ${btnColorScheme[$colorScheme] || green300};
+          color: white;
+        `;
+      default:
+        break;
+    }
+  }}
+`;
+
+

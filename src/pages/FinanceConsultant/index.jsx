@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, Col, Layout, List, Popover, Row, Typography } from 'antd';
 import {ClockCircleOutlined  } from '@ant-design/icons'
 import Participant from './components/participant';
-import ConsultantProcess from './components/ConsultantProcess';
+import ConsultantProcess from './components/consultantProcess';
 import HistorySelect from './components/historySelect';
 import SpendingForm from './form/spendingForm';
 import SearchInputBox from '../Survey/SearchInputBox';

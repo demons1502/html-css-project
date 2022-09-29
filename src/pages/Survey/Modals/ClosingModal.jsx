@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Button, Popover, Divider } from "antd";
+import { Popover, Divider } from "antd";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
-import { Input, FieldLabel } from "../../../components/controls";
+import { FieldLabel } from "../../../components/controls";
+import { Input, Button } from "../../../components/styles";
 
 export const ClosingModal = ({ onSubmit }) => {
   const { t } = useTranslation();
@@ -28,13 +29,13 @@ export const ClosingModal = ({ onSubmit }) => {
       <Divider />
       <div className="closing-footer">
         <div className="closing-btn">
-          <Button htmlType="button" className="btn-cancel" block onClick={onCancel} onBlur={onCancel}>
+          <Button onClick={onCancel} onBlur={onCancel} block className="btn-danger">
             Hủy+
           </Button>
         </div>
 
         <div className="closing-btn">
-          <Button type="primary" htmlType="button" className="btn-primary" block onClick={onSubmit}>
+          <Button type="primary" onClick={onSubmit} block>
             Tạo
           </Button>
         </div>
@@ -50,7 +51,7 @@ export const ClosingModal = ({ onSubmit }) => {
       overlayClassName="closing-popover"
       visible={open}
     >
-      <Button type="primary" htmlType="button" className="btn-primary finance-btn-small" block>
+      <Button type="primary" block>
         {t("survey.save")}
       </Button>
     </Popover>

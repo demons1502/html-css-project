@@ -12,8 +12,6 @@ import { getCustomerList, setSelectedCustomer } from "../../slices/customers";
 import { isEmpty } from "lodash";
 import calender from "../../assets/images/icons/calendar.svg";
 import left_arrow from "../../assets/images/icons/left-arrow.svg";
-import * as S from '../../components/styles';
-
 
 const Survey = () => {
   const { t } = useTranslation();
@@ -29,7 +27,7 @@ const Survey = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(setSelectedCustomer(data[0]?.customerId));
+    dispatch(setSelectedCustomer(data?.[0]?.customerId));
   }, [data, dispatch]);
 
   const handleSelectCustomer = (id) => {
@@ -88,20 +86,20 @@ const Survey = () => {
                     {isEmpty(surveys?.survey) ? (
                       <div className="container-right-header">
                         <div>
-                          <S.Button type="primary" onClick={historyHandler}>
+                          <Button type="primary" className="btn-primary" onClick={historyHandler}>
                             {t("common.history")}
-                          </S.Button>
+                          </Button>
                         </div>
                         <div className="right">
-                          <S.Button type="primary" onClick={solutionHandler}>
+                          <Button type="primary" className="btn-primary" onClick={solutionHandler}>
                             {t("common.solution")}
-                          </S.Button>
-                          <S.Button type="primary" onClick={counselHandler}>
+                          </Button>
+                          <Button type="primary" className="btn-primary" onClick={counselHandler}>
                             {t("common.consultant")}
-                          </S.Button>
-                          <S.Button type="primary" onClick={appointmentHandler}>
+                          </Button>
+                          <Button type="primary" className="btn-primary" onClick={appointmentHandler}>
                             {t("common.booking")}
-                          </S.Button>
+                          </Button>
                         </div>
                       </div>
                     ) : (

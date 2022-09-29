@@ -29,7 +29,7 @@ function ConfigUser() {
     if (fileList && fileList.length != 0 && fileChange ) {
       const formData = new FormData();
       formData.append('file', fileList[0].originFileObj)
-      dispatch(sendAvatars(formData))
+      dispatch(sendAvatars(formData)) 
     }
     dispatch(updateUsers(values))
   };

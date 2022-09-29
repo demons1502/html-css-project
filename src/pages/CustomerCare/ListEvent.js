@@ -107,7 +107,7 @@ export default function ListEvent() {
 
   useEffect(() => {
     if (customerData.customerId > 0) {
-      dispatch(getData({isTemplate: false}))
+      dispatch(getData({isTemplate: false, customerId: customerData.customerId}))
     }
   }, [customerData])
 

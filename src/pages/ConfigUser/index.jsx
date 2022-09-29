@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react'
 import Modal from '../../components/common/Modal'
-import { Form, Upload, Row, Col, Input, Checkbox, Button, Select, notification } from 'antd'
+import { Form, Upload, Row, Col, Input, Checkbox, Button, Select, notification, Popover } from 'antd'
 import { CameraOutlined } from '@ant-design/icons';
 import useFormErrors from "../../hooks/useFormErrors";
 import axios from 'axios';
@@ -13,7 +13,7 @@ const { Option } = Select;
 function ConfigUser() {
   const [dataCity, setDataCity] = useState([])
   const [fileList, setFileList] = useState(null);
-  const [showModal, setShowModal]= useState(false)
+  const [showModal, setShowModal] = useState(false)
 
   const dispatch = useDispatch()
   const userInfo = useSelector((state) => state.auth.me)
@@ -59,18 +59,30 @@ function ConfigUser() {
     }
   };
 
-
+  const content = (
+    <div>
+      <ModalChangePass closeCreateUser={()=>setShowModal(false)} />
+    </div>
+  );
   return (
     <div>
       <div className="config_header">
         <h3>Cấu hình</h3>
-        <button className='btn-primary' onClick={()=>setShowModal(true)}>
-          <img src='../images/lock_icon.svg' />
-          Đổi mật khẩu
-        </button>
+        <Popover content={content} placement="bottomRight" trigger='click' 
+          open={showModal}
+        >
+          <button className='btn-primary' onClick={() => setShowModal(true)}>
+            <img src='../images/lock_icon.svg' />
+            Đổi mật khẩu
+          </button>
+        </Popover>
       </div>
-      <Modal isVisible={showModal} setIsVisible={setShowModal} width={335} className="modal_change_pass"
-        content={ <ModalChangePass closeCreateUser={()=>setShowModal(false)}/>} />
+
+
+
+      {/* <Modal isVisible={showModal} setIsVisible={setShowModal} width={335} className="modal_change_pass"
+        content={ <ModalChangePass closeCreateUser={()=>setShowModal(false)}/>} /> */}
+
       <Form form={form}
         name="basic"
         initialValues={{

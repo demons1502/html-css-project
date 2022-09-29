@@ -6,6 +6,7 @@ import { login } from '../../slices/auth';
 import { ResetPassword } from '../../slices/auth';
 import { changePasswords } from '../../slices/configUser';
 import { useDispatch, useSelector } from 'react-redux';
+import Lock from '../../assets/images/icons/lock.svg'
 
 
 function ModalChangePass(props) {
@@ -27,6 +28,9 @@ function ModalChangePass(props) {
     <div>
       <div className='form_change_password'>
         <div className="header_form">
+          <img src={Lock} alt="" />
+        </div>
+        <div className="linear">
           <p>Đổi mật khẩu</p>
         </div>
         <Form form={form}
@@ -77,7 +81,7 @@ function ModalChangePass(props) {
             </div>
           </div>
           <div className="footer_form">
-            <Button className='btn-danger' onClick={ () => closeCreateUser(false)}>Huỷ</Button>
+            <Button className='btn-danger' onClick={ () => {closeCreateUser(false);setTimeout(()=>form.resetFields(),200)}}>Huỷ</Button>
             <Form.Item>
               <Button type="primary" htmlType="submit" className='btn-primary'>Lưu mật khẩu</Button>
             </Form.Item>

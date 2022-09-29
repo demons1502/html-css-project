@@ -73,7 +73,7 @@ const contractManagement = createSlice({
     },
     [retrieveData.fulfilled]: (state, action) => {
       state.data = [...action.payload.contracts];
-      state.totalItem = action.payload.contractsCount;
+      state.totalItem = action.payload.count;
       state.refreshData = true;
       state.refreshData=false
     },

@@ -179,7 +179,7 @@ function CreateContract(props) {
       </Col>
       <Col span={24}>
         <Form.Item className="footer-modal">
-          <Button key="back" className="btn-danger" onClick={() => setVisibleModal(false)}>
+          <Button key="back" className="btn-danger" onClick={() => {setVisibleModal(false); form.resetFields()}}>
             {t('common.cancel')}
           </Button>
           <Button key="submit" className="btn-primary" htmlType="submit" type="primary">

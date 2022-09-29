@@ -30,7 +30,7 @@ const HealthFoundation = lazy(() => import('../pages/FinancialSolution/HealthFou
 const EducationFoundation = lazy(() => import('../pages/FinancialSolution/EducationFoundation'));
 const IllustrateFiduciary = lazy(() => import('../pages/FinancialSolution/IllustrateFiduciary'));
 const PotentialCustomers = lazy(() => import('../pages/PotentialCustomers'));
-const Consult = lazy(() => import('../pages/Consult'));
+const Consult = lazy(() => import('../pages/consult'));
 
 const AppointmentManagement = lazy(() => import('../pages/Main/views/AppointmentManagement'));
 

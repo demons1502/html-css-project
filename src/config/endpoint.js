@@ -6,12 +6,13 @@ export const ENDPOINT = {
     resetPassword: 'reset-password',
   },
   customers: 'customers',
-  customerCare: 'customer-care', 
+  customersByCompany: 'customers-by-company',
+  customerCare: 'customer-care',
   events: 'events',
   eventsSend: 'events/send',
   financeKnowledge: {
     getArticles: 'articles',
-    getMostView: 'most-view'
+    getMostView: 'most-view',
   },
-  userSearch: 'users/search'
-}
+  userSearch: 'users/search',
+};

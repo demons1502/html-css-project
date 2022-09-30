@@ -1,25 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 
 // COMPONENTS
 import { Col, Form } from 'antd';
-import { Select } from '../../../../../../components/common';
-//COMPONENT
 import { Add, Delete } from '../../../../../../assets/images/icons/components';
+import SelectTable from '../SelectTable';
 
 //STYLES
 import * as S from './styles';
 
-const FormUsers = () => {
-  const { Option } = Select;
+const FormUsers = ({ form, companyId }) => {
+  const [customer, setCustomer] = useState({});
   const initialValue = [{ fullName: '', phone: '', birthday: '' }];
+
+  const handleChangeCustomer = (data, key) => {
+    setCustomer(data);
+    const fields = form.getFieldsValue();
+    const { users } = fields;
+    const findUser = users.find((i) => i?.customerId === data.customerId);
+    if (!findUser) {
+      users[key] = {
+        customerId: data.customerId,
+        fullName: data.fullname,
+        phone: data.phone1,
+        birthday: moment(data.dob),
+        gender: parseInt(data.gender),
+      };
+    } else {
+      users[key] = {};
+    }
+    form.setFieldsValue({ users });
+  };
 
   return (
     <Form.List initialValue={initialValue} name='users'>
       {(fields, { add, remove }) => (
         <>
-          {fields.map(({ index, key, name, ...restField }) => (
-            <S.WrapRow Key={index} gutter={8}>
+          {fields.map(({ key, name, ...restField }) => (
+            <S.WrapRow key={key} gutter={8}>
               <Col span={6}>
                 <Form.Item
                   {...restField}
@@ -28,7 +46,13 @@ const FormUsers = () => {
                     { required: true, message: 'Vui lòng nhập họ và tên' },
                   ]}
                 >
-                  <S.WrapInput placeholder='Họ và tên' />
+                  <SelectTable
+                    value={customer}
+                    handleChangeValue={handleChangeCustomer}
+                    keyForm={key}
+                    companyId={companyId}
+                    subCustomer={true}
+                  />
                 </Form.Item>
               </Col>
               <Col span={6}>
@@ -43,15 +67,15 @@ const FormUsers = () => {
               <Col span={6}>
                 <Form.Item
                   {...restField}
-                  name={[name, 'sex']}
+                  name={[name, 'gender']}
                   rules={[
                     { required: true, message: 'Vui lòng nhập giới tính' },
                   ]}
                 >
                   <S.WrapSelect placeholder='Giới tính'>
-                    <Option value={1}>Nam</Option>
-                    <Option value={2}>Nữ</Option>
-                    <Option value={3}>Khác</Option>
+                    <S.WrapSelect.Option value={1}>Nam</S.WrapSelect.Option>
+                    <S.WrapSelect.Option value={2}>Nữ</S.WrapSelect.Option>
+                    <S.WrapSelect.Option value={3}>Khác</S.WrapSelect.Option>
                   </S.WrapSelect>
                 </Form.Item>
               </Col>
@@ -67,12 +91,7 @@ const FormUsers = () => {
                     suffixIcon={null}
                     style={{ width: '100%', height: '40px' }}
                     placeholder='DD/MM/YYYY'
-                    disabledDate={(current) => {
-                      let customDate = moment().format('YYYY-MM-DD');
-                      return (
-                        current && current < moment(customDate, 'YYYY-MM-DD')
-                      );
-                    }}
+                    format='DD/MM/YYYY'
                   />
                 </Form.Item>
               </Col>

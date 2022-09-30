@@ -1,13 +1,12 @@
 import moment from 'moment';
 
 export const getMonday = (d) => {
-  const first = d.getDate() - d.getDay() + 1;
-  return moment(new Date(d.setDate(first))).format('DD/MM/YYYY');
+  const first = d.getDate() - d.getDay() - 6;
+  return moment(new Date(d.setDate(first)));
 };
 
-export const getSunday = (d) => {
-  const last = d.getDate() - d.getDay() + 6 + 1;
-  return moment(new Date(d.setDate(last))).format('DD/MM/YYYY');
+export const formatLocalTime = (d) => {
+  return new Date(moment(d).format('YYYY-MM-DDTHH:mm:ss'));
 };
 
 export const convertDay = (day) => {

@@ -4,6 +4,9 @@ import { Select, Input, DatePicker } from '../../../../../../components/common';
 
 export const WrapInput = styled(Input)`
   height: 40px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333333;
 `;
 
 export const WrapSelect = styled(Select)`

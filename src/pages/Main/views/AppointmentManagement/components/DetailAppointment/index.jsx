@@ -28,8 +28,7 @@ export const DetailAppointment = ({ info }) => {
     info.isCompleted,
     false
   );
-  const checkColor =
-    info.status === 'wait' ? statusColor.backgroundColor : statusColor.color;
+  const checkColor = statusColor.color;
 
   const handleRemoveItem = (item) => {
     console.log(item);
@@ -40,7 +39,7 @@ export const DetailAppointment = ({ info }) => {
       <S.WrapTitle>Thông tin cuộc hẹn</S.WrapTitle>
       <S.WrapInfo>
         <S.WrapTop>
-          {info.customerApptRecords ? (
+          {info?.typeId === 3 ? (
             <S.BoxTitle>
               <Company color={checkColor} />
               <S.Title
@@ -55,7 +54,7 @@ export const DetailAppointment = ({ info }) => {
               <S.Title style={{ margin: '0 5px' }}>Cá nhân</S.Title>
             </S.BoxTitle>
           )}
-          <S.SubTitle>{info.description}</S.SubTitle>
+          <S.SubTitle>{info.title}</S.SubTitle>
         </S.WrapTop>
         <S.wrapMiddle>
           <S.ItemMiddle>
@@ -78,19 +77,17 @@ export const DetailAppointment = ({ info }) => {
             <Map color='#999999' />
             <S.ItemMiddleContent>
               <S.ItemMiddleTitle>Địa điểm:</S.ItemMiddleTitle>
-              <S.ItemMiddleText>Lô 22, số 35 Lê Văn Thiêm</S.ItemMiddleText>
+              <S.ItemMiddleText>{info.location}</S.ItemMiddleText>
             </S.ItemMiddleContent>
           </S.ItemMiddle>
         </S.wrapMiddle>
         <S.WrapBottom>
           <Note />
           <S.WrapBottomTitle>Ghi chú:</S.WrapBottomTitle>
-          <S.WrapBottomText>
-            Mang theo hợp đồng, quà tặng cho khách hàng
-          </S.WrapBottomText>
+          <S.WrapBottomText>{info.note}</S.WrapBottomText>
         </S.WrapBottom>
       </S.WrapInfo>
-      {info?.customerApptRecords && (
+      {info?.typeId === 3 && (
         <>
           <S.WrapTitle>Thành phần tham gia</S.WrapTitle>
           <S.WrapParticipant>

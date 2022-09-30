@@ -13,3 +13,11 @@ export const WrapContainer = styled.div`
 export const Empty = styled.span`
   text-align: center;
 `;
+
+export const WrapLoading = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;

@@ -23,14 +23,12 @@ export default function ListCustomer(props) {
           <p className="list-customer__content-gender--left"><span className="before">{t('common.gender')}</span>{data?.gender === 1 ? "Nam" : "Nữ"}</p>
           <p className="list-customer__content-gender--right"><span className="before">{t('common.old')}</span> {calculateAge(data?.dob)}</p>
         </div>
-        {
-          !!data.contracts[0] && <><p className={`${selectId === data.customerId ? 'color-green' : ''} list-customer__content-contract`}>
-            <span className="before">{t('common.contract')}</span>{data.contracts[0]?.contractNumber}
-          </p>
-          <p className="list-customer__content-date">
-            <span className="before">{t('common.sign date')}</span>{getTimeByTZ(data.contracts[0]?.startDate)}
-          </p></>
-        }
+        <p className={`${selectId === data.customerId ? 'color-green' : ''} list-customer__content-contract`}>
+          <span className="before">{t('common.contract')}</span>{(!!data.contracts[0] && !!data.contracts[0]?.contractNumber) && data.contracts[0]?.contractNumber}
+        </p>
+        <p className="list-customer__content-date">
+          <span className="before">{t('common.sign date')}</span>{(!!data.contracts[0] && !!data.contracts[0]?.startDate) && getTimeByTZ(data.contracts[0]?.startDate)}
+        </p>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from 'react'
-import { Form, Input, Button, Select, notification, Space } from 'antd';
+import { Form,  notification, Space } from 'antd';
+import { Button, Input, Upload, Select } from "../../components/styles";
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import useFormErrors from "../../hooks/useFormErrors";
 import { changePassword, login, resetPassword } from '../../slices/configUser'

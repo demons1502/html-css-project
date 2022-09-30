@@ -1,5 +1,6 @@
 import {React, useState, useEffect} from 'react'
-import { Col, Row, Checkbox, Button, Form, Input, Select } from 'antd';
+import { Col, Row, Checkbox,Form } from 'antd';
+import { Select, Button, Input } from '../../components/styles';
 import "../../assets/scss/Admin/create-user.scss"
 import { useDispatch, useSelector } from 'react-redux';
 import {createUser} from '../../slices/userManagement';
@@ -60,7 +61,7 @@ function Create_user(props) {
           </Col>
           <Col span={8}>
             <Form.Item
-              label="Sô điện thoại"
+              label="Số điện thoại"
               name="phone"
               rules={[
                 {

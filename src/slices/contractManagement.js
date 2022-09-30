@@ -3,7 +3,7 @@ import { createContracts, getAll, update, getCustom, getById } from '../services
 
 const initialState = {
   data: [],
-  dataEdit:[],
+  dataEdit: [],
   totalItem: 0,
   custom: [],
   contractById: null,
@@ -81,7 +81,8 @@ const contractManagement = createSlice({
 
     },
     [getByIdApi.fulfilled]: (state, action) => {
-      state.dataEdit= action.payload
+      (action.payload.depositTerm == 30) ? action.payload.depositTerm = "Tháng" : (action.payload.depositTerm == 180) ? action.payload.depositTerm = "Nửa năm" : (action.payload.depositTerm == 360) ? action.payload.depositTerm = "Năm" : action.payload.depositTerm
+      state.dataEdit = action.payload
     },
   },
 });

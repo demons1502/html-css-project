@@ -16,6 +16,7 @@ const { TextArea } = Input;
 export default function AddEventContent(props) {
   const {t} = useTranslation();
   const {detailData, isTemplate, setVisibleModalAddEvent} = props;
+  console.log('detailData:',detailData);
   const [form] = Form.useForm();
   useFormErrors(form);
   const dispatch = useDispatch();

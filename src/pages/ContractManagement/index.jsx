@@ -10,11 +10,10 @@ import Modal from '../../components/common/Modal';
 import CreateContract from './CreateContract';
 import { retrieveData } from '../../slices/contractManagement';
 import { DEFAULT_SIZE } from '../../ultis/constant'
-
+import { formatDataNumber,getTimeByTZ } from "../../helper"
 export default function ContractManagement() {
   const dispatch = useDispatch()
   const { data, totalItem, refreshData } = useSelector((state) => state.contractManagement)
-
   const [visibleModal, setVisibleModal] = useState(false)
   const [dataEdit, setDataEdit] = useState(null)
   const [titleModal, setTitleModal] = useState('')
@@ -32,6 +31,15 @@ export default function ContractManagement() {
   }, [data])
 
   const [inputText, setInputText] = useState('')
+
+  const convertDepositTerm = (value) => {
+    return (value == 30) ? value = "Tháng" : (value == 180) ? value = "Nửa năm" : (value == 360) ? value = "Năm" : value
+  }
+
+  const convertUnderscore=(value)=>{
+    let timeFormat= getTimeByTZ(value)
+    return timeFormat.replaceAll('-','/')
+  }
 
   const columns = [
     {
@@ -51,26 +59,52 @@ export default function ContractManagement() {
       title: 'Giá trị',
       className: 'value',
       dataIndex: 'value',
+      render: (record) => {
+        return (
+          <span>{convertUnderscore(record.startDate)}</span>
+        );
+      }
     },
     {
       title: 'Ngày hiệu lực',
-      dataIndex: 'startDate',
+      // dataIndex: 'startDate',
+      render: (record) => {
+        return (
+          <span>{formatDataNumber(record.value)}</span>
+        );
+      }
     },
     {
       title: 'Số năm nộp phí',
-      dataIndex: 'duration',
+      render: (record) => {
+        return (
+          <span>{`${record.duration} Năm`}</span>
+        );
+      }
     },
     {
       title: 'Chu kì nộp phí',
-      dataIndex: 'depositTerm',
+      render: (record) => {
+        return (
+          <span>{convertDepositTerm(record.depositTerm)}</span>
+        );
+      }
     },
     {
       title: 'Lần cuối nộp phí',
-      dataIndex: 'lastDepositDate',
+      render: (record) => {
+        return (
+          <span>{convertUnderscore(record.lastDepositDate)}</span>
+        );
+      }
     },
     {
       title: 'Hạn nộp phí tiếp theo',
-      dataIndex: 'nextDepositDue',
+      render: (record) => {
+        return (
+          <span>{convertUnderscore(record.nextDepositDue)}</span>
+        );
+      }
     },
     {
       title: '',
@@ -100,7 +134,6 @@ export default function ContractManagement() {
   const handleEditUser = (record) => {
     setDataEdit({ ...record })
     setVisibleModal(true)
-    console.log(record);
     setTitleModal('Thay đổi nội dung hợp đồng')
   }
 
@@ -127,7 +160,7 @@ export default function ContractManagement() {
         <Pagination total={totalItem} pageSize={paginate.limit} setPaginate={setPaginate} />
       </div>
     </div>
-    <Modal isVisible={visibleModal} setIsVisible={setVisibleModal} title={titleModal} width={800} content={<CreateContract dataEdit={dataEdit} setVisibleModal={setVisibleModal} />} />
+    <Modal isVisible={visibleModal} setIsVisible={setVisibleModal} title={titleModal} width={800} content={<CreateContract dataEdit={dataEdit?.id} setVisibleModal={setVisibleModal} />} />
   </>
 }
 

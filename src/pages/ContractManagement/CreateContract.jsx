@@ -1,20 +1,8 @@
 import { React, useEffect } from 'react';
-import {
-  Button,
-  Form,
-  Input,
-  Row,
-  Col,
-  Select,
-  DatePicker,
-  AutoComplete,
-} from 'antd';
+import { Button, Form, Input, Row, Col, Select, DatePicker, AutoComplete } from 'antd';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  createContract,
-  updateContract,
-} from '../../slices/contractManagement';
+import { createContract, updateContract, getByIdApi } from '../../slices/contractManagement';
 import { useTranslation } from 'react-i18next';
 import { getCustoms } from '../../slices/contractManagement';
 import useFormErrors from '../../hooks/useFormErrors'
@@ -25,6 +13,8 @@ function CreateContract(props) {
   useFormErrors(form);
   const { setVisibleModal, dataEdit } = props
   const customerName = useSelector((state) => state.contractManagement.custom);
+  var customerEdit = useSelector((state) => state.contractManagement.dataEdit);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -50,30 +40,33 @@ function CreateContract(props) {
       dispatch(createContract(data));
     }
   };
-
+  const convertDepositTerm = (value) => {
+    return (value == 30) ? value = "Tháng" : (value == 180) ? value = "Nửa năm" : (value == 360) ? value = "Năm" : value
+  }
   //autoComplete
   const onSearch = (searchText) => {
     dispatch(getCustoms({ name: searchText, limit: 10, offset: 0 }));
   };
-  // useEffect(() => {
-  //   form.setFieldsValue(dataEdit)
-  // }, [form, dataEdit])
 
   useEffect(() => {
-    (dataEdit.depositTerm == 30) ? dataEdit.depositTerm = "Tháng" : (dataEdit.depositTerm == 180) ? dataEdit.depositTerm = "Nửa năm" : (dataEdit.depositTerm == 360) ? dataEdit.depositTerm = "Năm" : null
-    if (Object.keys(dataEdit).length > 0) {
-      form.setFieldsValue({ ...dataEdit, ...{ date: moment(dataEdit.date) } })
-    } else {
-      form.resetFields()
+    if (customerEdit.length != 0) {
+      // customerEdit.depositTerm="nam"
+      if (Object.keys(customerEdit).length > 0) {
+        form.setFieldsValue({ ...customerEdit, ...{ date: moment(customerEdit.date) } })
+      } else {
+        form.resetFields()
+      }
     }
-    // console.log({ ...dataEdit, ...{ date: moment(dataEdit.startDate) } });
+  }, [customerEdit])
+
+
+  useEffect(() => {
+    dispatch(getByIdApi(dataEdit))
   }, [dataEdit])
 
   return <Form
     layout="vertical"
-    initialValues={{
-      remember: true
-    }}
+    initialValues={customerEdit}
     form={form}
     onFinish={onFinish}
     autoComplete='off'
@@ -135,11 +128,11 @@ function CreateContract(props) {
         </Form.Item>
       </Col>
       <Col span={6}>
-        {dataEdit.startDate ? (
+        {customerEdit?.startDate ? (
           <Form.Item
             label='Ngày hiệu lực'
-            name={["createAt"]}
-            initialValue={moment(dataEdit.startDate)}
+            name="createAt"
+            initialValue={moment(customerEdit?.startDate)}
             rules={[{ required: true }]}
           >
             <DatePicker className="input-item-outline" format={'DD/MM/YYYY'} placeholder='DD/MM/YYYY' />
@@ -147,7 +140,7 @@ function CreateContract(props) {
         ) : (
           <Form.Item
             label='Ngày hiệu lực'
-            name={["createAt"]}
+            name="createAt"
             rules={[{ required: true }]}
           >
             <DatePicker className="input-item-outline" placeholder='DD/MM/YYYY' format={'DD/MM/YYYY'} />
@@ -179,7 +172,7 @@ function CreateContract(props) {
       </Col>
       <Col span={24}>
         <Form.Item className="footer-modal">
-          <Button key="back" className="btn-danger" onClick={() => {setVisibleModal(false); form.resetFields()}}>
+          <Button key="back" className="btn-danger" onClick={() => { setVisibleModal(false); form.resetFields() }}>
             {t('common.cancel')}
           </Button>
           <Button key="submit" className="btn-primary" htmlType="submit" type="primary">

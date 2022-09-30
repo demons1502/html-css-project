@@ -11,6 +11,7 @@ import { LOADING_STATUS } from '../../ultis/constant';
 
 import styled from 'styled-components';
 import { formatDataNumber, getTimeByTZ } from '../../helper';
+import { useState } from 'react';
 
 const Textarea = styled(Input.TextArea)`
   background: #f8f8f8;
@@ -35,7 +36,6 @@ const CreatePayment = (props) => {
   const { isModalOpen, setIsModalOpen } = props;
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-
   const loading = useSelector((state) => state.loading.loading);
 
   const handleAddNew = (values) => {
@@ -56,9 +56,14 @@ const CreatePayment = (props) => {
     form.resetFields();
   };
 
-  const disabledDate = (current) => {
+  const disabledDateStart = (current) => {
     // Can not select days after today
     return current && current > moment().endOf('day');
+  };
+
+  const disabledDateEnd = (current) => {
+    // Can not select days after today
+    return current && current <= form.getFieldValue('startDate');
   };
 
   return (
@@ -97,7 +102,7 @@ const CreatePayment = (props) => {
               },
             ]}
           >
-            <DatePicker size="large" format={getTimeByTZ} placeholder="MM/DD/YYYY" disabledDate={disabledDate} />
+            <DatePicker size="large" format={getTimeByTZ} placeholder="MM/DD/YYYY" disabledDate={disabledDateStart} />
           </Form.Item>
           <Form.Item
             name="dueDate"
@@ -109,7 +114,7 @@ const CreatePayment = (props) => {
               },
             ]}
           >
-            <DatePicker size="large" format={getTimeByTZ} placeholder="MM/DD/YYYY" />
+            <DatePicker size="large" format={getTimeByTZ} placeholder="MM/DD/YYYY" disabledDate={disabledDateEnd} />
           </Form.Item>
           <Form.Item name="amount" label="Số tiền" rules={[{ required: true }]}>
             <InputNumber size="large" controls={false} formatter={formatDataNumber} placeholder="Nhập" />

@@ -1,4 +1,4 @@
-import { Button, Col, Layout, List, Row, Segmented, Spin, Typography,notification } from 'antd';
+import { Button, Col, Layout, List, Row, Segmented, Spin, Typography, notification } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,7 +28,6 @@ const ManageFinanceKnowledge = () => {
   });
   const [fileList, setFileList] = useState(null);
 
-
   const handleChange = (e) => {
     let values;
     const name = e.target.name;
@@ -44,7 +43,7 @@ const ManageFinanceKnowledge = () => {
         placement: 'topLeft',
         icon: false,
       });
-      return
+      return;
     }
     setFileList(newFile);
     setItemContent({ ...itemContent, image: newFile[0]?.originFileObj });
@@ -166,7 +165,7 @@ const ManageFinanceKnowledge = () => {
                   )}
                 ></List>
               </Spin>
-              <Pagination total={contents.totalItem} setPaginate={setPaginate} showSizeChanger={false}></Pagination>
+              <Pagination total={contents.count} setPaginate={setPaginate} showSizeChanger={false}></Pagination>
             </Layout.Content>
           </Col>
 

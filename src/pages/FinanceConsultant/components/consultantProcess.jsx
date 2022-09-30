@@ -1,11 +1,10 @@
 import { Button, Card } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { memo } from 'react';
 import DotImg from '../../../assets/images/icons/dot.svg';
 import { listDatas } from '../fakeData/history';
-import { useTranslation } from 'react-i18next';
 
 const ListDetails = (props) => {
-  const { t } = useTranslation();
   const { title } = props;
 
   const [datas, setDatas] = useState([]);
@@ -65,4 +64,4 @@ const ListDetails = (props) => {
   );
 };
 
-export default ListDetails;
+export default memo(ListDetails);

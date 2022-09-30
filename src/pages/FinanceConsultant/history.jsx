@@ -1,11 +1,10 @@
-import { Col, Empty } from 'antd';
+import { Col, Empty, Table } from 'antd';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import Table from '../../components/common/TableNormal';
+// import Table from '../../components/common/TableNormal';
 import { formatDataNumber } from '../../helper/';
 import { createData } from '../../slices/customerCare';
-
 
 const dataSource = [
   {
@@ -34,8 +33,8 @@ const dataSource = [
   },
 ];
 
-
-export default function History() {
+export default function History(props) {
+  const { setHistory } = props;
   const { t } = useTranslation();
   const customerCare = useSelector((state) => state.customerCare);
   const [dataTable, setDataTable] = useState(dataSource);
@@ -56,9 +55,9 @@ export default function History() {
       title: 'Tổng chi tiêu',
       dataIndex: 'content',
       key: 'content',
-      render:(record)=>{
-        return <span>{formatDataNumber(record)}</span>
-      }
+      render: (record) => {
+        return <span>{formatDataNumber(record)}</span>;
+      },
     },
   ];
 
@@ -74,7 +73,6 @@ export default function History() {
   //   //re render
   // }, [customerCare]);
 
-
   const saveData = (e) => {
     dispatch(
       createData({
@@ -86,15 +84,26 @@ export default function History() {
 
   const table = useMemo(() => {
     if (!!dataTable && dataTable.length > 0) {
-      return <Table dataSource={dataTable} columnTable={columns} className='financialConsultant-table'/>;
+      return <Table dataSource={dataTable} columnTable={columns} className="financialConsultant-table" />;
     } else {
-      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
+      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
     }
   }, [dataTable]);
 
   return (
     <Col span={24} className="financialConsultant-history">
-      {table}
+      <Table
+        dataSource={dataTable}
+        columns={columns}
+        className="financialConsultant-table"
+        pagination={false}
+        onRow={(record) => {
+          return {
+            onClick: () => setHistory(record),
+          };
+        }}
+      />
+      {/* {table} */}
     </Col>
   );
 }

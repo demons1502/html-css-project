@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router-dom';
 export default function FinanceConsultant() {
   const { t } = useTranslation();
   const [selectId, setSelectId] = useState(null);
-  const [history, setHistory] = useState('sd');
+  const [history, setHistory] = useState(null);
   const navigate = useNavigate();
 
   const handleSelect = (id) => {
@@ -63,7 +63,7 @@ export default function FinanceConsultant() {
                         <div className="financialConsultant-popover">
                           <Popover
                             placement="bottomLeft"
-                            content={<History />}
+                            content={<History setHistory={setHistory} />}
                             title={
                               <div className="financialConsultant-popover_title">
                                 <h5>{t('financial consultant.history title')}</h5>
@@ -86,7 +86,7 @@ export default function FinanceConsultant() {
                       </div>
                     ) : (
                       <div className="container-right-header">
-                        <div className="container-right-header_arrow">
+                        <div className="container-right-header_arrow" onClick={() => setHistory(null)}>
                           {/* <img src={left_arrow} alt="calender" height={12} style={{ marginRight: '5px' }} /> */}
                           <LeftOutlined className="icon" />
                         </div>
@@ -96,7 +96,7 @@ export default function FinanceConsultant() {
                         </div>
                       </div>
                     )}
-                    {history !== null ? <HistoryDetail /> : <SpendingForm />}
+                    {history !== null ? <HistoryDetail setHistory={setHistory} /> : <SpendingForm />}
                   </div>
                 </div>
               </Layout.Content>
@@ -112,7 +112,6 @@ export default function FinanceConsultant() {
           </Row>
         </div>
       </div>
-      {/* <HistoryModal isModalOpen={isHistoryModalOpen} toggleModal={toggleHistoryModal} /> */}
     </Fragment>
   );
 }

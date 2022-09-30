@@ -1,10 +1,10 @@
 import { Form } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import DotImg from '../../../assets/images/icons/dot.svg';
-import Input from '../../../components/common/Input';
 import { formatDataNumber } from '../../../helper';
 
-const HistoryDetail = () => {
+const HistoryDetail = (props) => {
+  const { setHistory } = props;
   return (
     <div className="financialConsultant-content history">
       <div className="financialConsultant-form_header">
@@ -18,7 +18,6 @@ const HistoryDetail = () => {
           span: 8,
         }}
         layout="horizontal"
-        // onFinish={handleFinish}
         className="financialConsultant-form"
       >
         <Form.Item

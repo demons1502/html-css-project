@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { create, getAll, remove, update } from '../services/manageContent';
 
-const initialState = { isReload: false, data: [], totalItem: 0 };
+const initialState = { isReload: false, data: [], count: 0 };
 
 export const retrieveData = createAsyncThunk(
   'manageContent/getAll',
@@ -23,7 +23,7 @@ export const createContent = createAsyncThunk(
 
       return { data: res.data, message: res.statusText };
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return rejectWithValue(error.response.data);
     }
   }
@@ -40,45 +40,32 @@ export const updateContent = createAsyncThunk(
   }
 );
 
-export const deleteContent = createAsyncThunk(
-  'manageContent/delete',
-  async ({ type, id }, { rejectWithValue }) => {
-    try {
-      const res = await remove(type, id);
-      return { id, message: res.statusText };
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+export const deleteContent = createAsyncThunk('manageContent/delete', async ({ type, id }, { rejectWithValue }) => {
+  try {
+    const res = await remove(type, id);
+    return { id, message: res.statusText };
+  } catch (error) {
+    return rejectWithValue(error.response.data);
   }
-);
+});
 
 const manageContentSlice = createSlice({
   name: 'manageContent',
   initialState,
   reducers: {},
   extraReducers: {
-    [createContent.fulfilled]: (state, action) => {
+    [createContent.fulfilled]: (state) => {
       state.isReload = true;
-      // state.data.push(action.payload.article);
     },
     [retrieveData.fulfilled]: (state, action) => {
       state.data = action.payload.articles;
-      state.totalItem = action.payload.articlesCount;
+      state.count = action.payload.articlesCount;
       state.isReload = false;
     },
-    [updateContent.fulfilled]: (state, action) => {
-      /* const index = state.findIndex(
-        (data) => data.id === action.payload.data.article.id
-      );
-      state[index] = {
-        ...state[index],
-        ...action.payload.article,
-      }; */
+    [updateContent.fulfilled]: (state) => {
       state.isReload = true;
     },
-    [deleteContent.fulfilled]: (state, action) => {
-      // let index = state.findIndex(({ id }) => id == action.payload.id);
-      // state.splice(index, 1);
+    [deleteContent.fulfilled]: (state) => {
       state.isReload = true;
     },
   },

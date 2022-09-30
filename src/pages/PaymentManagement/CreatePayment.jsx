@@ -1,14 +1,16 @@
 import { Form, Modal } from 'antd';
+import moment from 'moment';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
+import DatePicker from '../../components/common/DatePicker';
+import Input from '../../components/common/Input';
+import { InputNumber } from '../../components/common/Input/styles';
+import { Button } from '../../components/styles';
 import { createPayment } from '../../slices/paymentManagement';
 import { LOADING_STATUS } from '../../ultis/constant';
-import Input from '../../components/common/Input';
-import DatePicker from '../../components/common/DatePicker';
-import { Button } from '../../components/styles';
 
 import styled from 'styled-components';
+import { formatDataNumber, getTimeByTZ } from '../../helper';
 
 const Textarea = styled(Input.TextArea)`
   background: #f8f8f8;
@@ -38,11 +40,9 @@ const CreatePayment = (props) => {
 
   const handleAddNew = (values) => {
     const newPayment = {
-      loginId: values.loginId,
+      ...values,
       startDate: moment(values.startDate?._d).format(),
       dueDate: moment(values.dueDate?._d).format(),
-      amount: +values.amount,
-      description: values.description,
     };
     dispatch(createPayment(newPayment));
     if (loading === LOADING_STATUS.succeeded) {
@@ -54,6 +54,11 @@ const CreatePayment = (props) => {
   const handleCancel = () => {
     setIsModalOpen(false);
     form.resetFields();
+  };
+
+  const disabledDate = (current) => {
+    // Can not select days after today
+    return current && current > moment().endOf('day');
   };
 
   return (
@@ -79,7 +84,7 @@ const CreatePayment = (props) => {
               },
             ]}
           >
-            <Input placeholder="ID login" />
+            <Input placeholder="ID login" size="large" />
           </Form.Item>
 
           <Form.Item
@@ -92,7 +97,7 @@ const CreatePayment = (props) => {
               },
             ]}
           >
-            <DatePicker placeholder="DD/MM/YYYY" />
+            <DatePicker size="large" format={getTimeByTZ} placeholder="Chọn" disabledDate={disabledDate} />
           </Form.Item>
           <Form.Item
             name="dueDate"
@@ -104,16 +109,18 @@ const CreatePayment = (props) => {
               },
             ]}
           >
-            <DatePicker placeholder="DD/MM/YYYY" />
+            <DatePicker size="large" format={getTimeByTZ} placeholder="Chọn" />
           </Form.Item>
           <Form.Item name="amount" label="Số tiền" rules={[{ required: true }]}>
-            <Input />
+            <InputNumber size="large" controls={false} formatter={formatDataNumber} placeholder="Nhập" />
           </Form.Item>
           <Form.Item name="description" label="Nội dung">
-            <Textarea autoSize placeholder="Content" />
+            <Textarea autoSize placeholder="Nội dung" />
           </Form.Item>
-          <Form.Item className='paymentManagement-modal_button'>
-            <Button className="btn-danger" onClick={handleCancel}>Hủy</Button>
+          <Form.Item className="paymentManagement-modal_button">
+            <Button className="btn-danger" onClick={handleCancel}>
+              Hủy
+            </Button>
             <Button type="primary" htmlType="submit">
               Thêm mới
             </Button>

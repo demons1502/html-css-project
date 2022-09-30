@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getAll } from '../services/consult';
 
-const initialState = { isReload: false, data: [],total:0 };
+const initialState = { isReload: false, data: [], count: 0 };
 
-export const getConsult = createAsyncThunk('consult/getall', async (params , { rejectWithValue }) => {
+export const getConsult = createAsyncThunk('consult/getall', async (params, { rejectWithValue }) => {
   try {
     const res = await getAll(params);
     // console.log(params);
@@ -18,9 +18,9 @@ const ConsultSlice = createSlice({
   initialState,
   extraReducers: {
     [getConsult.fulfilled]: (state, action) => {
-      // console.log(action.payload.data)
+      // console.log(action.payload.data);
       state.data = action.payload.data.data;
-      state.total=action.payload.data.count
+      state.count = action.payload.data.count;
       state.isReload = false;
     },
   },

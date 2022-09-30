@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Popover, Divider } from "antd";
+import { Button, Popover, Divider } from "antd";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
-import { FieldLabel } from "../../../components/controls";
-import { Input, Button } from "../../../components/styles";
+import { Input, FieldLabel } from "../../../components/controls";
 
 export const ClosingModal = ({ onSubmit }) => {
   const { t } = useTranslation();

@@ -4,7 +4,6 @@ import SearchInputBox from "./SearchInputBox";
 import ListDetails from "./ListDetails";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { HistoryModal } from "./Modals/HistoryModal";
 import TabMenu from "./Tabs/TabMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { getCustomerHistoryById } from "../../slices/surveys";
@@ -12,12 +11,13 @@ import { getCustomerList, setSelectedCustomer } from "../../slices/customers";
 import { isEmpty } from "lodash";
 import calender from "../../assets/images/icons/calendar.svg";
 import left_arrow from "../../assets/images/icons/left-arrow.svg";
+import { HistoryPopup } from "./Modals/HistoryPopup";
+import { getTimeByTZ } from "../../helper/index";
 
 const Survey = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const [payload, setPayload] = useState("");
   const { customers, surveys } = useSelector((state) => state);
   const { data, selectedCustomer } = customers;
@@ -27,19 +27,15 @@ const Survey = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(setSelectedCustomer(data?.[0]?.customerId));
+    dispatch(setSelectedCustomer(data[0]?.customerId));
   }, [data, dispatch]);
 
   const handleSelectCustomer = (id) => {
     dispatch(setSelectedCustomer(id));
   };
 
-  const toggleHistoryModal = () => {
-    setIsHistoryModalOpen(!isHistoryModalOpen);
-  };
   const historyHandler = () => {
     dispatch(getCustomerHistoryById(selectedCustomer?.customerId));
-    toggleHistoryModal();
   };
   const solutionHandler = () => {
     navigate("/advise/financial-solutions");
@@ -86,9 +82,7 @@ const Survey = () => {
                     {isEmpty(surveys?.survey) ? (
                       <div className="container-right-header">
                         <div>
-                          <Button type="primary" className="btn-primary" onClick={historyHandler}>
-                            {t("common.history")}
-                          </Button>
+                          <HistoryPopup historyHandler={historyHandler} />
                         </div>
                         <div className="right">
                           <Button type="primary" className="btn-primary" onClick={solutionHandler}>
@@ -103,13 +97,13 @@ const Survey = () => {
                         </div>
                       </div>
                     ) : (
-                      <div className="container-right-header">
+                      <div className="container-right-header" style={{ padding: "20px" }}>
                         <div>
                           <img src={left_arrow} alt="calender" height={12} style={{ marginRight: "5px" }} />
                         </div>
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: "5px" }} />
-                          <span>Ngày: 12/08/2022</span>
+                          <span>Ngày: {surveys?.survey?.createdAt ? getTimeByTZ(surveys?.survey?.createdAt) : ""}</span>
                         </div>
                       </div>
                     )}
@@ -130,7 +124,6 @@ const Survey = () => {
           </Row>
         </div>
       </div>
-      <HistoryModal isModalOpen={isHistoryModalOpen} toggleModal={toggleHistoryModal} />
     </Fragment>
   );
 };

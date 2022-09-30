@@ -475,16 +475,16 @@ const CustomerServeyTable = () => {
         </div>
         <SurveyForm />
 
-        {isEmpty(surveys?.survey) && (
-          <div className="container-right-submit">
-            <div>
-              <CheckboxControl control={control} name="isPotential" label="Không còn tiềm năng" />
-            </div>
-            <div>
-              <ClosingModal onSubmit={onSubmit} />
-            </div>
+        {/* {isEmpty(surveys?.survey) && ( */}
+        <div className={`container-right-submit ${!isEmpty(surveys?.survey) && "content-hide"}`}>
+          <div>
+            <CheckboxControl control={control} name="isPotential" label="Không còn tiềm năng" />
           </div>
-        )}
+          <div>
+            <ClosingModal onSubmit={onSubmit} />
+          </div>
+        </div>
+        {/* )} */}
       </form>
     </FormProvider>
   );

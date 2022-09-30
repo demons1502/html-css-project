@@ -1,15 +1,21 @@
-import { Form } from 'antd';
-import React from 'react';
+import { Form, Checkbox, Popover } from 'antd';
+import React, { useState } from 'react';
 import Input from '../../../components/common/Input';
 import { Button } from '../../../components/styles';
 import DotImg from '../../../assets/images/icons/dot.svg';
-import {formatDataNumber} from '../../../helper'
+import { formatDataNumber } from '../../../helper';
+import Reminiscent from './Reminiscent';
 
 const spendingForm = () => {
+  const [checked, setChecked] = useState(false);
 
-  const handleFinish=(values)=>{
-    console.log(values)
-  }
+  const handleFinish = (values) => {
+    console.log({ ...values, tien: checked });
+  };
+
+  const handleChecked = (e) => {
+    console.log(e.target);
+  };
 
   return (
     <div className="financialConsultant-content">
@@ -34,9 +40,9 @@ const spendingForm = () => {
             </p>
           }
           labelAlign="left"
-          name='marketMoney'
+          name="marketMoney"
         >
-          <Input placeholder='Nhập'/>
+          <Input placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -45,9 +51,9 @@ const spendingForm = () => {
             </p>
           }
           labelAlign="left"
-          name='studyMoney'
+          name="studyMoney"
         >
-          <Input placeholder='Nhập'/>
+          <Input placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -56,9 +62,9 @@ const spendingForm = () => {
             </p>
           }
           labelAlign="left"
-          name='giftMoney'
+          name="giftMoney"
         >
-          <Input placeholder='Nhập'/>
+          <Input placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -67,9 +73,9 @@ const spendingForm = () => {
             </p>
           }
           labelAlign="left"
-          name='gasMoney'
+          name="gasMoney"
         >
-          <Input placeholder='Nhập'/>
+          <Input placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -78,9 +84,9 @@ const spendingForm = () => {
             </p>
           }
           labelAlign="left"
-          name=''
+          name="cost"
         >
-          <Input placeholder='Nhập'/>
+          <Input placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -89,8 +95,9 @@ const spendingForm = () => {
             </p>
           }
           labelAlign="left"
+          name="personalCosts"
         >
-          <Input placeholder='Nhập'/>
+          <Input placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -99,8 +106,9 @@ const spendingForm = () => {
             </p>
           }
           labelAlign="left"
+          name="credit"
         >
-          <Input placeholder='Nhập'/>
+          <Input placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -109,8 +117,9 @@ const spendingForm = () => {
             </p>
           }
           labelAlign="left"
+          name="nurturingFund"
         >
-          <Input placeholder='Nhập'/>
+          <Input placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -119,19 +128,24 @@ const spendingForm = () => {
             </p>
           }
           labelAlign="left"
+          name="otherCosts"
         >
-          <Input placeholder='Nhập'/>
+          <Input placeholder="Nhập" />
         </Form.Item>
-        <div className="financialConsultant-total">
+        <div className="financialConsultant-form_total">
           <p>Tổng chi tiêu: </p>
           <span>{formatDataNumber(123000000)}</span>
         </div>
-        <Form.Item>
-          <Button type="primary" htmlType='submit'>Lưu thông tin</Button>
-        </Form.Item>
+        <div className="financialConsultant-form_submit">
+          <Checkbox onChange={handleChecked}>Không còn tiềm năng</Checkbox>
+          <Popover placement="topRight" content={<Reminiscent />} trigger="click">
+            <Button type="primary" htmlType="submit">
+              Lưu thông tin
+            </Button>
+          </Popover>
+        </div>
       </Form>
     </div>
-    // <div className='financialConsultant-form'>spendingForm</div>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Col, Layout, List, Popover, Row, Typography } from 'antd';
-import {ClockCircleOutlined  } from '@ant-design/icons'
+import { ClockCircleOutlined, LeftOutlined } from '@ant-design/icons';
 import Participant from './components/participant';
 import ConsultantProcess from './components/consultantProcess';
 import HistorySelect from './components/historySelect';
@@ -13,13 +13,14 @@ import { isEmpty } from 'lodash';
 import * as S from '../../components/styles';
 import { data } from './fakeData/customer';
 import History from './history';
+import HistoryDetail from './components/historyDetail';
 import { useNavigate } from 'react-router-dom';
 
 export default function FinanceConsultant() {
   const { t } = useTranslation();
   const [selectId, setSelectId] = useState(null);
-  const navigate=useNavigate()
-
+  const [history, setHistory] = useState('sd');
+  const navigate = useNavigate();
 
   const handleSelect = (id) => {
     setSelectId(id);
@@ -57,7 +58,7 @@ export default function FinanceConsultant() {
                   </div>
 
                   <div className="container-right">
-                    {isEmpty ? (
+                    {history === null ? (
                       <div className="container-right-header">
                         <div className="financialConsultant-popover">
                           <Popover
@@ -69,20 +70,25 @@ export default function FinanceConsultant() {
                               </div>
                             }
                             trigger="click"
-                            className='financialConsultant-popover-content'
+                            className="financialConsultant-popover-content"
                           >
                             <S.Button icon={<ClockCircleOutlined />}>{t('common.history')}</S.Button>
                           </Popover>
                         </div>
                         <div className="right">
-                          <S.Button type="primary" onClick={()=>navigate('/advise/financial-solutions')}>{t('common.solution')}</S.Button>
-                          <S.Button type="primary" onClick={()=> navigate('/appointment-management')}>{t('common.booking')}</S.Button>
+                          <S.Button type="primary" onClick={() => navigate('/advise/financial-solutions')}>
+                            {t('common.solution')}
+                          </S.Button>
+                          <S.Button type="primary" onClick={() => navigate('/appointment-management')}>
+                            {t('common.booking')}
+                          </S.Button>
                         </div>
                       </div>
                     ) : (
                       <div className="container-right-header">
-                        <div>
-                          <img src={left_arrow} alt="calender" height={12} style={{ marginRight: '5px' }} />
+                        <div className="container-right-header_arrow">
+                          {/* <img src={left_arrow} alt="calender" height={12} style={{ marginRight: '5px' }} /> */}
+                          <LeftOutlined className="icon" />
                         </div>
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: '5px' }} />
@@ -90,8 +96,7 @@ export default function FinanceConsultant() {
                         </div>
                       </div>
                     )}
-
-                    <SpendingForm />
+                    {history !== null ? <HistoryDetail /> : <SpendingForm />}
                   </div>
                 </div>
               </Layout.Content>
@@ -100,7 +105,7 @@ export default function FinanceConsultant() {
             <Col lg={9} md={24} sm={24} xs={24}>
               <Layout.Content className="manageContent">
                 <div className="content-div-2">
-                  <ConsultantProcess title={t('financial consultant.process title')}/>
+                  <ConsultantProcess title={t('financial consultant.process title')} />
                 </div>
               </Layout.Content>
             </Col>

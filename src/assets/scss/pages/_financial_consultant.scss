@@ -127,6 +127,18 @@
             gap: 4px;
           }
         }
+        .container-right-header_arrow {
+          width: 24px;
+          height: 24px;
+          font-size: 1rem;
+          font-weight: bold;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 50%;
+          background-color: #f3f3f3;
+          cursor: pointer;
+        }
 
         .ant-tabs-nav-wrap {
           padding-left: 33px !important;
@@ -457,6 +469,24 @@
       }
     }
   }
+  &-content.history {
+    .ant-form-item {
+      .ant-form-item-control {
+        span {
+          font-size: $font-size-base;
+          color: $black-color;
+          display: flex;
+          justify-content: flex-end;
+          // align-items: center;
+        }
+      }
+    }
+  }
+  &-popover {
+    button {
+      padding: 0 10px;
+    }
+  }
 
   &-table {
     padding: unset !important;
@@ -465,36 +495,67 @@
     max-width: unset;
     width: calc(100% + 36px);
   }
-  &-content {
-  }
+
   &-form_header {
     padding: 10px 20px;
   }
   &-form {
-      .ant-form-item {
-        padding: 0 20px;
+    .ant-form-item {
+      padding: 0 20px;
       label {
         &::after {
           display: none;
         }
       }
     }
-  }
-  &-total {
-    padding: 20px ;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    font-size: $font-size-base;
-    p{
+    &_total {
+      padding: 20px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: $font-size-base;
+      // border-bottom: 1px solid #000;
+      p {
         font-size: $font-size-base;
         font-weight: $font-weight-bold;
-    }
-    span {
+      }
+      span {
         font-size: 1.6rem;
         font-weight: $font-weight-bold;
-      color: $green-color;
-      padding-left: 10px;
+        color: $green-color;
+        padding-left: 10px;
+      }
+      &.history {
+        border-top: 1px solid $grey-border-color;
+      }
+    }
+    &_submit {
+      padding: 13px 20px !important;
+      border-top: 1px solid $grey-border-color;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .ant-checkbox.ant-checkbox-checked {
+        .ant-checkbox-inner {
+          background: $green-color;
+        }
+      }
+    }
+  }
+  &-reminiscent {
+    margin-left: -20px;
+    margin-top: -8px;
+    margin-bottom: -8px;
+    max-width: unset;
+    padding: 10px !important;
+    &_button {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      button {
+        width: calc(100% / 2 - 10px);
+      }
     }
   }
 }

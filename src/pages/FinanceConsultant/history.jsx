@@ -1,20 +1,12 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { Col, Empty } from 'antd';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Col, Checkbox, Button, Empty, List } from 'antd';
-import { createData, getData } from '../../slices/customerCare';
+import { useDispatch, useSelector } from 'react-redux';
 import Table from '../../components/common/TableNormal';
-import IconPlus from '../../assets/images/icons/plus.svg';
-import _ from 'lodash';
-import FilterCommon from '../../components/common/Filter';
-import {formatDataNumber} from '../../helper/'
+import { formatDataNumber } from '../../helper/';
+import { createData } from '../../slices/customerCare';
 
-const content = (
-  <div>
-    <p>Content</p>
-    <p>Content</p>
-  </div>
-);
+
 const dataSource = [
   {
     key: 1,

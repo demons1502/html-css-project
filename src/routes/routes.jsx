@@ -82,7 +82,7 @@ export const routes = () => [
           // no page yet
           {
             path: 'finance-consultant',
-            element: <GuestGuard element={<CustomerCare />} />,
+            element: <GuestGuard element={<FinanceConsultant />} />,
           },
           {
             path: 'finance-support',

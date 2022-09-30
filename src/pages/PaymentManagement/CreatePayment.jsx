@@ -97,7 +97,7 @@ const CreatePayment = (props) => {
               },
             ]}
           >
-            <DatePicker size="large" format={getTimeByTZ} placeholder="Chọn" disabledDate={disabledDate} />
+            <DatePicker size="large" format={getTimeByTZ} placeholder="MM/DD/YYYY" disabledDate={disabledDate} />
           </Form.Item>
           <Form.Item
             name="dueDate"
@@ -109,7 +109,7 @@ const CreatePayment = (props) => {
               },
             ]}
           >
-            <DatePicker size="large" format={getTimeByTZ} placeholder="Chọn" />
+            <DatePicker size="large" format={getTimeByTZ} placeholder="MM/DD/YYYY" />
           </Form.Item>
           <Form.Item name="amount" label="Số tiền" rules={[{ required: true }]}>
             <InputNumber size="large" controls={false} formatter={formatDataNumber} placeholder="Nhập" />

@@ -1,34 +1,68 @@
-// History modal
-.history-modal {
-  .ant-modal-close {
-    display: none;
-  }
-
-  .ant-modal-footer {
-    border-top: 0px !important;
-    position: relative;
-    top: -24px;
-    .ant-btn-default {
-      position: relative;
-      left: -10px;
+// History popup
+.history-popover {
+  width: 313px;
+  font-family: "Quicksand";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  color: $black-color;
+  box-sizing: border-box;
+  .ant-popover-content {
+    .ant-popover-inner {
+      .ant-popover-title {
+        font-family: "Quicksand";
+        font-style: normal;
+        font-weight: 600;
+        padding: 15px 0px 15px 18px;
+        font-size: 16px;
+        line-height: 20px;
+      }
+      .ant-popover-inner-content {
+        padding: 0px !important;
+      }
     }
   }
-  .ant-modal-body {
-    padding: 0px 0px 30px 0px;
-    overflow: hidden;
-  }
-  .table-common .ant-table-tbody tr td,
-  .table-common .ant-table-thead tr th {
-    padding: 9px 24px !important;
-    font-size: 13px !important;
-  }
-  .table-common .ant-table-tbody {
-    tr:nth-child(4) {
-      background-color: $green-table-bg;
-      color: $white-color;
-      &:hover {
-        background-color: $green-table-bg;
-        color: $black-color;
+  .history-table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-bottom: 16px;
+    .table-spainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 24px;
+    }
+    .history-table {
+      width: 100%;
+      thead {
+        tr {
+          background-color: $secondary-color;
+          th {
+            padding: 10px 0px 10px 24px;
+            &:last-child {
+              text-align: left;
+            }
+          }
+        }
+      }
+      tbody {
+        tr {
+          text-align: left;
+          border-bottom: 1px solid $grey-border-color;
+          &:last-child {
+            border-bottom: 0px solid $grey-border-color;
+          }
+          cursor: pointer;
+          &:hover {
+            background-color: $green-table-bg;
+            color: $white-color;
+          }
+          td {
+            width: 150px;
+            padding: 10px 0px 10px 24px;
+          }
+        }
       }
     }
   }
@@ -51,6 +85,7 @@
     .closing-body {
       display: flex;
       justify-content: center;
+      padding-top: 15px;
       .form-group {
         width: 270px;
       }
@@ -180,4 +215,7 @@
     align-items: flex-end;
     column-gap: 8px;
   }
+}
+.content-hide {
+  visibility: hidden !important;
 }

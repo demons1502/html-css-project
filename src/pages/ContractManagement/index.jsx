@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react'
+import { React, useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'antd'
 import IconPlus from '../../assets/images/icons/plus.svg';
@@ -10,10 +10,10 @@ import Modal from '../../components/common/Modal';
 import CreateContract from './CreateContract';
 import { retrieveData } from '../../slices/contractManagement';
 import { DEFAULT_SIZE } from '../../ultis/constant'
-
+import { formatDataNumber,getTimeByTZ } from "../../helper"
 export default function ContractManagement() {
   const dispatch = useDispatch()
-  const {data, totalItem, refreshData} = useSelector((state)=>state.contractManagement)
+  const { data, totalItem, refreshData } = useSelector((state) => state.contractManagement)
   const [visibleModal, setVisibleModal] = useState(false)
   const [dataEdit, setDataEdit] = useState(null)
   const [titleModal, setTitleModal] = useState('')
@@ -21,8 +21,25 @@ export default function ContractManagement() {
     limit: DEFAULT_SIZE,
     offset: 1
   });
-  
-  const [inputText, setInputText]= useState('')
+
+  useEffect(() => {
+    // data.map((item,index)=>{
+    // return (item.depositTerm == 30) ? item.depositTerm = "Tháng" : (item.depositTerm == 180) ? item.depositTerm = "Nửa năm" : (item.depositTerm == 360) ? item.depositTerm = "Năm" : null;
+    // console.log(index,item.depositTerm);
+    // })
+    // (data[0].depositTerm == 30) ? data[0].depositTerm = "Tháng" : (data[0].depositTerm == 180) ? data[0].depositTerm = "Nửa năm" : (data[0].depositTerm == 360) ? data[0].depositTerm = "Năm" : null;
+  }, [data])
+
+  const [inputText, setInputText] = useState('')
+
+  const convertDepositTerm = (value) => {
+    return (value == 30) ? value = "Tháng" : (value == 180) ? value = "Nửa năm" : (value == 360) ? value = "Năm" : value
+  }
+
+  const convertUnderscore=(value)=>{
+    let timeFormat= getTimeByTZ(value)
+    return timeFormat.replaceAll('-','/')
+  }
 
   const columns = [
     {
@@ -32,7 +49,7 @@ export default function ContractManagement() {
     },
     {
       title: 'Người mua',
-      dataIndex: 'insured',
+      dataIndex: 'customerName',
     },
     {
       title: 'Người hưởng',
@@ -41,32 +58,58 @@ export default function ContractManagement() {
     {
       title: 'Giá trị',
       className: 'value',
-      dataIndex: 'price',
+      dataIndex: 'value',
+      render: (record) => {
+        return (
+          <span>{convertUnderscore(record.startDate)}</span>
+        );
+      }
     },
     {
       title: 'Ngày hiệu lực',
-      dataIndex: 'startDate',
+      // dataIndex: 'startDate',
+      render: (record) => {
+        return (
+          <span>{formatDataNumber(record.value)}</span>
+        );
+      }
     },
     {
       title: 'Số năm nộp phí',
-      dataIndex: 'duration',
+      render: (record) => {
+        return (
+          <span>{`${record.duration} Năm`}</span>
+        );
+      }
     },
     {
       title: 'Chu kì nộp phí',
-      dataIndex: 'depositTerm',
+      render: (record) => {
+        return (
+          <span>{convertDepositTerm(record.depositTerm)}</span>
+        );
+      }
     },
     {
       title: 'Lần cuối nộp phí',
-      dataIndex: 'lastDepositDate',
+      render: (record) => {
+        return (
+          <span>{convertUnderscore(record.lastDepositDate)}</span>
+        );
+      }
     },
     {
       title: 'Hạn nộp phí tiếp theo',
-      dataIndex: 'nextDepositDue',
+      render: (record) => {
+        return (
+          <span>{convertUnderscore(record.nextDepositDue)}</span>
+        );
+      }
     },
     {
       title: '',
       dataIndex: '',
-      width:'118px',
+      width: '118px',
       render: () => <button className='btn_modal_example btn-bgWhite-textGreen-borGreen'>Bảng minh hoạ</button>
     },
     {
@@ -74,24 +117,23 @@ export default function ContractManagement() {
       render: (record) => <img className='edit_icon' src={IconEdit} onClick={() => handleEditUser(record)} />,
     }
   ];
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     let offset = (paginate.offset - 1) * paginate.limit;
-    dispatch(retrieveData({limit: paginate.limit, offset:offset}))
-  },[])
+    dispatch(retrieveData({ limit: paginate.limit, offset: offset }))
+  }, [])
 
   useEffect(() => {
     let offset = (paginate.offset - 1) * paginate.limit;
     inputText ?
-      dispatch(retrieveData({userSearch: inputText, limit: paginate.limit, offset:offset}))
-    :
-      dispatch(retrieveData({limit: paginate.limit, offset:offset}))
-  },[inputText,paginate,refreshData])
+      dispatch(retrieveData({ userSearch: inputText, limit: paginate.limit, offset: offset }))
+      :
+      dispatch(retrieveData({ limit: paginate.limit, offset: offset }))
+  }, [inputText, paginate, refreshData])
 
   const handleEditUser = (record) => {
-    setDataEdit({...record})
+    setDataEdit({ ...record })
     setVisibleModal(true)
-    console.log(record);
     setTitleModal('Thay đổi nội dung hợp đồng')
   }
 
@@ -106,7 +148,7 @@ export default function ContractManagement() {
       <div className="contract_header">
         <h3>Quản lý hợp đồng</h3>
         <div className="header_right">
-          <InputSearch setPayload={setInputText}/>
+          <InputSearch setPayload={setInputText} />
           <Button className='btn-primary' onClick={handleCreateContract}>
             <img src={IconPlus} alt="" />
             Thêm hợp đồng
@@ -115,10 +157,10 @@ export default function ContractManagement() {
       </div>
       <div className="contract_list">
         <Table dataSource={data} columnTable={columns} size='middle' />
-        <Pagination total={50} pageSize={paginate.limit} setPaginate={setPaginate} />
+        <Pagination total={totalItem} pageSize={paginate.limit} setPaginate={setPaginate} />
       </div>
     </div>
-    <Modal isVisible={visibleModal} setIsVisible={setVisibleModal} title={titleModal} width={800} content={<CreateContract dataEdit={dataEdit} setVisibleModal={setVisibleModal} />} />
-  </> 
+    <Modal isVisible={visibleModal} setIsVisible={setVisibleModal} title={titleModal} width={800} content={<CreateContract dataEdit={dataEdit?.id} setVisibleModal={setVisibleModal} />} />
+  </>
 }
 

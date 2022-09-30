@@ -1,7 +1,8 @@
 .survey {
+  padding-bottom: 35px;
   &-title {
     font-family: Quicksand;
-    font-size: 16px;
+    font-size: 1.2rem;
     font-weight: 600;
     line-height: 20px;
     letter-spacing: 0em;
@@ -170,10 +171,17 @@
           grid-template-columns: 1fr 1fr 1fr 1fr;
           border: 1px solid #d5d5d5;
           border-radius: 9px;
+          font-size: 1.2rem;
           padding: 15px 17px;
         }
         .ant-table-thead > tr > th {
           background-color: white;
+          font-family: "Quicksand";
+          font-style: normal;
+          font-weight: 600;
+          font-size: 12px;
+          line-height: 15px;
+          color: #333333;
         }
 
         &-bottom {
@@ -326,6 +334,8 @@
       box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.05);
       border-radius: 20px;
       overflow: hidden;
+      // margin-bottom: 10px;
+      padding-bottom: 24px;
     }
     .ant-btn {
       &.ant-btn-circle {
@@ -480,4 +490,20 @@
   .ant-checkbox-group-item {
     margin-right: 10px;
   }
+}
+.table-common .ant-table-tbody tr td {
+  font-family: "Quicksand";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+  color: #333333;
+}
+.checkbox-item {
+  font-family: "Quicksand";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+  color: #333333;
 }

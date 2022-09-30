@@ -25,19 +25,19 @@
     .paymentManagement-table {
       .ant-table-tbody {
         .ant-table-row {
-          .btn-deleteIcon{
-              font-size: 2rem;
-              color: $gray-light-color;
-            }
+          .btn-deleteIcon {
+            font-size: 2rem;
+            color: $gray-light-color;
+          }
           &.active {
             background-color: $green-color;
             .ant-table-cell {
               background: $green-color;
               color: $white-color;
             }
-            .btn-deleteIcon{
-                  color: $white-color;
-                }
+            .btn-deleteIcon {
+              color: $white-color;
+            }
           }
         }
       }
@@ -51,8 +51,6 @@
     align-items: center;
     border-bottom: 1px solid $grey-border-color;
   }
-
- 
 
   &-option {
     display: flex;
@@ -163,7 +161,6 @@
       }
     }
   }
-  
 }
 .ant-modal.createPayment-modal {
   width: 700px !important;
@@ -193,13 +190,26 @@
       }
     }
   }
-  .createPayment-modal_button{
+  .createPayment-modal_button {
     display: flex !important;
     justify-content: flex-end;
     align-items: center;
-    button{
-      &:first-child{
+    button {
+      &:first-child {
         margin-right: 10px;
+      }
+    }
+    &_button {
+      margin-top: 20px !important;
+      .ant-form-item-control-input-content {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        button {
+          &:first-child {
+            margin-right: 15px;
+          }
+        }
       }
     }
   }

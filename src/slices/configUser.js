@@ -1,8 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   updateUser,
-  changePassword,
+  changePasswordApi,
   sendAvatar,
+  loginApi,
+  resetPasswordApi
 } from '../services/configUser';
 
 const initialState = {
@@ -11,26 +13,37 @@ const initialState = {
   custom: [],
   contractById: null,
   refreshData: false,
+  resetCode: ''
 };
 
-export const updateUsers = createAsyncThunk(
-  'configUser/updateUser',
+
+
+export const resetPassword = createAsyncThunk(
+  'configUser/resetPassword',
+  async (payload) => {
+    const res = await resetPasswordApi(payload);
+    return res
+  }
+);
+
+export const login = createAsyncThunk(
+  'configUser/changePassword',
   async (payload, { rejectWithValue }) => {
     try {
-      const res = await updateUser(payload);
-      return { data: res.data, message: res.statusText };
+      const res = await loginApi(payload);
+      return res.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
 );
 
-export const changePasswords = createAsyncThunk(
+export const changePassword = createAsyncThunk(
   'configUser/changePassword',
   async (payload, { rejectWithValue }) => {
     try {
-      const res = await changePassword(payload);
-      return { data: res.data, message: res.statusText };
+      const res = await changePasswordApi(payload);
+      return { data: res.data, message: 'Thay đổi mật khẩu thành công' };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -39,9 +52,24 @@ export const changePasswords = createAsyncThunk(
 
 export const sendAvatars = createAsyncThunk(
   'configUser/sendAvatar',
-  async (payload) => {
-    const res = await sendAvatar(payload);
-    return res.data;
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await sendAvatar(payload);
+      return { data: res.data, message: 'Thay đổi user thành công!' };
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const updateUsers = createAsyncThunk(
+  'configUser/updateUser',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await updateUser(payload);
+      return { data: res.data, message: 'Thay đổi user thành công!' };
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -49,10 +77,10 @@ const configUser = createSlice({
   name: 'configUser',
   initialState,
   extraReducers: {
-    // [createContract.fulfilled]: (state) => {
-    //   state.refreshData = true;
-    //   state.refreshData = false;
-    // },
+    [login.fulfilled]: (state, action) => {
+      console.log(action.payload.userInfo.resetCode);
+      state.resetCode = action.payload.userInfo.resetCode
+    },
   },
 });
 

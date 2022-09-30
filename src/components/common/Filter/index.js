@@ -2,6 +2,7 @@ import React, {Button, Checkbox, Row, Col, Popover} from 'antd';
 import {useTranslation} from 'react-i18next';
 import {useMemo, useState} from 'react';
 import FilterIcon from '../../../assets/images/icons/filter.svg';
+import * as S from "./styles";
 
 export default function Filter(props) {
   const {t} = useTranslation();
@@ -42,13 +43,13 @@ export default function Filter(props) {
         placement="bottomLeft"
         onOpenChange={handleOpenChange}
       >
-        <Button className={`filter__btn ${open && 'filter__btn--active'}`}>
-          <div>
-            <span className="filter__btn--count">{count}</span>
+        <S.ButtonFilter active={open ? 1 : 0}>
+          <S.Div>
+            <S.Span>{count}</S.Span>
             {t('common.filter')}
-          </div>
+          </S.Div>
           <img src={FilterIcon} alt=""/>
-        </Button>
+        </S.ButtonFilter>
       </Popover>
     </div>
   );

@@ -1,14 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  createContracts,
-  getAll,
-  update,
-  getCustom,
-  getById,
-} from '../services/contractManagement';
+import { createContracts, getAll, update, getCustom, getById } from '../services/contractManagement';
 
 const initialState = {
   data: [],
+  dataEdit:[],
   totalItem: 0,
   custom: [],
   contractById: null,
@@ -35,16 +30,16 @@ export const getCustoms = createAsyncThunk(
   }
 );
 
-// export const getByIds = createAsyncThunk(
-//   'contractManagement/getContractId',
-//   async (payload) => {
-//     const res = await getById(payload);
-//     return res.data;
-//   }
-// );
+export const getByIdApi = createAsyncThunk(
+  'contractManagement/getContractId',
+  async (payload) => {
+    const res = await getById(payload);
+    return res.data;
+  }
+);
 
 export const updateContract = createAsyncThunk(
-  'contractManagement/createContract',
+  'contractManagement/updateContract',
   async ({ id, data }, { rejectWithValue }) => {
     try {
       const res = await update({ id, data });
@@ -66,25 +61,27 @@ export const retrieveData = createAsyncThunk(
 const contractManagement = createSlice({
   name: 'contractManagement',
   initialState,
-  reducers: {
-    setRefresh: (state) => {
-      state.refreshData = false;
-    },
-  },
   extraReducers: {
     [createContract.fulfilled]: (state) => {
       state.refreshData = true;
+      state.refreshData = false;
     },
     [retrieveData.fulfilled]: (state, action) => {
       state.data = [...action.payload.contracts];
-      state.totalItem = action.payload.contractsCount;
-      state.refreshData=false
+      state.totalItem = action.payload.count;
+      state.refreshData = true;
+      state.refreshData = false
     },
     [getCustoms.fulfilled]: (state, action) => {
       state.custom = [...action.payload.data];
     },
     [updateContract.fulfilled]: (state) => {
-      // state.refreshData = true
+      state.refreshData = true;
+      state.refreshData = false;
+
+    },
+    [getByIdApi.fulfilled]: (state, action) => {
+      state.dataEdit= action.payload
     },
   },
 });

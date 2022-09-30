@@ -1,24 +1,18 @@
-import { Button, Col, Form, notification, Row, Spin, Table } from 'antd';
-import moment from 'moment';
+import { Col, notification, Row, Spin, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import deleteIcon from '../../assets/images/icons/deleteIcon.svg';
-import importIcon from '../../assets/images/icons/importIcon.svg';
-import plusIcon from '../../assets/images/icons/plus.svg';
 import Pagination from '../../components/common/Pagination';
 // import Table from '../../components/common/TableNormal';
+import { DeleteFilled, DownloadOutlined, PlusOutlined } from '@ant-design/icons';
+import { useRef } from 'react';
 import ModalConfirm from '../../components/ModalConfirm';
-import {
-  deletePayment,
-  retrieveData,
-  uploadFile,
-} from '../../slices/paymentManagement';
-import { FORMAT_DATE, LOADING_STATUS } from '../../ultis/constant';
+import * as S from '../../components/styles';
+import { getTimeByTZ } from '../../helper/index';
+import { deletePayment, retrieveData, uploadFile } from '../../slices/paymentManagement';
+import { LOADING_STATUS } from '../../ultis/constant';
 import CreatePayment from './CreatePayment';
 import PaymentHistory from './PaymentHistory';
 import PaymentManagementHeader from './PaymentManagementHeader';
-import { DeleteOutlined } from '@ant-design/icons';
-import { getTimeByTZ } from '../../helper/index';
 
 const PaymentManagement = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -30,6 +24,8 @@ const PaymentManagement = () => {
   const [limit, setLimit] = useState(10);
 
   const dispatch = useDispatch();
+  const inputRef = useRef();
+
   const payments = useSelector((state) => state.paymentManagementReducer);
   const loading = useSelector((state) => state.loading.loading);
 
@@ -41,19 +37,15 @@ const PaymentManagement = () => {
     ModalConfirm({
       content: `Xác nhận xóa ${item.userFullname}`,
       callApi: () => {
-        dispatch(deletePayment({ transactionIds: [item.id] })),
-        setHistoryItem(null);
+        dispatch(deletePayment({ transactionIds: [item.id] })), setHistoryItem(null);
       },
     });
   };
   const handleDelete = () => {
     if (selectedRowKeys.length > 0) {
-      // const id = [];
-      // selectedRowKeys.map((item) => id.push(item.id));
       ModalConfirm({
         callApi: () => {
-          dispatch(deletePayment({ transactionIds: selectedRowKeys })),
-          setHistoryItem(null);
+          dispatch(deletePayment({ transactionIds: selectedRowKeys })), setHistoryItem(null);
         },
       });
     } else {
@@ -61,16 +53,28 @@ const PaymentManagement = () => {
         message: 'Vui lòng chọn bản ghi bạn cần xóa',
         duration: 2,
         placement: 'topLeft',
-        icon:false
+        icon: false,
       });
     }
   };
 
-  const handleImport = (e) => {
-    const data = new FormData();
-    data.append('file', e.target.files[0]);
-    dispatch(uploadFile(data));
+  const handleImport = () => {
+    inputRef.current.click();
+
+    const input = inputRef.current;
+    const handleFile = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const data = new FormData();
+        data.append('file', file);
+        dispatch(uploadFile(data));
+      }
+    };
+
+    input.addEventListener('change', handleFile);
+    removeEventListener('change', handleFile);
   };
+
   const columns = [
     {
       title: 'Họ và tên',
@@ -111,18 +115,13 @@ const PaymentManagement = () => {
       title: '',
       dataIndex: '',
       key: 'x',
-      render: (_, record) => (
-        <DeleteOutlined
-          className='btn-deleteIcon'
-          onClick={() => handleDeleteOne(record)}
-        />
-      ),
+      render: (_, record) => <DeleteFilled className="btn-deleteIcon" onClick={() => handleDeleteOne(record)} />,
     },
   ];
 
-  const onChangePage = (current, pageSize) => {
-    setPage(current);
-    setLimit(pageSize);
+  const onChangePage = (e) => {
+    setPage(e.offset);
+    setLimit(e.limit);
   };
 
   useEffect(() => {
@@ -131,108 +130,69 @@ const PaymentManagement = () => {
   }, [searchPayload, page, limit, payments.isReload]);
 
   return (
-    <div className='paymentManagement'>
-      <div className='paymentManagement-nav'>
-        <div className='paymentManagement-title'>
-          <h3>Quản lý thanh toán khách hàng Manulife</h3>
-        </div>
-        <div className='paymentManagement-option'>
-          <Button onClick={handleDelete}>Xóa</Button>
-          <Button type='primary'>
-            <label htmlFor='import'>
-              <img src={importIcon} alt='' />
-              <input
-                type='file'
-                id='import'
-                style={{ display: 'none' }}
-                onChange={handleImport}
-              />
-              Import
-            </label>
-          </Button>
-          <Button
-            type='primary'
-            icon={<img src={plusIcon} alt='' />}
-            onClick={() => setIsModalOpen(!isModalOpen)}
+    <div className="paymentManagement">
+      <input type="file" ref={inputRef} style={{ display: 'none' }} />
+      <S.PageHeader
+        className="site-page-header-responsive"
+        backIcon={false}
+        onBack={() => window.history.back()}
+        title="Quản lý thanh toán khách hàng Manulife"
+        extra={[
+          <S.Button key="1" onClick={handleDelete}>
+            Xóa
+          </S.Button>,
+          <S.Button
+            key="3"
+            type="primary"
+            icon={<DownloadOutlined style={{ fontSize: '14px' }} />}
+            onClick={handleImport}
           >
+            Import
+          </S.Button>,
+          <S.Button key="4" type="primary" icon={<PlusOutlined />} onClick={() => setIsModalOpen(!isModalOpen)}>
             Thanh toán mới
-          </Button>
-        </div>
-      </div>
-      <div className='paymentManagement-container'>
-        <Row
-          gutter={[15, 15]}
-          align='stretch'
-          className='paymentManagement-row'
-        >
-          <Col
-            span={15}
-            className='paymentManagement-col'
-            lg={15}
-            md={24}
-            sm={24}
-            xs={24}
-          >
-            <div className='paymentManagement-content'>
-              <PaymentManagementHeader
-                title='Danh sách tài khoản'
-                search
-                setPayload={setSearchPayload}
+          </S.Button>,
+        ]}
+      ></S.PageHeader>
+
+      <div className="paymentManagement-container">
+        <Row gutter={[15, 15]} align="stretch" className="paymentManagement-row">
+          <Col span={15} className="paymentManagement-col" lg={15} md={24} sm={24} xs={24}>
+            <div className="paymentManagement-content">
+              <PaymentManagementHeader title="Danh sách tài khoản" search setPayload={setSearchPayload} />
+
+              <Table
+                className="table-common paymentManagement-table"
+                dataSource={payments.data}
+                columns={columns}
+                pagination={false}
+                rowSelection={{
+                  selectedRowKeys,
+                  onChange: onSelectChange,
+                }}
+                rowClassName={(record) => (rowActive === record.id ? 'active' : '')}
+                onRow={(record) => {
+                  return {
+                    onClick: () => {
+                      setRowActive(record.id), setHistoryItem(record);
+                    },
+                  };
+                }}
+                rowKey="id"
+                size="middle"
+                bordered={false}
               />
-              <Spin spinning={loading === LOADING_STATUS.pending}>
-                <Table
-                  className='table-common paymentManagement-table'
-                  dataSource={payments.data}
-                  columns={columns}
-                  pagination={
-                    payments.total > limit && {
-                      total: payments.total,
-                      onChange: onChangePage,
-                      //pageSizeOptions: [10, 20, 50],
-                      showSizeChanger: true,
-                      className: 'payment-pagination',
-                    }
-                  }
-                  rowSelection={{
-                    selectedRowKeys,
-                    onChange: onSelectChange,
-                  }}
-                  rowClassName={(record) =>
-                    rowActive === record.id ? 'active' : ''
-                  }
-                  onRow={(record) => {
-                    return {
-                      onClick: () => {
-                        setRowActive(record.id), setHistoryItem(record);
-                      },
-                    };
-                  }}
-                  rowKey='id'
-                  size='middle'
-                  bordered={false}
-                />
-              </Spin>
+              <Pagination total={payments.total} setPaginate={onChangePage} />
             </div>
           </Col>
-          <Col
-            span={9}
-            className='paymentManagement-col'
-            lg={9}
-            md={24}
-            sm={24}
-            xs={24}
-          >
-            <div className='paymentManagement-content'>
-              <PaymentManagementHeader title='Lịch sử thanh toán' />
+          <Col span={9} className="paymentManagement-col" lg={9} md={24} sm={24} xs={24}>
+            <div className="paymentManagement-content">
+              <PaymentManagementHeader title="Lịch sử thanh toán" />
               <PaymentHistory customer={historyItem} />
             </div>
           </Col>
         </Row>
-        <CreatePayment
-          users={payments.data}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-        />
+        <CreatePayment users={payments.data} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       </div>
       {/* <Table
         dataSource={payments.data}
@@ -240,11 +200,6 @@ const PaymentManagement = () => {
         isSelection
         setSelectedRowKeys={onSelectChange}
       ></Table> */}
-      {/* <Pagination
-        total={payments.total}
-        // onShowSizeChange={onChangePage}
-        // setPaginate={setPaginate}
-      /> */}
     </div>
   );
 };

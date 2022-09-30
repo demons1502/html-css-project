@@ -23,6 +23,7 @@ export const createContent = createAsyncThunk(
 
       return { data: res.data, message: res.statusText };
     } catch (error) {
+      console.log(error)
       return rejectWithValue(error.response.data);
     }
   }

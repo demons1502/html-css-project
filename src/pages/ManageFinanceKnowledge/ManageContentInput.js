@@ -13,9 +13,12 @@ const ManageContentInput = (props) => {
     value,
     placeholder,
     color = false,
-    fileList
+    fileList,
   } = props;
 
+  const handleFile = (e) => {
+    console.log(e);
+  };
 
   return (
     <>
@@ -31,8 +34,8 @@ const ManageContentInput = (props) => {
           className={color && 'color-green'}
         />
       ) : !input && textarea ? (
-        <div className='textarea'>
-          {title && <span className='textarea-title'>{`${title}: `}</span>}
+        <div className="textarea">
+          {title && <span className="textarea-title">{`${title}: `}</span>}
           <Input.TextArea
             name={name}
             placeholder={placeholder}
@@ -41,33 +44,29 @@ const ManageContentInput = (props) => {
             value={value}
             type={type}
             autoSize={{ minRows: 5 }}
-            className='textarea-input'
+            className="textarea-input"
           />
         </div>
       ) : (
-
-        <div className='manageContentInput-upload'>
-
-          <span className=' avatar-title'>{title}</span>
+        <div className="manageContentInput-upload">
+          <span className=" avatar-title">{title}</span>
           <Upload
             name={name}
-            listType='picture-card'
-            className='avatar-uploader'
+            listType="picture-card"
+            className="avatar-uploader"
             showUploadList
             onChange={onChange}
-            /* beforeUpload={() => { return false }} */
             beforeUpload={Upload.LIST_IGNORE}
             fileList={fileList}
-          /* disabled={fileList.length > 0 ? true : false} */
+            accept=".jpeg,.jpg,.png,.webp,.svg"
           >
-            <div className='upload-content'>
+            <div className="upload-content">
               <CameraOutlined />
               <span>Tải ảnh lên</span>
             </div>
           </Upload>
         </div>
-      )
-      }
+      )}
     </>
   );
 };

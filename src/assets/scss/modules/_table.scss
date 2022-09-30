@@ -20,7 +20,7 @@
   .ant-table-tbody {
     tr {
       td {
-        font-size: 1.4rem;
+        font-size: 1.4rem !important;
         border-bottom: 1px solid $grey-table-border;
         padding: 9px 10px !important;
         vertical-align: middle;

@@ -8,6 +8,7 @@ export const ENDPOINT = {
   customers: 'customers',
   customersContracts: 'customers/contracts',
   customerCare: 'customer-care', 
+  customerCall: 'customer-calls',
   events: 'events',
   eventsSend: 'events/send',
   financeKnowledge: {

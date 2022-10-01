@@ -18,15 +18,10 @@
   }
 
   .ant-table-tbody {
-    .ant-table-measure-row {
-      td {
-        padding: 0 !important;
-      }
-    }
     tr {
       td {
-        font-size: 1.4rem;
-        border-bottom: 1px solid $grey-table-boder;
+        font-size: 1.4rem !important;
+        border-bottom: 1px solid $grey-table-border;
         padding: 9px 10px !important;
         vertical-align: middle;
 
@@ -40,13 +35,11 @@
       }
     }
 
-    // .ant-table-row-selected {
-    //   td {
-    //     background: $green-table-bg  !important;
-    //     border-bottom: 1px solid $white-color  !important;
-    //     color: $white-color;
-    //   }
-    // }
+    .ant-table-measure-row {
+      td {
+        padding: 0 !important;
+      }
+    }
   }
   //check box color
   .ant-checkbox-checked .ant-checkbox-inner {
@@ -111,5 +104,4 @@
       top: 45% !important;
     }
   }
-  
 }

@@ -24,6 +24,7 @@
 
 .customer-care {
   margin-top: 16px;
+  overflow-y: hidden;
   h3 {
     padding: 15px 20px 15px 20px;
     @extend %border;
@@ -31,10 +32,12 @@
 
   .ant-row {
     height: calc(100vh - 200px);
+  }
 
+  .scroll-item {
     .list-item {
       overflow-y: scroll;
-      max-height: calc(100vh - 380px);
+      max-height: calc(100vh - 370px);
     }
   }
 
@@ -51,7 +54,7 @@
     }
 
     .ant-pagination {
-      padding: 3rem 0;
+      padding: 2rem 0 0 0;
     }
   }
 
@@ -73,14 +76,13 @@
       }
     }
 
-    &--list {
-      &-footer {
-        display: flex;
-        column-gap: 26px;
-        justify-content: flex-end;
-        padding: 15px 20px 29px 0;
-      }
+    &--footer {
+      display: flex;
+      column-gap: 26px;
+      justify-content: flex-end;
+      padding: 15px 20px 29px 0;
     }
+
   }
 
   &__right {
@@ -115,16 +117,15 @@
 
     &--list {
       background: $gray-1;
-
-      &-footer {
-        display: flex;
-        justify-content: flex-end;
-        padding: 15px 20px 29px 0;
-        background: $gray-1;
-      }
+    }
+    &--footer {
+      display: flex;
+      justify-content: flex-end;
+      padding: 15px 20px 29px 0;
+      background: $gray-1;
     }
     &--info {
-      margin-bottom: 30px;
+      min-height: 122px;
       h3 {
         @extend %align-items-center;
         column-gap: 10px;

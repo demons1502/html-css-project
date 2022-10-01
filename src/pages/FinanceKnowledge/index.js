@@ -13,25 +13,18 @@ import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import FinanceKnowledgeCard from './FinanceKnowledgeCard';
 
 const index = () => {
+  const { t } = useTranslation();
+  const {articlesData, mostViewData} = useSelector((state) => state.financeKnowledge);
+  const loading = useSelector((state) => state.loading.loading);
+  const dispatch = useDispatch();
   const [paginate, setPaginate] = useState({
     limit: DEFAULT_SIZE,
-    offset: 0,
-  });
-
-  const { t } = useTranslation();
-  const articlesData = useSelector(
-    (state) => state.financeKnowledgeReducer.articlesData
-  );
-  const mostViewData = useSelector(
-    (state) => state.financeKnowledgeReducer.mostViewData
-  );
-  const loading = useSelector((state) => state.loading.loading);
-
-  const dispatch = useDispatch();
-
+    offset: 1,
+  }); 
+   
   useEffect(() => {
-    const params = paginate;
-    dispatch(getArticlesData(params));
+    let offset = (paginate.offset - 1) * paginate.limit
+    dispatch(getArticlesData({offset: offset, limit: paginate.limit}));
     dispatch(mostViewArticles());
   }, [paginate]);
 

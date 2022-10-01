@@ -4,6 +4,7 @@
 
 .radius-10 {
   border-radius: 10px;
+  text-align: right;
 }
 
 .m-r-10 {
@@ -27,5 +28,13 @@
 }
 
 .pd-btn {
-  padding: 5px 18px;
+  padding: 3px 18px;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.textaline{
+  text-align: center;
 }

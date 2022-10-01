@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getMeApi, loginApi } from '../services/auth';
+import { getMeApi, loginApi, resetPasswordApi } from '../services/auth';
 
 const initialState = {
   accessToken: '',
@@ -13,6 +13,16 @@ export const login = createAsyncThunk('auth/login', async (data) => {
     const res = await loginApi(data);
     return res.data;
   } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
+
+export const ResetPassword = createAsyncThunk('auth/resetPassword', async (data) => {
+  try {
+    const res = await resetPasswordApi(data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
     return Promise.reject(error.data);
   }
 });

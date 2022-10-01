@@ -1,4 +1,4 @@
-import { TITLE_APPOINTMENT } from '../constans/appointment';
+import { TITLE_APPOINTMENT } from '../constants/appointment';
 
 export const getTitleAppointment = (value) => {
   switch (value) {

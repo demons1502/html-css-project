@@ -8,6 +8,7 @@ export const ENDPOINT = {
   customers: 'customers',
   customersByCompany: 'customers-by-company',
   customerCare: 'customer-care',
+  customersContracts: 'customers/contracts',
   events: 'events',
   eventsSend: 'events/send',
   financeKnowledge: {
@@ -15,4 +16,5 @@ export const ENDPOINT = {
     getMostView: 'most-view',
   },
   userSearch: 'users/search',
+  surveys: 'surveys',
 };

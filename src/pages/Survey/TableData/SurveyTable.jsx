@@ -1,36 +1,289 @@
-import React, { useState, useMemo, Fragment } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Checkbox, Empty, Form, Input } from "antd";
-import { ClosingModal } from "../Modals/ClosingModal";
+import { Checkbox, Empty } from "antd";
 import TableCommon from "../../../components/common/TableNormal";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm, FormProvider } from "react-hook-form";
+import { SurveyForm } from "./SurveyForm";
+import { Checkbox as CheckboxControl } from "../../../components/controls";
+import { ClosingModal } from "../Modals/ClosingModal";
+import { createSurvey } from "../../../slices/surveys";
+import { isEmpty } from "lodash";
+import { Input} from "../../../components/styles";
+
 const CustomerServeyTable = () => {
   const { t } = useTranslation();
-  const rowData = [...Array(10)].map((v, i) => {
-    return {
-      key: i + 1,
-      type: "qũy đầu tư",
-      infulence: 1,
-      infulence2: false,
-      infulence3: true,
-      have: true,
-      nothave: false,
-      money: "12000",
-      order: i + 1,
-    };
-  });
+  const dispatch = useDispatch();
+  const [dataTable, setDataTable] = useState([]);
+  const [dataTables, setDataTables] = useState([]);
+  const [formValue, setFromValue] = useState({});
+  const [formValues, setFromValues] = useState([]);
 
-  const [dataTable, setDataTable] = useState(rowData);
+  //get data from redux
+  const { surveys, customers } = useSelector((state) => state);
+  const { selectedCustomer } = customers;
+  const { finance, influence, priority, others, ...value } = surveys?.survey;
+  const financeValue = finance ? JSON.parse(finance) : {};
+  const influenceValue = influence ? JSON.parse(influence) : {};
+  const priorityValue = priority ? JSON.parse(priority) : {};
+  const othersValue = others ? JSON.parse(others) : {};
+
+  const methods = useForm({
+    mode: "all",
+    defaultValues: {
+      other1: [],
+      other2: [],
+      other3: [],
+      other4: [],
+      isPotential: false,
+      hintName: "",
+    },
+  });
+  const { watch, control, reset } = methods;
+
+  //reset form after submit
+  useEffect(() => {
+    if (!isEmpty(surveys?.data)) {
+      const tableInfos = [...dataTables];
+      const formInfos = [...formValues];
+      const currentTableIndex = tableInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
+      const currentformIndex = formInfos?.findIndex((item) => item?.id === surveys?.data?.customerId);
+      tableInfos[currentTableIndex] = generateTableData(surveys?.data?.customerId);
+      formInfos[currentformIndex] = generateFormData(surveys?.data?.customerId);
+      setDataTables(tableInfos);
+      setFromValues(formInfos);
+    }
+  }, [surveys?.data]);
+
+  //generate form data
+  useEffect(() => {
+    if (isEmpty(surveys?.survey) && selectedCustomer?.customerId) {
+      const formInfos = [...formValues];
+      if (formInfos?.length === 0) {
+        formInfos.push(generateFormData(selectedCustomer?.customerId));
+      } else {
+        const isIdExist = formInfos.some((item) => item?.id === selectedCustomer?.customerId);
+        if (!isIdExist) {
+          formInfos.push(generateFormData(selectedCustomer?.customerId));
+        }
+      }
+      setFromValues(formInfos);
+    }
+  }, [selectedCustomer, surveys?.survey]);
+
+  useEffect(() => {
+    if (isEmpty(surveys?.survey) && selectedCustomer?.customerId) {
+      const dataInfos = [...dataTables];
+      if (dataInfos.length === 0) {
+        dataInfos.push(generateTableData(selectedCustomer?.customerId));
+      } else {
+        const isIdExist = dataInfos.some((item) => item.customerId === selectedCustomer?.customerId);
+        if (!isIdExist) {
+          dataInfos.push(generateTableData(selectedCustomer?.customerId));
+        }
+      }
+      setDataTables(dataInfos);
+    }
+  }, [selectedCustomer, surveys?.survey]);
+
+  useEffect(() => {
+    const tData =
+      selectedCustomer?.customerId && dataTables?.length > 0
+        ? dataTables?.find((item) => item?.customerId === selectedCustomer?.customerId)
+        : {};
+
+    if (!isEmpty(tData)) {
+      setDataTable(tData?.data);
+    }
+  }, [dataTables]);
+
+  useEffect(() => {
+    const fData =
+      selectedCustomer?.customerId && formValues?.length > 0
+        ? formValues?.find((item) => item?.id === selectedCustomer?.customerId)
+        : {};
+    if (!isEmpty(fData)) {
+      setFromValue(fData);
+      reset({
+        other1: fData?.others?.other1,
+        other2: fData?.others?.other1,
+        other3: fData?.others?.other1,
+        other4: fData?.others?.other1,
+        isPotential: fData?.isPotential,
+        hintName: fData?.hintName,
+      });
+    }
+  }, [formValues, selectedCustomer?.customerId]);
+
+  //for checkbox group
+  const watchOther1 = watch("other1", []);
+  const watchOther2 = watch("other2", []);
+  const watchOther3 = watch("other3", []);
+  const watchOther4 = watch("other4", []);
+  const watchPotential = watch("isPotential", false);
+  const watchHintName = watch("hintName", "");
+
+  useEffect(() => {
+    if (isEmpty(surveys?.survey) && formValues?.length > 0) {
+      const formInfos = [...formValues];
+      const currentIndex = formInfos?.findIndex((item) => item?.id === selectedCustomer?.customerId);
+      const selectedFormInfo = formInfos[currentIndex];
+      selectedFormInfo["hintName"] = watchHintName;
+      selectedFormInfo["isPotential"] = watchPotential;
+      selectedFormInfo["others"]["other1"] = watchOther1;
+      selectedFormInfo["others"]["other2"] = watchOther2;
+      selectedFormInfo["others"]["other3"] = watchOther3;
+      selectedFormInfo["others"]["other4"] = watchOther4;
+      formInfos[currentIndex] = selectedFormInfo;
+    }
+  }, [watchOther1, watchOther2, watchOther3, watchOther4, watchPotential, watchHintName]);
+
+  // for survey details
+  useEffect(() => {
+    if (!isEmpty(surveys?.survey)) {
+      const tableData = [
+        {
+          key: 1,
+          type: "Quỹ dự phòng đảm bảo tài chính cho người mà anh/chị yêu thương",
+          infulence: "",
+          infulence1: influenceValue?.family === 1 ? 1 : "",
+          infulence2: influenceValue?.family === 2 ? 2 : "",
+          infulence3: influenceValue?.family === 3 ? 3 : "",
+          finance: "",
+          finance1: financeValue?.family?.ans1 === 1 ? 1 : "",
+          finance2: financeValue?.family?.ans1 === 2 ? 2 : "",
+          money: financeValue?.family?.ans2,
+          prior: priorityValue?.family,
+          label: "family",
+        },
+        {
+          key: 2,
+          type: "Quỹ đảm bảo hoàn thành bậc cử nhân",
+          infulence: "",
+          infulence1: influenceValue?.bachelor === 1 ? 1 : "",
+          infulence2: influenceValue?.bachelor === 2 ? 2 : "",
+          infulence3: influenceValue?.bachelor === 3 ? 3 : "",
+          finance: "",
+          finance1: financeValue?.bachelor?.ans1 === 1 ? 1 : "",
+          finance2: financeValue?.bachelor?.ans1 === 2 ? 2 : "",
+          money: financeValue?.bachelor?.ans2,
+          prior: priorityValue?.bachelor,
+          label: "bachelor",
+        },
+        {
+          key: 3,
+          type: "Quỹ khởi nghiệp chắp cánh cho con vào đời",
+          infulence: "",
+          infulence1: influenceValue?.son === 1 ? 1 : "",
+          infulence2: influenceValue?.son === 2 ? 2 : "",
+          infulence3: influenceValue?.son === 3 ? 3 : "",
+          finance: "",
+          finance1: financeValue?.son?.ans1 === 1 ? 1 : "",
+          finance2: financeValue?.son?.ans1 === 2 ? 2 : "",
+          money: financeValue?.son?.ans2,
+          prior: priorityValue?.son,
+          label: "son",
+        },
+        {
+          key: 4,
+          type: "Quỹ lương hưu từ năm 61-85 tuổi",
+          infulence: "",
+          infulence1: influenceValue?.retire === 1 ? 1 : "",
+          infulence2: influenceValue?.retire === 2 ? 2 : "",
+          infulence3: influenceValue?.retire === 3 ? 3 : "",
+          finance: "",
+          finance1: financeValue?.retire?.ans1 === 1 ? 1 : "",
+          finance2: financeValue?.retire?.ans1 === 2 ? 2 : "",
+          money: financeValue?.retire?.ans2,
+          prior: priorityValue?.retire,
+          label: "retire",
+        },
+        {
+          key: 5,
+          type: "Quỹ đầu tư gấp đôi tài sản",
+          infulence: "",
+          infulence1: influenceValue?.doubleAsset === 1 ? 1 : "",
+          infulence2: influenceValue?.doubleAsset === 2 ? 2 : "",
+          infulence3: influenceValue?.doubleAsset === 3 ? 3 : "",
+          finance: "",
+          finance1: financeValue?.doubleAsset?.ans1 === 1 ? 1 : "",
+          finance2: financeValue?.doubleAsset?.ans2 === 2 ? 2 : "",
+          money: financeValue?.doubleAsset?.ans2,
+          prior: priorityValue?.doubleAsset,
+          label: "doubleAsset",
+        },
+      ];
+      setDataTable(tableData);
+      reset({
+        other1: othersValue?.ans1,
+        other2: othersValue?.ans2,
+        other3: othersValue?.ans3,
+        other4: othersValue?.ans4,
+        potential: value?.isPotential,
+        hintName: value?.hintName,
+      });
+    }
+  }, [surveys?.survey]);
 
   const handleCheckboxChangeFactory = (rowIndex, columnKey) => (event) => {
-    const newCheckboxState = [...dataTable];
-    newCheckboxState[rowIndex][columnKey] = event.target.checked;
-    setDataTable(newCheckboxState);
+    const tableInfos = [...dataTables];
+    const currentIndex = tableInfos.findIndex((item) => item?.customerId === selectedCustomer?.customerId);
+    const selectedTableInfo = tableInfos[currentIndex];
+    const newCheckboxState = [...selectedTableInfo?.data];
+
+    if (["infulence1", "infulence2", "infulence3"].includes(columnKey)) {
+      let infulence = "";
+      let inful1 = "";
+      let inful2 = "";
+      let inful3 = "";
+      let infulValue = event.target.value;
+      if (columnKey === "infulence1") {
+        infulence = infulValue;
+        inful1 = infulValue;
+      } else if (columnKey === "infulence2") {
+        infulence = infulValue;
+        inful2 = infulValue;
+      } else if (columnKey === "infulence3") {
+        infulence = infulValue;
+        inful3 = infulValue;
+      }
+      newCheckboxState[rowIndex]["infulence"] = infulence;
+      newCheckboxState[rowIndex]["infulence1"] = inful1;
+      newCheckboxState[rowIndex]["infulence2"] = inful2;
+      newCheckboxState[rowIndex]["infulence3"] = inful3;
+    }
+
+    if (["finance1", "finance2"].includes(columnKey)) {
+      let finance = "";
+      let finance1 = "";
+      let finance2 = "";
+      let financeValue = event.target.value;
+      if (columnKey === "finance1") {
+        finance = financeValue;
+        finance1 = financeValue;
+      } else if (columnKey === "finance2") {
+        finance = financeValue;
+        finance2 = financeValue;
+      }
+      newCheckboxState[rowIndex]["finance"] = finance;
+      newCheckboxState[rowIndex]["finance1"] = finance1;
+      newCheckboxState[rowIndex]["finance2"] = finance2;
+    }
+
+    selectedTableInfo["data"] = newCheckboxState;
+    tableInfos[currentIndex] = selectedTableInfo;
+    setDataTables(tableInfos);
   };
 
   const handleInput = (rowIndex, columnKey) => (event) => {
-    const newCheckboxState = [...checkboxState];
+    const tableInfos = [...dataTables];
+    const currentIndex = tableInfos.findIndex((item) => item.customerId === selectedCustomer?.customerId);
+    const selectedTableInfo = tableInfos[currentIndex];
+    const newCheckboxState = [...selectedTableInfo?.data];
     newCheckboxState[rowIndex][columnKey] = event.target.value;
-    setDataTable(newCheckboxState);
+    selectedTableInfo["data"] = newCheckboxState;
+    tableInfos[currentIndex] = selectedTableInfo;
+    setDataTables(tableInfos);
   };
 
   const columns = [
@@ -38,103 +291,136 @@ const CustomerServeyTable = () => {
       title: "Nền tảng của sự giàu có",
       dataIndex: "type",
       key: "type",
-      width: "25%",
+      // width: "25%",
       fixed: "left",
     },
     {
-      title: "infulence level",
-      width: "33%",
+      title: "Mức độ ảnh hưởng",
+      // width: "33%",
       children: [
         {
           title: "Rất quan trọng",
-          dataIndex: "infulence1",
-          key: "infulence1",
-          render: (value, record, rowIndex) => (
-            <Checkbox
-              checked={value}
-              onChange={handleCheckboxChangeFactory(rowIndex, "infulence1")}
-            />
-          ),
+
+          children: [
+            {
+              dataIndex: "infulence1",
+              key: "infulence1",
+              className:"textaline",
+              width: "5rem",
+              render: (value, record, rowIndex) => (
+                <Checkbox checked={value} value="1" onChange={handleCheckboxChangeFactory(rowIndex, "infulence1")} />
+              ),
+            },
+          ],
         },
         {
           title: "Quan trọng",
-          dataIndex: "infulence2",
-          key: "infulence2",
-          render: (value, record, rowIndex) => (
-            <Checkbox
-              checked={value}
-              onChange={handleCheckboxChangeFactory(rowIndex, "infulence2")}
-            />
-          ),
+          children: [
+            {
+              dataIndex: "infulence2",
+              key: "infulence2",
+              width: "5rem",
+              className:"textaline",
+              render: (value, record, rowIndex) => (
+                <Checkbox checked={value} value="2" onChange={handleCheckboxChangeFactory(rowIndex, "infulence2")} />
+              ),
+            },
+          ],
         },
         {
           title: "Ít quan trọng",
-          dataIndex: "infulence3",
-          key: "infulence3",
-          render: (value, record, rowIndex) => (
-            <Checkbox
-              className="radius-5"
-              checked={value}
-              onChange={handleCheckboxChangeFactory(rowIndex, "infulence3")}
-            />
-          ),
+          children: [
+            {
+              dataIndex: "infulence3",
+              key: "infulence3",
+              width: "5rem",
+              className:"textaline",
+              render: (value, record, rowIndex) => (
+                <Checkbox
+                  className="radius-5"
+                  checked={value}
+                  value="3"
+                  onChange={handleCheckboxChangeFactory(rowIndex, "infulence3")}
+                />
+              ),
+            },
+          ],
         },
       ],
     },
     {
       title: "Xây dựng vương quốc tài chính",
-      width: "34%",
+      // width: "34%",
       children: [
         {
           title: "Chưa có",
-          dataIndex: "nothave",
-          key: "nothave",
-          render: (value, record, rowIndex) => (
-            <Checkbox
-              className="radius-5"
-              checked={value}
-              onChange={handleCheckboxChangeFactory(rowIndex, "nothave")}
-            />
-          ),
+          children: [
+            {
+              dataIndex: "finance1",
+              key: "finance1",
+              width: "5rem",
+              className:"textaline",
+              render: (value, record, rowIndex) => (
+                <Checkbox
+                  className="radius-5"
+                  checked={value}
+                  value="1"
+                  onChange={handleCheckboxChangeFactory(rowIndex, "finance1")}
+                />
+              ),
+            },
+          ],
         },
         {
           title: "Đã có",
-          dataIndex: "have",
-          key: "have",
-          render: (value, record, rowIndex) => (
-            <Checkbox
-              className="radius-5"
-              checked={value}
-              onChange={handleCheckboxChangeFactory(rowIndex, "have")}
-            />
-          ),
+          children: [
+            {
+              dataIndex: "finance2",
+              key: "finance2",
+              className:"textaline",
+              width: "6rem",
+              render: (value, record, rowIndex) => (
+                <Checkbox
+                  className="radius-5"
+                  checked={value}
+                  value="2"
+                  onChange={handleCheckboxChangeFactory(rowIndex, "finance2")}
+                />
+              ),
+            },
+          ],
         },
         {
           title: "Số tiền (1000đ)",
-          dataIndex: "money",
-          key: "money",
-          render: (value, record, rowIndex) => (
-            <Input
-              style={{ backgroundColor: "#F8F8F8", border: 0 }}
-              className="radius-10"
-              value={value}
-              onChange={handleInput(rowIndex, "money")}
-            />
-          ),
+          children: [
+            {
+              dataIndex: "money",
+              key: "money",
+              textaline:"center",
+              width: "10rem",
+              render: (value, record, rowIndex) => (
+                <Input
+                  size="large"
+                  className="radius-10"
+                  value={value}
+                  onChange={handleInput(rowIndex, "money")}
+                />
+              ),
+            },
+          ],
         },
       ],
     },
     {
       title: "TT ưu tiên",
-      dataIndex: "order",
-      width: "8%",
-      key: "order",
+      dataIndex: "prior",
+      width: "5rem",
+      key: "prior",
       render: (value, record, rowIndex) => (
         <Input
-          style={{ backgroundColor: "#F8F8F8", border: 0 }}
-          className="radius-10 "
+          size="large"
           value={value}
-          onChange={handleInput(rowIndex, "order")}
+          onChange={handleInput(rowIndex, "prior")}
         />
       ),
     },
@@ -142,112 +428,184 @@ const CustomerServeyTable = () => {
 
   const table = useMemo(() => {
     if (!!dataTable && dataTable.length > 0) {
-      return (
-        <TableCommon
-          dataSource={dataTable}
-          columnTable={columns}
-          bordered></TableCommon>
-      );
+      return <TableCommon dataSource={dataTable} columnTable={columns} bordered></TableCommon>;
     } else {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
     }
   }, [dataTable]);
+
+  const onSubmit = () => {
+    const familyData = dataTable.find((data) => data.label === "family");
+    const bachelorData = dataTable.find((data) => data.label === "bachelor");
+    const sonData = dataTable.find((data) => data.label === "son");
+    const retireData = dataTable.find((data) => data.label === "retire");
+    const doubleAssetData = dataTable.find((data) => data.label === "doubleAsset");
+
+    const submitFormData = {
+      apptId: 0,
+      customerId: selectedCustomer?.customerId,
+      influence: {
+        family: +familyData?.infulence,
+        bachelor: +bachelorData?.infulence,
+        son: +sonData?.infulence,
+        retire: +retireData?.infulence,
+        doubleAsset: +doubleAssetData?.infulence,
+      },
+      finance: {
+        family: {
+          ans1: +familyData?.finance,
+          ans2: +familyData?.money,
+        },
+        bachelor: {
+          ans1: +bachelorData?.finance,
+          ans2: +bachelorData?.money,
+        },
+        son: {
+          ans1: +sonData?.finance,
+          ans2: +sonData?.money,
+        },
+        retire: {
+          ans1: +retireData?.finance,
+          ans2: +retireData?.money,
+        },
+        doubleAsset: {
+          ans1: +doubleAssetData?.finance,
+          ans2: +doubleAssetData?.money,
+        },
+      },
+      others: {
+        ans1: formValue?.others?.other1,
+        ans2: formValue?.others?.other2,
+        ans3: formValue?.others?.other3,
+        ans4: formValue?.others?.other4,
+      },
+      prior: {
+        family: +familyData?.prior,
+        bachelor: +bachelorData?.prior,
+        son: +sonData?.prior,
+        retire: +retireData?.prior,
+        doubleAsset: +doubleAssetData?.prior,
+      },
+      hintName: formValue?.hintName,
+      isPotential: formValue?.isPotential,
+    };
+    dispatch(createSurvey(submitFormData));
+  };
+
   return (
-    <Fragment>
-      <Form>
+    <FormProvider {...methods}>
+      <form>
         <div>
-          {/* table  */}
           <h2 className="title">{t("survey.formTitle.title1")}</h2>
           <div className="">{table}</div>
         </div>
-        {/* inheritance-box-1 */}
-        <div>
-          <h2 className="inheritance-title">{t("survey.formTitle.title2")}</h2>
-          <div className="inheritance-box-1">
-            <Form.Item name="ch1" valuePropName="checked">
-              <Checkbox className="checkbox-item">Có</Checkbox>
-            </Form.Item>
-            <Form.Item name="ch2" valuePropName="checked">
-              <Checkbox className="checkbox-item">Trên 1.000.000 USD</Checkbox>
-            </Form.Item>
-            <Form.Item name="ch3" valuePropName="checked">
-              <Checkbox className="checkbox-item">Không</Checkbox>
-            </Form.Item>
-          </div>
-        </div>
-        {/* inheritance-box-2  */}
-        <div>
-          <h2 className="inheritance-title">{t("survey.formTitle.title3")}</h2>
-          <div className="inheritance-box-2">
-            <Form.Item name="ch4" valuePropName="checked">
-              <Checkbox className="checkbox-item">Vàng, đô la</Checkbox>
-            </Form.Item>
-            <Form.Item name="ch5" valuePropName="checked">
-              <Checkbox className="checkbox-item">Ngân hàng</Checkbox>
-            </Form.Item>
-            <Form.Item name="ch6" valuePropName="checked">
-              <Checkbox className="checkbox-item">Bảo hiểm</Checkbox>
-            </Form.Item>
-            <Form.Item name="ch7" valuePropName="checked">
-              <Checkbox className="checkbox-item">Khác</Checkbox>
-            </Form.Item>
-          </div>
-        </div>
+        <SurveyForm />
 
-        {/* inheritance-box-3  */}
-        <div>
-          <h2 className="inheritance-title">{t("survey.formTitle.title4")}</h2>
-          <div className="inheritance-box-2">
-            <Form.Item name="ch8" valuePropName="checked">
-              <Checkbox className="checkbox-item">Tiết kiệm không đều</Checkbox>
-            </Form.Item>
-            <Form.Item name="ch9" valuePropName="checked">
-              <Checkbox className="checkbox-item">
-                Mất kiểm soát chi tiêu
-              </Checkbox>
-            </Form.Item>
-            <Form.Item name="ch10" valuePropName="checked">
-              <Checkbox className="checkbox-item">Thâm hụt</Checkbox>
-            </Form.Item>
-            <Form.Item name="ch11" valuePropName="checked">
-              <Checkbox className="checkbox-item">Đầu tư sai</Checkbox>
-            </Form.Item>
+        {/* {isEmpty(surveys?.survey) && ( */}
+        <div className={`container-right-submit ${!isEmpty(surveys?.survey) && "content-hide"}`}>
+          <div>
+            <CheckboxControl control={control} name="isPotential" label="Không còn tiềm năng" />
+          </div>
+          <div>
+            <ClosingModal onSubmit={onSubmit} />
           </div>
         </div>
-
-        {/* inheritance-box-4  */}
-        <div>
-          <h2 className="inheritance-title">{t("survey.formTitle.title5")}</h2>
-          <div className="inheritance-box-1">
-            <Form.Item name="ch11" valuePropName="checked">
-              <Checkbox className="checkbox-item">
-                Đầu tư dần để có tài sản
-              </Checkbox>
-            </Form.Item>
-            <Form.Item name="ch12" valuePropName="checked">
-              <Checkbox className="checkbox-item">
-                Mua tài sản đảm bảo không lãi thanh toán dần với 20% thu nhập
-              </Checkbox>
-            </Form.Item>
-            <Form.Item name="ch13" valuePropName="checked">
-              <Checkbox className="checkbox-item">Khác</Checkbox>
-            </Form.Item>
-          </div>
-        </div>
-        <div className="container-right-submit">
-          <Form.Item name="remember" valuePropName="checked">
-            <Checkbox>Không còn tiềm năng</Checkbox>
-          </Form.Item>
-          <Form.Item>
-            {/* <Button type="primary" htmlType="submit" className="btn-primary">
-            {t("survey.save")}
-          </Button> */}
-            <ClosingModal />
-          </Form.Item>
-        </div>
-      </Form>
-    </Fragment>
+        {/* )} */}
+      </form>
+    </FormProvider>
   );
 };
 
 export default CustomerServeyTable;
+
+const generateTableData = (id) => {
+  return {
+    customerId: id,
+    data: [
+      {
+        key: 1,
+        type: "Quỹ dự phòng đảm bảo tài chính cho người mà anh/chị yêu thương",
+        infulence: "",
+        infulence1: "",
+        infulence2: "",
+        infulence3: "",
+        finance: "",
+        finance1: "",
+        finance2: "",
+        money: "",
+        prior: "",
+        label: "family",
+      },
+      {
+        key: 2,
+        type: "Quỹ đảm bảo hoàn thành bậc cử nhân",
+        infulence: "",
+        infulence1: "",
+        infulence2: "",
+        infulence3: "",
+        finance: "",
+        finance1: "",
+        finance2: "",
+        money: "",
+        prior: "",
+        label: "bachelor",
+      },
+      {
+        key: 3,
+        type: "Quỹ khởi nghiệp chắp cánh cho con vào đời",
+        infulence: "",
+        infulence1: "",
+        infulence2: "",
+        infulence3: "",
+        finance: "",
+        finance1: "",
+        finance2: "",
+        money: "",
+        prior: "",
+        label: "son",
+      },
+      {
+        key: 4,
+        type: "Quỹ lương hưu từ năm 61-85 tuổi",
+        infulence: "",
+        infulence1: "",
+        infulence2: "",
+        infulence3: "",
+        finance: "",
+        finance1: "",
+        finance2: "",
+        money: "",
+        prior: "",
+        label: "retire",
+      },
+      {
+        key: 5,
+        type: "Quỹ đầu tư gấp đôi tài sản",
+        infulence: "",
+        infulence1: "",
+        infulence2: "",
+        infulence3: "",
+        finance: "",
+        finance1: "",
+        finance2: "",
+        money: "",
+        prior: "",
+        label: "doubleAsset",
+      },
+    ],
+  };
+};
+
+const generateFormData = (id) => {
+  return {
+    id: id,
+    others: {
+      other1: [],
+      other2: [],
+      other3: [],
+      other4: [],
+    },
+    hintName: "",
+    isPotential: false,
+  };
+};

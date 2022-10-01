@@ -1,4 +1,4 @@
-import { CustomerStatus } from '../constans/customerStatus';
+import { CustomerStatus } from '../constants/customerStatus';
 
 export const getCustomerStatus = (value) => {
   switch (value) {

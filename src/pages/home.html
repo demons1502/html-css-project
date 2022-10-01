@@ -1,4 +1,75 @@
 <main>
-  <include src="components/welcome.html"></include>
+  <!-- wellcome -->
+  <include src="components/welcome.html" locals='{
+    "text": "Hi,",
+    "imageAvatar": "assets/images/avt.png"
+  }'>
+  </include>
+  <!-- <include src="components/welcome.html"></include> -->
   <include src="components/slide.html"></include>
+  <!-- Recent post content -->
+  <include src="components/recent-post.html" locals='{
+    "text": "Recent post",
+    "imagecard": "assets/images/update_1.png"
+  }'></include>
+  <!-- Recent post card -->
+  <section class="recent">
+    <div class="recent-post-card">
+      <include src="components/recent-post-card-v2.html" locals='{"image": "assets/images/recentCard_1.png"}'>
+      </include>
+      <include src="components/recent-post-card-v2.html" locals='{"image": "assets/images/recentCard_2.png"}'>
+      </include>
+      <include src="components/recent-post-card-v2.html" locals='{"image": "assets/images/recentCard_1.png"}'>
+      </include>
+      <include src="components/recent-post-card-v2.html" locals='{"image": "assets/images/recentCard_2.png"}'>
+      </include>
+    </div>
+  </section>
+  <section class="section-card mb-5">
+    <!-- Pinned content -->
+    <include src="components/recent-post.html" locals='{
+      "text": "Pinned Review",
+      "imagecard": "assets/images/push-pin 1.png"
+    }'></include>
+    <!-- Pinned Review -->
+      <div class="pinned-review">
+        <include src="components/pinned-review-card.html" locals='{
+          "cardReviewersImage": "assets/images/avt.png",
+          "info": " Mailan ",
+          "rating": "4.5",
+          "comment": "Thank you so much for delivering a quality piece. Will be using it with one of my outfits. Just not sure which one!!!!"}'>
+        </include>
+        <include src="components/pinned-review-card.html" locals='{
+          "cardReviewersImage": "assets/images/avt.png",
+          "info": " Mailan ",
+          "rating": "5.0",
+          "comment": "Thank you so much for delivering a quality piece. Will be using it with one of my outfits. Just not sure which one!!!!"}'>
+        </include>
+        <include src="components/pinned-review-card.html" locals='{
+          "cardReviewersImage": "assets/images/avt.png",
+          "info": " Mailan ",
+          "rating": "5.0",
+          "comment": "Thank you so much for delivering a quality piece. Will be using it with one of my outfits. Just not sure which one!!!!"}'>
+        </include>
+        <include src="components/pinned-review-card.html" locals='{
+          "cardReviewersImage": "assets/images/avt.png",
+          "info": " Mailan ",
+          "rating": "5.0",
+          "comment": "Thank you so much for delivering a quality piece. Will be using it with one of my outfits. Just not sure which one!!!!"}'>
+        </include>
+        <include src="components/pinned-review-card.html" locals='{
+          "cardReviewersImage": "assets/images/avt.png",
+          "info": " Mailan ",
+          "rating": "5.0",
+          "comment": "Thank you so much for delivering a quality piece. Will be using it with one of my outfits. Just not sure which one!!!!"}'>
+        </include>
+        <include src="components/pinned-review-card.html" locals='{
+          "cardReviewersImage": "assets/images/avt.png",
+          "info": " Mailan ",
+          "rating": "4.5",
+          "comment": "Thank you so much for delivering a quality piece. Will be using it with one of my outfits. Just not sure which one!!!!"}'>
+        </include>
+      </div>
+  </section>
+
 </main>

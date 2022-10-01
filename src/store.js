@@ -18,7 +18,7 @@ import surveyReducer from "./slices/surveys";
 import customerReducer from "./slices/customers";
 import consultReducer from "./slices/consult";
 import configUser from "./slices/configUser"
-import potentialCustomersReducer from "./slices/potentialCustomersSlice";
+// import potentialCustomersReducer from "./slices/potentialCustomersSlice";
 
 const persistConfig = {
   key: "root",

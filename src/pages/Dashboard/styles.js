@@ -86,7 +86,6 @@ export const IconDown = styled(AntDCaretDownOutlined)`
 `;
 
 export const Title = styled.h3`
-  padding-right: 25px;
   ${(props) =>
     props.$nonePadding &&
     css`
@@ -349,9 +348,13 @@ export const Table = styled(AntDTable)`
                 return css`
                   border-bottom: none;
                 `;
-              default:
+              case true:
                 return css`
                   border-bottom: 1px solid ${greyTableColor};
+                `;
+              default:
+                return css`
+                  border-bottom: 1px dashed ${greyTableColor};
                 `;
             }
           }}
@@ -367,6 +370,18 @@ export const Table = styled(AntDTable)`
       color: $white-color;
     }
   }
+
+  ${(props) =>
+    props.$height &&
+    css`
+      height: ${props.$height};
+    `};
+
+  ${(props) =>
+    props.$endLine &&
+    css`
+      border-bottom: 1px solid ${greyTableColor};
+    `};
 `;
 
 export const WrapIconCenter = styled(AntDCol)`
@@ -392,6 +407,7 @@ export const ItemAppointment = styled(AntDRow)`
   font-size: 12px;
   box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.07);
   border-radius: 15px;
+  margin: 10px 0px;
 `;
 
 export const WrapHr = styled.hr`
@@ -524,4 +540,10 @@ export const WrapRatio = styled(AntDRow)`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const WrapTabs = styled.div`
+  width: 100%;
+  height: 620px;
+  overflow: auto;
 `;

@@ -13,15 +13,15 @@ export default function CallScheduleItemCall(props) {
   };
 
   return (
-    <Tooltip
-      title={t('call-schedule.call')}
-      placement="topLeft"
-      overlayInnerStyle={{ borderRadius: '15px', padding: '10px 15px' }}
-    >
-      <S.WrapTableAction>
+    <S.WrapTableAction>
+      <Tooltip
+        title={t('call-schedule.call')}
+        placement="topLeft"
+        overlayInnerStyle={{ borderRadius: '15px', padding: '10px 15px' }}
+      >
         <img src={call} alt="call" onClick={() => handleCall(record.phone)} />
-        <Checkbox className="checkbox-item" />
-      </S.WrapTableAction>
-    </Tooltip>
+      </Tooltip>
+      <Checkbox className="checkbox-item" />
+    </S.WrapTableAction>
   );
 }

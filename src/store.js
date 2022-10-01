@@ -12,6 +12,7 @@ import userManagement from "./slices/userManagement";
 import contractManagement from "./slices/contractManagement";
 import paymentManagement from "./slices/paymentManagement";
 import potentialCustomersReducer from "./slices/potentialCustomersSlice";
+import dashboard from "./slices/dashboard";
 
 
 const persistConfig = {
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   contractManagement: contractManagement,
   paymentManagementReducer: paymentManagement,
   potentialCustomersReducer: potentialCustomersReducer,
+  dashboard: dashboard
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -1,64 +1,31 @@
-import React, { useState } from 'react';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import PaginationCommon from '../../components/common/Pagination';
+import { getMissedAppointments } from '../../slices/dashboard';
 import MissedItemDateTime from './commons/MissedAppointment/missed-item-col-date-time';
 import MissedItemName from './commons/MissedAppointment/missed-item-col-name';
+import { limitItem } from './constants';
 import * as S from './styles';
 
-const dataMissAppointment = [
-  {
-    key: 1,
-    name: 'Jenny Wilson',
-    note: 'Tư vấn hợp đồng',
-    time: '08:15 - 08:30',
-    date: '12/06/2022',
-  },
-  {
-    key: 2,
-    name: 'Jenny Wilson',
-    note: 'Tư vấn hợp đồng',
-    time: '08:15 - 08:30',
-    date: '12/06/2022',
-  },
-  {
-    key: 3,
-    name: 'Jenny Wilson',
-    note: 'Tư vấn hợp đồng',
-    time: '08:15 - 08:30',
-    date: '12/06/2022',
-  },
-  {
-    key: 4,
-    name: 'Jenny Wilson',
-    note: 'Tư vấn hợp đồng',
-    time: '08:15 - 08:30',
-    date: '12/06/2022',
-  },
-  {
-    key: 5,
-    name: 'Jenny Wilson',
-    note: 'Tư vấn hợp đồng',
-    time: '08:15 - 08:30',
-    date: '12/06/2022',
-  },
-];
 const handleCSKH = (value) => {
   console.log('Value:', value);
 };
 const columns = [
   {
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'host',
+    key: 'apptId',
     render: (_, record) => <MissedItemName record={record} />,
   },
   {
     dataIndex: 'time',
-    key: 'time',
+    key: 'apptId',
     render: (_, record) => <MissedItemDateTime record={record} />,
   },
   {
     dataIndex: '',
-    key: '',
+    key: 'apptId',
     render: (record) => (
       <S.WrapButtonTable>
         <S.Button $type="ghost" onClick={() => handleCSKH(record)}>
@@ -71,8 +38,33 @@ const columns = [
 
 export default function MissedAppointment() {
   const { t } = useTranslation();
-  const [dataTable, setDataTable] = useState(dataMissAppointment);
+  const result = useSelector((state) => state.dashboard.missedAppointments);
+  const loading = useSelector((state) => state.dashboard.loading);
+  const dispatch = useDispatch();
   const [toggle, setToggle] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(limitItem);
+  const [dataTable, setDataTable] = useState(result.data || []);
+  const [total, setTotal] = useState(result.count || 0);
+
+  useEffect(() => {
+    const payload = {
+      limit,
+      offset,
+      endDate: decodeURIComponent(moment()),
+    };
+    dispatch(getMissedAppointments(payload));
+  }, [dispatch, limit, offset]);
+
+  useEffect(() => {
+    setDataTable(result.data || []);
+    setTotal(result.count || 0);
+  }, [result]);
+
+  const setPaginate = (value) => {
+    setOffset(value.offset);
+    setLimit(value.limit);
+  };
 
   return (
     <S.WrapContainer $toggle={toggle} $maxHeight="442px">
@@ -88,8 +80,12 @@ export default function MissedAppointment() {
           bordered={false}
           scroll={{ scrollToFirstRowOnChange: false }}
           showHeader={false}
+          loading={loading}
+          $height="290px"
+          $endLine
+          $borderBottom={dataTable.length > 0 ? '' : false}
         />
-        <PaginationCommon total={50} showSizeChanger={false} setPaginate={{ limit: 10, offset: 0 }} />
+        <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />
       </S.WrapContent>
     </S.WrapContainer>
   );

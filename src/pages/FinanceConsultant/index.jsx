@@ -39,7 +39,7 @@ export default function FinanceConsultant() {
                   <div className="container-left">
                     <div className="container-search-box">
                       <h1 className="container-search-box-header">Người tham gia</h1>
-                      <SearchInputBox></SearchInputBox>
+                      <SearchInputBox />
                     </div>
 
                     {data?.length > 0 && (

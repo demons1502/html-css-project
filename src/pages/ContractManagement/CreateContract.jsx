@@ -1,11 +1,14 @@
-import { React, useEffect } from 'react';
-import { Button, Form, Input, Row, Col, Select, DatePicker, AutoComplete } from 'antd';
+import { React, useEffect, useState } from 'react';
+import { Form, Row, Col, DatePicker, AutoComplete } from 'antd';
+import { Button, Select, Input } from "../../components/styles"
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { createContract, updateContract, getByIdApi } from '../../slices/contractManagement';
 import { useTranslation } from 'react-i18next';
 import { getCustoms } from '../../slices/contractManagement';
 import useFormErrors from '../../hooks/useFormErrors'
+import { formatDataNumber, getTimeByTZ } from "../../helper"
+import { VALIDATE_MESSAGES, FORMAT_DATE } from '../../ultis/constant';
 
 function CreateContract(props) {
   const { t } = useTranslation();
@@ -14,7 +17,6 @@ function CreateContract(props) {
   const { setVisibleModal, dataEdit } = props
   const customerName = useSelector((state) => state.contractManagement.custom);
   var customerEdit = useSelector((state) => state.contractManagement.dataEdit);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,12 +32,12 @@ function CreateContract(props) {
       customerId: 61,
       beneficiary: values.beneficiary,
       value: +values.value,
-      startDate: moment(values.createAt._d).format(),
+      startDate: moment(values.startDate).format(),
       duration: +values.duration,
       depositTerm: +values.depositTerm,
     };
-    if (Object.keys(dataEdit).length > 0) {
-      dispatch(updateContract({ id: dataEdit.id, data: data }));
+    if (dataEdit) {
+      dispatch(updateContract({ id: dataEdit, data: data }));
     } else {
       dispatch(createContract(data));
     }
@@ -49,28 +51,23 @@ function CreateContract(props) {
   };
 
   useEffect(() => {
-    if (customerEdit.length != 0) {
-      // customerEdit.depositTerm="nam"
-      if (Object.keys(customerEdit).length > 0) {
-        form.setFieldsValue({ ...customerEdit, ...{ date: moment(customerEdit.date) } })
-      } else {
-        form.resetFields()
-      }
+    if(dataEdit){
+      dispatch(getByIdApi(dataEdit))
     }
-  }, [customerEdit])
-
-
-  useEffect(() => {
-    dispatch(getByIdApi(dataEdit))
   }, [dataEdit])
 
-  return <Form
-    layout="vertical"
-    initialValues={customerEdit}
-    form={form}
-    onFinish={onFinish}
-    autoComplete='off'
-  >
+  useEffect(() => {
+    if (Object.keys(customerEdit).length > 0 && dataEdit) {
+      form.setFieldsValue({ ...customerEdit, ...{ date: moment(customerEdit.startDate) } })
+      console.log('createAt:', moment(customerEdit.createAt));
+    } else {
+      form.resetFields()
+    }
+  }, [customerEdit, dataEdit])
+
+  
+
+  return <Form layout="vertical" form={form} onFinish={onFinish} autoComplete='off'>
     <Row gutter={[6, 13]}>
       <Col span={6}>
         <Form.Item
@@ -128,22 +125,25 @@ function CreateContract(props) {
         </Form.Item>
       </Col>
       <Col span={6}>
-        {customerEdit?.startDate ? (
+        {customerEdit.startDate ? (
           <Form.Item
             label='Ngày hiệu lực'
-            name="createAt"
-            initialValue={moment(customerEdit?.startDate)}
+            name="date"
             rules={[{ required: true }]}
           >
-            <DatePicker className="input-item-outline" format={'DD/MM/YYYY'} placeholder='DD/MM/YYYY' />
+            <DatePicker className="input-item-outline"
+              format={moment.localeData().longDateFormat('L')}
+              placeholder={moment.localeData().longDateFormat('L')} />
           </Form.Item>
         ) : (
           <Form.Item
             label='Ngày hiệu lực'
-            name="createAt"
+            // name="createAt"
             rules={[{ required: true }]}
           >
-            <DatePicker className="input-item-outline" placeholder='DD/MM/YYYY' format={'DD/MM/YYYY'} />
+            <DatePicker className="input-item-outline"
+              placeholder={moment.localeData().longDateFormat('L')}
+              format={moment.localeData().longDateFormat('L')} />
           </Form.Item>
         )}
       </Col>
@@ -160,7 +160,7 @@ function CreateContract(props) {
         <Form.Item
           label='Chu kỳ nộp phí'
           name='depositTerm'
-          initialValue={dataEdit.depositTerm}
+          // initialValue={dataEdit.depositTerm}
           rules={[{ required: true }]}
         >
           <Select className='select-item-outline' placeholder='Chọn'>
@@ -175,8 +175,9 @@ function CreateContract(props) {
           <Button key="back" className="btn-danger" onClick={() => { setVisibleModal(false); form.resetFields() }}>
             {t('common.cancel')}
           </Button>
-          <Button key="submit" className="btn-primary" htmlType="submit" type="primary">
-            {Object.keys(dataEdit).length > 0 ? t('common.save') : t('common.create')}
+          <Button key="submit" htmlType="submit" type="primary">
+            {/* {Object.keys(dataEdit).length > 0 ? t('common.save') : t('common.create')} */}
+            Lưu
           </Button>
         </Form.Item>
       </Col>

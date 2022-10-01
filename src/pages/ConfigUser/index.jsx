@@ -9,6 +9,7 @@ import { changePasswords, updateUsers, sendAvatars } from '../../slices/configUs
 import { Button, Upload, Select } from "../../components/styles";
 import ModalChangePass from './ModalChangePass';
 import { useNavigate } from "react-router-dom";
+import {getMe} from "../../slices/auth"
 
 const { Option } = Select;
 
@@ -24,7 +25,7 @@ function ConfigUser() {
   // console.log(userInfo);
   const [form] = Form.useForm();
   useFormErrors(form);
-
+  
   const onFinish = (values) => {
     if (fileList && fileList.length != 0 && fileChange ) {
       const formData = new FormData();
@@ -32,6 +33,7 @@ function ConfigUser() {
       dispatch(sendAvatars(formData)) 
     }
     dispatch(updateUsers(values))
+    dispatch(getMe())
   };
 
   useEffect(() => {

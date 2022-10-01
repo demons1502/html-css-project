@@ -136,6 +136,7 @@ export const Select = styled(AntSelect)`
   &.ant-select .ant-select-selector {
     background: #F8F8F8;
     border-radius: 5px;
+    border: none;
   }
 `;
 

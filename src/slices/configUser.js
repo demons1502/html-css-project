@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
 import {
   updateUser,
   changePasswordApi,
@@ -56,6 +57,7 @@ export const sendAvatars = createAsyncThunk(
     try {
       const res = await sendAvatar(payload);
       return { data: res.data, message: 'Thay đổi user thành công!' };
+      // dispath(getme())
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -83,7 +85,6 @@ const configUser = createSlice({
     },
   },
 });
-
 
 const { reducer } = configUser;
 

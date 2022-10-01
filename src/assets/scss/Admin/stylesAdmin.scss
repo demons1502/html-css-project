@@ -108,6 +108,10 @@
             overflow: hidden;
         }
     }
+    .fOWelM {
+        background: none !important;
+    }
+    
 }
 .ant-modal{
     &.ant-modal-confirm-confirm{
@@ -122,8 +126,5 @@
     .ant-modal-body {
         padding: 0px 24px;
     }
-}
-.fOWelM {
-    background: none !important;
 }
 

@@ -14,10 +14,10 @@ export default function MissedItemName(props) {
       </Col>
       <Col>
         <Row>
-          <p>{record.name}</p>
+          <p>{record?.customerApptRecords[0]?.name}</p>
         </Row>
         <Row>
-          <S.TextTable>{t('missed-appointment.note')}</S.TextTable>
+          <S.TextTable>{record.note}</S.TextTable>
         </Row>
       </Col>
     </Row>

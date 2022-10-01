@@ -23,36 +23,22 @@ const Contract_management = lazy(() => import('../pages/ContractManagement'));
 const FinancialSolution = lazy(() => import('../pages/FinancialSolution'));
 const FinanceKnowledge = lazy(() => import('../pages/FinanceKnowledge'));
 const Retirement = lazy(() => import('../pages/FinancialSolution/Retirement'));
-const StartupFund = lazy(() =>
-  import('../pages/FinancialSolution/StartupFund')
-);
+const StartupFund = lazy(() => import('../pages/FinancialSolution/StartupFund'));
 
-const InheritanceFund = lazy(() =>
-  import('../pages/FinancialSolution/InheritanceFund')
-);
-const ContingencyFund = lazy(() =>
-  import('../pages/FinancialSolution/ContingencyFund')
-);
-const HealthFoundation = lazy(() =>
-  import('../pages/FinancialSolution/HealthFoundation')
-);
-const EducationFoundation = lazy(() =>
-  import('../pages/FinancialSolution/EducationFoundation')
-);
-const IllustrateFiduciary = lazy(() =>
-  import('../pages/FinancialSolution/IllustrateFiduciary')
-);
+const InheritanceFund = lazy(() => import('../pages/FinancialSolution/InheritanceFund'));
+const ContingencyFund = lazy(() => import('../pages/FinancialSolution/ContingencyFund'));
+const HealthFoundation = lazy(() => import('../pages/FinancialSolution/HealthFoundation'));
+const EducationFoundation = lazy(() => import('../pages/FinancialSolution/EducationFoundation'));
+const IllustrateFiduciary = lazy(() => import('../pages/FinancialSolution/IllustrateFiduciary'));
 const PotentialCustomers = lazy(() => import('../pages/PotentialCustomers'));
-
-const AppointmentManagement = lazy(() =>
-  import('../pages/Main/views/AppointmentManagement')
-);
+const Consultant = lazy(() => import('../pages/Consultant'));
+const AppointmentManagement = lazy(() => import('../pages/Main/views/AppointmentManagement'));
 
 // ADMIN VIEWS
 const Admin = lazy(() => import('../pages/Admin/index'));
-const ManageFinanceKnowledge = lazy(() =>
-  import('../pages/ManageFinanceKnowledge')
-);
+
+const ConfigUser = lazy(() => import('../pages/ConfigUser/index'));
+const ManageFinanceKnowledge = lazy(() => import('../pages/ManageFinanceKnowledge'));
 const PaymentManagement = lazy(() => import('../pages/PaymentManagement'));
 
 // NOT FOUND
@@ -64,7 +50,7 @@ export const routes = () => [
     path: '/',
     element: <MainLayout />,
     children: [
-      { path: '/', element: <Navigate to='dashboard' /> },
+      { path: '/', element: <Navigate to="dashboard" /> },
       // no page yet
       {
         path: 'dashboard',
@@ -82,6 +68,10 @@ export const routes = () => [
       {
         path: 'appointment-management',
         element: <GuestGuard element={<AppointmentManagement />} />,
+      },
+      {
+        path: 'advise',
+        element: <GuestGuard element={<Consultant />} />,
       },
       {
         path: 'advise',
@@ -124,10 +114,6 @@ export const routes = () => [
         element: <GuestGuard element={<CustomerCare />} />,
       },
       {
-        path: 'q&a',
-        element: <GuestGuard element={<ManageFinanceKnowledge />} />,
-      },
-      {
         path: 'finance-support',
         element: <GuestGuard element={<FinanceKnowledge />} />,
       },
@@ -155,6 +141,10 @@ export const routes = () => [
         path: 'health-foundation',
         element: <GuestGuard element={<HealthFoundation />} />,
       },
+      // {
+      //   path: 'config-user',
+      //   element: <GuestGuard element={<ConfigUser />} />,
+      // }
     ],
   },
   // AUTHLAYOUT
@@ -162,7 +152,7 @@ export const routes = () => [
     path: '/auth',
     element: <AuthLayout />,
     children: [
-      { path: '/auth', element: <Navigate to='login' /> },
+      { path: '/auth', element: <Navigate to="login" /> },
       { path: 'login', element: <AuthGuard element={<Login />} /> },
     ],
   },
@@ -190,8 +180,14 @@ export const routes = () => [
         path: 'operation-history',
         element: <ManagerGuard element={<CustomerCare />} />,
       },
+
+      {
+        path: 'q&a',
+        element: <ManagerGuard element={<ManageFinanceKnowledge />} />,
+      },
     ],
   },
+
   // PUBLICLAYOUT
   {
     path: '',
@@ -200,7 +196,7 @@ export const routes = () => [
       // no page yet
       {
         path: 'setting',
-        element: <CustomerCare />,
+        element: <ConfigUser />,
       },
     ],
   },

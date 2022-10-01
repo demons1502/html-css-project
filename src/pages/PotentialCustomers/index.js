@@ -24,6 +24,7 @@ import {
   deletePotentialCustomers,
   getPotentialCustomer,
   getPotentialCustomers,
+  importPotentialCustomers,
 } from "../../slices/potentialCustomersSlice";
 import {
   acquaintanceLevel,
@@ -57,6 +58,7 @@ export default function PotentialCustomers() {
   const potentialCustomers = useSelector(
     (state) => state.potentialCustomersReducer.potentialCustomers,
   );
+
   const potentialCustomer = useSelector(
     (state) => state.potentialCustomersReducer.potentialCustomer,
   );
@@ -160,13 +162,9 @@ export default function PotentialCustomers() {
       authorization: "authorization-text",
     },
 
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        let reader = new FileReader();
-        reader.onload = (e) => {
-          console.log(e.target.result);
-        };
-        reader.readAsText(info.file.originFileObj);
+    onChange({ file }) {
+      if (file.status === "done") {
+        dispatch(importPotentialCustomers(file))
       }
     },
   };
@@ -227,8 +225,8 @@ export default function PotentialCustomers() {
             <img src={Call} alt="" />
           </S.WrapIcon>
           <S.WrapButton>
-            <Upload showUploadList={false} {...props}>
-              <S.Button onClick={() => {}}>
+            <Upload showUploadList={false} {...props} accept=".xlsx, .xls">
+              <S.Button onClick={() => { }}>
                 <img src={Import} alt="" />
                 Import
               </S.Button>

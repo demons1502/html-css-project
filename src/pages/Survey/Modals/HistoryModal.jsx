@@ -1,73 +1,44 @@
-import { Modal, Empty } from "antd";
-import React, { useState, useMemo } from "react";
+import { Modal, Spin, message } from "antd";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import TableCommon from "../../../components/common/TableNormal";
-
-const dataSource = [
-  {
-    key: 0,
-    date: "12/12/2021",
-    info: "Tên gợi nhớ 01",
-  },
-  {
-    key: 1,
-    date: "12/07/2022",
-    info: "Tên gợi nhớ 02",
-  },
-  {
-    key: 3,
-    date: "12/08/2022",
-    info: "Tên gợi nhớ 03",
-  },
-  {
-    key: 4,
-    date: "12/08/2022",
-    info: "Tên gợi nhớ 03",
-  },
-  {
-    key: 5,
-    date: "12/08/2022",
-    info: "Tên gợi nhớ 03",
-  },
-  {
-    key: 6,
-    date: "12/08/2022",
-    info: "Tên gợi nhớ 03",
-  },
-  {
-    key: 7,
-    date: "12/08/2022",
-    info: "Tên gợi nhớ 03",
-  },
-];
+import { getSurveyDetails } from "../../../slices/surveys";
+import { getTimeByTZ } from "../../../helper/index";
+import { isEmpty } from "lodash";
 
 export const HistoryModal = ({ isModalOpen, toggleModal }) => {
   const { t } = useTranslation();
-  const [dataTable, setDataTable] = useState(dataSource);
-  const columns = [
-    {
-      title: t("Date"),
-      dataIndex: "date",
-      key: "date",
-    },
-    {
-      title: t("Name"),
-      dataIndex: "info",
-      key: "info",
-    },
-  ];
-  const table = useMemo(() => {
-    if (!!dataTable && dataTable.length > 0) {
-      return (
-        <TableCommon dataSource={dataTable} columnTable={columns}></TableCommon>
-      );
-    } else {
-      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+  const dispatch = useDispatch();
+  const [dataTable, setDataTable] = useState([]);
+  const [selectedSurvey, setSelectedSurvey] = useState("");
+  const { surveys } = useSelector((state) => state);
+
+  useEffect(() => {
+    const historyData = surveys?.customerHistories?.map((history, i) => {
+      return {
+        id: i + 1,
+        apptId: history?.apptId,
+        customerId: history?.customerId,
+        surveyId: history?.surveyId,
+        date: getTimeByTZ(history?.createdAt),
+        info: history?.hintName,
+      };
+    });
+    setDataTable(historyData);
+  }, [surveys.customerHistories]);
+
+  useEffect(() => {
+    if (!isEmpty(surveys?.survey)) {
+      toggleModal();
     }
-  }, [dataTable]);
+  }, [surveys?.survey]);
 
   const handleOk = () => {
-    toggleModal();
+    if (selectedSurvey) {
+      dispatch(getSurveyDetails(selectedSurvey));
+    } else {
+      message.error("Please select record");
+    }
   };
 
   return (
@@ -77,8 +48,36 @@ export const HistoryModal = ({ isModalOpen, toggleModal }) => {
       onOk={handleOk}
       onCancel={toggleModal}
       className="history-modal modal-custom"
-      width={313}>
-      {table}
+      width={360}
+    >
+      <div className="history-table-container">
+        <table className="history-table">
+          <thead>
+            <tr>
+              <th>{t("Date")}</th>
+              <th>{t("Name")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dataTable?.length > 0 ? (
+              dataTable.map((row, i) => (
+                <tr
+                  key={row?.id}
+                  onClick={() => setSelectedSurvey(row?.surveyId)}
+                  className={`${selectedSurvey === row?.surveyId && "active-history"}`}
+                >
+                  <td>{row?.date}</td>
+                  <td>{row?.info}</td>
+                </tr>
+              ))
+            ) : (
+              <div>
+                <Spin />
+              </div>
+            )}
+          </tbody>
+        </table>
+      </div>
     </Modal>
   );
 };

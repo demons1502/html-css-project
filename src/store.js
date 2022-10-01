@@ -6,13 +6,18 @@ import loading from "./slices/loading";
 import authReducer from "./slices/auth";
 import events from "./slices/events";
 import customerCare from "./slices/customerCare";
-import financeKnowledgeReducer from "./slices/financeKnowledge";
+import financeKnowledge from "./slices/financeKnowledge";
 import managementContentReducer from "./slices/managementContent";
 import userManagement from "./slices/userManagement";
 import contractManagement from "./slices/contractManagement";
 import paymentManagement from "./slices/paymentManagement";
 import potentialCustomersReducer from "./slices/potentialCustomersSlice";
+import dashboard from "./slices/dashboard";
 
+import surveyReducer from "./slices/surveys";
+import customerReducer from "./slices/customers";
+import consultReducer from "./slices/consult";
+import configUser from "./slices/configUser"
 
 const persistConfig = {
   key: "root",
@@ -24,13 +29,19 @@ const rootReducer = combineReducers({
   loading: loading,
   customerCare: customerCare,
   auth: authReducer,
-  financeKnowledge: financeKnowledgeReducer,
+  financeKnowledge: financeKnowledge,
   managementContentReducer: managementContentReducer,
   events: events,
   userManagement: userManagement,
   contractManagement: contractManagement,
   paymentManagementReducer: paymentManagement,
   potentialCustomersReducer: potentialCustomersReducer,
+  dashboard: dashboard,
+  surveys: surveyReducer,
+  customers: customerReducer,
+  consultReducer: consultReducer,
+  configUser: configUser,
+  potentialCustomersReducer: potentialCustomersReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

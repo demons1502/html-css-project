@@ -6,6 +6,8 @@
 @import 'payment_management';
 @import 'login';
 @import 'minh-hoa-gia';
+@import 'configUser';
+@import 'consult';
 
 .radius-5 {
   border-radius: 5px;
@@ -14,3 +16,5 @@
 .radius-10 {
   border-radius: 10px;
 }
+@import 'contract_management';
+// @import '../ContractManagement/createContractStyle.scss';

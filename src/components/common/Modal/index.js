@@ -9,7 +9,7 @@ export default function ModalCommon(props) {
     setIsVisible,
     title,
     width = 600,
-    content
+    content,
   } = props;
   const { loading } = useSelector((state) => state.loading);
 

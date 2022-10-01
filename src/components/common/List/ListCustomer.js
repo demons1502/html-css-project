@@ -1,6 +1,6 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
-import {calculateAge, getTimeByTZ, formatDataNumber} from '../../../helper'
+import {calculateAge, getTimeByTZ} from '../../../helper'
 
 export default function ListCustomer(props) {
   const {t} = useTranslation();
@@ -11,7 +11,7 @@ export default function ListCustomer(props) {
       setSelectId(data?.customerId)
     }
   }
-
+ 
   return (
     <div className={`list-customer ${selectId === data.customerId ? 'list-customer-active' : ''}`} onClick={selectItem}>
       <div className="list-customer__content">
@@ -20,14 +20,14 @@ export default function ListCustomer(props) {
           {data?.fullname}
         </p>
         <div className="list-customer__content-gender">
-          <p className="list-customer__content-gender--left"><span className="before">{t('common.gender')}</span>Nam {data?.gender}</p>
+          <p className="list-customer__content-gender--left"><span className="before">{t('common.gender')}</span>{data?.gender === 1 ? "Nam" : "Nữ"}</p>
           <p className="list-customer__content-gender--right"><span className="before">{t('common.old')}</span> {calculateAge(data?.dob)}</p>
         </div>
         <p className={`${selectId === data.customerId ? 'color-green' : ''} list-customer__content-contract`}>
-          <span className="before">{t('common.contract')}</span>{formatDataNumber(data?.income)}
+          <span className="before">{t('common.contract')}</span>{(!!data.contracts[0] && !!data.contracts[0]?.contractNumber) && data.contracts[0]?.contractNumber}
         </p>
         <p className="list-customer__content-date">
-          <span className="before">{t('common.sign date')}</span>{getTimeByTZ(data?.createdAt)}
+          <span className="before">{t('common.sign date')}</span>{(!!data.contracts[0] && !!data.contracts[0]?.startDate) && getTimeByTZ(data.contracts[0]?.startDate)}
         </p>
       </div>
     </div>

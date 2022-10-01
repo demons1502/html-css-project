@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {DatePicker, Select, Col, Form, Input, Row, Button} from "antd";
-import {VALIDATE_MESSAGES, FORMAT_DATE, CUSTOMER_CARE_INFO} from '../../../../ultis/constant';
-import {getData, createData, updateData} from '../../../../slices/customerCare';
 import {useTranslation} from 'react-i18next';
-import useFormErrors from '../../../../hooks/useFormErrors'
+import {DatePicker, Select, Col, Form, Input, Row, Button} from "antd";
+import {VALIDATE_MESSAGES, FORMAT_DATE, CUSTOMER_CARE_INFO} from '../../../ultis/constant';
+import {createData, updateData} from '../../../slices/customerCare';
+import useFormErrors from '../../../hooks/useFormErrors'
 import moment from 'moment';
+import * as S from '../../../components/styles'
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -71,12 +72,12 @@ export default function AddEventContent(props) {
       </Col>
       <Col span={24}>
         <Form.Item className="footer-modal">
-          <Button key="back" className="btn-danger" onClick={() => setVisibleModalAddInfo(false)}>
+          <S.Button key="back" danger onClick={() => setVisibleModalAddInfo(false)}>
             {t('common.cancel create')}
-          </Button>
-          <Button key="submit" className="btn-primary" htmlType="submit" type="primary">
+          </S.Button>
+          <S.Button key="submit" htmlType="submit" type="primary">
             {t('common.create new')}
-          </Button>
+          </S.Button>
         </Form.Item>
       </Col>
     </Row>

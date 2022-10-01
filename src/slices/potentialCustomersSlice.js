@@ -5,6 +5,7 @@ import {
   getCompaniesApi,
   getPotentialCustomerApi,
   getPotentialCustomersApi,
+  importCustomersApi,
   updatePotentialCustomerApi,
 } from "../services/apis/potentialCustomers";
 
@@ -26,7 +27,7 @@ export const createPotentialCustomers = createAsyncThunk(
     try {
       const response = await createPotentialCustomersApi(data);
       dispatch(getPotentialCustomers());
-      dispatch(getCompanies())
+      dispatch(getCompanies());
       return response.data;
     } catch (error) {
       return Promise.reject(error.data);
@@ -40,7 +41,7 @@ export const deletePotentialCustomers = createAsyncThunk(
     try {
       const response = await deletePotentialCustomerApi(data);
       dispatch(getPotentialCustomers());
-      dispatch(getCompanies())
+      dispatch(getCompanies());
       return response.data;
     } catch (error) {
       return Promise.reject(error.data);
@@ -74,10 +75,23 @@ export const getPotentialCustomer = createAsyncThunk(
 
 export const updatePotentialCustomer = createAsyncThunk(
   "potentialCustomers/UPDATE_POTENTIAL_CUSTOMER",
-  async (data, {dispatch}) => {
+  async (data) => {
     try {
       const res = await updatePotentialCustomerApi(data);
-      dispatch(getPotentialCustomers())
+      return res;
+    } catch (error) {
+      return Promise.reject(error.data);
+    }
+  },
+);
+
+export const importPotentialCustomers = createAsyncThunk(
+  "potentialCustomers/IMPORT_POTENTIAL_CUSTOMERS",
+  async (data, { dispatch }) => {
+    try {
+      console.log(data);
+      const res = await importCustomersApi(data);
+      dispatch(getPotentialCustomers());
       return res;
     } catch (error) {
       return Promise.reject(error.data);
@@ -164,6 +178,18 @@ const potentialCustomersSlice = createSlice({
       state.loading = true;
     },
     [updatePotentialCustomer.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    [importPotentialCustomers.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.potentialCustomers = action.payload.data;
+    },
+    [importPotentialCustomers.pending]: (state) => {
+      state.loading = true;
+    },
+    [importPotentialCustomers.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },

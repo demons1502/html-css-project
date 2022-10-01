@@ -17,6 +17,7 @@ function CreateContract(props) {
   const { setVisibleModal, dataEdit } = props
   const customerName = useSelector((state) => state.contractManagement.custom);
   var customerEdit = useSelector((state) => state.contractManagement.dataEdit);
+  const refreshData = useSelector((state) => state.contractManagement.refreshData);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -61,7 +62,11 @@ function CreateContract(props) {
     }
   }, [customerEdit, dataEdit])
 
-
+  useEffect(() => {
+    if (refreshData) {
+      setVisibleModal(false)
+    }
+  }, [refreshData])
 
   return <Form layout="vertical" form={form} onFinish={onFinish} autoComplete='off'>
     <Row gutter={[6, 13]}>

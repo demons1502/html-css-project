@@ -6,7 +6,7 @@ import * as S from '../../styles';
 
 export default function CallScheduleItemCall(props) {
   const { t } = useTranslation();
-  const { record } = props;
+  const { phone1, phone2, phone3 } = props.record;
 
   const handleCall = (value) => {
     console.log('Call,', value);
@@ -19,7 +19,7 @@ export default function CallScheduleItemCall(props) {
         placement="topLeft"
         overlayInnerStyle={{ borderRadius: '15px', padding: '10px 15px' }}
       >
-        <img src={call} alt="call" onClick={() => handleCall(record.phone)} />
+        <img src={call} alt="call" onClick={() => handleCall(phone1 || phone2 || phone3)} />
       </Tooltip>
       <Checkbox className="checkbox-item" />
     </S.WrapTableAction>

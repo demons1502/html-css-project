@@ -1,16 +1,18 @@
 import { Tooltip } from 'antd';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import groupCall from '../../../../assets/images/icons/groupCall.svg';
+import { createCallTransfer } from '../../../../slices/dashboard';
 import * as S from '../../styles';
 
 export default function PotentialItemCall(props) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const { record } = props;
-
   const handleCall = (value) => {
     if (value) {
-      console.log('Call,', value);
+      dispatch(createCallTransfer({ customerIds: [value] }));
     }
   };
 
@@ -21,7 +23,7 @@ export default function PotentialItemCall(props) {
       overlayInnerStyle={{ borderRadius: '15px', padding: '10px 15px' }}
     >
       <S.WrapTableAction>
-        <img src={groupCall} alt="" onClick={() => handleCall(record.phone1 || record?.phone2 || record?.phone3)} />
+        <img src={groupCall} alt="" onClick={() => handleCall(record.customerId)} />
       </S.WrapTableAction>
     </Tooltip>
   );

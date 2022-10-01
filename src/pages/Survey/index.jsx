@@ -22,12 +22,14 @@ const Survey = () => {
   const { customers, surveys } = useSelector((state) => state);
   const { data, selectedCustomer } = customers;
 
+
+
   useEffect(() => {
     dispatch(getCustomerList());
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(setSelectedCustomer(data[0]?.customerId));
+    dispatch(setSelectedCustomer(data?.[0]?.customerId));
   }, [data, dispatch]);
 
   const handleSelectCustomer = (id) => {

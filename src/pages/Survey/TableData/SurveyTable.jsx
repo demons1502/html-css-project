@@ -296,92 +296,118 @@ const CustomerServeyTable = () => {
     },
     {
       title: "Mức độ ảnh hưởng",
-      width: "33%",
+      // width: "33%",
       children: [
         {
           title: "Rất quan trọng",
-          dataIndex: "infulence1",
-          className:"textaline",
-          width: "5rem",
-          key: "infulence1",
-          render: (value, record, rowIndex) => (
-            <Checkbox checked={value} value="1" onChange={handleCheckboxChangeFactory(rowIndex, "infulence1")} />
-          ),
+
+          children: [
+            {
+              dataIndex: "infulence1",
+              key: "infulence1",
+              className:"textaline",
+              width: "5rem",
+              render: (value, record, rowIndex) => (
+                <Checkbox checked={value} value="1" onChange={handleCheckboxChangeFactory(rowIndex, "infulence1")} />
+              ),
+            },
+          ],
         },
         {
           title: "Quan trọng",
-          dataIndex: "infulence2",
-          className:"textaline",
-          width: "5rem",
-          key: "infulence2",
-          render: (value, record, rowIndex) => (
-            <Checkbox checked={value} value="2" onChange={handleCheckboxChangeFactory(rowIndex, "infulence2")} />
-          ),
+          children: [
+            {
+              dataIndex: "infulence2",
+              key: "infulence2",
+              width: "5rem",
+              className:"textaline",
+              render: (value, record, rowIndex) => (
+                <Checkbox checked={value} value="2" onChange={handleCheckboxChangeFactory(rowIndex, "infulence2")} />
+              ),
+            },
+          ],
         },
         {
           title: "Ít quan trọng",
-          dataIndex: "infulence3",
-          className:"textaline",
-          width: "5rem",
-          key: "infulence3",
-          render: (value, record, rowIndex) => (
-            <Checkbox
-              className="radius-5"
-              checked={value}
-              value="3"
-              onChange={handleCheckboxChangeFactory(rowIndex, "infulence3")}
-            />
-          ),
+          children: [
+            {
+              dataIndex: "infulence3",
+              key: "infulence3",
+              width: "5rem",
+              className:"textaline",
+              render: (value, record, rowIndex) => (
+                <Checkbox
+                  className="radius-5"
+                  checked={value}
+                  value="3"
+                  onChange={handleCheckboxChangeFactory(rowIndex, "infulence3")}
+                />
+              ),
+            },
+          ],
         },
       ],
     },
     {
       title: "Xây dựng vương quốc tài chính",
-      width: "34%",
+      // width: "34%",
       children: [
         {
           title: "Chưa có",
-          dataIndex: "finance1",
-          className:"textaline",
-          width: "5rem",
-          key: "finance1",
-          render: (value, record, rowIndex) => (
-            <Checkbox
-              className="radius-5"
-              checked={value}
-              value="1"
-              onChange={handleCheckboxChangeFactory(rowIndex, "finance1")}
-            />
-          ),
+          children: [
+            {
+              dataIndex: "finance1",
+              key: "finance1",
+              width: "5rem",
+              className:"textaline",
+              render: (value, record, rowIndex) => (
+                <Checkbox
+                  className="radius-5"
+                  checked={value}
+                  value="1"
+                  onChange={handleCheckboxChangeFactory(rowIndex, "finance1")}
+                />
+              ),
+            },
+          ],
         },
         {
           title: "Đã có",
-          dataIndex: "finance2",
-          className:"textaline",
-          width: "5rem",
-          key: "finance2",
-          render: (value, record, rowIndex) => (
-            <Checkbox
-              className="radius-5"
-              checked={value}
-              value="2"
-              onChange={handleCheckboxChangeFactory(rowIndex, "finance2")}
-            />
-          ),
+          children: [
+            {
+              dataIndex: "finance2",
+              key: "finance2",
+              className:"textaline",
+              width: "6rem",
+              render: (value, record, rowIndex) => (
+                <Checkbox
+                  className="radius-5"
+                  checked={value}
+                  value="2"
+                  onChange={handleCheckboxChangeFactory(rowIndex, "finance2")}
+                />
+              ),
+            },
+          ],
         },
         {
           title: "Số tiền (1000đ)",
-          dataIndex: "money",
-          textaline:"center",
-          width: "10rem",
-          key: "money",
-          render: (value, record, rowIndex) => (
-            <Input
-              size="large"
-              value={value}
-              onChange={handleInput(rowIndex, "money")}
-            />
-          ),
+          children: [
+            {
+              dataIndex: "money",
+              key: "money",
+              textaline:"center",
+              width: "10rem",
+              render: (value, record, rowIndex) => (
+                <Input
+                  size="large"
+                  className="radius-10"
+                  value={value}
+                  onChange={handleInput(rowIndex, "money")}
+                />
+              ),
+            },
+          ],
         },
       ],
     },
@@ -506,8 +532,8 @@ const generateTableData = (id) => {
         finance: "",
         finance1: "",
         finance2: "",
-        money: "12000",
-        prior: 1,
+        money: "",
+        prior: "",
         label: "family",
       },
       {
@@ -520,8 +546,8 @@ const generateTableData = (id) => {
         finance: "",
         finance1: "",
         finance2: "",
-        money: "12000",
-        prior: 2,
+        money: "",
+        prior: "",
         label: "bachelor",
       },
       {
@@ -534,8 +560,8 @@ const generateTableData = (id) => {
         finance: "",
         finance1: "",
         finance2: "",
-        money: "12000",
-        prior: 3,
+        money: "",
+        prior: "",
         label: "son",
       },
       {
@@ -548,8 +574,8 @@ const generateTableData = (id) => {
         finance: "",
         finance1: "",
         finance2: "",
-        money: "12000",
-        prior: 4,
+        money: "",
+        prior: "",
         label: "retire",
       },
       {
@@ -562,8 +588,8 @@ const generateTableData = (id) => {
         finance: "",
         finance1: "",
         finance2: "",
-        money: "12000",
-        prior: 5,
+        money: "",
+        prior: "",
         label: "doubleAsset",
       },
     ],

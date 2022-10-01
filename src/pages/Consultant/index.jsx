@@ -1,16 +1,99 @@
-import { Spin } from 'antd';
-import { React, useEffect, useState } from 'react';
+import { Spin, Table } from 'antd';
+import { React, useCallback, useMemo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import FilterCommon from '../../components/common/Filter';
 import Pagination from '../../components/common/Pagination';
 import TableCommon from '../../components/common/TableNormal';
 import { Button } from '../../components/styles';
-import { acquaintanceLevel, marriageStatus, typeCustomer } from '../../constants/common';
-import { formatDataNumber } from '../../helper/index';
 import { getConsult } from '../../slices/consult';
 import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import { options } from './options';
+import { formatDataNumber } from '../../helper/index';
+import { marriageStatus, acquaintanceLevel, typeCustomer } from '../../constants/common';
+
+const columns = [
+  {
+    title: 'STT',
+    dataIndex: 'customerId',
+    // render: (_, record, index) => {
+    //   return <span>{index + 1}</span>;
+    // },
+  },
+  {
+    title: 'Họ và tên',
+    dataIndex: 'fullname',
+  },
+  {
+    title: 'Số điện thoại',
+    // dataIndex: 'phone1',
+    render: (record) => {
+      return <span>{record.phone1 || record.phone2}</span>;
+    },
+  },
+  {
+    title: 'Tuổi',
+    dataIndex: 'age',
+  },
+  {
+    title: 'Thân quen',
+    // dataIndex: 'acquaintanceLevel',
+    render: (record) => {
+      const index = acquaintanceLevel.findIndex((item) => item.value === +record.acquaintanceLevel);
+      return <span>{acquaintanceLevel[index].label}</span>;
+    },
+  },
+  {
+    title: 'Thu nhập',
+    // dataIndex: 'income',
+    render: (record) => {
+      return <span>{formatDataNumber(record.income)}</span>;
+    },
+  },
+  {
+    title: 'Hôn nhân',
+    // dataIndex: 'maritalStatus',
+    render: (record) => {
+      const index = marriageStatus.findIndex((item) => item.value === +record.maritalStatus);
+      return <span>{marriageStatus[index].label}</span>;
+    },
+  },
+  {
+    title: 'Nghề nghiệp',
+    dataIndex: 'job',
+  },
+  {
+    title: 'Loại',
+    // dataIndex: 'typeId',
+    render: (record) => {
+      const index = typeCustomer.findIndex((item) => item.value === +record.typeId);
+      return <span>{typeCustomer[index]?.label || 'Cá nhân'}</span>;
+    },
+  },
+  {
+    title: 'Trạng thái',
+    // dataIndex: 'status',
+    render: (record) => {
+      const index = options.findIndex((item) => item.value === record.status);
+      return <span>{options[index].label}</span>;
+    },
+  },
+  {
+    title: 'Lịch hẹn sắp tới',
+    dataIndex: 'appointment_schedule',
+  },
+  {
+    title: '',
+    dataIndex: '',
+    render: (record) =>
+      record.status === 'NOT_CALL_YET' ? (
+        <Button size="small">Nhắc lịch</Button>
+      ) : (
+        <Button size="small" type="primary">
+          Đặt lịch
+        </Button>
+      ),
+  },
+];
 
 export default function FinanceConsultant() {
   const [status, setStatus] = useState(null);
@@ -20,93 +103,16 @@ export default function FinanceConsultant() {
   const loading = useSelector((state) => state.loading.loading);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const columns = [
-    {
-      title: 'STT',
-      dataIndex: 'customerId',
-      // render: (_, record, index) => {
-      //   return <span>{index + 1}</span>;
-      // },
-    },
-    {
-      title: 'Họ và tên',
-      dataIndex: 'fullname',
-    },
-    {
-      title: 'Số điện thoại',
-      // dataIndex: 'phone1',
-      render: (record) => {
-        return <span>{record.phone1 || record.phone2}</span>;
-      },
-    },
-    {
-      title: 'Tuổi',
-      dataIndex: 'age',
-    },
-    {
-      title: 'Thân quen',
-      // dataIndex: 'acquaintanceLevel',
-      render: (record) => {
-        const index = acquaintanceLevel.findIndex((item) => item.value === +record.acquaintanceLevel);
-        return <span>{acquaintanceLevel[index].label}</span>;
-      },
-    },
-    {
-      title: 'Thu nhập',
-      // dataIndex: 'income',
-      render: (record) => {
-        return <span>{formatDataNumber(record.income)}</span>;
-      },
-    },
-    {
-      title: 'Hôn nhân',
-      // dataIndex: 'maritalStatus',
-      render: (record) => {
-        const index = marriageStatus.findIndex((item) => item.value === +record.maritalStatus);
-        return <span>{marriageStatus[index].label}</span>;
-      },
-    },
-    {
-      title: 'Nghề nghiệp',
-      dataIndex: 'job',
-    },
-    {
-      title: 'Loại',
-      // dataIndex: 'typeId',
-      render: (record) => {
-        const index = typeCustomer.findIndex((item) => item.value === +record.typeId);
-        return <span>{typeCustomer[index]?.label || `${record.typeId}`}</span>;
-      },
-    },
-    {
-      title: 'Trạng thái',
-      // dataIndex: 'status',
-      render: (record) => {
-        const index = options.findIndex((item) => item.value === record.status);
-        return <span>{options[index].label}</span>;
-      },
-    },
-    {
-      title: 'Lịch hẹn sắp tới',
-      dataIndex: 'appointment_schedule',
-    },
-    {
-      title: '',
-      dataIndex: '',
-      render: (record) =>
-        record.status === 'NOT_CALL_YET' ? (
-          <Button size="small" onClick={() => navigate('/appointment-management')}>
-            Nhắc lịch
-          </Button>
-        ) : (
-          <Button size="small" type="primary" onClick={() => navigate('/appointment-management')}>
-            Đặt lịch
-          </Button>
-        ),
-    },
-  ];
+  const handleCount = useCallback(() => {
+    let cks = 0;
+    for (let i = 0; i < consults.data.length; i++) {
+      if (consults.data[i].status === 'NOT_CALL_YET') {
+        cks += 1;
+      }
+    }
+    return cks;
+  }, [consults.data]);
 
   useEffect(() => {
     const offset = (paginate.offset - 1) * paginate.limit;

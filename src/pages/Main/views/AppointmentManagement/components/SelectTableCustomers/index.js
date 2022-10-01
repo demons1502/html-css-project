@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { getCustomers } from '../../../../../../services/customers';
+import { getcustomersByCompany } from '../../../../../../services/customers';
 
 // COMPONENTS
 import { Table, Typography } from 'antd';
@@ -15,7 +15,7 @@ import * as S from './styles';
 
 let timeout;
 
-const fetch = (value, typeId, callback) => {
+const fetch = (value, callback, companyId) => {
   if (timeout) {
     clearTimeout(timeout);
     timeout = null;
@@ -23,12 +23,11 @@ const fetch = (value, typeId, callback) => {
 
   const getData = async () => {
     try {
-      await getCustomers({
+      await getcustomersByCompany(companyId, {
         name: value,
-        typeId: typeId,
         isActiveCompany: true,
       }).then((d) => {
-        callback(d.data.data);
+        callback(d.data);
       });
     } catch (error) {
       console.log(error);
@@ -38,11 +37,15 @@ const fetch = (value, typeId, callback) => {
   timeout = setTimeout(getData, 300);
 };
 
-const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
+const SelectTableCustomers = ({
+  customer,
+  handleChangeValue,
+  keyForm,
+  companyId,
+}) => {
   const [data, setData] = useState([]);
   const [valueSeach, setvalueSeach] = useState();
   const [openDropDown, setOpenDropDown] = useState(false);
-  const showName = typeId === 3 ? 'name' : '';
 
   useEffect(() => {
     setvalueSeach(customer);
@@ -50,7 +53,7 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
 
   const handleSearch = (newValue) => {
     if (newValue) {
-      fetch(newValue, typeId, setData);
+      fetch(newValue, setData, companyId);
       setOpenDropDown(true);
     } else {
       setData([]);
@@ -65,8 +68,8 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
   const columns = [
     {
       title: 'Tên khách hàng',
-      dataIndex: showName,
-      key: showName,
+      dataIndex: 'fullname',
+      key: 'fullname',
     },
     {
       title: 'Phân loại',
@@ -126,9 +129,9 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
 
   return (
     <S.Select
-      placeholder='Tên khách hàng'
+      placeholder={'Họ và tên'}
       showSearch
-      value={typeId === 3 ? valueSeach?.name : valueSeach?.fullname}
+      value={valueSeach?.fullName}
       defaultActiveFirstOption={false}
       showArrow={false}
       filterOption={false}
@@ -144,11 +147,11 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
   );
 };
 
-SelectTable.prototype = {
-  typeId: PropTypes.number,
+SelectTableCustomers.prototype = {
   handleChangeValue: PropTypes.func,
   customer: PropTypes.object,
   keyForm: PropTypes.number,
+  companyId: PropTypes.number,
 };
 
-export default SelectTable;
+export default SelectTableCustomers;

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 // COMPONENTS
 import Edit from '../../../../../../assets/images/icons/components/Edit';
 import Delete from '../../../../../../assets/images/icons/components/Delete';
@@ -7,7 +7,7 @@ import Delete from '../../../../../../assets/images/icons/components/Delete';
 import * as S from './styles';
 import { useNavigate } from 'react-router-dom';
 
-export const GroupButton = () => {
+export const GroupButton = ({ handleOpenEdit, handleDelete }) => {
   const navigate = useNavigate();
   return (
     <S.WrapContainer>
@@ -29,11 +29,24 @@ export const GroupButton = () => {
         </S.Button>
       </S.WrapLeft>
       <S.WrapRight>
-        <S.ButtonIcon type='text' icon={<Edit />}></S.ButtonIcon>
-        <S.ButtonIcon type='text' icon={<Delete />}></S.ButtonIcon>
+        <S.ButtonIcon
+          onClick={handleOpenEdit}
+          type='text'
+          icon={<Edit />}
+        ></S.ButtonIcon>
+        <S.ButtonIcon
+          onClick={handleDelete}
+          type='text'
+          icon={<Delete />}
+        ></S.ButtonIcon>
       </S.WrapRight>
     </S.WrapContainer>
   );
+};
+
+GroupButton.prototype = {
+  handleOpenEdit: PropTypes.func,
+  handleDelete: PropTypes.func,
 };
 
 export default GroupButton;

@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { statusAppointment } from '../../../../../../ultis/statusAppointment';
+import { getTitleAppointment } from '../../../../../../ultis/appointment';
 
 //COMPONENT
 import {
@@ -42,7 +43,10 @@ export const DayEvent = ({ event }, eventActive) => {
         {event.typeId === 3 ? (
           <S.BoxTitle>
             <Company width={15} height={13} color={stausColor.color} />
-            <S.Name>DN - {event.customerApptRecords.length}</S.Name>
+            <S.Name>
+              DN -{' '}
+              {event?.customerApptRecords && event?.customerApptRecords.length}
+            </S.Name>
             <Users color={stausColor.color} />
           </S.BoxTitle>
         ) : (
@@ -52,7 +56,9 @@ export const DayEvent = ({ event }, eventActive) => {
           </S.BoxTitle>
         )}
         <S.Text color={stausColor.color}>{event.host}</S.Text>
-        <S.Description check={isEventActive}>{event.title}</S.Description>
+        <S.Description check={isEventActive}>
+          {getTitleAppointment(event.title)}
+        </S.Description>
       </S.Content>
 
       <S.Text

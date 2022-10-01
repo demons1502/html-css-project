@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 // COMPONENTS
@@ -8,8 +8,12 @@ import { Select } from 'antd';
 import * as S from './styles';
 
 export const InputSelect = ({ value, handleChange }) => {
-  const [valueInput, setValueInput] = useState(value);
+  const [valueInput, setValueInput] = useState();
   const { Option } = Select;
+
+  useEffect(() => {
+    setValueInput(value);
+  }, [value]);
 
   const onChangeSelect = (value) => {
     setValueInput(value);

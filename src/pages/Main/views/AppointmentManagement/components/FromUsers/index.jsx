@@ -1,20 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
 // COMPONENTS
 import { Col, Form } from 'antd';
 import { Add, Delete } from '../../../../../../assets/images/icons/components';
-import SelectTable from '../SelectTable';
+import SelectTableCustomers from '../SelectTableCustomers/index';
 
 //STYLES
 import * as S from './styles';
 
-const FormUsers = ({ form, companyId }) => {
-  const [customer, setCustomer] = useState({});
+const FormUsers = ({ form, companyId, customerApptRecords }) => {
+  const [customer, setCustomer] = useState([]);
   const initialValue = [{ fullName: '', phone: '', birthday: '' }];
 
+  useEffect(() => {
+    if (customerApptRecords) {
+      const fields = form.getFieldsValue();
+      let { users } = fields;
+
+      users = customerApptRecords.map((i) => {
+        return {
+          customerId: i.customerId,
+          fullName: i.name,
+          name: i.name,
+          phone: i.phone1,
+          birthday: moment(i.dob),
+          gender: !i.gender ? 3 : parseInt(i.gender),
+        };
+      });
+      setCustomer(users);
+      form.setFieldsValue({ users });
+    }
+  }, [customerApptRecords, form]);
+
   const handleChangeCustomer = (data, key) => {
-    setCustomer(data);
     const fields = form.getFieldsValue();
     const { users } = fields;
     const findUser = users.find((i) => i?.customerId === data.customerId);
@@ -24,11 +44,12 @@ const FormUsers = ({ form, companyId }) => {
         fullName: data.fullname,
         phone: data.phone1,
         birthday: moment(data.dob),
-        gender: parseInt(data.gender),
+        gender: !data.gender ? 3 : parseInt(data.gender),
       };
     } else {
       users[key] = {};
     }
+    setCustomer(users);
     form.setFieldsValue({ users });
   };
 
@@ -46,12 +67,11 @@ const FormUsers = ({ form, companyId }) => {
                     { required: true, message: 'Vui lòng nhập họ và tên' },
                   ]}
                 >
-                  <SelectTable
-                    value={customer}
+                  <SelectTableCustomers
                     handleChangeValue={handleChangeCustomer}
                     keyForm={key}
                     companyId={companyId}
-                    subCustomer={true}
+                    customer={customer[key]}
                   />
                 </Form.Item>
               </Col>
@@ -110,6 +130,14 @@ const FormUsers = ({ form, companyId }) => {
       )}
     </Form.List>
   );
+};
+FormUsers.defaultProps = {
+  customerApptRecords: undefined,
+};
+
+FormUsers.prototypes = {
+  companyId: PropTypes.number,
+  customerApptRecords: PropTypes.array,
 };
 
 export default FormUsers;

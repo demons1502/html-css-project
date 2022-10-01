@@ -12,11 +12,11 @@ import {
 import * as S from './styles';
 import { Form } from 'antd';
 
-export const TimePicker = () => {
+export const TimePicker = ({ start, end }) => {
   const [showStart, setShowStart] = useState(false);
   const [showEnd, setShowEnd] = useState(false);
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
+  const [startTime, setStartTime] = useState(start && start);
+  const [endTime, setEndTime] = useState(end && end);
   const diffTime = new Date(endTime) - new Date(startTime);
   const minutes = moment
     .duration(diffTime, 'milliseconds')

@@ -81,9 +81,9 @@ function ModalChangePass(props) {
             </div>
           </div>
           <div className="footer_form">
-            <Button className='btn-danger' onClick={() => { closeCreateUser(false); setTimeout(() => form.resetFields(), 200) }}>Huỷ</Button>
+            <Button className='btn-danger btn-danger-changePass' onClick={() => { closeCreateUser(false); setTimeout(() => form.resetFields(), 200) }}>Huỷ</Button>
             <Form.Item>
-              <Button type="primary" htmlType="submit" className='btn-primary'>Lưu mật khẩu</Button>
+              <Button type="primary" htmlType="submit" >Lưu mật khẩu</Button>
             </Form.Item>
           </div>
         </Form>

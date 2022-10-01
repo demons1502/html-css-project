@@ -44,7 +44,9 @@
     }
 
     .config_content_body {
-
+        .ant-upload-select-picture-card{
+            border: none;
+        }
         // padding: 13px 27px;
         .config_content_body-avatar {
             padding: 9px 27px;
@@ -52,6 +54,8 @@
             .upload-content {
                 display: flex;
                 flex-direction: column;
+                color: $gray-light-color;
+                font-size: 12px;
             }
 
             p {
@@ -218,5 +222,8 @@
         justify-content: space-around;
         padding-top: 12px;
         padding-bottom: 17px;
+        .btn-danger-changePass{
+            width: 127px;
+        }
     }
 }

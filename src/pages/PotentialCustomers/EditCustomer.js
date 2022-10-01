@@ -207,7 +207,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
               <Col span={6}>
                 <Form.Item
                   label="Số điện thoại 2"
-                  name="phoneNumber2"
+                  name="phone2"
                   initialValue={data.phone2}
                   rules={[
                     {
@@ -222,7 +222,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
               <Col span={6}>
                 <Form.Item
                   label="Số điện thoại 3"
-                  name="phoneNumber3"
+                  name="phone3"
                   initialValue={data.phone3}
                   rules={[
                     {
@@ -388,8 +388,8 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Mã số hợp đồng" name="contract_number">
-                  <Input />
+                <Form.Item label="Mã số hợp đồng" name="contract_number" initialValue={data.contractNumber}>
+                  <Input readOnly/>
                 </Form.Item>
               </Col>
             </Row>

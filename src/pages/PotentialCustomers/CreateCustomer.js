@@ -13,6 +13,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { acquaintanceLevel, marriageStatus } from "../../constants/common";
 import { REGEX_PHONE } from "./constants";
+import moment from "moment";
 
 export default function CreateCustomer({ isModalOpen, handleCancel }) {
   const { Option } = Select;
@@ -23,6 +24,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
   const [maritalStatus, setMaritalStatus] = useState(1);
   const [acquaintanceLevelStatus, setAcquaintanceLevelStatus] = useState();
   const [dob, setDob] = useState();
+  const [currencyString, setCurrencyString] = useState()
 
   const companies = useSelector(
     (state) => state.potentialCustomersReducer.companies,
@@ -58,8 +60,8 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
     [companies],
   );
 
-  const onChangeDate = (date, dateString) => {
-    setDob(dateString);
+  const onChangeDate = (date) => {
+    setDob(moment(date));
   };
 
   const handleChangeSelectCustomer = (value) => {
@@ -77,13 +79,14 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
         ...value,
         typeId: typeId,
         dob,
+        income: currencyString
       }),
     );
     onCancel();
   };
 
   const onChangeCurrency = (value) => {
-    console.log(value);
+    setCurrencyString(`${value}`)
   }
 
   useEffect(() => {
@@ -274,7 +277,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                     formatter={(value) =>
                       `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     }
-                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    parser={(value) => `${value.replace(/\$\s?|(,*)/g, "")}`}
                     onChange={onChangeCurrency}
                   />
                 </Form.Item>
@@ -367,8 +370,8 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Mã số hợp đồng" name="contract_number">
-                  <Input />
+                <Form.Item label="Mã số hợp đồng" name="contractNumber">
+                  <Input readOnly/>
                 </Form.Item>
               </Col>
             </Row>

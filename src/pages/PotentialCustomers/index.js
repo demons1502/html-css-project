@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { columns } from "./constants";
 
 // Components
-import { Col, Form, Row, Upload } from "antd";
+import { Col, Form, message, Row, Upload } from "antd";
 import InputSearch from "../../components/common/InputSearch";
 
 // Styles
@@ -39,6 +39,8 @@ import Modal from "../../components/common/ModalSelect";
 import { convertToCurrency } from "../../ultis/convertToCurrency";
 import EditCustomer from "./EditCustomer";
 import Filter from "../../components/common/Filter";
+import request from "../../services/request";
+import store from "../../store";
 
 const options = [
   { label: "Không còn tiềm năng, dừng tư vấn", value: 1 },
@@ -156,18 +158,20 @@ export default function PotentialCustomers() {
     onChange: onSelectChange,
   };
 
-  const props = {
-    name: "file",
+  const importProps = {
     headers: {
-      authorization: "authorization-text",
+      Authorization:`Bearer ${store?.getState()?.auth.accessToken}`
     },
-
-    onChange({ file }) {
-      if (file.status === "done") {
-        dispatch(importPotentialCustomers(file))
+    onChange(info) {
+      console.log(info);
+      if (info.file.status === 'done') {
+        message.success(`Thêm thành công: ${info.file.response.succeeded.length} users`);
+        message.error(`Thêm thất bại: ${info.file.response.failed.length} users`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
       }
     },
-  };
+  }
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -225,18 +229,17 @@ export default function PotentialCustomers() {
             <img src={Call} alt="" />
           </S.WrapIcon>
           <S.WrapButton>
-            <Upload showUploadList={false} {...props} accept=".xlsx, .xls">
+            <Upload action={'http://118.71.224.167:8608/api/bulk-create-upload'} showUploadList={false}  accept=".xlsx, .xls" {...importProps}>
               <S.Button onClick={() => { }}>
                 <img src={Import} alt="" />
                 Import
               </S.Button>
             </Upload>
-            <Filter options={options} setPayload={setOptionsFilter} />
             <S.Button onClick={showModal}>
               <img src={Import} alt="" />
               Tạo mới
             </S.Button>
-            {/* <FilterCommon /> */}
+            <Filter options={options} setPayload={setOptionsFilter} />
           </S.WrapButton>
         </S.WrapAction>
       </S.WrapHeader>

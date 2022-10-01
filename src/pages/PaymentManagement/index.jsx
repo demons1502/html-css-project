@@ -1,4 +1,4 @@
-import { Col, notification, Row, Table } from 'antd';
+import { Col, Row, Table, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from '../../components/common/Pagination';
@@ -35,7 +35,7 @@ const PaymentManagement = () => {
   const handleDeleteOne = (item) => {
     console.log(item);
     ModalConfirm({
-      content: `Bạn chắc chắn muốn xóa tài khoản ${item.userFullname}`,
+      content: `Bạn chắc chắn muốn xóa thanh toán này không`,
       callApi: () => {
         dispatch(deletePayment({ transactionIds: [item.id] })), setHistoryItem(null);
       },
@@ -44,17 +44,15 @@ const PaymentManagement = () => {
   const handleDelete = () => {
     if (selectedRowKeys.length > 0) {
       ModalConfirm({
-        content: 'Bạn chắc chắn muốn xóa tài khoản đã chọn!',
+        content: 'Bạn chắc chắn muốn xóa thanh toán đã chọn!',
         callApi: () => {
           dispatch(deletePayment({ transactionIds: selectedRowKeys })), setHistoryItem(null);
         },
       });
     } else {
-      notification.warning({
-        message: 'Vui lòng chọn bản ghi bạn cần xóa',
-        duration: 2,
-        placement: 'topLeft',
-        icon: false,
+      message.warning({
+        content: 'Vui lòng chọn bản ghi bạn cần xóa',
+        duration: 3,
       });
     }
   };
@@ -119,6 +117,7 @@ const PaymentManagement = () => {
       key: 'x',
       className: 'deleteCol',
       render: (record) => {
+        console.log(record);
         return (
           <span onClick={() => handleDeleteOne(record)} className="btn-deleteIcon">
             <Delete color={rowActive === record.id ? '#fff' : '#999'} />

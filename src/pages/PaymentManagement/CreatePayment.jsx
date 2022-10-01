@@ -4,7 +4,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DatePicker from '../../components/common/DatePicker';
 import Input from '../../components/common/Input';
-import { InputNumber } from '../../components/common/Input/styles';
+import InputNumber from '../../components/common/InputNumber';
 import { Button } from '../../components/styles';
 import { createPayment } from '../../slices/paymentManagement';
 import { LOADING_STATUS } from '../../ultis/constant';

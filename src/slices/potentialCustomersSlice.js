@@ -1,5 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
+  createCustomerCallsApi,
   createPotentialCustomersApi,
   deletePotentialCustomerApi,
   getCompaniesApi,
@@ -7,22 +8,19 @@ import {
   getPotentialCustomersApi,
   importCustomersApi,
   updatePotentialCustomerApi,
-} from "../services/apis/potentialCustomers";
+} from '../services/apis/potentialCustomers';
 
-export const getPotentialCustomers = createAsyncThunk(
-  "potentialCustomers/GET_POTENTIAL_CUSTOMERS",
-  async (data) => {
-    try {
-      const response = await getPotentialCustomersApi(data);
-      return response.data;
-    } catch (error) {
-      return Promise.reject(error.data);
-    }
-  },
-);
+export const getPotentialCustomers = createAsyncThunk('potentialCustomers/GET_POTENTIAL_CUSTOMERS', async (data) => {
+  try {
+    const response = await getPotentialCustomersApi(data);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
 
 export const createPotentialCustomers = createAsyncThunk(
-  "potentialCustomers/CREATE_POTENTIAL_CUSTOMER",
+  'potentialCustomers/CREATE_POTENTIAL_CUSTOMER',
   async (data, { dispatch }) => {
     try {
       const response = await createPotentialCustomersApi(data);
@@ -32,11 +30,11 @@ export const createPotentialCustomers = createAsyncThunk(
     } catch (error) {
       return Promise.reject(error.data);
     }
-  },
+  }
 );
 
 export const deletePotentialCustomers = createAsyncThunk(
-  "potentialCustomers/CREATE_POTENTIAL_CUSTOMER",
+  'potentialCustomers/CREATE_POTENTIAL_CUSTOMER',
   async (data, { dispatch }) => {
     try {
       const response = await deletePotentialCustomerApi(data);
@@ -46,35 +44,29 @@ export const deletePotentialCustomers = createAsyncThunk(
     } catch (error) {
       return Promise.reject(error.data);
     }
-  },
+  }
 );
 
-export const getCompanies = createAsyncThunk(
-  "potentialCustomers/GET_COMPANIES",
-  async () => {
-    try {
-      const res = await getCompaniesApi();
-      return res;
-    } catch (error) {
-      return Promise.reject(error.data);
-    }
-  },
-);
+export const getCompanies = createAsyncThunk('potentialCustomers/GET_COMPANIES', async () => {
+  try {
+    const res = await getCompaniesApi();
+    return res;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
 
-export const getPotentialCustomer = createAsyncThunk(
-  "potentialCustomers/GET_POTENTIAL_CUSTOMER",
-  async (data) => {
-    try {
-      const res = await getPotentialCustomerApi(data);
-      return res;
-    } catch (error) {
-      return Promise.reject(error.data);
-    }
-  },
-);
+export const getPotentialCustomer = createAsyncThunk('potentialCustomers/GET_POTENTIAL_CUSTOMER', async (data) => {
+  try {
+    const res = await getPotentialCustomerApi(data);
+    return res;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
 
 export const updatePotentialCustomer = createAsyncThunk(
-  "potentialCustomers/UPDATE_POTENTIAL_CUSTOMER",
+  'potentialCustomers/UPDATE_POTENTIAL_CUSTOMER',
   async (data) => {
     try {
       const res = await updatePotentialCustomerApi(data);
@@ -82,22 +74,30 @@ export const updatePotentialCustomer = createAsyncThunk(
     } catch (error) {
       return Promise.reject(error.data);
     }
-  },
+  }
 );
 
 export const importPotentialCustomers = createAsyncThunk(
-  "potentialCustomers/IMPORT_POTENTIAL_CUSTOMERS",
+  'potentialCustomers/IMPORT_POTENTIAL_CUSTOMERS',
   async (data, { dispatch }) => {
     try {
-      console.log(data);
       const res = await importCustomersApi(data);
       dispatch(getPotentialCustomers());
       return res;
     } catch (error) {
       return Promise.reject(error.data);
     }
-  },
+  }
 );
+
+export const createCustomerCalls = createAsyncThunk('potentialCustomers/CREATE_CUSTOMER_CALLS', async (data) => {
+  try {
+    const res = await createCustomerCallsApi({ customerIds: data });
+    return res;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
 
 const initialState = {
   potentialCustomers: [],
@@ -108,7 +108,7 @@ const initialState = {
 };
 
 const potentialCustomersSlice = createSlice({
-  name: "potentialCustomers",
+  name: 'potentialCustomers',
   initialState,
   reducers: {},
   extraReducers: {

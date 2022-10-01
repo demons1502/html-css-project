@@ -1,79 +1,65 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useMemo, useState } from 'react';
 
 // Constants
-import { columns } from "./constants";
+import { columns, URL_IMPORT_CUSTOMERS } from './constants';
 
 // Components
-import { Col, Form, message, Row, Upload } from "antd";
-import InputSearch from "../../components/common/InputSearch";
+import { Col, Form, message, Row, Tooltip, Upload } from 'antd';
+import InputSearch from '../../components/common/InputSearch';
 
 // Styles
-import * as S from "./styles";
+import * as S from './styles';
 
 // Image
-import Delete from "../../assets/images/icons/delete.svg";
-import Call from "../../assets/images/icons/call.svg";
-import Import from "../../assets/images/icons/import.svg";
-import CreateCustomer from "./CreateCustomer";
-import Select from "../../components/common/Select";
-import Table from "../../components/common/Table";
-import TableActions from "../../components/TableActions";
-import { useDispatch, useSelector } from "react-redux";
+import Delete from '../../assets/images/icons/delete.svg';
+import Call from '../../assets/images/icons/call.svg';
+import Import from '../../assets/images/icons/import.svg';
+import CreateCustomer from './CreateCustomer';
+import Select from '../../components/common/Select';
+import Table from '../../components/common/Table';
+import TableActions from '../../components/TableActions';
+import { useDispatch, useSelector } from 'react-redux';
 import {
+  createCustomerCalls,
   deletePotentialCustomers,
   getPotentialCustomer,
   getPotentialCustomers,
-  importPotentialCustomers,
-} from "../../slices/potentialCustomersSlice";
-import {
-  acquaintanceLevel,
-  marriageStatus,
-  typeCustomer,
-} from "../../constants/common";
-import {
-  generateAgeOptions,
-  generateIncomeOptions,
-} from "../../ultis/generateList";
-import Modal from "../../components/common/ModalSelect";
-import { convertToCurrency } from "../../ultis/convertToCurrency";
-import EditCustomer from "./EditCustomer";
-import Filter from "../../components/common/Filter";
-import request from "../../services/request";
-import store from "../../store";
+} from '../../slices/potentialCustomersSlice';
+import { acquaintanceLevel, marriageStatus, typeCustomer } from '../../constants/common';
+import { generateAgeOptions, generateIncomeOptions } from '../../ultis/generateList';
+import Modal from '../../components/common/ModalSelect';
+import { convertToCurrency } from '../../ultis/convertToCurrency';
+import EditCustomer from './EditCustomer';
+import Filter from '../../components/common/Filter';
+import store from '../../store';
+import configs from '../../config';
 
 const options = [
-  { label: "Không còn tiềm năng, dừng tư vấn", value: 1 },
-  { label: "Chưa gọi điện", value: 2 },
-  { label: "Đã gọi điện lần 1, cần gọi lần 2", value: 3 },
-  { label: "Đã có lịch hẹn gặp khảo sát", value: 4 },
-  { label: "Đã khảo sát, chờ lịch tư vấn tài chính", value: 5 },
-  { label: "Đã có lịch tư vấn tài chính", value: 6 },
-  { label: "Đã tư vấn tài chính, chờ lịch hẹn tư vấn  giải pháp", value: 7 },
-  { label: "Đã tư vấn giải pháp, chờ chốt kết quả", value: 8 },
-  { label: "Đã chốt kết quả, chờ thông tin hợp đồng", value: 9 },
-  { label: "Đã có hợp đồng", value: 10 },
-  { label: "Chăm sóc khách hàng cho hợp đồng tiếp theo", value: 11 },
+  { label: 'Không còn tiềm năng, dừng tư vấn', value: 1 },
+  { label: 'Chưa gọi điện', value: 2 },
+  { label: 'Đã gọi điện lần 1, cần gọi lần 2', value: 3 },
+  { label: 'Đã có lịch hẹn gặp khảo sát', value: 4 },
+  { label: 'Đã khảo sát, chờ lịch tư vấn tài chính', value: 5 },
+  { label: 'Đã có lịch tư vấn tài chính', value: 6 },
+  { label: 'Đã tư vấn tài chính, chờ lịch hẹn tư vấn  giải pháp', value: 7 },
+  { label: 'Đã tư vấn giải pháp, chờ chốt kết quả', value: 8 },
+  { label: 'Đã chốt kết quả, chờ thông tin hợp đồng', value: 9 },
+  { label: 'Đã có hợp đồng', value: 10 },
+  { label: 'Chăm sóc khách hàng cho hợp đồng tiếp theo', value: 11 },
 ];
 
 export default function PotentialCustomers() {
-  const potentialCustomers = useSelector(
-    (state) => state.potentialCustomersReducer.potentialCustomers,
-  );
+  const potentialCustomers = useSelector((state) => state.potentialCustomersReducer.potentialCustomers);
 
-  const potentialCustomer = useSelector(
-    (state) => state.potentialCustomersReducer.potentialCustomer,
-  );
-  const loading = useSelector(
-    (state) => state.potentialCustomersReducer.loading,
-  );
+  const potentialCustomer = useSelector((state) => state.potentialCustomersReducer.potentialCustomer);
+  const loading = useSelector((state) => state.potentialCustomersReducer.loading);
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
-  const [search, setSearch] = useState("");
-  const [optionsFilter, setOptionsFilter] = useState("");
+  const [search, setSearch] = useState('');
+  const [optionsFilter, setOptionsFilter] = useState('');
 
   const { Option } = Select;
 
@@ -85,7 +71,7 @@ export default function PotentialCustomers() {
       <Option key={value} value={value}>
         {label}
       </Option>
-    )),
+    ))
   );
 
   const ageOptionsFilter = useMemo(() =>
@@ -93,7 +79,7 @@ export default function PotentialCustomers() {
       <Option key={label} value={value}>
         {label}
       </Option>
-    )),
+    ))
   );
 
   const typeCustomerOptionsFilter = useMemo(() =>
@@ -101,7 +87,7 @@ export default function PotentialCustomers() {
       <Option key={value} value={value}>
         {label}
       </Option>
-    )),
+    ))
   );
 
   const acquaintanceLevelOptionsFilter = useMemo(() =>
@@ -109,7 +95,7 @@ export default function PotentialCustomers() {
       <Option key={value} value={value}>
         {label}
       </Option>
-    )),
+    ))
   );
 
   const marriageStatusOptionsFilter = useMemo(() =>
@@ -117,7 +103,7 @@ export default function PotentialCustomers() {
       <Option key={value} value={value}>
         {label}
       </Option>
-    )),
+    ))
   );
 
   const handleEdit = (value) => {
@@ -125,7 +111,7 @@ export default function PotentialCustomers() {
       getPotentialCustomer({
         customerId: value.customerId,
         typeId: value.typeId,
-      }),
+      })
     );
     setOpenModalEdit(true);
   };
@@ -133,19 +119,10 @@ export default function PotentialCustomers() {
   const dataWithActions = potentialCustomers?.map((item) => ({
     ...item,
     fullname: item.name || item.fullname,
-    actions: (
-      <TableActions
-        handleDelete={() => onDelete([item.customerId])}
-        handleEdit={() => handleEdit(item)}
-      />
-    ),
+    actions: <TableActions handleDelete={() => onDelete([item.customerId])} handleEdit={() => handleEdit(item)} />,
     income: item.income ? convertToCurrency(item.income) : null,
-    acquaintanceLevel: acquaintanceLevel.find(
-      (i) => i.value === Number(item.acquaintanceLevel),
-    )?.label,
-    maritalStatus: marriageStatus.find(
-      (i) => i.value === Number(item.maritalStatus),
-    )?.label,
+    acquaintanceLevel: acquaintanceLevel.find((i) => i.value === Number(item.acquaintanceLevel))?.label,
+    maritalStatus: marriageStatus.find((i) => i.value === Number(item.maritalStatus))?.label,
     typeId: typeCustomer.find((i) => i.value === Number(item.typeId))?.label,
   }));
 
@@ -160,18 +137,18 @@ export default function PotentialCustomers() {
 
   const importProps = {
     headers: {
-      Authorization:`Bearer ${store?.getState()?.auth.accessToken}`
+      Authorization: `Bearer ${store?.getState()?.auth.accessToken}`,
     },
     onChange(info) {
-      console.log(info);
       if (info.file.status === 'done') {
         message.success(`Thêm thành công: ${info.file.response.succeeded.length} users`);
         message.error(`Thêm thất bại: ${info.file.response.failed.length} users`);
+        dispatch(getPotentialCustomers({ name: search }));
       } else if (info.file.status === 'error') {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
-  }
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -202,6 +179,10 @@ export default function PotentialCustomers() {
     setOpenModalDelete(false);
   };
 
+  const handleCreateCustomerCalls = () => {
+    dispatch(createCustomerCalls(selectedRowKeys));
+  };
+
   useEffect(() => {
     dispatch(getPotentialCustomers({ name: search }));
   }, [dispatch, search]);
@@ -211,7 +192,7 @@ export default function PotentialCustomers() {
   }, [optionsFilter]);
 
   return (
-    <div className="content-box" style={{ marginTop: "16px" }}>
+    <div className="content-box" style={{ marginTop: '16px' }}>
       <S.WrapHeader>
         <S.WrapSearch>
           <h3>Danh sách khách hàng</h3>
@@ -219,24 +200,22 @@ export default function PotentialCustomers() {
         </S.WrapSearch>
         <S.WrapAction>
           <S.WrapIcon $isDelete>
-            <img
-              src={Delete}
-              alt=""
-              onClick={() => onDelete(selectedRowKeys)}
-            />
+            <img src={Delete} alt="" onClick={() => onDelete(selectedRowKeys)} />
           </S.WrapIcon>
           <S.WrapIcon $isCall>
-            <img src={Call} alt="" />
+            <Tooltip title="Chuyển sang lịch gọi điện">
+              <img src={Call} alt="Create customer calls icon" onClick={handleCreateCustomerCalls} />
+            </Tooltip>
           </S.WrapIcon>
           <S.WrapButton>
-            <Upload action={'http://118.71.224.167:8608/api/bulk-create-upload'} showUploadList={false}  accept=".xlsx, .xls" {...importProps}>
-              <S.Button onClick={() => { }}>
-                <img src={Import} alt="" />
+            <Upload action={URL_IMPORT_CUSTOMERS} showUploadList={false} accept=".xlsx, .xls" {...importProps}>
+              <S.Button onClick={() => {}}>
+                <img src={Import} alt="Import customer icon" />
                 Import
               </S.Button>
             </Upload>
             <S.Button onClick={showModal}>
-              <img src={Import} alt="" />
+              <img src={Import} alt="Add customer icon" />
               Tạo mới
             </S.Button>
             <Filter options={options} setPayload={setOptionsFilter} />
@@ -297,7 +276,7 @@ export default function PotentialCustomers() {
         rowSelection={rowSelection}
         columns={columns}
         dataSource={dataWithActions}
-        scroll={{ x: "100%" }}
+        scroll={{ x: '100%' }}
         rowKey={(row) => row.customerId}
       />
       <CreateCustomer isModalOpen={isModalOpen} handleCancel={handleCancel} />

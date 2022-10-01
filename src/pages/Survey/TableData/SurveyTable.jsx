@@ -296,7 +296,7 @@ const CustomerServeyTable = () => {
     },
     {
       title: "Mức độ ảnh hưởng",
-      width: "33%",
+      // width: "33%",
       children: [
         {
           title: "Rất quan trọng",
@@ -333,6 +333,7 @@ const CustomerServeyTable = () => {
             {
               dataIndex: "infulence3",
               key: "infulence3",
+              width: "5rem",
               className:"textaline",
               render: (value, record, rowIndex) => (
                 <Checkbox
@@ -349,7 +350,7 @@ const CustomerServeyTable = () => {
     },
     {
       title: "Xây dựng vương quốc tài chính",
-      width: "34%",
+      // width: "34%",
       children: [
         {
           title: "Chưa có",
@@ -377,7 +378,7 @@ const CustomerServeyTable = () => {
               dataIndex: "finance2",
               key: "finance2",
               className:"textaline",
-              width: "5rem",
+              width: "6rem",
               render: (value, record, rowIndex) => (
                 <Checkbox
                   className="radius-5"

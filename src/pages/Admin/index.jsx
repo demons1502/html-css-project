@@ -139,12 +139,6 @@ export default function UserManagement() {
       key: 10,
       align: 'right',
       render: (record) => (
-        // <button
-        //   className='btn_reset-user btn-bgWhite-textGreen-borGreen'
-        //   onClick={() => handelResetUser(record.id)}
-        // >
-        //   Khởi tạo lại
-        // </button>
         <div>
           <S.Button
             size={'small'}
@@ -160,26 +154,6 @@ export default function UserManagement() {
         </div>
       ),
     },
-    // {
-    //   title: '',
-    //   width: '30px',
-    //   align: 'center',
-    //   key: 11,
-    //   // render: (record) => (
-    //   //   <img
-    //   //     className='dustbin_icon'
-    //   //     src='./images/dustbin_icon.svg'
-    //   //     onClick={() => handleDeleteUser(record)}
-    //   //   />
-    //   // ),
-    //   render: (record) => (
-    //     <S.Button
-    //       className='btn-hover-danger'
-    //       icon={<DeleteFilled />}
-    //       onClick={() => handleDeleteUser(record)}
-    //     />
-    //   ),
-    // }
   ];
 
   const handleDeleteUser = (record) => {

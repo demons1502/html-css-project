@@ -119,25 +119,28 @@ export default function ContractManagement() {
 
   useEffect(() => {
     let offset = (paginate.offset - 1) * paginate.limit;
-    dispatch(retrieveData({ limit: paginate.limit, offset: offset }))
-  }, [])
+    if(refreshData){
+      dispatch(retrieveData({ limit: paginate.limit, offset: offset }))
+    }
+  }, [refreshData])
 
   useEffect(() => {
+    console.log('vcc');
     let offset = (paginate.offset - 1) * paginate.limit;
     inputText ?
       dispatch(retrieveData({ userSearch: inputText, limit: paginate.limit, offset: offset }))
       :
       dispatch(retrieveData({ limit: paginate.limit, offset: offset }))
-  }, [inputText, paginate, refreshData])
+  }, [inputText, paginate, ])
 
   const handleEditUser = (record) => {
-    setDataEdit(record.id)
+    setDataEdit({id:record.id})
     setVisibleModal(true)
     setTitleModal('Thay đổi nội dung hợp đồng')
   }
 
-  const handleCreateContract = () => {
-    setDataEdit(null)
+  const handleCreateContract = (record) => {
+    setDataEdit({})
     setVisibleModal(true)
     setTitleModal('Thêm hợp đồng')
   }

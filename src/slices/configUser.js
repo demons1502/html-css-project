@@ -56,7 +56,7 @@ export const sendAvatars = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const res = await sendAvatar(payload);
-      return { data: res.data, message: 'Thay đổi user thành công!' };
+      return { data: res.data, message: 'Thay đổi người dùng thành công!' };
       // dispath(getme())
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -68,7 +68,7 @@ export const updateUsers = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const res = await updateUser(payload);
-      return { data: res.data, message: 'Thay đổi user thành công!' };
+      return { data: res.data, message: 'Thay đổi người dùng thành công!' };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

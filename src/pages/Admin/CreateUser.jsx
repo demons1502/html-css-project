@@ -10,14 +10,13 @@ const { Option } = Select;
 
 function Create_user(props) {
   const { closeCreateUser } = props
-  //validate from api
   const [form] = Form.useForm();
   useFormErrors(form);
   const [dataCity, setDataCity] = useState([])
   const loading = useSelector((state) => state.loading)
+  const { refreshList } = useSelector((state) => state.userManagement)
   const dispatch = useDispatch()
 
-  form.resetFields()
   useEffect(() => {
     axios.get('https://provinces.open-api.vn/api/')
       .then(function (response) {
@@ -25,6 +24,11 @@ function Create_user(props) {
       })
   }, [])
 
+  useEffect(() => {
+    if(refreshList){
+      form.resetFields()
+    }
+  }, [refreshList])
   const onFinish = (values) => {
     dispatch(createUser(values))
   };
@@ -160,10 +164,6 @@ function Create_user(props) {
             >
               <Select
                 placeholder="Nhập"
-                style={{
-
-                }}
-              // onChange={handleChangeSelect}
               >
                 {dataCity != [] && dataCity.map(item => {
                   return (
@@ -184,7 +184,7 @@ function Create_user(props) {
         </Row>
         <div className="line line_bottom"></div>
         <div className="group_btn">
-          <Button className='btn-danger' onClick={() => closeCreateUser(false)}>Huỷ tạo</Button>
+          <Button className='btn-danger' onClick={() => {closeCreateUser(false); form.resetFields()}}>Huỷ tạo</Button>
           <Form.Item>
             <Button type="primary" htmlType="submit" className='btn-primary'>Tạo mới</Button>
           </Form.Item>

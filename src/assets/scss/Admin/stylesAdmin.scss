@@ -96,6 +96,7 @@
 .ant-table-container{
     overflow-x: scroll;
     .ant-table-thead{
+        line-height: 40px;
         th{
             white-space: nowrap;
             overflow: hidden;
@@ -122,5 +123,7 @@
         padding: 0px 24px;
     }
 }
-
+.fOWelM {
+    background: none !important;
+}
 

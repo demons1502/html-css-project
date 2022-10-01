@@ -16,8 +16,7 @@ function Create_user(props) {
   const [dataCity, setDataCity] = useState([])
   const loading = useSelector((state) => state.loading)
   const dispatch = useDispatch()
-
-  form.resetFields()
+  
   useEffect(() => {
     axios.get('https://provinces.open-api.vn/api/')
       .then(function (response) {
@@ -28,7 +27,9 @@ function Create_user(props) {
   const onFinish = (values) => {
     dispatch(createUser(values))
   };
-
+  if(loading.message == "succeeded"){
+    form.resetFields()
+  }
   useEffect(() => {
     if (loading.message == "user_exist") {
       form.setFields([
@@ -42,6 +43,7 @@ function Create_user(props) {
         }
       ])
     }
+    
   }, [loading.message])
 
   const onValuesChange = values => {

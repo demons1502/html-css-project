@@ -1,0 +1,9 @@
+@use "../abstracts/" as *;
+
+.recent {
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+  
+}

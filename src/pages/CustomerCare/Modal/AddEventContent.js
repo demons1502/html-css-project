@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {DatePicker, Select, Col, Form, Input, Row, Button} from "antd";
+import {DatePicker, Select, Col, Form, Input, Row} from "antd";
 import {VALIDATE_MESSAGES, FORMAT_DATE} from '../../../ultis/constant';
 import useFormErrors from "../../../hooks/useFormErrors";
 import {createData, updateData} from '../../../slices/events';
 import {getEvents} from '../../../services/events';
 import moment from 'moment';
 import _ from 'lodash';
-import * as S from '../../../components/styles'
+import * as S from '../../../components/styles';
+import locale from 'antd/es/date-picker/locale/vi_VN';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -77,6 +78,13 @@ export default function AddEventContent(props) {
     }
   }, [])
 
+  const disabledDate = (value) =>{
+    if (!isTemplate) {
+      return value < moment()
+    } 
+    return
+  }
+
   return <Form layout="vertical" form={form} validateMessages={VALIDATE_MESSAGES} onFinish={handleSaveEvent}>
     <Row gutter={[6, 13]}>
       <Col span={6}>
@@ -84,7 +92,7 @@ export default function AddEventContent(props) {
           label={t('common.date')}
           name="date"
           rules={[{required: true}]}>
-          <DatePicker className="input-item-outline" format={FORMAT_DATE} onChange={getTemplate}/>
+          <DatePicker className="input-item-outline" disabledDate={disabledDate} locale={locale} format={FORMAT_DATE} onChange={getTemplate}/>
         </Form.Item>
       </Col>
       <Col span={6}>

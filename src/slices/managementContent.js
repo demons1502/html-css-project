@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { create, getAll, remove, update } from '../services/manageContent';
+import { create, getAll, getOne, remove, update } from '../services/manageContent';
 
-const initialState = { isReload: false, data: [], totalItem: 0 };
+const initialState = { isReload: false, data: [], count: 0, itemDetail: null };
 
 export const retrieveData = createAsyncThunk(
   'manageContent/getAll',
@@ -14,6 +14,15 @@ export const retrieveData = createAsyncThunk(
     }
   }
 );
+
+export const getDetail = createAsyncThunk('manageContent/getDetail', async (payload, { rejectWithValue }) => {
+  try {
+    const res = await getOne(payload.type, payload.id);
+    return res.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
 
 export const createContent = createAsyncThunk(
   'manageContent/create',
@@ -28,22 +37,12 @@ export const createContent = createAsyncThunk(
   }
 );
 
-// export const createAnswer = createAsyncThunk('manageContent/createAnswer', async (payload, { rejectWithValue }) => {
-//   try {
-//     const res = await create(type, payload);
-//     return { data: res.data, message: res.statusText };
-//   } catch (error) {
-//     console.log(error);
-//     return rejectWithValue(error.response.data);
-//   }
-// });
-
 export const updateContent = createAsyncThunk(
   'manageContent/updateContent',
   async ({ type, id, payload }, { rejectWithValue }) => {
     try {
       const res = await update(type, id, payload);
-      return { data: { ...res.data }, message: res.statusText };
+      return { data: { ...res.data }, message: 'Cập nhập bài viết thành công' };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -64,12 +63,16 @@ const manageContentSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [createContent.fulfilled]: (state, action) => {
+    [createContent.fulfilled]: (state) => {
       state.isReload = true;
+    },
+    [getDetail.fulfilled]: (state, action) => {
+      state.itemDetail = action.payload;
+      state.isReload = false;
     },
     [retrieveData.fulfilled]: (state, action) => {
       state.data = action.payload.articles || action.payload.data;
-      state.totalItem = action.payload.articlesCount;
+      state.count = action.payload.articlesCount;
       state.isReload = false;
     },
     [updateContent.fulfilled]: (state) => {

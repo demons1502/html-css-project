@@ -1,4 +1,4 @@
-import { Button, Col, Layout, List, Row, Segmented, Spin, Typography, notification } from 'antd';
+import { Button, Col, Layout, List, Row, Segmented, Spin, Typography, notification, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import IconPlus from '../../assets/images/icons/plus.svg';
 import Pagination from '../../components/common/Pagination';
 import ModalConfirm from '../../components/ModalConfirm';
 import Title from '../../components/Title';
-import { createContent, deleteContent, retrieveData, updateContent } from '../../slices/managementContent';
+import { createContent, deleteContent, retrieveData, updateContent, uploadImage } from '../../slices/managementContent';
 import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
@@ -24,18 +24,20 @@ const ManageFinanceKnowledge = () => {
   const [itemContent, setItemContent] = useState(null);
   const [prevItem, setPrevItem] = useState(null);
   const [option, setOption] = useState('articles');
-  const [paginate, setPaginate] = useState({
-    limit: DEFAULT_SIZE,
-    offset: 0,
-  });
+  const [paginate, setPaginate] = useState({ limit: DEFAULT_SIZE, offset: 0 });
   const [fileList, setFileList] = useState(null);
   const [editDisabled, setEditDisabled] = useState(true);
-  const [file, setFile] = useState(null);
-  console.log(file?.publicUrl);
+  const [answers, setAnswers] = useState(null);
+
+  // console.log(file?.publicUrl);
 
   const handleChange = (e) => {
     let values;
     const name = e.target.name;
+    // if (option === MANAGEMENT_CONTENT[0].value) {
+    //   values = { ...itemContent, [name]: e.target.value };
+    //   setItemContent(values);
+    // }
     values = { ...itemContent, [name]: e.target.value };
     setItemContent(values);
   };
@@ -54,96 +56,57 @@ const ManageFinanceKnowledge = () => {
     setItemContent({ ...itemContent, image: newFile[0]?.originFileObj });
   };
 
-  const handleSave = async (item) => {
-    if (!item) {
-      ModalConfirm({
-        content: `Vui lòng nhập nội dung bài viết`,
-        callApi: () => {
-          return;
-        },
-      });
+  const handleSave = (data) => {
+    if (option !== MANAGEMENT_CONTENT[0].value) {
+      if (!data.id) {
+        dispatch(createContent({ type: option, payload: data }));
+        setItemContent(null);
+        setFileList(null);
+        setEditDisabled(true);
+      } else {
+        dispatch(updateContent({ type: option, id: data.id, payload: data }));
+        setItemContent(null);
+        setFileList(null);
+        setEditDisabled(true);
+      }
     } else {
+      if (!data.id) {
+        dispatch(createContent({ type: option, payload: data }));
+        setItemContent(null);
+        setFileList(null);
+        setEditDisabled(true);
+      } else {
+        dispatch(updateContent({ type: option, id: data.id, payload: data }));
+        setItemContent(null);
+        setFileList(null);
+        setEditDisabled(true);
+      }
+    }
+  };
+
+  const handleClick = async (item) => {
+    if (!item) {
+      message.warning({
+        content: `Vui lòng nhập nội dung bài viết`,
+        duration: 3,
+      });
+      return;
     }
     try {
-      const formData = new FormData();
-      formData.append('file', item.image);
-      const res = await uploadFile(formData);
-      setFile(res.data);
-
-      // const handleSaveData = (item) => {
-      //   const data = { ...item, image: file.publicUrl };
-      //   if (option !== MANAGEMENT_CONTENT[0].value) {
-      //     if (!item.id) {
-      //       dispatch(createContent({ type: option, payload: item }));
-      //       setItemContent(null);
-      //       setFileList([]);
-      //       setEditDisabled(true);
-      //     } else {
-      //       dispatch(updateContent({ type: option, id: item.id, payload: item }));
-      //       setItemContent(null);
-      //       setFileList([]);
-      //       setEditDisabled(true);
-      //     }
-      //   } else {
-      //     if (!item.id) {
-      //       dispatch(createContent({ type: option, payload: item }));
-      //       setItemContent(null);
-      //       setFileList([]);
-      //       setEditDisabled(true);
-      //     } else {
-      //       dispatch(updateContent({ type: option, id: item.id, payload: item }));
-      //       setItemContent(null);
-      //       setFileList([]);
-      //       setEditDisabled(true);
-      //     }
-      //   }
-      //   console.log(data);
-      // };
-      file && handleSaveData(item);
-    } catch (err) {
-      console.log(err);
+      if (item.image) {
+        const file = new FormData();
+        file.append('image', item.image);
+        const res = await uploadFile(file);
+        res.data && handleSave({ ...item, image: res.data.publicUrl });
+      } else {
+        handleSave(item);
+      }
+    } catch (error) {
+      message.error({
+        content: error.response.data,
+        duration: 3,
+      });
     }
-    // console.log(item);
-    // if (!item) {
-    //   ModalConfirm({
-    //     content: `Vui lòng nhập nội dung bài viết`,
-    //     callApi: () => {
-    //       return;
-    //     },
-    //   });
-    // } else {
-    //   if (option !== MANAGEMENT_CONTENT[0].value) {
-    //     if (!item.id) {
-    //       dispatch(createContent({ type: option, payload: item }));
-    //       setItemContent(null);
-    //       setFileList([]);
-    //       setEditDisabled(true);
-    //     } else {
-    //       dispatch(updateContent({ type: option, id: item.id, payload: item }));
-    //       setItemContent(null);
-    //       setFileList([]);
-    //       setEditDisabled(true);
-    //     }
-    //   } else {
-    //     const formData = new FormData();
-    //     formData.append('image', item.image);
-    //     formData.append('title', item.title);
-    //     formData.append('subTitle', item.subTitle);
-    //     formData.append('url', item.url);
-    //     formData.append('body', item.body);
-    //     if (!item.id) {
-    //       dispatch(createContent({ type: option, payload: formData }));
-    //       setItemContent(null);
-    //       setFileList([]);
-    //       setEditDisabled(true);
-    //     } else {
-    //       dispatch(updateContent({ type: option, id: item.id, payload: formData }));
-    //       setItemContent(null);
-    //       setFileList([]);
-    //       setEditDisabled(true);
-    //     }
-    //   }
-    // }
   };
 
   const handleCancel = () => {
@@ -160,7 +123,7 @@ const ManageFinanceKnowledge = () => {
       ModalConfirm({
         content: `Xác nhận xóa nội dung`,
         callApi: () => {
-          dispatch(deleteContent({ type: option, id: item.id })), setItemContent(null);
+          dispatch(deleteContent({ type: option, id: item.id })), setItemContent(null), setFileList(null);
         },
       });
     } else {
@@ -225,12 +188,7 @@ const ManageFinanceKnowledge = () => {
                     />
                   }
                   footer={
-                    <Button
-                      // type="primary"
-                      className="btn-add-new "
-                      icon={<img src={IconPlus} alt="" />}
-                      onClick={handleAddNew}
-                    >
+                    <Button className="btn-add-new " icon={<img src={IconPlus} alt="" />} onClick={handleAddNew}>
                       Thêm mới
                     </Button>
                   }
@@ -250,7 +208,7 @@ const ManageFinanceKnowledge = () => {
                   )}
                 ></List>
               </Spin>
-              <Pagination total={contents.totalItem} setPaginate={setPaginate} showSizeChanger={false}></Pagination>
+              <Pagination total={contents.count} setPaginate={setPaginate} showSizeChanger={false}></Pagination>
             </Layout.Content>
           </Col>
 
@@ -262,7 +220,7 @@ const ManageFinanceKnowledge = () => {
                   onChange={handleChange}
                   onUpload={handleFileList}
                   fileList={fileList}
-                  onSave={handleSave}
+                  onSave={handleClick}
                   onDelete={handleDelete}
                   onCancel={handleCancel}
                   isEdit={editDisabled}

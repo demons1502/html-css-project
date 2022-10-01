@@ -6,6 +6,8 @@ export const create = (type, payload) =>
 
 export const getAll = (type, params) => sendGet(`${type}`, params);
 
+export const getOne = (type, id) => sendGet(`${type}/${id}`);
+
 export const update = (type, id, payload) => {
   if (type === MANAGEMENT_CONTENT[0].value) {
     return sendPut(`${type}/${id}`, payload);

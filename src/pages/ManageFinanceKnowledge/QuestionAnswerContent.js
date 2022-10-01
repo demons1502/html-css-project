@@ -1,5 +1,5 @@
 import { LeftOutlined, RightOutlined, DeleteOutlined } from '@ant-design/icons';
-import { List, Pagination } from 'antd';
+import { Carousel, List, Pagination } from 'antd';
 import React from 'react';
 import Edit from '../../assets/images/icons/components/Edit';
 import Delete from '../../assets/images/icons/components/Delete';
@@ -102,13 +102,25 @@ const QuestionAnswerContent = (props) => {
               </div>
               <div className="questionAnswerContent-answer_content">
                 <ManageContentInput
-                  name="desc"
+                  name="answer"
                   textarea
                   onChange={onChange}
                   value={content?.subTitle || content?.desc}
                   input={false}
                   isDisabled={isEdit}
                 />
+                <Carousel autoplay>
+                  {content?.answers.map((item) => {
+                    <ManageContentInput
+                      name="answer"
+                      textarea
+                      onChange={onChange}
+                      value={item?.answer}
+                      input={false}
+                      isDisabled={isEdit}
+                    />;
+                  })}
+                </Carousel>
               </div>
             </div>
           </div>

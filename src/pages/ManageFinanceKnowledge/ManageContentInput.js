@@ -17,10 +17,6 @@ const ManageContentInput = (props) => {
     isDisabled,
   } = props;
 
-  const handleFile = (e) => {
-    console.log(e);
-  };
-
   return (
     <>
       {input && !textarea ? (

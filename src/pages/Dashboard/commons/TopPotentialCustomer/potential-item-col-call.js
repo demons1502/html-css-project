@@ -9,7 +9,9 @@ export default function PotentialItemCall(props) {
   const { record } = props;
 
   const handleCall = (value) => {
-    console.log('Call,', value);
+    if (value) {
+      console.log('Call,', value);
+    }
   };
 
   return (
@@ -19,7 +21,7 @@ export default function PotentialItemCall(props) {
       overlayInnerStyle={{ borderRadius: '15px', padding: '10px 15px' }}
     >
       <S.WrapTableAction>
-        <img src={groupCall} alt="" onClick={() => handleCall(record.phone)} />
+        <img src={groupCall} alt="" onClick={() => handleCall(record.phone1 || record?.phone2 || record?.phone3)} />
       </S.WrapTableAction>
     </Tooltip>
   );

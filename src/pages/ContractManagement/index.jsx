@@ -1,6 +1,6 @@
 import { React, useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Button } from 'antd'
+import {Button} from "../../components/styles"
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconEdit from '../../assets/images/icons/edit-green.svg';
 import InputSearch from '../../components/common/InputSearch'
@@ -61,16 +61,15 @@ export default function ContractManagement() {
       dataIndex: 'value',
       render: (record) => {
         return (
-          <span>{convertUnderscore(record.startDate)}</span>
+          <span>{formatDataNumber(record)}</span>
         );
       }
     },
     {
       title: 'Ngày hiệu lực',
-      // dataIndex: 'startDate',
       render: (record) => {
         return (
-          <span>{formatDataNumber(record.value)}</span>
+          <span>{convertUnderscore(record.startDate)}</span>
         );
       }
     },
@@ -110,7 +109,7 @@ export default function ContractManagement() {
       title: '',
       dataIndex: '',
       width: '118px',
-      render: () => <button className='btn_modal_example btn-bgWhite-textGreen-borGreen'>Bảng minh hoạ</button>
+      render: () => <Button size='small' className='btn_modal_example btn-bgWhite-textGreen-borGreen'>Bảng minh hoạ</Button>
     },
     {
       title: '',
@@ -120,24 +119,27 @@ export default function ContractManagement() {
 
   useEffect(() => {
     let offset = (paginate.offset - 1) * paginate.limit;
-    dispatch(retrieveData({ limit: paginate.limit, offset: offset }))
-  }, [])
+    if(refreshData){
+      dispatch(retrieveData({ limit: paginate.limit, offset: offset }))
+    }
+  }, [refreshData])
 
   useEffect(() => {
+    console.log('vcc');
     let offset = (paginate.offset - 1) * paginate.limit;
     inputText ?
       dispatch(retrieveData({ userSearch: inputText, limit: paginate.limit, offset: offset }))
       :
       dispatch(retrieveData({ limit: paginate.limit, offset: offset }))
-  }, [inputText, paginate, refreshData])
+  }, [inputText, paginate, ])
 
   const handleEditUser = (record) => {
-    setDataEdit({ ...record })
+    setDataEdit({id:record.id})
     setVisibleModal(true)
     setTitleModal('Thay đổi nội dung hợp đồng')
   }
 
-  const handleCreateContract = () => {
+  const handleCreateContract = (record) => {
     setDataEdit({})
     setVisibleModal(true)
     setTitleModal('Thêm hợp đồng')
@@ -149,7 +151,7 @@ export default function ContractManagement() {
         <h3>Quản lý hợp đồng</h3>
         <div className="header_right">
           <InputSearch setPayload={setInputText} />
-          <Button className='btn-primary' onClick={handleCreateContract}>
+          <Button type='primary'  onClick={handleCreateContract}>
             <img src={IconPlus} alt="" />
             Thêm hợp đồng
           </Button>
@@ -160,7 +162,8 @@ export default function ContractManagement() {
         <Pagination total={totalItem} pageSize={paginate.limit} setPaginate={setPaginate} />
       </div>
     </div>
-    <Modal isVisible={visibleModal} setIsVisible={setVisibleModal} title={titleModal} width={800} content={<CreateContract dataEdit={dataEdit?.id} setVisibleModal={setVisibleModal} />} />
+    <Modal isVisible={visibleModal} setIsVisible={setVisibleModal} title={titleModal} width={800} 
+      content={<CreateContract dataEdit={dataEdit} setVisibleModal={setVisibleModal} />} />
   </>
 }
 

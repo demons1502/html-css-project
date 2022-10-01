@@ -31,7 +31,7 @@ export default function UserManagement() {
   const {data, totalItem, refreshList}=useSelector((state)=>state.userManagement)
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isCreateUser, setIsCreateUser] = useState(false)
-  const [isSettingLog, setIssettingLog] = useState(false)
+  const [isSettingLog, setIsSettingLog] = useState(false)
   const [inputText, setInputText]= useState('')
   const [paginate, setPaginate] = useState({
     limit: DEFAULT_SIZE,
@@ -139,12 +139,6 @@ export default function UserManagement() {
       key: 10,
       align: 'right',
       render: (record) => (
-        // <button
-        //   className='btn_reset-user btn-bgWhite-textGreen-borGreen'
-        //   onClick={() => handelResetUser(record.id)}
-        // >
-        //   Khởi tạo lại
-        // </button>
         <div>
           <S.Button
             size={'small'}
@@ -160,26 +154,6 @@ export default function UserManagement() {
         </div>
       ),
     },
-    // {
-    //   title: '',
-    //   width: '30px',
-    //   align: 'center',
-    //   key: 11,
-    //   // render: (record) => (
-    //   //   <img
-    //   //     className='dustbin_icon'
-    //   //     src='./images/dustbin_icon.svg'
-    //   //     onClick={() => handleDeleteUser(record)}
-    //   //   />
-    //   // ),
-    //   render: (record) => (
-    //     <S.Button
-    //       className='btn-hover-danger'
-    //       icon={<DeleteFilled />}
-    //       onClick={() => handleDeleteUser(record)}
-    //     />
-    //   ),
-    // }
   ];
 
   const handleDeleteUser = (record) => {
@@ -194,14 +168,14 @@ export default function UserManagement() {
     dispatch(updateUser({id: id, data: {[key]: e.target.checked}}));
   };
 
-  const handelResetUser = (id) => {
-    ModalConfirm({
-      title: 'Xác nhận',
-      content: `Khởi tạo lại sẽ xóa toàn bộ thông tin liên quan đến khách hàng và những việc đã làm với khách hàng.
-      Thông tin về tài khoản sẽ  vẫn được giữ lại.`,
-      callApi: () => dispatch(resetUserId({ userIds: [id] })),
-    });
-  };
+  // const handelResetUser = (id) => {
+  //   ModalConfirm({
+  //     title: 'Xác nhận',
+  //     content: `Khởi tạo lại sẽ xóa toàn bộ thông tin liên quan đến khách hàng và những việc đã làm với khách hàng.
+  //     Thông tin về tài khoản sẽ  vẫn được giữ lại.`,
+  //     callApi: () => dispatch(resetUserId({ userIds: [id] })),
+  //   });
+  // };
 
   const handelResetUsers = () => {
     const listId = selectedRowKeys.map((item) => {
@@ -278,7 +252,7 @@ export default function UserManagement() {
           <S.Button key="4" onClick={() => setIsCreateUser(true)} type="primary" icon={<PlusOutlined />}>
             Tạo mới
           </S.Button>,
-          <S.Button key="5" onClick={() => setIssettingLog(!isSettingLog)} className='btn-hover-primary' icon={<SettingOutlined key="6" style={{ fontSize: '20px' }}/>}></S.Button>
+          <S.Button key="5" onClick={() => setIsSettingLog(!isSettingLog)} className='btn-hover-primary' icon={<SettingOutlined key="6" style={{ fontSize: '20px' }}/>}></S.Button>
            
         ]}
       >
@@ -293,7 +267,8 @@ export default function UserManagement() {
         </div>
         <TableCommon dataSource={data} columnTable={columns} isSelection={true} setSelectedRowKeys={setSelectedRowKeys} />
         <Pagination total={totalItem} pageSize={paginate.limit} setPaginate={setPaginate}/>
-        <Modal isVisible={isCreateUser} setIsVisible={setIsCreateUser} title="Tạo mới nhân sự" width={589} content={ <CreateUser closeCreateUser={setIsCreateUser}/>} />
+        <Modal isVisible={isCreateUser} setIsVisible={setIsCreateUser} title="Tạo mới nhân sự" width={589} 
+          content={ <CreateUser closeCreateUser={setIsCreateUser}/>} />
       </div>
     </>
   );

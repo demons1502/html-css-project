@@ -93,7 +93,9 @@
   },
   "top-potential-customer": {
     "potentialPoint": "Điểm tiềm năng",
-    "changeCall": "Chuyển sang lịch gọi điện"
+    "changeCall": "Chuyển sang lịch gọi điện",
+    "user": "Cá nhân",
+    "company": "Doanh nghiệp"
   },
 
   "financial solution": {

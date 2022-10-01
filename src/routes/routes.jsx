@@ -31,7 +31,6 @@ const EducationFoundation = lazy(() => import('../pages/FinancialSolution/Educat
 const IllustrateFiduciary = lazy(() => import('../pages/FinancialSolution/IllustrateFiduciary'));
 const PotentialCustomers = lazy(() => import('../pages/PotentialCustomers'));
 const Consultant = lazy(() => import('../pages/Consultant'));
-
 const AppointmentManagement = lazy(() => import('../pages/Main/views/AppointmentManagement'));
 
 // ADMIN VIEWS

@@ -1,3 +1,8 @@
+import React from 'react'
+import { Row, Tooltip } from "antd";
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { numerology } from '../../constants/common';
+
 export const columns = [
   {
     title: "STT",
@@ -60,12 +65,50 @@ export const columns = [
     dataIndex: "numerology",
     key: "numerology",
     align: "center",
+    render: (record) => <Row align='middle' justify='center' style={{ gap: '10px' }} >
+      <p style={{ color: `${record === 22 && '#FF5855'}` }}>{record}</p>
+      <Tooltip title={record === 22 ? numerology[numerology.length - 1] : numerology[record]}>
+        <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+      </Tooltip>
+    </Row>
   },
   {
     title: "Tỉ lệ thành công",
     dataIndex: "successfulProb",
     key: "successfulProb",
     align: "center",
+    render: (record) => <Row align='middle' justify='center' style={{ gap: '10px' }} >
+      <p>{(() => {
+        switch (true) {
+          case record < 5:
+            return <p style={{ color: '#FF5855' }}>{record}0%</p>
+          case record >= 5:
+            return <p style={{ color: '#F6CF47' }}>{record}0%</p>
+          case record >= 7:
+            return <p style={{ color: '#3DBD78' }}>{record}0%</p>
+          case record >= 10:
+            return <p style={{ color: '#3DBD78' }}>{record}0%</p>
+          default:
+            return null;
+        }
+      })()}</p>
+      <Tooltip title={(() => {
+        switch (true) {
+          case record < 5:
+            return <p style={{ color: '#FF5855' }}>Không tiềm năng</p>
+          case record >= 5:
+            return <p style={{ color: '#F6CF47' }}>Hơi tiềm năng</p>
+          case record >= 7:
+            return <p style={{ color: '#3DBD78' }}>Có tiềm năng</p>
+          case record >= 10:
+            return <p style={{ color: '#3DBD78' }}>Rất tiềm năng</p>
+          default:
+            return null;
+        }
+      })()}>
+        <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+      </Tooltip>
+    </Row>
   },
   {
     title: "Khác",

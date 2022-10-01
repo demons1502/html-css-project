@@ -9,6 +9,7 @@ import { changePasswords, updateUsers, sendAvatars } from '../../slices/configUs
 import { Button, Upload, Select } from "../../components/styles";
 import ModalChangePass from './ModalChangePass';
 import { useNavigate } from "react-router-dom";
+import {getMe} from "../../slices/auth"
 
 const { Option } = Select;
 
@@ -24,7 +25,7 @@ function ConfigUser() {
   // console.log(userInfo);
   const [form] = Form.useForm();
   useFormErrors(form);
-
+  
   const onFinish = (values) => {
     if (fileList && fileList.length != 0 && fileChange ) {
       const formData = new FormData();
@@ -32,6 +33,8 @@ function ConfigUser() {
       dispatch(sendAvatars(formData)) 
     }
     dispatch(updateUsers(values))
+    setTimeout(()=>{dispatch(getMe())},100)
+    
   };
 
   useEffect(() => {
@@ -235,7 +238,7 @@ function ConfigUser() {
             <div className="config_content_body_button-group">
               <Button type='primary' onClick={goHome}>Về trang chủ</Button>
               <div className="config_content_body_button-group_right">
-                <Button className='btn-danger'>Huỷ</Button>
+                <Button className='btn-danger' onClick={() => navigate(-1)}>Huỷ</Button>
                 <Form.Item>
                   <Button type="primary" htmlType="submit">Lưu thay đổi</Button>
                 </Form.Item>

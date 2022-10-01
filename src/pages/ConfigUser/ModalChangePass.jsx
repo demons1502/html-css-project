@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from 'react'
-import { Form, Input, Button, Select, notification, Space } from 'antd';
+import { Form,  notification, Space } from 'antd';
+import { Button, Input, Upload, Select } from "../../components/styles";
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import useFormErrors from "../../hooks/useFormErrors";
 import { changePassword, login, resetPassword } from '../../slices/configUser'
@@ -80,9 +81,9 @@ function ModalChangePass(props) {
             </div>
           </div>
           <div className="footer_form">
-            <Button className='btn-danger' onClick={() => { closeCreateUser(false); setTimeout(() => form.resetFields(), 200) }}>Huỷ</Button>
+            <Button className='btn-danger btn-danger-changePass' onClick={() => { closeCreateUser(false); setTimeout(() => form.resetFields(), 200) }}>Huỷ</Button>
             <Form.Item>
-              <Button type="primary" htmlType="submit" className='btn-primary'>Lưu mật khẩu</Button>
+              <Button type="primary" htmlType="submit" >Lưu mật khẩu</Button>
             </Form.Item>
           </div>
         </Form>

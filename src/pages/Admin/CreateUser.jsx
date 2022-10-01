@@ -1,36 +1,68 @@
-import {React, useState, useEffect} from 'react'
-import { Col, Row, Checkbox, Button, Form, Input, Select } from 'antd';
+import { React, useState, useEffect } from 'react'
+import { Col, Row, Checkbox, Form } from 'antd';
+import { Select, Button, Input } from '../../components/styles';
 import "../../assets/scss/Admin/create-user.scss"
 import { useDispatch, useSelector } from 'react-redux';
-import {createUser} from '../../slices/userManagement';
+import { createUser } from '../../slices/userManagement';
 import axios from 'axios';
 import useFormErrors from "../../hooks/useFormErrors";
-const {Option} = Select;
+const { Option } = Select;
 
 function Create_user(props) {
-  const {closeCreateUser} = props
+  const { closeCreateUser } = props
   //validate from api
   const [form] = Form.useForm();
   useFormErrors(form);
-  const [dataCity, setDataCity]= useState([])
-  const loading = useSelector((state)=>state.loading)
-  const dispatch= useDispatch()
-  
+  const [dataCity, setDataCity] = useState([])
+  const loading = useSelector((state) => state.loading)
+  const dispatch = useDispatch()
+
+  form.resetFields()
   useEffect(() => {
     axios.get('https://provinces.open-api.vn/api/')
       .then(function (response) {
         setDataCity(response.data)
       })
-  },[])
+  }, [])
 
   const onFinish = (values) => {
-    console.log(values);
     dispatch(createUser(values))
+  };
+
+  useEffect(() => {
+    if (loading.message == "user_exist") {
+      form.setFields([
+        {
+          name: 'loginId',
+          errors: ['Tài khoản đã tồn tại']
+        },
+        {
+          name: 'email',
+          errors: ['Tài khoản đã tồn tại']
+        }
+      ])
+    }
+  }, [loading.message])
+
+  const onValuesChange = values => {
+    Object.keys(values).forEach(field => {
+      const error = form.getFieldError(field);
+      if (!error.length) {
+        return;
+      }
+      form.setFields([
+        {
+          name: field,
+          errors: []
+        }
+      ]);
+    });
   };
 
   return (
     <div className='container_create-user'>
       <Form name="create_user-form" form={form}
+        onValuesChange={onValuesChange}
         initialValues={{
           remember: true
         }}
@@ -60,7 +92,7 @@ function Create_user(props) {
           </Col>
           <Col span={8}>
             <Form.Item
-              label="Sô điện thoại"
+              label="Số điện thoại"
               name="phone"
               rules={[
                 {
@@ -76,16 +108,6 @@ function Create_user(props) {
             <Form.Item
               label="ID login"
               name="loginId"
-              rules={[
-                {
-                  validator(_,) {
-                    if (loading.message == "user_exist") {
-                      return Promise.reject('Tài khoản đã tồn tại');
-                    }
-                    return Promise.resolve();
-                  },
-                }
-              ]}
             >
               <Input type="text" placeholder='Nhập' />
             </Form.Item>
@@ -96,16 +118,11 @@ function Create_user(props) {
               name="email"
               rules={[
                 {
-                  validator(_,) {
-                    if (loading.message == "user_exist") {
-                      return Promise.reject('Tài khoản đã tồn tại');
-                    }
-                    return Promise.resolve();
-                  },
+                  type: 'email', message: 'Địa chỉ Email không hợp lệ'
                 }
               ]}
             >
-              <Input type="text" placeholder='Nhập' />
+              <Input placeholder='Nhập' />
             </Form.Item>
           </Col>
         </Row>
@@ -146,10 +163,10 @@ function Create_user(props) {
                 style={{
 
                 }}
-                // onChange={handleChangeSelect}
+              // onChange={handleChangeSelect}
               >
-                {dataCity != [] && dataCity.map(item=>{
-                  return(
+                {dataCity != [] && dataCity.map(item => {
+                  return (
                     <Option key={item.code} value={item.codename}>{item.name}</Option>
                   )
                 })}
@@ -167,7 +184,7 @@ function Create_user(props) {
         </Row>
         <div className="line line_bottom"></div>
         <div className="group_btn">
-          <Button className='btn-danger' onClick={ () => closeCreateUser(false)}>Huỷ tạo</Button>
+          <Button className='btn-danger' onClick={() => closeCreateUser(false)}>Huỷ tạo</Button>
           <Form.Item>
             <Button type="primary" htmlType="submit" className='btn-primary'>Tạo mới</Button>
           </Form.Item>

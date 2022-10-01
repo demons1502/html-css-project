@@ -11,6 +11,9 @@ import managementContentReducer from "./slices/managementContent";
 import userManagement from "./slices/userManagement";
 import contractManagement from "./slices/contractManagement";
 import paymentManagement from "./slices/paymentManagement";
+import potentialCustomersReducer from "./slices/potentialCustomersSlice";
+import dashboard from "./slices/dashboard";
+
 import surveyReducer from "./slices/surveys";
 import customerReducer from "./slices/customers";
 import consultReducer from "./slices/consult";
@@ -32,10 +35,13 @@ const rootReducer = combineReducers({
   userManagement: userManagement,
   contractManagement: contractManagement,
   paymentManagementReducer: paymentManagement,
+  potentialCustomersReducer: potentialCustomersReducer,
+  dashboard: dashboard,
   surveys: surveyReducer,
   customers: customerReducer,
   consultReducer: consultReducer,
-  configUser: configUser
+  configUser: configUser,
+  potentialCustomersReducer: potentialCustomersReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

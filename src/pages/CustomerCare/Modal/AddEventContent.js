@@ -9,7 +9,6 @@ import {getEvents} from '../../../services/events';
 import moment from 'moment';
 import _ from 'lodash';
 import * as S from '../../../components/styles';
-import locale from 'antd/es/date-picker/locale/vi_VN';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -17,7 +16,6 @@ const { TextArea } = Input;
 export default function AddEventContent(props) {
   const {t} = useTranslation();
   const {detailData, isTemplate, setVisibleModalAddEvent} = props;
-  console.log('detailData:',detailData);
   const [form] = Form.useForm();
   useFormErrors(form);
   const dispatch = useDispatch();
@@ -92,7 +90,7 @@ export default function AddEventContent(props) {
           label={t('common.date')}
           name="date"
           rules={[{required: true}]}>
-          <DatePicker className="input-item-outline" disabledDate={disabledDate} locale={locale} format={FORMAT_DATE} onChange={getTemplate}/>
+          <DatePicker className="input-item-outline" disabledDate={disabledDate} format={FORMAT_DATE} onChange={getTemplate}/>
         </Form.Item>
       </Col>
       <Col span={6}>

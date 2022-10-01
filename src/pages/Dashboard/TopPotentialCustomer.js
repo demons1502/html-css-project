@@ -1,85 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTopPotentialCustomers } from '../../slices/dashboard';
 import PotentialItemCall from './commons/TopPotentialCustomer/potential-item-col-call';
 import PotentialItemTooltip from './commons/TopPotentialCustomer/potential-item-col-tooltip';
+import { limitItem, offsetItem } from './constants';
 import * as S from './styles';
-
-const dataSource = [
-  {
-    key: 1,
-    name: 'Devon Lane',
-    type: 'Cá nhân',
-    phone: '0984 294 902',
-    potentialPoint: '90% quỹ hưu trí',
-  },
-  {
-    key: 2,
-    name: 'Cameron Williamson',
-    type: 'Cá nhân',
-    phone: '0293 893 920',
-    potentialPoint: '78% quỹ hưu trí',
-  },
-  {
-    key: 3,
-    name: 'Jane Cooper',
-    type: 'Doanh nghiệp',
-    phone: '0392 439 344',
-    potentialPoint: '78% quỹ hưu trí',
-  },
-  {
-    key: 4,
-    name: 'Courtney Henry',
-    type: 'Doanh nghiệp',
-    phone: '0238 939 893',
-    potentialPoint: '78% quỹ hưu trí',
-  },
-  {
-    key: 5,
-    name: 'Guy Hawkins',
-    type: 'Cá nhân',
-    phone: '0293 929 199',
-    potentialPoint: '78% quỹ hưu trí',
-  },
-  {
-    key: 6,
-    name: 'Devon Lane',
-    type: 'Cá nhân',
-    phone: '0984 294 902',
-    potentialPoint: '90% quỹ hưu trí',
-  },
-  {
-    key: 7,
-    name: 'Cameron Williamson',
-    type: 'Cá nhân',
-    phone: '0293 893 920',
-    potentialPoint: '38% quỹ hưu trí',
-  },
-  {
-    key: 8,
-    name: 'Jane Cooper',
-    type: 'Doanh nghiệp',
-    phone: '0392 439 344',
-    potentialPoint: '58% quỹ hưu trí',
-  },
-  {
-    key: 9,
-    name: 'Courtney Henry',
-    type: 'Doanh nghiệp',
-    phone: '0238 939 893',
-    potentialPoint: '78% quỹ hưu trí',
-  },
-  {
-    key: 10,
-    name: 'Guy Hawkins',
-    type: 'Cá nhân',
-    phone: '0293 929 199',
-    potentialPoint: '78% quỹ hưu trí',
-  },
-];
 
 export default function TopPotentialCustomer() {
   const { t } = useTranslation();
-  const [dataTable, setDataTable] = useState(dataSource);
+  const loading = useSelector((state) => state.dashboard.loading);
+  const result = useSelector((state) => state.dashboard.topPotentialCustomers);
+  const [dataTable, setDataTable] = useState(result.data || []);
+  const dispatch = useDispatch();
   const [toggle, setToggle] = useState(false);
 
   const columns = [
@@ -90,13 +23,15 @@ export default function TopPotentialCustomer() {
     },
     {
       title: t('common.customer type'),
-      dataIndex: 'type',
-      key: 'type',
+      dataIndex: 'typeId',
+      key: 'typeId',
+      render: (text) => (text === 1 ? t('top-potential-customer.user') : t('top-potential-customer.company')),
     },
     {
       title: t('common.phone'),
       dataIndex: 'phone',
       key: 'phone',
+      render: (_, record) => record?.phone1 || record?.phone2 || record?.phone3,
     },
     {
       title: t('top-potential-customer.potentialPoint'),
@@ -109,6 +44,20 @@ export default function TopPotentialCustomer() {
       render: (_, record) => <PotentialItemCall record={record} />,
     },
   ];
+
+  useEffect(() => {
+    const payload = {
+      limit: limitItem,
+      offset: offsetItem,
+      orderField: 'successfulProb',
+      orderType: 'desc',
+    };
+    dispatch(getTopPotentialCustomers(payload));
+  }, [dispatch]);
+
+  useEffect(() => {
+    setDataTable(result.data || []);
+  }, [result]);
 
   return (
     <S.WrapContainer $toggle={toggle}>
@@ -125,6 +74,8 @@ export default function TopPotentialCustomer() {
           scroll={{ scrollToFirstRowOnChange: false }}
           $borderBottom={false}
           $paddingIcon
+          $height="495px"
+          loading={loading}
         />
       </S.WrapContent>
     </S.WrapContainer>

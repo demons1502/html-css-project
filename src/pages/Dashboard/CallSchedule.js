@@ -65,10 +65,6 @@ export default function CallSchedule() {
     console.log(`selected ${value}`);
   };
 
-  const handleCall = (value) => {
-    console.log(`Call ${value}`);
-  };
-
   const randomNotDuplicate = () => {
     let color = Math.floor(Math.random() * 5);
     while (useColor.includes(color) && useColor.length < 5) {
@@ -135,6 +131,7 @@ export default function CallSchedule() {
           pagination={false}
           bordered={false}
           scroll={{ scrollToFirstRowOnChange: false }}
+          $borderBottom={true}
         />
         <PaginationCommon total={50} showSizeChanger={false} setPaginate={{ limit: 10, offset: 0 }} />
       </S.WrapContent>

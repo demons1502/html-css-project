@@ -35,6 +35,7 @@ function ConfigUser() {
     dispatch(updateUsers(values))
     dispatch(getMe())
   };
+  // dispatch(getMe())
 
   useEffect(() => {
     axios.get('https://provinces.open-api.vn/api/')

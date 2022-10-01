@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, notification } from 'react';
 import { Checkbox, Image } from 'antd';
 import Modal from '../../components/common/Modal'
 import "../../assets/scss/Admin/stylesAdmin.scss"
@@ -236,25 +236,9 @@ export default function UserManagement() {
     }
   }, [refreshList])
 
-  //upload new
-  // const [fileList, setFileList] = useState(null);
-
-  // const handleFileList = ({ fileList: newFile }) => {
-  //   if (newFile[0]?.originFileObj?.size > 2000000) {
-  //     notification['warning']({
-  //       message: 'Warning',
-  //       description: 'File Không được vượt quá 2Mb.',
-  //     });
-  //   }
-  //   else {
-  //     setFileList(newFile);
-  //     setFileChange(true)
-  //   }
-  //   console.log(newFile);
-  // };
   return (
     <>
-      <input type='file' ref={input_file} />
+      <input type='file' ref={input_file} accept='.csv'/>
       <S.PageHeader
         className="site-page-header-responsive"
         backIcon={false}
@@ -263,7 +247,7 @@ export default function UserManagement() {
         extra={[
           <S.Button key="1" onClick={handleDeleteUsers}>Xóa</S.Button>,
           <S.Button key="2" onClick={handelResetUsers}>Khởi tạo lại</S.Button>,
-          <S.Button key="3" onClick={handleImport} type="primary" icon={<DownloadOutlined style={{ fontSize: '14px' }}/>}>
+          <S.Button key="3" onClick={handleImport} type="primary"  icon={<DownloadOutlined style={{ fontSize: '14px' }} />}>
             Import
           </S.Button>,
           <S.Button key="4" onClick={() => setIsCreateUser(true)} type="primary" icon={<PlusOutlined />}>

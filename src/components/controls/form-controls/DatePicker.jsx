@@ -1,7 +1,7 @@
 import React from "react";
 import { Controller } from "react-hook-form";
 import { DatePicker } from "antd";
-import moment from "moment";
+
 
 const disabledDate = (current) => {
   return moment().endOf("day") <= current;
@@ -13,8 +13,6 @@ const DatePickerControl = ({
   errors,
   defaultValue,
   isDisabled = false,
-  placeholder = "DD/08/2022",
-  format = "DD/MM/YYYY",
   className = "",
   allowClear = false,
 }) => {

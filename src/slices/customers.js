@@ -24,10 +24,10 @@ export const editCustomer = createAsyncThunk("customers/update", async ({ id, da
   try {
     const res = await updateCustomer(id, data);
     if (res?.status === 201 || res?.status === 200) {
-      message.success("Customer updated successfully");
+      message.success("Lưu thông tin cá nhân thành công");
       return res.data;
     } else {
-      message.error("Something went wrong");
+      message.error("Lưu thông tin cá nhân không thành công");
     }
   } catch (error) {
     return Promise.reject(error.data);

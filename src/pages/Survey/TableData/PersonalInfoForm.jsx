@@ -1,9 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Input, FieldLabel, CheckboxGroup, DatePicker } from "../../../components/controls";
+import { Input, FieldLabel, CheckboxGroup } from "../../../components/controls";
 import { Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { editCustomer } from "../../../slices/customers";
+import { DatePicker } from 'antd';
+import { FORMAT_DATE } from '../../../ultis/constant';
 
 export const PersonalInfoForm = () => {
   const dispatch = useDispatch();
@@ -64,7 +66,7 @@ export const PersonalInfoForm = () => {
             <td className="personal-date">
               <div className="form-group">
                 <FieldLabel name="dob" label="Ngày sinh" />
-                <DatePicker control={control} name="dob" />
+                <DatePicker className="input-item-outline"format={FORMAT_DATE} placeholder={FORMAT_DATE} />
               </div>
             </td>
             <td className="personal-checkbox">

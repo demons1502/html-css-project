@@ -1,23 +1,18 @@
 import { Col, Form, Row } from "antd";
-import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import Modal from "../../components/common/ModalSelect";
 import Select from "../../components/common/Select";
 import Input from "../../components/common/Input";
 import DatePicker from "../../components/common/DatePicker";
+import InputNumber from '../../components/common/InputNumber';
 import { useDispatch, useSelector } from "react-redux";
 import {
   createPotentialCustomers,
   getCompanies,
 } from "../../slices/potentialCustomersSlice";
 import { useTranslation } from "react-i18next";
-import {
-  acquaintanceLevel,
-  gender,
-  marriageStatus,
-} from "../../constants/common";
+import { acquaintanceLevel, marriageStatus } from "../../constants/common";
 import { REGEX_PHONE } from "./constants";
-import { now } from "moment/moment";
 
 export default function CreateCustomer({ isModalOpen, handleCancel }) {
   const { Option } = Select;
@@ -63,16 +58,6 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
     [companies],
   );
 
-  const genderOptions = useMemo(
-    () =>
-      gender.map(({ label, value }) => (
-        <Option key={value} value={value}>
-          {label}
-        </Option>
-      )),
-    [companies],
-  );
-
   const onChangeDate = (date, dateString) => {
     setDob(dateString);
   };
@@ -96,6 +81,10 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
     );
     onCancel();
   };
+
+  const onChangeCurrency = (value) => {
+    console.log(value);
+  }
 
   useEffect(() => {
     dispatch(getCompanies());
@@ -132,7 +121,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.name")}`,
+                      message: "Vui lòng nhập tên doanh nghiệp!",
                     },
                   ]}
                 >
@@ -146,7 +135,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.phone1")}`,
+                      message: "Vui lòng nhập số điện thoại",
                     },
                     {
                       pattern: REGEX_PHONE,
@@ -166,7 +155,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.address")}`,
+                      message: "Vui lòng nhập địa chỉ!",
                     },
                   ]}
                 >
@@ -185,7 +174,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.name")}`,
+                      message: "Vui lòng nhập họ và tên!",
                     },
                   ]}
                 >
@@ -199,7 +188,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.phone1")}`,
+                      message: "Vui lòng nhập số điện thoại!",
                     },
                     {
                       pattern: REGEX_PHONE,
@@ -238,20 +227,6 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   <Input />
                 </Form.Item>
               </Col>
-              <Col span={6}>
-                <Form.Item
-                  label="Giới tính"
-                  name="gender"
-                  rules={[
-                    {
-                      required: true,
-                      message: `${t("Vui lòng chọn giới tính")}`,
-                    },
-                  ]}
-                >
-                  <Select placeholder="Chọn">{genderOptions}</Select>
-                </Form.Item>
-              </Col>
             </Row>
             <Row gutter={12}>
               <Col span={6}>
@@ -261,9 +236,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t(
-                        "potential customers.message.maritalStatus",
-                      )}`,
+                      message: "Vui lòng chọn tình trạng hôn nhân",
                     },
                   ]}
                 >
@@ -283,7 +256,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.income")}`,
+                      message: "Vui lòng nhập thu nhập!",
                     },
                     {
                       validator: (_, value) =>
@@ -295,7 +268,15 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                     },
                   ]}
                 >
-                  <Input type="number" />
+                  <InputNumber
+                    controls={false}
+                    defaultValue={0}
+                    formatter={(value) =>
+                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }
+                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    onChange={onChangeCurrency}
+                  />
                 </Form.Item>
               </Col>
               <Col span={6}>
@@ -305,9 +286,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t(
-                        "potential customers.message.acquaintanceLevel",
-                      )}`,
+                      message: "Vui lòng chọn mức độ thân quen!",
                     },
                   ]}
                 >
@@ -329,7 +308,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.birthday")}`,
+                      message: "Vui lòng chọn ngày sinh!",
                     },
                     {
                       validator: (_, value) =>
@@ -344,6 +323,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   ]}
                 >
                   <DatePicker
+                    format='DD/MM/YYYY'
                     value={dob}
                     onChange={onChangeDate}
                     style={{ width: "100%" }}

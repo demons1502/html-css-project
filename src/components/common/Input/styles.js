@@ -10,6 +10,9 @@ export const Input = styled(AntInput)`
   font-size: 14px;
   line-height: 18px;
   color: #999999;
+  .ant-input{
+  background-color: #f8f8f8;
+  }
   &:focus {
     border-color: #30a867;
     box-shadow: 0 0 0 2px rgba(48 168 103 / 20%);

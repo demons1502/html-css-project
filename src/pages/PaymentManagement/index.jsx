@@ -41,12 +41,14 @@ const PaymentManagement = () => {
       },
     });
   };
+
   const handleDelete = () => {
     if (selectedRowKeys.length > 0) {
       ModalConfirm({
         content: 'Bạn chắc chắn muốn xóa thanh toán đã chọn!',
         callApi: () => {
           dispatch(deletePayment({ transactionIds: selectedRowKeys })), setHistoryItem(null);
+          setSelectedRowKeys([]);
         },
       });
     } else {
@@ -117,7 +119,6 @@ const PaymentManagement = () => {
       key: 'x',
       className: 'deleteCol',
       render: (record) => {
-        console.log(record);
         return (
           <span onClick={() => handleDeleteOne(record)} className="btn-deleteIcon">
             <Delete color={rowActive === record.id ? '#fff' : '#999'} />
@@ -139,7 +140,7 @@ const PaymentManagement = () => {
 
   return (
     <div className="paymentManagement">
-      <input type="file" ref={inputRef} style={{ display: 'none' }} />
+      <input type="file" ref={inputRef} style={{ display: 'none' }} accept=".csv" />
       <S.PageHeader
         className="site-page-header-responsive"
         backIcon={false}

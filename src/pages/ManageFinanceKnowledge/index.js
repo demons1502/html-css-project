@@ -13,6 +13,7 @@ import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
 import * as S from '../../components/styles';
+import { uploadFile } from '../../services/manageContent';
 
 const ManageFinanceKnowledge = () => {
   const { t } = useTranslation();
@@ -29,6 +30,8 @@ const ManageFinanceKnowledge = () => {
   });
   const [fileList, setFileList] = useState(null);
   const [editDisabled, setEditDisabled] = useState(true);
+  const [file, setFile] = useState(null);
+  console.log(file?.publicUrl);
 
   const handleChange = (e) => {
     let values;
@@ -51,7 +54,7 @@ const ManageFinanceKnowledge = () => {
     setItemContent({ ...itemContent, image: newFile[0]?.originFileObj });
   };
 
-  const handleSave = (item) => {
+  const handleSave = async (item) => {
     if (!item) {
       ModalConfirm({
         content: `Vui lòng nhập nội dung bài viết`,
@@ -60,38 +63,87 @@ const ManageFinanceKnowledge = () => {
         },
       });
     } else {
-      if (option !== MANAGEMENT_CONTENT[0].value) {
-        if (!item.id) {
-          dispatch(createContent({ type: option, payload: item }));
-          setItemContent(null);
-          setFileList([]);
-          setEditDisabled(true);
-        } else {
-          dispatch(updateContent({ type: option, id: item.id, payload: item }));
-          setItemContent(null);
-          setFileList([]);
-          setEditDisabled(true);
-        }
-      } else {
-        const formData = new FormData();
-        formData.append('image', item.image);
-        formData.append('title', item.title);
-        formData.append('subTitle', item.subTitle);
-        formData.append('url', item.url);
-        formData.append('body', item.body);
-        if (!item.id) {
-          dispatch(createContent({ type: option, payload: formData }));
-          setItemContent(null);
-          setFileList([]);
-          setEditDisabled(true);
-        } else {
-          dispatch(updateContent({ type: option, id: item.id, payload: formData }));
-          setItemContent(null);
-          setFileList([]);
-          setEditDisabled(true);
-        }
-      }
     }
+    try {
+      const formData = new FormData();
+      formData.append('file', item.image);
+      const res = await uploadFile(formData);
+      setFile(res.data);
+
+      // const handleSaveData = (item) => {
+      //   const data = { ...item, image: file.publicUrl };
+      //   if (option !== MANAGEMENT_CONTENT[0].value) {
+      //     if (!item.id) {
+      //       dispatch(createContent({ type: option, payload: item }));
+      //       setItemContent(null);
+      //       setFileList([]);
+      //       setEditDisabled(true);
+      //     } else {
+      //       dispatch(updateContent({ type: option, id: item.id, payload: item }));
+      //       setItemContent(null);
+      //       setFileList([]);
+      //       setEditDisabled(true);
+      //     }
+      //   } else {
+      //     if (!item.id) {
+      //       dispatch(createContent({ type: option, payload: item }));
+      //       setItemContent(null);
+      //       setFileList([]);
+      //       setEditDisabled(true);
+      //     } else {
+      //       dispatch(updateContent({ type: option, id: item.id, payload: item }));
+      //       setItemContent(null);
+      //       setFileList([]);
+      //       setEditDisabled(true);
+      //     }
+      //   }
+      //   console.log(data);
+      // };
+      file && handleSaveData(item);
+    } catch (err) {
+      console.log(err);
+    }
+    // console.log(item);
+    // if (!item) {
+    //   ModalConfirm({
+    //     content: `Vui lòng nhập nội dung bài viết`,
+    //     callApi: () => {
+    //       return;
+    //     },
+    //   });
+    // } else {
+    //   if (option !== MANAGEMENT_CONTENT[0].value) {
+    //     if (!item.id) {
+    //       dispatch(createContent({ type: option, payload: item }));
+    //       setItemContent(null);
+    //       setFileList([]);
+    //       setEditDisabled(true);
+    //     } else {
+    //       dispatch(updateContent({ type: option, id: item.id, payload: item }));
+    //       setItemContent(null);
+    //       setFileList([]);
+    //       setEditDisabled(true);
+    //     }
+    //   } else {
+    //     const formData = new FormData();
+    //     formData.append('image', item.image);
+    //     formData.append('title', item.title);
+    //     formData.append('subTitle', item.subTitle);
+    //     formData.append('url', item.url);
+    //     formData.append('body', item.body);
+    //     if (!item.id) {
+    //       dispatch(createContent({ type: option, payload: formData }));
+    //       setItemContent(null);
+    //       setFileList([]);
+    //       setEditDisabled(true);
+    //     } else {
+    //       dispatch(updateContent({ type: option, id: item.id, payload: formData }));
+    //       setItemContent(null);
+    //       setFileList([]);
+    //       setEditDisabled(true);
+    //     }
+    //   }
+    // }
   };
 
   const handleCancel = () => {

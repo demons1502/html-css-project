@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { create, getAll, remove, importFile,getHistories } from '../services/paymentManagement';
+import { create, getAll, remove, importFile, getHistories } from '../services/paymentManagement';
 
-const initialState = { isReload: false, data: [], histories: {data:[],count:0}, total: 0 };
+const initialState = { isReload: false, data: [], histories: { data: [], count: 0 }, total: 0 };
 
 export const retrieveData = createAsyncThunk('paymentManagement/getAll', async (params, { rejectWithValue }) => {
   try {
@@ -17,7 +17,7 @@ export const getHistoriesData = createAsyncThunk(
   async ({ loginId, params }, { rejectWithValue }) => {
     try {
       // console.log(loginId, params);
-      const res = await getHistories(loginId,params);
+      const res = await getHistories(loginId, params);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

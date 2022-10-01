@@ -1,5 +1,7 @@
 export const arrWeek = ['CN', 'Th2', 'Th3', 'Th4', 'Th5', 'Th6', 'Th7'];
 export const dateFormat = 'DD/MM/YYYY';
+export const timeFormat = 'hh:mm:ss';
+export const hhmmFormat = 'hh:mm';
 export const menuItems = [
   {
     value: 'today',
@@ -25,3 +27,5 @@ export const options = [
   { label: 'Sinh nhật', value: 3 },
   { label: 'Ký hợp đồng', value: 4 },
 ];
+export const limitItem = 5;
+export const offsetItem = 0;

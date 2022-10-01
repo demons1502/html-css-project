@@ -1,4 +1,4 @@
-import { Empty, Spin, } from 'antd';
+import { Empty, Spin } from 'antd';
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import calendarIcon from '../../assets/images/icons/calendar.svg';
@@ -14,6 +14,9 @@ const columns = [
     dataIndex: 'startDate',
     key: 'startDate',
     width: '130px',
+    render: (record) => {
+      return <span>{getTimeByTZ(record)}</span>;
+    },
   },
   {
     title: 'Nội dung',
@@ -25,24 +28,16 @@ const columns = [
 const PaymentHistory = ({ customer }) => {
   const format = new Intl.NumberFormat('vi-VN').format(customer?.amount);
 
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(10)
-  const [paginate, setPaginate] = useState({page:1,limit:DEFAULT_SIZE})
+  const [paginate, setPaginate] = useState({ page: 1, limit: DEFAULT_SIZE });
 
-  const {histories} = useSelector((state) => state.paymentManagementReducer);
+  const { histories, isReload } = useSelector((state) => state.paymentManagementReducer);
   const loading = useSelector((state) => state.loading.loading);
   const dispatch = useDispatch();
-
-
-  const onChangePage = (e) => {
-    
-  };
-
 
   useEffect(() => {
     const params = { page: paginate.page, limit: paginate.limit };
     customer && dispatch(getHistoriesData({ loginId: customer?.loginId, params: params }));
-  }, [customer,paginate]);
+  }, [customer, paginate, isReload]);
 
   return (
     <div className="paymentHistory">
@@ -91,12 +86,9 @@ const PaymentHistory = ({ customer }) => {
           </div>
           <div className="paymentHistory-group">
             <Spin spinning={loading === LOADING_STATUS.pending}>
-              <TableCommon
-                dataSource={histories.data}
-                columnTable={columns}
-              />
+              <TableCommon dataSource={histories.data} columnTable={columns} />
             </Spin>
-            <PaginationCommon total={histories.count} setPaginate={setPaginate}/>
+            <PaginationCommon total={histories.count} setPaginate={setPaginate} />
             {/* <Pagination total={payments.total} setPaginate={onChangePage} /> */}
           </div>
         </>

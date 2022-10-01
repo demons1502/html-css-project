@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 const ManagerGuard = ({ element }) => {
   const { isAuth, me } = useSelector((state) => state.auth);
-  const { permissions } = me;
+  const { permissions, role } = me;
   const location = useLocation();
 
 
@@ -11,7 +11,8 @@ const ManagerGuard = ({ element }) => {
     return <Navigate to='/auth' />;
   }
 
-  if (!(permissions.includes('payment') || permissions.includes('qa') || permissions.includes('admin'))) {
+
+  if (role !== 'admin') {
     return <Navigate to="/" />;
   }
 

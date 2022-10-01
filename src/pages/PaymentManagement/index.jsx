@@ -1,15 +1,14 @@
-import { Col, notification, Row, Spin, Table } from 'antd';
+import { Col, notification, Row, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from '../../components/common/Pagination';
-// import Table from '../../components/common/TableNormal';
-import { DeleteFilled, DownloadOutlined, PlusOutlined } from '@ant-design/icons';
+import { DownloadOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRef } from 'react';
+import Delete from '../../assets/images/icons/components/Delete';
 import ModalConfirm from '../../components/ModalConfirm';
 import * as S from '../../components/styles';
-import { getTimeByTZ } from '../../helper/index';
+import { formatDataNumber, getTimeByTZ } from '../../helper/index';
 import { deletePayment, retrieveData, uploadFile } from '../../slices/paymentManagement';
-import { LOADING_STATUS } from '../../ultis/constant';
 import CreatePayment from './CreatePayment';
 import PaymentHistory from './PaymentHistory';
 import PaymentManagementHeader from './PaymentManagementHeader';
@@ -34,8 +33,9 @@ const PaymentManagement = () => {
   };
 
   const handleDeleteOne = (item) => {
+    console.log(item);
     ModalConfirm({
-      content: `Xác nhận xóa ${item.userFullname}`,
+      content: `Bạn chắc chắn muốn xóa tài khoản ${item.userFullname}`,
       callApi: () => {
         dispatch(deletePayment({ transactionIds: [item.id] })), setHistoryItem(null);
       },
@@ -44,6 +44,7 @@ const PaymentManagement = () => {
   const handleDelete = () => {
     if (selectedRowKeys.length > 0) {
       ModalConfirm({
+        content: 'Bạn chắc chắn muốn xóa tài khoản đã chọn!',
         callApi: () => {
           dispatch(deletePayment({ transactionIds: selectedRowKeys })), setHistoryItem(null);
         },
@@ -84,6 +85,7 @@ const PaymentManagement = () => {
     {
       title: 'Ngày thanh toán',
       key: 'startDate',
+      // width: '145px',
       render: (record) => {
         return <span>{getTimeByTZ(record.startDate)}</span>;
       },
@@ -91,6 +93,7 @@ const PaymentManagement = () => {
     {
       title: 'Ngày hiệu lực',
       key: 'startDate',
+      // width: '115px',
       render: (record) => {
         return <span>{getTimeByTZ(record.startDate)}</span>;
       },
@@ -98,6 +101,7 @@ const PaymentManagement = () => {
     {
       title: 'Ngày kết thúc',
       key: 'dueDate',
+      // width: '125px',
       render: (record) => {
         return <span>{getTimeByTZ(record.dueDate)}</span>;
       },
@@ -107,15 +111,20 @@ const PaymentManagement = () => {
       key: 'amount',
       className: 'green-color',
       render: (record) => {
-        const format = new Intl.NumberFormat('vi-VN').format(record.amount);
-        return <span>{format}</span>;
+        return <span>{formatDataNumber(record.amount)}</span>;
       },
     },
     {
       title: '',
-      dataIndex: '',
       key: 'x',
-      render: (_, record) => <DeleteFilled className="btn-deleteIcon" onClick={() => handleDeleteOne(record)} />,
+      className: 'deleteCol',
+      render: (record) => {
+        return (
+          <span onClick={() => handleDeleteOne(record)} className="btn-deleteIcon">
+            <Delete color={rowActive === record.id ? '#fff' : '#999'} />
+          </span>
+        );
+      },
     },
   ];
 
@@ -157,7 +166,7 @@ const PaymentManagement = () => {
 
       <div className="paymentManagement-container">
         <Row gutter={[15, 15]} align="stretch" className="paymentManagement-row">
-          <Col span={15} className="paymentManagement-col" lg={15} md={24} sm={24} xs={24}>
+          <Col className="paymentManagement-col" lg={15} md={24} sm={24} xs={24}>
             <div className="paymentManagement-content">
               <PaymentManagementHeader title="Danh sách tài khoản" search setPayload={setSearchPayload} />
 
@@ -185,7 +194,7 @@ const PaymentManagement = () => {
               <Pagination total={payments.total} setPaginate={onChangePage} />
             </div>
           </Col>
-          <Col span={9} className="paymentManagement-col" lg={9} md={24} sm={24} xs={24}>
+          <Col className="paymentManagement-col" lg={9} md={24} sm={24} xs={24}>
             <div className="paymentManagement-content">
               <PaymentManagementHeader title="Lịch sử thanh toán" />
               <PaymentHistory customer={historyItem} />

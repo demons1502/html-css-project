@@ -137,6 +137,10 @@ export const routes = () => [
         path: 'health-foundation',
         element: <GuestGuard element={<HealthFoundation />} />,
       },
+      // {
+      //   path: 'config-user',
+      //   element: <GuestGuard element={<ConfigUser />} />,
+      // }
     ],
   },
   // AUTHLAYOUT
@@ -171,10 +175,6 @@ export const routes = () => [
       {
         path: 'operation-history',
         element: <ManagerGuard element={<CustomerCare />} />,
-      },
-      {
-        path: 'config-user',
-        element: <ManagerGuard element={<ConfigUser />} />,
       },
       {
         path: 'q&a',

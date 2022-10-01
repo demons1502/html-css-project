@@ -3,11 +3,10 @@
   width: 100%;
   &-nav {
     background-color: $white-color;
-    width: 100%;
     min-height: 66px;
     height: auto;
     padding: 10px 32px;
-    margin-bottom: 12px;
+    margin: 0 -30px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -15,7 +14,6 @@
   &-container {
     width: 100%;
     min-height: 100vh;
-    padding: 0 27px;
   }
   &-content {
     width: 100%;
@@ -25,35 +23,43 @@
     border-radius: 20px;
     box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.05);
     .paymentManagement-table {
-      .ant-table-tbody {
-        .ant-table-row-selected {
-          td {
-            // background: $green-table-bg !important;
-            // border-bottom: 1px solid $white-color !important;
-            // color: $white-color;
-            // &.green-color {
-            //   color: $black-color !important;
-            // }
-            // .btn-deleteIcon{
-            //   color: $white-color;
-            // }
-          }
+      .ant-table-tbody,
+      .ant-table-thead {
+        .ant-table-cell {
+          padding: 10px 5px !important;
+        }
+        .ant-table-selection-column {
+          width: 40px;
+          text-align: end;
+          justify-content: flex-end;
+          align-items: center;
         }
         .ant-table-row {
-          .btn-deleteIcon{
-            font-size: 2rem;
+          .btn-deleteIcon {
             color: $gray-light-color;
+            &:hover {
+              color: $black-color;
+            }
           }
+
           &.active {
+            background-color: $green-color;
             .ant-table-cell {
               background: $green-color;
               color: $white-color;
             }
-            .btn-deleteIcon{
+            .btn-deleteIcon {
               color: $white-color;
             }
           }
-          
+        }
+      }
+      .ant-table-tbody {
+        .ant-table-cell {
+          &.deleteCol {
+            padding-right: 12px !important;
+            text-align: center;
+          }
         }
       }
     }
@@ -177,7 +183,7 @@
     }
   }
   &-modal {
-    width: 700px !important;
+    width: 600px !important;
     .ant-modal-content {
       border-radius: 10px;
       overflow: hidden;
@@ -198,41 +204,22 @@
         .ant-form-item-control,
         .ant-picker {
           width: 100%;
-          input,
-          textarea,
-          .ant-select-selection-item {
-            font-size: $font-size-base;
-            font-weight: $font-weight-semibold;
-            color: $black-color;
-            /* &:hover {
-              border-color: $green-color;
-            } */
-          }
-          textarea {
-            min-height: 100px;
-          }
         }
-        /*  .ant-picker-focused,
-        .ant-picker:hover {
-          border-color: $green-color;
-        } */
         .ant-picker-focused {
           box-shadow: 0 0 0 2px rgba($color: $green-color, $alpha: 0.2);
         }
-        /* .ant-form-item-control-input {
-          width: 100%;
-        } */
       }
-      .ant-btn {
-        width: 150px;
-        font-size: $font-size-base;
-        color: $white-color;
-        font-size: $font-size-base;
-        font-weight: $font-weight-bold;
-        border: 1px solid $green-color;
-        border-radius: 999px;
-        &.ant-btn-primary {
-          background-color: $green-table-bg;
+    }
+    &_button {
+      margin-top: 20px !important;
+      .ant-form-item-control-input-content {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        button {
+          &:first-child {
+            margin-right: 15px;
+          }
         }
       }
     }

@@ -6,6 +6,7 @@ export const ENDPOINT = {
     resetPassword: 'reset-password',
   },
   customers: 'customers',
+  customersContracts: 'customers/contracts',
   customerCare: 'customer-care', 
   events: 'events',
   eventsSend: 'events/send',
@@ -13,5 +14,6 @@ export const ENDPOINT = {
     getArticles: 'articles',
     getMostView: 'most-view'
   },
-  userSearch: 'users/search'
+  userSearch: 'users/search',
+  surveys: "surveys",
 }

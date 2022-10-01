@@ -1,21 +1,22 @@
 import React, { useMemo, useState } from "react";
 import moment from "moment";
-import { Col, Form, Row } from "antd";
+import { Col, Form, Row, Tooltip } from "antd";
+import { InfoCircleOutlined } from '@ant-design/icons';
 import Modal from "../../components/common/ModalSelect";
 import Select from "../../components/common/Select";
 import Input from "../../components/common/Input";
 import DatePicker from "../../components/common/DatePicker";
 import { useTranslation } from "react-i18next";
-import { acquaintanceLevel, marriageStatus } from "../../constants/common";
+import { acquaintanceLevel, marriageStatus, numerology } from "../../constants/common";
 import { useDispatch, useSelector } from "react-redux";
 import { updatePotentialCustomer } from "../../slices/potentialCustomersSlice";
 import { useEffect } from "react";
 import { REGEX_PHONE } from "./constants";
+import InputNumber from "../../components/common/InputNumber";
 
 export default function EditCustomer({ isModalOpen, handleCancel, data }) {
   const { Option } = Select;
   const [form] = Form.useForm();
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [maritalStatusF, setMaritalStatusF] = useState();
   const [acquaintanceLevelStatus, setAcquaintanceLevelStatus] = useState();
@@ -73,6 +74,10 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
     handleCancel();
   };
 
+  const onChangeCurrency = (value) => {
+
+  }
+
   useEffect(() => {
     if (data) {
       setTypeId(data.typeId);
@@ -117,7 +122,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.name")}`,
+                      message: "Vui lòng nhập tên doanh nghiệp!",
                     },
                   ]}
                 >
@@ -132,7 +137,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.phone1")}`,
+                      message: "Vui lòng nhập số điện thoại",
                     },
                     {
                       pattern: REGEX_PHONE,
@@ -153,7 +158,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.address")}`,
+                      message: "Vui lòng nhập địa chỉ!",
                     },
                   ]}
                 >
@@ -173,7 +178,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.name")}`,
+                      message: "Vui lòng nhập họ và tên!",
                     },
                   ]}
                 >
@@ -188,7 +193,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.phone1")}`,
+                      message: "Vui lòng nhập số điện thoại!",
                     },
                     {
                       pattern: REGEX_PHONE,
@@ -239,9 +244,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t(
-                        "potential customers.message.maritalStatus",
-                      )}`,
+                      message: "Vui lòng chọn tình trạng hôn nhân!",
                     },
                   ]}
                 >
@@ -262,7 +265,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.income")}`,
+                      message: "Vui lòng nhập thu nhập!",
                     },
                     {
                       validator: (_, value) =>
@@ -274,7 +277,15 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                     },
                   ]}
                 >
-                  <Input type="number" />
+                  <InputNumber
+                    controls={false}
+                    defaultValue={data.income}
+                    formatter={(value) =>
+                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }
+                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    onChange={onChangeCurrency}
+                  />
                 </Form.Item>
               </Col>
               <Col span={6}>
@@ -285,9 +296,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t(
-                        "potential customers.message.acquaintanceLevel",
-                      )}`,
+                      message: "Vui lòng chọn mức độ thân quen!",
                     },
                   ]}
                 >
@@ -310,13 +319,13 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   rules={[
                     {
                       required: true,
-                      message: `${t("potential customers.message.birthday")}`,
+                      message: "Vui lòng chọn ngày sinh!",
                     },
                     {
                       validator: (_, value) =>
                         new Date().getFullYear() -
                           new Date(value).getFullYear() >
-                        18
+                          18
                           ? Promise.resolve()
                           : Promise.reject(
                             new Error("Số tuổi phải lớn hơn 18"),
@@ -325,8 +334,9 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   ]}
                 >
                   <DatePicker
+                    format="DD/MM/YYYY"
                     style={{ width: "100%" }}
-                    defaultValue={moment(data.dob, "YYYY-MM-DD")}
+                    defaultValue={moment(data.dob, "DD/MM/YYYY")}
                   />
                 </Form.Item>
               </Col>
@@ -384,7 +394,43 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
               </Col>
             </Row>
             <Row gutter={12}>
-              <Col span={24}>
+              <Col span={6}>
+                <Form.Item label="Thần số học">
+                  <Input
+                    readOnly
+                    value={data.numerology} suffix={
+                      <Tooltip title={data.numerology === 22 ? numerology[numerology.length - 1] : numerology[data.numerology]}>
+                        <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                      </Tooltip>
+                    } />
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item label="Tỉ lệ thành công">
+                  <Input
+                    readOnly
+                    value={`${data.successfulProb}0%`}
+                    suffix={
+                      <Tooltip title={(() => {
+                        switch (true) {
+                          case data.successfulProb < 5:
+                            return <p style={{ color: '#FF5855' }}>Không tiềm năng</p>
+                          case data.successfulProb >= 5:
+                            return <p style={{ color: '#F6CF47' }}>Hơi tiềm năng</p>
+                          case data.successfulProb >= 7:
+                            return <p style={{ color: '#3DBD78' }}>Có tiềm năng</p>
+                          case data.successfulProb >= 10:
+                            return <p style={{ color: '#3DBD78' }}>Rất tiềm năng</p>
+                          default:
+                            return null;
+                        }
+                      })()}>
+                        <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                      </Tooltip>
+                    } />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
                 <Form.Item label="Khác" name="note" initialValue={data.note}>
                   <Input />
                 </Form.Item>

@@ -72,3 +72,18 @@ export const gender = [
     value: 1,
   },
 ]
+
+export const numerology = [
+  "Con số đại diện cho cái tôi, tính cách, năng lực của mỗi con người",
+  'Con số của công bằng và cân bằng cảm xúc', 'Con số Thân thiện và đầy ấm áp',
+  'Con số của sự kiên trì và nguyên tắc',
+  'Con số của sự kiên trì và nguyên tắc',
+  'Người mang lòng trắc ẩn',
+  'Người có khả năng nuôi dưỡng tự nhiên',
+  'Con số giàu tình cảm và có một tâm hồn yên bình',
+  'Bạn ở đây để điều hành, tổ chức, chỉ đạo và dẫn dắt mọi người.',
+  'Con số của sự kính trọng và đáng tin cậy',
+  'Sống một cuộc đời lãnh đạo, người dẫn đầu đội nhóm',
+  'Con số có khả năng tâm linh cao và nhạy cảm.',
+  'Con số thể hiện cho thành công và tham vọng hoài bão'
+]

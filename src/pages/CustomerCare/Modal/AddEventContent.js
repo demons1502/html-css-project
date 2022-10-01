@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {DatePicker, Select, Col, Form, Input, Row, Button} from "antd";
-import {VALIDATE_MESSAGES, FORMAT_DATE} from '../../../../ultis/constant';
+import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {createData, updateData} from '../../../../slices/events';
-import {getEvents} from '../../../../services/events';
+import {DatePicker, Select, Col, Form, Input, Row, Button} from "antd";
+import {VALIDATE_MESSAGES, FORMAT_DATE} from '../../../ultis/constant';
+import useFormErrors from "../../../hooks/useFormErrors";
+import {createData, updateData} from '../../../slices/events';
+import {getEvents} from '../../../services/events';
 import moment from 'moment';
 import _ from 'lodash';
-import useFormErrors from "../../../../hooks/useFormErrors";
+import * as S from '../../../components/styles'
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -15,15 +16,18 @@ const { TextArea } = Input;
 export default function AddEventContent(props) {
   const {t} = useTranslation();
   const {detailData, isTemplate, setVisibleModalAddEvent} = props;
+  console.log('detailData:',detailData);
   const [form] = Form.useForm();
   useFormErrors(form);
   const dispatch = useDispatch();
+  const {customerData} = useSelector((state) => state.customerCare);
   const [eventsTemplate, setEventsTemplate] = useState([])
   const [selectedValue, setSelectedValue] = useState(null)
 
   const handleSaveEvent = (values) => {
     values.date = moment(values.date)
     values.isTemplate = isTemplate
+    values.customerId = customerData.customerId
     if (Object.keys(detailData).length > 0) {
       values.id = detailData.id
       dispatch(updateData(values))
@@ -132,12 +136,12 @@ export default function AddEventContent(props) {
       </Col>
       <Col span={24}>
         <Form.Item className="footer-modal">
-          <Button key="back" className="btn-danger" onClick={resetModal}>
+          <S.Button key="back" danger onClick={resetModal}>
             {t('common.cancel')}
-          </Button>
-          <Button key="submit" className="btn-primary" htmlType="submit" type="primary">
+          </S.Button>
+          <S.Button key="submit" htmlType="submit" type="primary">
             {Object.keys(detailData).length > 0 ? t('common.save') : t('common.create')}
-          </Button>
+          </S.Button>
         </Form.Item>
       </Col>
     </Row>

@@ -40,7 +40,7 @@ export default function AddEventContent(props) {
 
   const disabledDate = (value) =>{
     return  value >= moment()
-   }
+  }
 
   return <Form layout="vertical" form={form} validateMessages={VALIDATE_MESSAGES} onFinish={handleSaveInfo}>
     <Row gutter={[6, 13]}>

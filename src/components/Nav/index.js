@@ -29,7 +29,9 @@ export default function Nav() {
         ) : (
           <Menu.SubMenu
             key={item.key}
-            title={item.label}
+            title={ <Link to={item.path}>
+              <span>{item.label}</span>
+            </Link>}
             icon={<img src={item.icon} alt="" />}
           >
             {item.children.map((child) => {

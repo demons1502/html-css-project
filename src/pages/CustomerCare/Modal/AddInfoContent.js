@@ -38,6 +38,10 @@ export default function AddEventContent(props) {
     }
   }, [detailData])
 
+  const disabledDate = (value) =>{
+    return  value >= moment()
+   }
+
   return <Form layout="vertical" form={form} validateMessages={VALIDATE_MESSAGES} onFinish={handleSaveInfo}>
     <Row gutter={[6, 13]}>
       <Col span={6}>
@@ -45,7 +49,7 @@ export default function AddEventContent(props) {
           label={t('common.date')}
           name="date"
           rules={[{required: true}]}>
-          <DatePicker className="input-item-outline" format={FORMAT_DATE}/>
+          <DatePicker className="input-item-outline" disabledDate={disabledDate} format={FORMAT_DATE}/>
         </Form.Item>
       </Col>
       <Col span={18}>

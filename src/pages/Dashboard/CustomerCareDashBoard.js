@@ -86,13 +86,13 @@ export default function CustomerCareDashBoard() {
     } else {
       setResult(storeCustomerCare);
     }
+    setLoading(storeLoading);
   }, [storeCustomerCare, storeRemindFee, remind]);
 
   useEffect(() => {
     setDataTable(result.data || result.contracts || []);
     setColumns(remind ? columnsRemind : columnCustomerCare);
     setTotal(result.count || result.total || 0);
-    setLoading(storeLoading);
   }, [result]);
 
   const setPaginate = (value) => {

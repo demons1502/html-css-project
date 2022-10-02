@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useState, useRef } from 'react';
 import { Form, Row, Col, DatePicker, AutoComplete } from 'antd';
 import { Button, Select, Input } from "../../components/styles"
 import moment from 'moment';
@@ -13,6 +13,7 @@ import { VALIDATE_MESSAGES, FORMAT_DATE } from '../../ultis/constant';
 function CreateContract(props) {
   const { t } = useTranslation();
   const [form] = Form.useForm();
+  const customerId = useRef();
   useFormErrors(form);
   const { setVisibleModal, dataEdit } = props
   const customerName = useSelector((state) => state.contractManagement.custom);
@@ -29,11 +30,11 @@ function CreateContract(props) {
     (values.depositTerm == "Tháng") ? values.depositTerm = 30 : (values.depositTerm == "Nửa năm") ? values.depositTerm = 180 : values.depositTerm = 360
     const data = {
       contractNumber: values.contractNumber,
-      customerId: 61,
+      customerId: parseInt(customerId.value),
       beneficiary: values.beneficiary,
-      value: +values.value,
+      value: + values.value,
       startDate: moment(values.startDate).format(),
-      duration: +values.duration,
+      duration: + values.duration,
       depositTerm: +values.depositTerm,
     };
     if (Object.keys(dataEdit).length > 0) {
@@ -46,6 +47,10 @@ function CreateContract(props) {
   //autoComplete
   const onSearch = (searchText) => {
     dispatch(getCustoms({ name: searchText, limit: 10, offset: 0 }));
+  };
+
+  const onSelectCustomer = (value, option) => {
+    customerId.value = option.key;
   };
 
   useEffect(() => {
@@ -69,6 +74,7 @@ function CreateContract(props) {
   }, [refreshData])
 
   return <Form layout="vertical" form={form} onFinish={onFinish} autoComplete='off'>
+    <input type='hidden' ref={customerId} name="customerId" value="" />
     <Row gutter={[6, 13]}>
       <Col span={6}>
         <Form.Item
@@ -87,6 +93,7 @@ function CreateContract(props) {
         >
           <AutoComplete
             onSearch={onSearch}
+            onSelect={onSelectCustomer}
             dropdownMatchSelectWidth={400}
             placeholder='Nhập'
             className="select-item-outline"

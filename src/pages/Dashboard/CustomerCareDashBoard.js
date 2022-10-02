@@ -86,7 +86,6 @@ export default function CustomerCareDashBoard() {
     } else {
       setResult(storeCustomerCare);
     }
-    setLoading(storeLoading);
   }, [storeCustomerCare, storeRemindFee, remind]);
 
   useEffect(() => {
@@ -94,6 +93,10 @@ export default function CustomerCareDashBoard() {
     setColumns(remind ? columnsRemind : columnCustomerCare);
     setTotal(result.count || result.total || 0);
   }, [result]);
+
+  useEffect(() => {
+    setLoading(storeLoading);
+  }, [storeLoading]);
 
   const setPaginate = (value) => {
     setOffset(value.offset);

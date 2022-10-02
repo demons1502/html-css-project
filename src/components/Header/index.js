@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, Dropdown, Menu } from 'antd';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import InputSearch from '../common/InputSearch';
 
 import { logout } from '../../slices/auth';
@@ -12,16 +12,29 @@ import SetingIcon from '../../assets/images/icons/setting.svg';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import useInterval from '../../hooks/useInterval';
 
 export default function Header() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [payload, setPayload] = useState({});
+  const titlesHeader = [t('common.slogan'), t('common.support')];
+  const [title, setTitle] = useState(titlesHeader[0]);
+  const [curNewtitle, setCurNewtitle] = useState(-1);
   const { me } = useSelector((state) => state.auth);
   useEffect(() => {
     // fetchdata
   }, [payload]);
+
+  useInterval(() => {
+    let value = curNewtitle + 1;
+    if (value >= titlesHeader.length) {
+      value = 0;
+    }
+    setCurNewtitle(value);
+    setTitle(titlesHeader[value]);
+  }, 60000);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -30,53 +43,53 @@ export default function Header() {
   const menu = (
     <Menu
       className='header__menu'
-      items={[
+      items={ [
         {
           key: '1',
           label: (
             <div
-              onClick={() => navigate('/setting')}
+              onClick={ () => navigate('/setting') }
               className='header__menu__box'
             >
-              <img className='header__menu__icon' src={SetingIcon} />
-              <span className='header__menu__text'>{t('common.setting')}</span>
+              <img className='header__menu__icon' src={ SetingIcon } />
+              <span className='header__menu__text'>{ t('common.setting') }</span>
             </div>
           ),
         },
         {
           key: '2',
           label: (
-            <div onClick={handleLogout} className='header__menu__box'>
-              <img className='header__menu__icon' src={LogoutIcon} />
-              <span className='header__menu__text'>{t('common.logout')}</span>
+            <div onClick={ handleLogout } className='header__menu__box'>
+              <img className='header__menu__icon' src={ LogoutIcon } />
+              <span className='header__menu__text'>{ t('common.logout') }</span>
             </div>
           ),
         },
-      ]}
+      ] }
     />
   );
 
   return (
     <header className='header'>
       <div className='header__left'>
-        <img src={Logo} alt='' />
-        <span>{t('common.manulife')}</span>
+        <img src={ Logo } alt='' />
+        <span>{ t('common.manulife') }</span>
       </div>
       <div className='header__center'>
-        <p>{t('common.slogan')}</p>
+        <p>{ title }</p>
       </div>
       <div className='header__right'>
         <InputSearch
           classStyle='input-item-search-dark'
-          setPayload={setPayload}
+          setPayload={ setPayload }
         />
-        <Dropdown overlay={menu} placement='bottom'>
+        <Dropdown overlay={ menu } placement='bottom'>
           <div className='header__right__user'>
-            <span className='header__right__user__name'>{me.fullname}</span>
+            <span className='header__right__user__name'>{ me.fullname }</span>
             <div className='header__right__user__avatar'>
-              <Avatar size={30} src={AvantarDefault} />
+              <Avatar size={ 30 } src={ !me.avatar ? AvantarDefault : me.avatar } />
               <div className='header__right__user__box-icon'>
-                <img src={ArrowDownIcon} alt='' />
+                <img src={ ArrowDownIcon } alt='' />
               </div>
             </div>
           </div>

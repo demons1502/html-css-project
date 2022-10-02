@@ -10,6 +10,9 @@ import { Table, Typography } from 'antd';
 import { classifyCustomer } from '../../../../../../ultis/classifyCustomer';
 import { getCustomerStatus } from '../../../../../../ultis/statusCustomer';
 
+//HOOKS
+import useOutsideClick from '../../../../../../hooks/useOutsideClick';
+
 // STYLES
 import * as S from './styles';
 
@@ -42,7 +45,7 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
   const [data, setData] = useState([]);
   const [valueSeach, setvalueSeach] = useState();
   const [openDropDown, setOpenDropDown] = useState(false);
-  const showName = typeId === 3 ? 'name' : '';
+  const showName = typeId === 3 ? 'name' : 'fullname';
 
   useEffect(() => {
     setvalueSeach(customer);
@@ -85,9 +88,7 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
       title: 'Ngày sinh',
       dataIndex: 'dob',
       key: 'dob',
-      render: (text) => (
-        <Typography>{moment(text).format('DD/MM/YYYY')}</Typography>
-      ),
+      render: (text) => <Typography>{moment(text).format('DD/MM/YYYY')}</Typography>,
     },
     {
       title: 'Số điện thoại',
@@ -98,11 +99,7 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      render: (text) => (
-        <Typography style={{ color: '#2CB3A5' }}>
-          {getCustomerStatus(text)}
-        </Typography>
-      ),
+      render: (text) => <Typography style={{ color: '#2CB3A5' }}>{getCustomerStatus(text)}</Typography>,
     },
   ];
 
@@ -120,13 +117,15 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
         }}
         dataSource={data}
         columns={columns}
+        onClick={useOutsideClick(() => setOpenDropDown(false))}
+        onBul
       />
     );
   };
 
   return (
     <S.Select
-      placeholder='Tên khách hàng'
+      placeholder="Tên khách hàng"
       showSearch
       value={typeId === 3 ? valueSeach?.name : valueSeach?.fullname}
       defaultActiveFirstOption={false}

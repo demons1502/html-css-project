@@ -27,19 +27,12 @@ export const InputSelect = ({ value, handleChange }) => {
 
   return (
     <S.WrapContainer>
-      <S.Input
-        placeholder='Nội dung lịch hẹn'
-        value={valueInput}
-        onChange={onChangeInput}
-      />
-      <S.Select
-        dropdownStyle={{ minWidth: 295 }}
-        onChange={onChangeSelect}
-        placement='bottomRight'
-      >
-        <Option value='Khảo sát'>Khảo sát</Option>
-        <Option value='Tư vấn tài chính'>Tư vấn tài chính</Option>
-        <Option value='Tư vấn giải pháp'>Tư vấn giải pháp</Option>
+      <S.Input placeholder="Nội dung lịch hẹn" value={valueInput} onChange={onChangeInput} />
+      <S.Select dropdownStyle={{ minWidth: 295 }} onChange={onChangeSelect} placement="bottomRight">
+        <Option value="Khảo sát">Khảo sát</Option>
+        <Option value="Tư vấn tài chính">Tư vấn tài chính</Option>
+        <Option value="Tư vấn giải pháp">Tư vấn giải pháp</Option>
+        <Option value="Ký hợp đồng">Ký hợp đồng</Option>
       </S.Select>
     </S.WrapContainer>
   );

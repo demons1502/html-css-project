@@ -3,6 +3,7 @@ import {
   getAppointmentsApi,
   creactAppointmentApi,
   editAppointmentApi,
+  deleteAppointmentApi,
 } from '../services/appointment';
 import { formatLocalTime } from '../ultis/date';
 
@@ -11,53 +12,41 @@ const initialState = {
   loading: false,
 };
 
-export const getAppointments = createAsyncThunk(
-  'appointment/getAppointment',
-  async (data) => {
-    try {
-      const res = await getAppointmentsApi(data);
-      return res.data;
-    } catch (error) {
-      return Promise.reject(error.data);
-    }
+export const getAppointments = createAsyncThunk('appointment/getAppointment', async (data) => {
+  try {
+    const res = await getAppointmentsApi(data);
+    return res.data;
+  } catch (error) {
+    return Promise.reject(error.data);
   }
-);
+});
 
-export const createAppointment = createAsyncThunk(
-  'appointment/createAppointment',
-  async (data) => {
-    try {
-      const res = await creactAppointmentApi(data);
-      return res.data;
-    } catch (error) {
-      return Promise.reject(error.data);
-    }
+export const createAppointment = createAsyncThunk('appointment/createAppointment', async (data) => {
+  try {
+    const res = await creactAppointmentApi(data);
+    return res.data;
+  } catch (error) {
+    return Promise.reject(error.data);
   }
-);
+});
 
-export const editAppointment = createAsyncThunk(
-  'appointment/editAppointment',
-  async ({ id, data }) => {
-    try {
-      const res = await editAppointmentApi(id, data);
-      return res.data;
-    } catch (error) {
-      return Promise.reject(error.data);
-    }
+export const editAppointment = createAsyncThunk('appointment/editAppointment', async ({ id, data }) => {
+  try {
+    const res = await editAppointmentApi(id, data);
+    return res.data;
+  } catch (error) {
+    return Promise.reject(error.data);
   }
-);
+});
 
-export const deleteAppointment = createAsyncThunk(
-  'appointment/deleteAppointment',
-  async ({ id }) => {
-    try {
-      await deleteAppointment(id);
-      return id;
-    } catch (error) {
-      return Promise.reject(error.data);
-    }
+export const deleteAppointment = createAsyncThunk('appointment/deleteAppointment', async ({ id }) => {
+  try {
+    await deleteAppointmentApi(id);
+    return id;
+  } catch (error) {
+    return Promise.reject(error.data);
   }
-);
+});
 
 const appointmentSlice = createSlice({
   name: 'appointment',
@@ -77,7 +66,6 @@ const appointmentSlice = createSlice({
           end: formatLocalTime(i.endTime),
         };
       });
-      console.log(appointments);
       state.data = appointments;
       state.loading = false;
     });
@@ -122,9 +110,7 @@ const appointmentSlice = createSlice({
         end: formatLocalTime(data.endTime),
       };
       let appointments = [...state.data];
-      state.data = appointments.map((i) =>
-        i.apptId === data.apptId ? appointment : i
-      );
+      state.data = appointments.map((i) => (i.apptId === data.apptId ? appointment : i));
       state.loading = false;
     });
     builder.addCase(editAppointment.rejected, (state) => {

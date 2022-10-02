@@ -10,6 +10,10 @@ export const getTitleAppointment = (value) => {
 
     case 'consult':
       return TITLE_APPOINTMENT.CONSULT;
+
+    case 'contract':
+      return TITLE_APPOINTMENT.CONTRACT;
+
     default:
       return value;
   }

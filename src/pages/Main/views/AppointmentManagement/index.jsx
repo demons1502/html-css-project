@@ -29,9 +29,14 @@ const Appointment = () => {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(event).length === 0) {
-      checkAppointment(data) && setEvent(checkAppointment(data));
-    }
+    checkAppointment(data) && setEvent(checkAppointment(data));
+    // if (Object.keys(event).length === 0) {
+
+    // } else {
+    //   const dataEvent = data.find((i) => i.apptId === event.apptId);
+    //   console.log('dataEvent', dataEvent);
+    //   // setEvent(dataEvent);
+    // }
   }, [data]);
 
   const sort = (array) => {
@@ -45,10 +50,7 @@ const Appointment = () => {
   const checkAppointment = (values) => {
     const appointmentCurrent = sort(
       values.filter((i) => {
-        if (
-          new Date(i.start).getDate() === nowDate.getDate() &&
-          new Date(i.end).getTime() > nowDate.getTime()
-        ) {
+        if (new Date(i.start).getDate() === nowDate.getDate() && new Date(i.end).getTime() > nowDate.getTime()) {
           return i;
         } else if (
           new Date(i.start).getDate() === nowDate.getDate() &&
@@ -59,13 +61,9 @@ const Appointment = () => {
       })
     );
 
-    const appointmentFuture = sort(
-      values.filter((i) => new Date(i.start).getDate() > nowDate.getDate())
-    );
+    const appointmentFuture = sort(values.filter((i) => new Date(i.start).getDate() > nowDate.getDate()));
 
-    const appointmentCurrentPast = sort(
-      values.filter((i) => new Date(i.end).getDate() < nowDate.getDate())
-    );
+    const appointmentCurrentPast = sort(values.filter((i) => new Date(i.end).getDate() < nowDate.getDate()));
 
     if (appointmentCurrent.length > 0) {
       return appointmentCurrent[0];

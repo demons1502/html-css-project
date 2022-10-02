@@ -2,15 +2,17 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import PaginationCommon from '../../components/common/Pagination';
 import { getMissedAppointments } from '../../slices/dashboard';
 import MissedItemDateTime from './commons/MissedAppointment/missed-item-col-date-time';
 import MissedItemName from './commons/MissedAppointment/missed-item-col-name';
 import { limitItem, offsetItem } from './constants';
 import * as S from './styles';
+const navigate = useNavigate();
 
-const handleCSKH = (value) => {
-  console.log('Value:', value);
+const handleCSKH = () => {
+  navigate('/customer-care');
 };
 const columns = [
   {
@@ -25,9 +27,9 @@ const columns = [
   },
   {
     key: 'action',
-    render: (record) => (
+    render: () => (
       <S.WrapButtonTable>
-        <S.Button $type="ghost" onClick={() => handleCSKH(record)}>
+        <S.Button $type="ghost" onClick={handleCSKH}>
           CSKH
         </S.Button>
       </S.WrapButtonTable>
@@ -43,124 +45,7 @@ export default function MissedAppointment() {
   const [toggle, setToggle] = useState(false);
   const [offset, setOffset] = useState(offsetItem);
   const [limit, setLimit] = useState(limitItem);
-  // const [dataTable, setDataTable] = useState(result.data || []);
-  const [dataTable, setDataTable] = useState([
-    {
-      apptId: 24,
-      typeId: 1,
-      title: 'Đi đón bão',
-      startTime: '2022-09-26T16:44:09.947Z',
-      endTime: '2022-09-26T18:44:09.947Z',
-      note: 'Không gặp không về',
-      location: 'Biển Mỹ Khê',
-      isCompleted: true,
-      customerApptRecords: [
-        {
-          customerApptRecordId: 24,
-          customerId: 75,
-          consultId: null,
-          surveyId: null,
-          name: 'GiapNguyen',
-          dob: '1998-09-26T16:49:39.301Z',
-          gender: 1,
-          phone1: 'string',
-        },
-      ],
-      host: 'GiapNguyen',
-    },
-    {
-      apptId: 23,
-      typeId: 1,
-      title: 'Đi đón bão',
-      startTime: '2022-09-26T16:44:09.947Z',
-      endTime: '2022-09-28T18:44:09.947Z',
-      note: 'Không gặp không về',
-      location: 'Biển Mỹ Khê',
-      isCompleted: false,
-      customerApptRecords: [
-        {
-          customerApptRecordId: 23,
-          customerId: 75,
-          consultId: null,
-          surveyId: null,
-          name: 'GiapNguyen',
-          dob: '1998-09-26T16:49:39.301Z',
-          gender: 1,
-          phone1: 'string',
-        },
-      ],
-      host: 'GiapNguyen',
-    },
-    {
-      apptId: 23,
-      typeId: 1,
-      title: 'Đi đón bão',
-      startTime: '2022-09-26T16:44:09.947Z',
-      endTime: '2022-09-28T18:44:09.947Z',
-      note: 'Không gặp không về',
-      location: 'Biển Mỹ Khê',
-      isCompleted: false,
-      customerApptRecords: [
-        {
-          customerApptRecordId: 23,
-          customerId: 75,
-          consultId: null,
-          surveyId: null,
-          name: 'GiapNguyen',
-          dob: '1998-09-26T16:49:39.301Z',
-          gender: 1,
-          phone1: 'string',
-        },
-      ],
-      host: 'GiapNguyen',
-    },
-    {
-      apptId: 23,
-      typeId: 1,
-      title: 'Đi đón bão',
-      startTime: '2022-09-26T16:44:09.947Z',
-      endTime: '2022-09-28T18:44:09.947Z',
-      note: 'Không gặp không về',
-      location: 'Biển Mỹ Khê',
-      isCompleted: false,
-      customerApptRecords: [
-        {
-          customerApptRecordId: 23,
-          customerId: 75,
-          consultId: null,
-          surveyId: null,
-          name: 'GiapNguyen',
-          dob: '1998-09-26T16:49:39.301Z',
-          gender: 1,
-          phone1: 'string',
-        },
-      ],
-      host: 'GiapNguyen',
-    },
-    {
-      apptId: 23,
-      typeId: 1,
-      title: 'Đi đón bão',
-      startTime: '2022-09-26T16:44:09.947Z',
-      endTime: '2022-09-28T18:44:09.947Z',
-      note: 'Không gặp không về',
-      location: 'Biển Mỹ Khê',
-      isCompleted: false,
-      customerApptRecords: [
-        {
-          customerApptRecordId: 23,
-          customerId: 75,
-          consultId: null,
-          surveyId: null,
-          name: 'GiapNguyen',
-          dob: '1998-09-26T16:49:39.301Z',
-          gender: 1,
-          phone1: 'string',
-        },
-      ],
-      host: 'GiapNguyen',
-    },
-  ]);
+  const [dataTable, setDataTable] = useState(result.data || []);
   const [total, setTotal] = useState(result.count || 0);
 
   useEffect(() => {
@@ -195,12 +80,12 @@ export default function MissedAppointment() {
           rowKey={(record) => record.apptId}
           pagination={false}
           bordered={false}
-          scroll={{ scrollToFirstRowOnChange: false }}
+          scroll={{ x: dataTable.length > 0 && 460 }}
           showHeader={false}
           loading={loading}
           $height="320px"
           $endLine
-          $borderBottom={dataTable.length < 4 ? '' : false}
+          $borderBottom={dataTable.length < 5 ? (dataTable.length === 0 ? false : '') : false}
           $heightRow="63px"
         />
         <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />

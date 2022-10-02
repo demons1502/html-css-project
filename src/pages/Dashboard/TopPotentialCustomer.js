@@ -73,7 +73,7 @@ export default function TopPotentialCustomer() {
           pagination={false}
           bordered={false}
           scroll={{ scrollToFirstRowOnChange: false }}
-          $borderBottom=""
+          $borderBottom={dataTable.length === 0 ? false : ''}
           $paddingIcon
           $height="495px"
           loading={loading}

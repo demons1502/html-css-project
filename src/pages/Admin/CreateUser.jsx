@@ -32,7 +32,9 @@ function Create_user(props) {
   const onFinish = (values) => {
     dispatch(createUser(values))
   };
-
+  if(loading.message == "succeeded"){
+    form.resetFields()
+  }
   useEffect(() => {
     if (loading.message == "user_exist") {
       form.setFields([
@@ -46,6 +48,7 @@ function Create_user(props) {
         }
       ])
     }
+    
   }, [loading.message])
 
   const onValuesChange = values => {

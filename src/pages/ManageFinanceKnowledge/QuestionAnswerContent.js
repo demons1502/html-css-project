@@ -1,6 +1,6 @@
 import { LeftOutlined, RightOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Carousel, List, Pagination } from 'antd';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Edit from '../../assets/images/icons/components/Edit';
 import Delete from '../../assets/images/icons/components/Delete';
 import LikeIcon from '../../assets/images/icons/likeIcon.svg';
@@ -35,6 +35,20 @@ const QuestionAnswerContent = (props) => {
     }
   };
 
+  // const [answers, setAnswers] = useState(null);
+
+  // const handleChange = (e) => {
+  //   console.log(e.target.value);
+  //   // let values;
+  //   // const name = e.target.name;
+  //   // values = [...answers, { [name]: e.target.value }];
+  //   // setAnswers(values);
+  // };
+
+  // useEffect(() => {
+  //   content && setAnswers(content?.answers);
+  // }, [content]);
+
   return (
     <div className="questionAnswerContent">
       <List
@@ -52,7 +66,6 @@ const QuestionAnswerContent = (props) => {
 
                 <span onClick={() => onDelete(content)}>
                   <DeleteOutlined className="icon" />
-                  {/* <Delete color="#999" /> */}
                 </span>
               </div>
             )}
@@ -101,26 +114,31 @@ const QuestionAnswerContent = (props) => {
                 </p>
               </div>
               <div className="questionAnswerContent-answer_content">
-                <ManageContentInput
-                  name="answer"
-                  textarea
-                  onChange={onChange}
-                  value={content?.subTitle || content?.desc}
-                  input={false}
-                  isDisabled={isEdit}
-                />
-                <Carousel autoplay>
-                  {content?.answers.map((item) => {
-                    <ManageContentInput
-                      name="answer"
-                      textarea
-                      onChange={onChange}
-                      value={item?.answer}
-                      input={false}
-                      isDisabled={isEdit}
-                    />;
-                  })}
-                </Carousel>
+                {!content?.answers?.length > 0 ? (
+                  <ManageContentInput
+                    name="answer"
+                    textarea
+                    onChange={onChange}
+                    value={content?.answer}
+                    input={false}
+                    isDisabled={isEdit}
+                  />
+                ) : (
+                  <Carousel arrows centerMode touchMove>
+                    {content?.answers?.map((item) => (
+                      <div className="questionAnswerContent-answer_slide" key={item?.id}>
+                        <ManageContentInput
+                          name="answer"
+                          textarea
+                          onChange={onChange}
+                          value={item?.answer}
+                          input={false}
+                          isDisabled={isEdit}
+                        />
+                      </div>
+                    ))}
+                  </Carousel>
+                )}
               </div>
             </div>
           </div>

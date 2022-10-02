@@ -27,9 +27,6 @@ const ManageFinanceKnowledge = () => {
   const [paginate, setPaginate] = useState({ limit: DEFAULT_SIZE, offset: 0 });
   const [fileList, setFileList] = useState(null);
   const [editDisabled, setEditDisabled] = useState(true);
-  const [answers, setAnswers] = useState(null);
-
-  // console.log(file?.publicUrl);
 
   const handleChange = (e) => {
     let values;
@@ -58,13 +55,20 @@ const ManageFinanceKnowledge = () => {
 
   const handleSave = (data) => {
     if (option !== MANAGEMENT_CONTENT[0].value) {
+      const information = {
+        question: {
+          question: data?.question,
+          category: data?.category,
+        },
+        answers: data?.answers ? [...data.answers, { answer: data.answer }] : [{ answer: data.answer }],
+      };
       if (!data.id) {
-        dispatch(createContent({ type: option, payload: data }));
+        dispatch(createContent({ type: option, payload: information }));
         setItemContent(null);
         setFileList(null);
         setEditDisabled(true);
       } else {
-        dispatch(updateContent({ type: option, id: data.id, payload: data }));
+        dispatch(updateContent({ type: option, id: data.id, payload: information }));
         setItemContent(null);
         setFileList(null);
         setEditDisabled(true);
@@ -82,6 +86,32 @@ const ManageFinanceKnowledge = () => {
         setEditDisabled(true);
       }
     }
+
+    // if (option !== MANAGEMENT_CONTENT[0].value) {
+    //   if (!data.id) {
+    //     dispatch(createContent({ type: option, payload: data }));
+    //     setItemContent(null);
+    //     setFileList(null);
+    //     setEditDisabled(true);
+    //   } else {
+    //     dispatch(updateContent({ type: option, id: data.id, payload: data }));
+    //     setItemContent(null);
+    //     setFileList(null);
+    //     setEditDisabled(true);
+    //   }
+    // } else {
+    //   if (!data.id) {
+    //     dispatch(createContent({ type: option, payload: data }));
+    //     setItemContent(null);
+    //     setFileList(null);
+    //     setEditDisabled(true);
+    //   } else {
+    //     dispatch(updateContent({ type: option, id: data.id, payload: data }));
+    //     setItemContent(null);
+    //     setFileList(null);
+    //     setEditDisabled(true);
+    //   }
+    // }
   };
 
   const handleClick = async (item) => {

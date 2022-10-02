@@ -10,44 +10,38 @@ import CustomerItemBirthday from './commons/CustomerCareDashboard/customer-item-
 import CustomerItemRemind from './commons/CustomerCareDashboard/customer-item-col-remind';
 import { limitItem, offsetItem } from './constants';
 import * as S from './styles';
-const navigate = useNavigate();
-
-const handleCSKH = () => {
-  navigate('/customer-care');
-};
-const columnCustomerCare = [
-  {
-    dataIndex: 'fullname',
-    key: 'fullname',
-    render: (text, record) => <CustomerItemBirthday record={record} />,
-  },
-  {
-    dataIndex: '',
-    key: '',
-    render: () => (
-      <S.WrapButtonTable>
-        <S.Button $type="ghost" onClick={handleCSKH}>
-          CSKH
-        </S.Button>
-      </S.WrapButtonTable>
-    ),
-  },
-];
-
-const columnsRemind = [
-  {
-    dataIndex: 'name',
-    key: 'name',
-    render: (text, record) => <CustomerItemRemind record={record} />,
-  },
-  {
-    dataIndex: 'value',
-    key: 'value',
-    render: (_, record) => <CustomerButtonRemind record={record} />,
-  },
-];
 
 export default function CustomerCareDashBoard() {
+  const columnCustomerCare = [
+    {
+      dataIndex: 'fullname',
+      key: 'fullname',
+      render: (text, record) => <CustomerItemBirthday record={record} />,
+    },
+    {
+      dataIndex: '',
+      key: '',
+      render: () => (
+        <S.WrapButtonTable>
+          <S.Button $type="ghost" onClick={handleCSKH}>
+            CSKH
+          </S.Button>
+        </S.WrapButtonTable>
+      ),
+    },
+  ];
+  const columnsRemind = [
+    {
+      dataIndex: 'name',
+      key: 'name',
+      render: (text, record) => <CustomerItemRemind record={record} />,
+    },
+    {
+      dataIndex: 'value',
+      key: 'value',
+      render: (_, record) => <CustomerButtonRemind record={record} />,
+    },
+  ];
   const { t } = useTranslation();
   const [remind, setRemind] = useState(false);
   const storeCustomerCare = useSelector((state) => state.dashboard.customerCares);
@@ -62,6 +56,11 @@ export default function CustomerCareDashBoard() {
   const [limit, setLimit] = useState(limitItem);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(storeLoading);
+  const navigate = useNavigate();
+
+  const handleCSKH = () => {
+    navigate('/customer-care');
+  };
 
   useEffect(() => {
     let payload = {};

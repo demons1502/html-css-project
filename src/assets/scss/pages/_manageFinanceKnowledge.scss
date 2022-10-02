@@ -240,13 +240,20 @@
           display: flex;
           justify-content: flex-start;
           align-items: center;
-          img {
-            width: 20px;
-            height: 20px;
-            object-fit: cover;
+          span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
             &:last-child {
-              margin-left: 13px;
+              margin-left: 5px;
+            }
+            .icon {
+              font-size: 2rem;
+              color: #999;
+              &:hover {
+                color: $red-color;
+              }
             }
           }
         }
@@ -263,6 +270,7 @@
         }
         .ant-input-affix-wrapper {
           padding: 0 17px;
+          color: $black-color;
           &.color-green {
             .ant-input {
               color: $green-color;
@@ -305,7 +313,8 @@
             margin-right: unset;
             background-color: $green-color;
             border-color: $green-color;
-            &:hover,&:focus{
+            &:hover,
+            &:focus {
               background: $green-color;
             }
           }

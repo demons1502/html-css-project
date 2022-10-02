@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Checkbox, Image} from 'antd';
+import React, { useState, useEffect, useRef, notification } from 'react';
+import { Checkbox, Image } from 'antd';
 import Modal from '../../components/common/Modal'
 import "../../assets/scss/Admin/stylesAdmin.scss"
 import InputSearch from '../../components/common/InputSearch';
@@ -9,10 +9,10 @@ import Pagination from "../../components/common/Pagination";
 import ModalConfirm from '../../components/ModalConfirm';
 import { useDispatch, useSelector } from 'react-redux';
 import * as S from "../../components/styles";
-import Icon, {DeleteFilled} from '@ant-design/icons';
+import Icon, { DeleteOutlined } from '@ant-design/icons';
 import TrashSvg from '../../assets/images/icons/deleteIcon.svg';
 import { PageHeader, Typography } from 'antd';
-import {SettingOutlined, PlusOutlined, DownloadOutlined} from '@ant-design/icons';
+import { SettingOutlined, PlusOutlined, DownloadOutlined } from '@ant-design/icons';
 import {
   searchUser,
   uploadFiles,
@@ -21,23 +21,23 @@ import {
   removeUserIds,
   resetUserId,
 } from '../../slices/userManagement';
-import {DEFAULT_SIZE} from "../../ultis/constant";
-import {useTranslation} from "react-i18next";
+import { DEFAULT_SIZE } from "../../ultis/constant";
+import { useTranslation } from "react-i18next";
 
 export default function UserManagement() {
-  const {t} = useTranslation()
-  const dispatch= useDispatch()
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
   const input_file = useRef(null);
-  const {data, totalItem, refreshList}=useSelector((state)=>state.userManagement)
+  const { data, totalItem, refreshList } = useSelector((state) => state.userManagement)
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isCreateUser, setIsCreateUser] = useState(false)
   const [isSettingLog, setIsSettingLog] = useState(false)
-  const [inputText, setInputText]= useState('')
+  const [inputText, setInputText] = useState('')
   const [paginate, setPaginate] = useState({
     limit: DEFAULT_SIZE,
     offset: 1
   });
-  
+
   const TrashIcon = (props) => <Icon component={TrashSvg} {...props} />;
 
   const columns = [
@@ -70,7 +70,7 @@ export default function UserManagement() {
       width: '105px',
       title: 'ID login',
       dataIndex: 'loginId',
-      className:'login-id',
+      className: 'login-id',
       key: 5,
     },
     {
@@ -83,7 +83,7 @@ export default function UserManagement() {
         <Checkbox
           id='qna'
           defaultChecked={record.permissions.includes('qa')}
-          onChange={(e) => {handleCheckboxChange(e, record.id, 'qna'),console.log(record)}}
+          onChange={(e) => { handleCheckboxChange(e, record.id, 'qna'), console.log(record) }}
         />
       ),
     },
@@ -97,7 +97,7 @@ export default function UserManagement() {
         <Checkbox
           id='isPaid'
           defaultChecked={record.permissions.includes('payment')}
-          onChange={(e ) => handleCheckboxChange(e, record.id, 'isPaid')}
+          onChange={(e) => handleCheckboxChange(e, record.id, 'isPaid')}
         />
       ),
     },
@@ -139,47 +139,21 @@ export default function UserManagement() {
       key: 10,
       align: 'right',
       render: (record) => (
-        // <button
-        //   className='btn_reset-user btn-bgWhite-textGreen-borGreen'
-        //   onClick={() => handelResetUser(record.id)}
-        // >
-        //   Khởi tạo lại
-        // </button>
         <div>
           <S.Button
             size={'small'}
-            onClick={() => handleDeleteUser(record)}
+            onClick={() => handelResetUser(record)}
           >
             Khởi tạo lại
           </S.Button>
           <S.Button
             className='btn-hover-danger'
-            icon={<DeleteFilled />}
+            icon={<DeleteOutlined />}
             onClick={() => handleDeleteUser(record)}
           />
         </div>
       ),
     },
-    // {
-    //   title: '',
-    //   width: '30px',
-    //   align: 'center',
-    //   key: 11,
-    //   // render: (record) => (
-    //   //   <img
-    //   //     className='dustbin_icon'
-    //   //     src='./images/dustbin_icon.svg'
-    //   //     onClick={() => handleDeleteUser(record)}
-    //   //   />
-    //   // ),
-    //   render: (record) => (
-    //     <S.Button
-    //       className='btn-hover-danger'
-    //       icon={<DeleteFilled />}
-    //       onClick={() => handleDeleteUser(record)}
-    //     />
-    //   ),
-    // }
   ];
 
   const handleDeleteUser = (record) => {
@@ -191,17 +165,18 @@ export default function UserManagement() {
   };
 
   const handleCheckboxChange = (e, id, key) => {
-    dispatch(updateUser({id: id, data: {[key]: e.target.checked}}));
+    dispatch(updateUser({ id: id, data: { [key]: e.target.checked } }));
   };
 
-  // const handelResetUser = (id) => {
-  //   ModalConfirm({
-  //     title: 'Xác nhận',
-  //     content: `Khởi tạo lại sẽ xóa toàn bộ thông tin liên quan đến khách hàng và những việc đã làm với khách hàng.
-  //     Thông tin về tài khoản sẽ  vẫn được giữ lại.`,
-  //     callApi: () => dispatch(resetUserId({ userIds: [id] })),
-  //   });
-  // };
+  const handelResetUser = (id) => {
+    console.log(id.id);
+    ModalConfirm({
+      title: 'Xác nhận',
+      content: `Khởi tạo lại sẽ xóa toàn bộ thông tin liên quan đến khách hàng và những việc đã làm với khách hàng.
+      Thông tin về tài khoản sẽ  vẫn được giữ lại.`,
+      callApi: () => dispatch(resetUserId({ userIds: [id.id] })),
+    });
+  };
 
   const handelResetUsers = () => {
     const listId = selectedRowKeys.map((item) => {
@@ -253,17 +228,17 @@ export default function UserManagement() {
   useEffect(() => {
     input_file.current.style.display = 'none'
     dispatch(searchUser({ q: inputText, page: paginate.offset, limit: paginate.limit }));
-  },[inputText, paginate])
+  }, [inputText, paginate])
 
-  useEffect(()=>{
-    if(refreshList){
+  useEffect(() => {
+    if (refreshList) {
       dispatch(searchUser({ q: inputText, page: paginate.offset, limit: paginate.limit }));
     }
-  },[refreshList])
+  }, [refreshList])
 
   return (
     <>
-      <input type='file' ref={input_file} />
+      <input type='file' ref={input_file} accept='.csv'/>
       <S.PageHeader
         className="site-page-header-responsive"
         backIcon={false}
@@ -272,18 +247,18 @@ export default function UserManagement() {
         extra={[
           <S.Button key="1" onClick={handleDeleteUsers}>Xóa</S.Button>,
           <S.Button key="2" onClick={handelResetUsers}>Khởi tạo lại</S.Button>,
-          <S.Button key="3" onClick={handleImport} type="primary" icon={<DownloadOutlined style={{ fontSize: '14px' }}/>}>
+          <S.Button key="3" onClick={handleImport} type="primary"  icon={<DownloadOutlined style={{ fontSize: '14px' }} />}>
             Import
           </S.Button>,
           <S.Button key="4" onClick={() => setIsCreateUser(true)} type="primary" icon={<PlusOutlined />}>
             Tạo mới
           </S.Button>,
-          <S.Button key="5" onClick={() => setIsSettingLog(!isSettingLog)} className='btn-hover-primary' icon={<SettingOutlined key="6" style={{ fontSize: '20px' }}/>}></S.Button>
-           
+          <S.Button key="5" onClick={() => setIsSettingLog(!isSettingLog)} className='btn-hover-primary' icon={<SettingOutlined key="6" style={{ fontSize: '20px' }} />}></S.Button>
+
         ]}
       >
       </S.PageHeader>
-      
+
       <div className='content-box container_admin'>
         <div className='admin_title'>
           <h3>Danh sách tài khoản</h3>
@@ -292,9 +267,9 @@ export default function UserManagement() {
           </div>
         </div>
         <TableCommon dataSource={data} columnTable={columns} isSelection={true} setSelectedRowKeys={setSelectedRowKeys} />
-        <Pagination total={totalItem} pageSize={paginate.limit} setPaginate={setPaginate}/>
-        <Modal isVisible={isCreateUser} setIsVisible={setIsCreateUser} title="Tạo mới nhân sự" width={589} 
-          content={ <CreateUser closeCreateUser={setIsCreateUser}/>} />
+        <Pagination total={totalItem} pageSize={paginate.limit} setPaginate={setPaginate} />
+        <Modal isVisible={isCreateUser} setIsVisible={setIsCreateUser} title="Tạo mới nhân sự" width={589}
+          content={<CreateUser closeCreateUser={setIsCreateUser} />} />
       </div>
     </>
   );

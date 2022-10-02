@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {Checkbox} from 'antd';
-import {getData} from '../../slices/customerCare';
+import {Checkbox, message} from 'antd';
+import {getData, setCustomerData} from '../../slices/customerCare';
 import Table from '../../components/common/TableNormal';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconFiles from '../../assets/images/icons/files.svg';
@@ -14,6 +14,7 @@ import {calculateAge, getCustomerCareLabel, getTimeByTZ, capitalizeFirstLetter} 
 import {Link} from "react-router-dom";
 import useScrollTableConfig from '../../hooks/useScrollTableConfig'
 import * as S from '../../components/styles'
+import { patchCustomer } from '../../services/customers';
 
 export default function History() {
   const {t} = useTranslation();
@@ -100,10 +101,18 @@ export default function History() {
     }
   }, [data])
 
+  const setPotentialCustomer = async () => {
+    if (customerData.isPotential) {
+      const {data} = await patchCustomer(customerData.customerId, {...customerData, ...{isPotential: false}})
+      dispatch(setCustomerData({...customerData, ...{isPotential: false}}))
+      message.success('Thay đổi thông tin thành công')
+    }
+  } 
+
   return (
     <>
       <div className="customer-care__right--top">
-        <Checkbox className="checkbox-item" checked={!customerData.isPotential}>{t('customer care.no more potential')}</Checkbox>
+        <Checkbox className="checkbox-item" checked={!customerData.isPotential} onChange={setPotentialCustomer}>{t('customer care.no more potential')}</Checkbox>
       </div>
       <div className="customer-care__right--event">
         <div className="customer-care__right--event--left">

@@ -17,12 +17,12 @@ function CreateContract(props) {
   const { setVisibleModal, dataEdit } = props
   const customerName = useSelector((state) => state.contractManagement.custom);
   var customerEdit = useSelector((state) => state.contractManagement.dataEdit);
+  const refreshData = useSelector((state) => state.contractManagement.refreshData);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCustoms({ name: '', limit: 10, offset: 0 }));
   }, []);
-
   var { Option } = AutoComplete;
 
   const onFinish = (values) => {
@@ -36,36 +36,37 @@ function CreateContract(props) {
       duration: +values.duration,
       depositTerm: +values.depositTerm,
     };
-    if (dataEdit) {
-      dispatch(updateContract({ id: dataEdit, data: data }));
+    if (Object.keys(dataEdit).length > 0) {
+      dispatch(updateContract({ id: dataEdit.id, data: data }));
     } else {
       dispatch(createContract(data));
     }
   };
-  const convertDepositTerm = (value) => {
-    return (value == 30) ? value = "Tháng" : (value == 180) ? value = "Nửa năm" : (value == 360) ? value = "Năm" : value
-  }
+
   //autoComplete
   const onSearch = (searchText) => {
     dispatch(getCustoms({ name: searchText, limit: 10, offset: 0 }));
   };
 
   useEffect(() => {
-    if(dataEdit){
-      dispatch(getByIdApi(dataEdit))
+    if (Object.keys(dataEdit).length > 0) {
+      dispatch(getByIdApi(dataEdit.id))
     }
   }, [dataEdit])
 
   useEffect(() => {
-    if (Object.keys(customerEdit).length > 0 && dataEdit) {
+    if (Object.keys(customerEdit).length > 0 && Object.keys(dataEdit).length > 0) {
       form.setFieldsValue({ ...customerEdit, ...{ date: moment(customerEdit.startDate) } })
-      console.log('createAt:', moment(customerEdit.createAt));
     } else {
       form.resetFields()
     }
   }, [customerEdit, dataEdit])
 
-  
+  useEffect(() => {
+    if (refreshData) {
+      setVisibleModal(false)
+    }
+  }, [refreshData])
 
   return <Form layout="vertical" form={form} onFinish={onFinish} autoComplete='off'>
     <Row gutter={[6, 13]}>
@@ -90,7 +91,7 @@ function CreateContract(props) {
             placeholder='Nhập'
             className="select-item-outline"
           >
-            {customerName.map((item) => (
+            {customerName?.map((item) => (
               <Option value={item.fullname} key={item.customerId}>
                 <div
                   style={{
@@ -172,7 +173,7 @@ function CreateContract(props) {
       </Col>
       <Col span={24}>
         <Form.Item className="footer-modal">
-          <Button key="back" className="btn-danger" onClick={() => { setVisibleModal(false); form.resetFields() }}>
+          <Button key="back" className="btn-danger" onClick={() => setVisibleModal(false)}>
             {t('common.cancel')}
           </Button>
           <Button key="submit" htmlType="submit" type="primary">

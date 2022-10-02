@@ -1,11 +1,17 @@
-import { Button as AntButton, PageHeader as AntPageHeader, Upload as AntUpload, Select as AntSelect ,Input as AntInput } from 'antd';
+import {
+  Button as AntButton,
+  PageHeader as AntPageHeader,
+  Upload as AntUpload,
+  Select as AntSelect,
+  Input as AntInput,
+} from 'antd';
 import styled from 'styled-components';
 
 export const PageHeader = styled(AntPageHeader)`
   &.ant-page-header {
-    background-color: #fff; 
+    background-color: #fff;
     padding: 7px 28px;
-    margin:0px -30px 13px -30px;
+    margin: 0px -30px 13px -30px;
     & .ant-page-header-heading-title {
       font-weight: 700;
       font-size: 18px;
@@ -25,14 +31,13 @@ export const Button = styled(AntButton)`
   line-height: 15px;
   padding: 0 24px;
   &.ant-btn-primary {
-    background: linear-gradient(180deg, #36B872 0%, #30A867 100%);
+    background: linear-gradient(180deg, #36b872 0%, #30a867 100%);
     color: #fff;
     border: none;
     &:hover,
     &:focus {
-      opacity: 0.8
+      opacity: 0.8;
     }
-    
   }
   &.ant-btn-dangerous {
     color: #ff5855 !important;
@@ -40,13 +45,12 @@ export const Button = styled(AntButton)`
     &:hover,
     &:focus {
       opacity: 0.8;
-      background: #fff  !important;
+      background: #fff !important;
     }
-    
   }
   &.ant-btn-default {
-    border: 1px solid #3DBD78;
-    color: #3DBD78;
+    border: 1px solid #3dbd78;
+    color: #3dbd78;
     &:hover,
     &:focus {
       color: #40a9ff;
@@ -61,28 +65,34 @@ export const Button = styled(AntButton)`
         border-color: #40a9ff;
       }
     }
+    &.btn-no-border {
+      border: none;
+      &:focus {
+        color: #3dbd78;
+      }
+    }
   }
   &.ant-btn-icon-only {
     border: none;
     color: #999999;
     padding: 0;
     font-size: 20px;
-    & svg{
-      width:20px;
-      height:20px;
+    & svg {
+      width: 20px;
+      height: 20px;
     }
     .anticon {
       font-size: 20px;
     }
     &.btn-hover-danger {
-      &:hover ,
+      &:hover,
       &:focus {
         background: none;
-        color: #FF5855;
+        color: #ff5855;
       }
     }
     &.btn-hover-primary {
-      &:hover ,
+      &:hover,
       &:focus {
         background: none;
         color: #30a867;
@@ -134,7 +144,7 @@ export const Upload = styled(AntUpload)`
 
 export const Select = styled(AntSelect)`
   &.ant-select .ant-select-selector {
-    background: #F8F8F8;
+    background: #f8f8f8;
     border-radius: 5px;
     border: none;
   }
@@ -142,7 +152,7 @@ export const Select = styled(AntSelect)`
 
 export const Input = styled(AntInput)`
   &.ant-input {
-    background: #F8F8F8;
+    background: #f8f8f8;
     border-radius: 5px;
     border: unset;
     &.ant-input-lg {
@@ -153,7 +163,4 @@ export const Input = styled(AntInput)`
       border-radius: 3px;
     }
   }
-   
 `;
-
-

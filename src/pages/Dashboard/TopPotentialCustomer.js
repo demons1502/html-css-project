@@ -9,7 +9,7 @@ import * as S from './styles';
 
 export default function TopPotentialCustomer() {
   const { t } = useTranslation();
-  const loading = useSelector((state) => state.dashboard.loading);
+  const loading = useSelector((state) => state.dashboard.loadingTopPotential);
   const result = useSelector((state) => state.dashboard.topPotentialCustomers);
   const [dataTable, setDataTable] = useState(result.data || []);
   const dispatch = useDispatch();
@@ -18,8 +18,8 @@ export default function TopPotentialCustomer() {
   const columns = [
     {
       title: t('common.customer name'),
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'fullname',
+      key: 'fullname',
     },
     {
       title: t('common.customer type'),
@@ -69,10 +69,11 @@ export default function TopPotentialCustomer() {
         <S.Table
           dataSource={dataTable}
           columns={columns}
+          rowKey={(record) => record.customerId}
           pagination={false}
           bordered={false}
           scroll={{ scrollToFirstRowOnChange: false }}
-          $borderBottom={false}
+          $borderBottom=""
           $paddingIcon
           $height="495px"
           loading={loading}

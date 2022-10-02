@@ -1,4 +1,4 @@
-import {createSlice, createAction, createAsyncThunk, isFulfilled} from '@reduxjs/toolkit';
+import {createSlice, createAction, createAsyncThunk} from '@reduxjs/toolkit';
 import {getCustomerCare, addCustomerCare, patchCustomerCare, deleteCustomerCare} from '../services/customerCare';
 
 const initialState = {

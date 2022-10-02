@@ -125,7 +125,6 @@
       background: $gray-1;
     }
     &--info {
-      min-height: 122px;
       h3 {
         @extend %align-items-center;
         column-gap: 10px;

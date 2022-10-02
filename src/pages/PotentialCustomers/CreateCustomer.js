@@ -7,7 +7,7 @@ import DatePicker from '../../components/common/DatePicker';
 import InputNumber from '../../components/common/InputNumber';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPotentialCustomers, getCompanies } from '../../slices/potentialCustomersSlice';
-import { acquaintanceLevel, marriageStatus } from '../../constants/common';
+import { acquaintanceLevel, connectFrom, marriageStatus, relationship } from '../../constants/common';
 import { REGEX_PHONE } from './constants';
 import moment from 'moment';
 
@@ -19,6 +19,8 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
   const [maritalStatus, setMaritalStatus] = useState(1);
   const [acquaintanceLevelStatus, setAcquaintanceLevelStatus] = useState();
   const [dob, setDob] = useState();
+  const [connectFromValue, setConnectFromValue] = useState();
+  const [relationshipValue, setRelationshipValue] = useState();
   const [currencyString, setCurrencyString] = useState();
 
   const companies = useSelector((state) => state.potentialCustomersReducer.companies);
@@ -51,6 +53,26 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
         </Option>
       )),
     [companies]
+  );
+
+  const relationshipOptions = useMemo(
+    () =>
+      relationship.map(({ label, value }) => (
+        <Option key={value} value={value}>
+          {label}
+        </Option>
+      )),
+    [relationship]
+  );
+
+  const connectFromOptions = useMemo(
+    () =>
+      connectFrom.map(({ label, value }) => (
+        <Option key={value} value={value}>
+          {label}
+        </Option>
+      )),
+    [connectFrom]
   );
 
   const onChangeDate = (date) => {
@@ -319,17 +341,44 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   {typeId === 2 ? <Select placeholder="Chọn">{companyOptions}</Select> : <Input />}
                 </Form.Item>
               </Col>
-              <Col span={12}>
+              <Col span={6}>
                 <Form.Item
-                  label="Email"
-                  name="email"
+                  label="Nguồn gốc"
+                  name="connectFrom"
                   rules={[
                     {
-                      type: 'email',
+                      required: true,
+                      message: 'Vui lòng chọn nguồn gốc!',
                     },
                   ]}
                 >
-                  <Input />
+                  <Select
+                    value={connectFromValue}
+                    placeholder="Chọn"
+                    onChange={(selected) => setConnectFromValue(selected)}
+                  >
+                    {connectFromOptions}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item
+                  label="Quan hệ"
+                  name="relationship"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng chọn quan hệ!',
+                    },
+                  ]}
+                >
+                  <Select
+                    value={relationshipValue}
+                    placeholder="Chọn"
+                    onChange={(selected) => setRelationshipValue(selected)}
+                  >
+                    {relationshipOptions}
+                  </Select>
                 </Form.Item>
               </Col>
             </Row>
@@ -342,6 +391,21 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
               <Col span={12}>
                 <Form.Item label="Mã số hợp đồng" name="contractNumber">
                   <Input readOnly />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={12}>
+              <Col span={24}>
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  rules={[
+                    {
+                      type: 'email',
+                    },
+                  ]}
+                >
+                  <Input />
                 </Form.Item>
               </Col>
             </Row>

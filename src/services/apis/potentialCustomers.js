@@ -4,7 +4,7 @@ export const getPotentialCustomersApi = async (data) =>
   request({
     url: '/customers',
     method: 'get',
-    data,
+    params: data,
   });
 
 export const createPotentialCustomersApi = async (data) =>

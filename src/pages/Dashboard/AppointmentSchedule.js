@@ -1,3 +1,4 @@
+import { Col, Row } from 'antd';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AppointmentItemTitle from './commons/AppointmentSchedule/appointment-item-title';
@@ -14,10 +15,16 @@ export default function AppointmentSchedule() {
 
   return (
     <S.WrapContainer $height="768px">
-      <AppointmentItemTitle props={slider} />
-      <S.WrapContent $padding="15px">
-        <AppointmentListCard handleSlider={handleSlider} />
-      </S.WrapContent>
+      <Row>
+        <Col span={24}>
+          <AppointmentItemTitle props={slider} />
+        </Col>
+        <Col span={24}>
+          <S.WrapContent $padding="15px">
+            <AppointmentListCard handleSlider={handleSlider} />
+          </S.WrapContent>
+        </Col>
+      </Row>
     </S.WrapContainer>
   );
 }

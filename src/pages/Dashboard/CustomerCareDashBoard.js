@@ -1,16 +1,19 @@
-import moment from 'moment';
+import { Col } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import PaginationCommon from '../../components/common/Pagination';
 import { getCustomerCares, getRemindFees } from '../../slices/dashboard';
+import CustomerButtonRemind from './commons/CustomerCareDashboard/customer-button-remind';
 import CustomerItemBirthday from './commons/CustomerCareDashboard/customer-item-col-birthday';
 import CustomerItemRemind from './commons/CustomerCareDashboard/customer-item-col-remind';
 import { limitItem, offsetItem } from './constants';
 import * as S from './styles';
+const navigate = useNavigate();
 
-const handleCSKH = (value) => {
-  console.log('Value:', value);
+const handleCSKH = () => {
+  navigate('/customer-care');
 };
 const columnCustomerCare = [
   {
@@ -21,9 +24,9 @@ const columnCustomerCare = [
   {
     dataIndex: '',
     key: '',
-    render: (record) => (
+    render: () => (
       <S.WrapButtonTable>
-        <S.Button $type="ghost" onClick={() => handleCSKH(record)}>
+        <S.Button $type="ghost" onClick={handleCSKH}>
           CSKH
         </S.Button>
       </S.WrapButtonTable>
@@ -31,9 +34,6 @@ const columnCustomerCare = [
   },
 ];
 
-const handleRemind = (value) => {
-  console.log('Value:', value);
-};
 const columnsRemind = [
   {
     dataIndex: 'name',
@@ -43,13 +43,7 @@ const columnsRemind = [
   {
     dataIndex: 'value',
     key: 'value',
-    render: (_, record) => (
-      <S.WrapButtonTable>
-        <S.Button $type="ghost" onClick={() => handleRemind(record)}>
-          Nhắc nộp phí
-        </S.Button>
-      </S.WrapButtonTable>
-    ),
+    render: (_, record) => <CustomerButtonRemind record={record} />,
   },
 ];
 
@@ -68,12 +62,14 @@ export default function CustomerCareDashBoard() {
   const [limit, setLimit] = useState(limitItem);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(storeLoading);
+
   useEffect(() => {
     let payload = {};
     if (remind) {
       payload = {
         limit: 4,
         offset,
+        sortByDue: true,
       };
       dispatch(getRemindFees(payload));
     } else {
@@ -96,7 +92,7 @@ export default function CustomerCareDashBoard() {
   useEffect(() => {
     setDataTable(result.data || result.contracts || []);
     setColumns(remind ? columnsRemind : columnCustomerCare);
-    setTotal(result.count || 0);
+    setTotal(result.count || result.total || 0);
     setLoading(storeLoading);
   }, [result]);
 
@@ -111,10 +107,12 @@ export default function CustomerCareDashBoard() {
 
   return (
     <S.WrapContainer $toggle={toggle} $height="473px">
-      <S.WrapTitle $toggle={toggle}>
+      <S.WrapTitle $toggle={toggle} wrap={false} $padding="0px 23px 0px 0px">
         <S.IconDown onClick={() => setToggle(!toggle)} />
-        <S.Title>{t('dashboard-page.customer-care-dashboard')}</S.Title>
-        <S.WrapButtonTitle flex="auto">
+        <Col>
+          <S.Title>{t('dashboard-page.customer-care-dashboard')}</S.Title>
+        </Col>
+        <S.WrapButtonTitle>
           <S.Button $type={!remind && 'disabled'} onClick={() => handleSwitchMode()}>
             {t('customer-care-dashboard.remind')}
           </S.Button>
@@ -128,7 +126,7 @@ export default function CustomerCareDashBoard() {
           loading={loading}
           pagination={false}
           bordered={false}
-          scroll={{ scrollToFirstRowOnChange: false }}
+          scroll={{ x: dataTable.length > 0 && 460 }}
           showHeader={false}
           $height="320px"
           $endLine

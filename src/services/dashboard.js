@@ -4,6 +4,8 @@ export const getCallScheduleApi = (data) => sendGet('/customer-calls', data);
 // CustomerCareDashboard
 export const getCustomerCareApi = (data) => sendGet('/customers/event', data);
 export const getRemindFeeApi = (data) => sendGet('/contracts', data);
+export const sendSMSApi = (data) => sendPost('/events/send', data);
+export const sendEmailApi = (data) => sendPost('/events/send', data);
 // MissedAppointment
 export const getMissedAppointmentApi = (data) => sendGet('/appointments', data);
 // AppointmentSchedule

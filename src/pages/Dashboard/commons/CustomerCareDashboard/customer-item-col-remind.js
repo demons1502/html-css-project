@@ -14,22 +14,22 @@ export default function CustomerItemRemind(props) {
       </Col>
       <Col>
         <Row>
-          <p>{record.name}</p>
+          <p>{record.customerName}</p>
         </Row>
         <Row>
           <S.TextTable>
-            {t('customer-care-dashboard.dueDate')} <S.TextTable $bold>{record.dueDate}</S.TextTable>
+            {t('customer-care-dashboard.dueDate')} <S.TextTable $bold>{record.nextDepositDue}</S.TextTable>
           </S.TextTable>
         </Row>
         <Row gutter={10}>
           <Col>
             <S.TextTable>
-              {t('customer-care-dashboard.contractId')} <S.TextTable $bold>{record.contractId}</S.TextTable>
+              {t('customer-care-dashboard.contractId')} <S.TextTable $bold>{record.contractNumber}</S.TextTable>
             </S.TextTable>
           </Col>
           <Col>
             <S.TextTable>
-              {t('customer-care-dashboard.money')} <S.TextTable $bold>{record.money}</S.TextTable>
+              {t('customer-care-dashboard.money')} <S.TextTable $bold>{record.value}</S.TextTable>
             </S.TextTable>
           </Col>
         </Row>

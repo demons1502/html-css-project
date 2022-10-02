@@ -1,0 +1,7 @@
+@use "../abstracts/" as *;
+
+.recent {
+  &-post {
+    font-family:$bold-font ;
+  }
+}

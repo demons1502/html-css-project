@@ -1,0 +1,29 @@
+@use "../abstracts/" as *;
+
+.review{
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+    &-card {
+       background-color:$background-color-card;
+       padding: 10px 32px;
+       border-radius: 27px;
+       &-reviewers__rating {
+        $percent: calc(var(--rating) / 5 * 100%);
+        font-size: calc(0.73 * 24px);
+        &::before {
+          content: "★★★★★";
+          color: $icon-color;
+          background: linear-gradient(
+            90deg,
+            $icon-color var(--percent),
+            $background-color-card var(--percent)
+          );
+        }
+      }
+      &-reviewers__info {
+        font-family: $bold-font;
+      }
+    }
+  }

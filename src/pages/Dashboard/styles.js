@@ -360,6 +360,12 @@ export const Table = styled(AntDTable)`
           }}
         }
       }
+
+      ${(props) =>
+        props.$heightRow &&
+        css`
+          height: ${props.$heightRow};
+        `};
     }
   }
 
@@ -375,6 +381,12 @@ export const Table = styled(AntDTable)`
     props.$height &&
     css`
       height: ${props.$height};
+    `};
+
+  ${(props) =>
+    props.$minHeight &&
+    css`
+      min-height: ${props.$minHeight};
     `};
 
   ${(props) =>
@@ -523,6 +535,9 @@ export const WrapIconImageCalendar = styled.img`
   height: 40px;
   margin-right: 10px;
   position: relative;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const DatePicker = styled(AntDDatePicker)`
@@ -546,4 +561,12 @@ export const WrapTabs = styled.div`
   width: 100%;
   height: 620px;
   overflow: auto;
+
+  ${(props) =>
+    props.$center &&
+    css`
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    `};
 `;

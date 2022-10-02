@@ -1,32 +1,27 @@
-import { Col, Form, Row } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
-import Modal from "../../components/common/ModalSelect";
-import Select from "../../components/common/Select";
-import Input from "../../components/common/Input";
-import DatePicker from "../../components/common/DatePicker";
+import { Col, Form, Row } from 'antd';
+import React, { useEffect, useMemo, useState } from 'react';
+import Modal from '../../components/common/ModalSelect';
+import Select from '../../components/common/Select';
+import Input from '../../components/common/Input';
+import DatePicker from '../../components/common/DatePicker';
 import InputNumber from '../../components/common/InputNumber';
-import { useDispatch, useSelector } from "react-redux";
-import {
-  createPotentialCustomers,
-  getCompanies,
-} from "../../slices/potentialCustomersSlice";
-import { useTranslation } from "react-i18next";
-import { acquaintanceLevel, marriageStatus } from "../../constants/common";
-import { REGEX_PHONE } from "./constants";
+import { useDispatch, useSelector } from 'react-redux';
+import { createPotentialCustomers, getCompanies } from '../../slices/potentialCustomersSlice';
+import { acquaintanceLevel, marriageStatus } from '../../constants/common';
+import { REGEX_PHONE } from './constants';
+import moment from 'moment';
 
 export default function CreateCustomer({ isModalOpen, handleCancel }) {
   const { Option } = Select;
   const [form] = Form.useForm();
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [typeId, setTypeId] = useState(1);
   const [maritalStatus, setMaritalStatus] = useState(1);
   const [acquaintanceLevelStatus, setAcquaintanceLevelStatus] = useState();
   const [dob, setDob] = useState();
+  const [currencyString, setCurrencyString] = useState();
 
-  const companies = useSelector(
-    (state) => state.potentialCustomersReducer.companies,
-  );
+  const companies = useSelector((state) => state.potentialCustomersReducer.companies);
 
   const marriageOptions = useMemo(
     () =>
@@ -35,7 +30,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
           {label}
         </Option>
       )),
-    [marriageStatus],
+    [marriageStatus]
   );
 
   const acquaintanceLevelOptions = useMemo(
@@ -45,7 +40,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
           {label}
         </Option>
       )),
-    [acquaintanceLevel],
+    [acquaintanceLevel]
   );
 
   const companyOptions = useMemo(
@@ -55,11 +50,11 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
           {name}
         </Option>
       )),
-    [companies],
+    [companies]
   );
 
-  const onChangeDate = (date, dateString) => {
-    setDob(dateString);
+  const onChangeDate = (date) => {
+    setDob(moment(date));
   };
 
   const handleChangeSelectCustomer = (value) => {
@@ -77,14 +72,15 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
         ...value,
         typeId: typeId,
         dob,
-      }),
+        income: currencyString,
+      })
     );
     onCancel();
   };
 
   const onChangeCurrency = (value) => {
-    console.log(value);
-  }
+    setCurrencyString(`${value}`);
+  };
 
   useEffect(() => {
     dispatch(getCompanies());
@@ -102,7 +98,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
         <Select
           defaultValue={1}
           onChange={(selected) => handleChangeSelectCustomer(selected)}
-          style={{ width: "150px" }}
+          style={{ width: '150px' }}
         >
           <Option value={1}>Cá nhân</Option>
           <Option value={3}>Doanh nghiệp</Option>
@@ -121,7 +117,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng nhập tên doanh nghiệp!",
+                      message: 'Vui lòng nhập tên doanh nghiệp!',
                     },
                   ]}
                 >
@@ -135,11 +131,11 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng nhập số điện thoại",
+                      message: 'Vui lòng nhập số điện thoại',
                     },
                     {
                       pattern: REGEX_PHONE,
-                      message: "Vui lòng nhập đúng số điện thoại",
+                      message: 'Vui lòng nhập đúng số điện thoại',
                     },
                   ]}
                 >
@@ -155,7 +151,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng nhập địa chỉ!",
+                      message: 'Vui lòng nhập địa chỉ!',
                     },
                   ]}
                 >
@@ -174,7 +170,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng nhập họ và tên!",
+                      message: 'Vui lòng nhập họ và tên!',
                     },
                   ]}
                 >
@@ -188,11 +184,11 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng nhập số điện thoại!",
+                      message: 'Vui lòng nhập số điện thoại!',
                     },
                     {
                       pattern: REGEX_PHONE,
-                      message: "Vui lòng nhập đúng số điện thoại",
+                      message: 'Vui lòng nhập đúng số điện thoại',
                     },
                   ]}
                 >
@@ -206,7 +202,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       pattern: REGEX_PHONE,
-                      message: "Vui lòng nhập đúng số điện thoại",
+                      message: 'Vui lòng nhập đúng số điện thoại',
                     },
                   ]}
                 >
@@ -220,7 +216,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       pattern: REGEX_PHONE,
-                      message: "Vui lòng nhập đúng số điện thoại",
+                      message: 'Vui lòng nhập đúng số điện thoại',
                     },
                   ]}
                 >
@@ -236,15 +232,11 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng chọn tình trạng hôn nhân",
+                      message: 'Vui lòng chọn tình trạng hôn nhân',
                     },
                   ]}
                 >
-                  <Select
-                    value={maritalStatus}
-                    placeholder="Chọn"
-                    onChange={(selected) => setMaritalStatus(selected)}
-                  >
+                  <Select value={maritalStatus} placeholder="Chọn" onChange={(selected) => setMaritalStatus(selected)}>
                     {marriageOptions}
                   </Select>
                 </Form.Item>
@@ -256,25 +248,21 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng nhập thu nhập!",
+                      message: 'Vui lòng nhập thu nhập!',
                     },
                     {
                       validator: (_, value) =>
                         value >= 10000000
                           ? Promise.resolve()
-                          : Promise.reject(
-                            new Error("Thu nhập tối thiểu 10.000.000đ"),
-                          ),
+                          : Promise.reject(new Error('Thu nhập tối thiểu 10.000.000đ')),
                     },
                   ]}
                 >
                   <InputNumber
                     controls={false}
                     defaultValue={0}
-                    formatter={(value) =>
-                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    }
-                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    parser={(value) => `${value.replace(/\$\s?|(,*)/g, '')}`}
                     onChange={onChangeCurrency}
                   />
                 </Form.Item>
@@ -286,16 +274,14 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng chọn mức độ thân quen!",
+                      message: 'Vui lòng chọn mức độ thân quen!',
                     },
                   ]}
                 >
                   <Select
                     value={acquaintanceLevelStatus}
                     placeholder="Chọn"
-                    onChange={(selected) =>
-                      setAcquaintanceLevelStatus(selected)
-                    }
+                    onChange={(selected) => setAcquaintanceLevelStatus(selected)}
                   >
                     {acquaintanceLevelOptions}
                   </Select>
@@ -308,26 +294,17 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng chọn ngày sinh!",
+                      message: 'Vui lòng chọn ngày sinh!',
                     },
                     {
                       validator: (_, value) =>
-                        new Date().getFullYear() -
-                          new Date(value).getFullYear() >
-                        18
+                        new Date().getFullYear() - new Date(value).getFullYear() > 18
                           ? Promise.resolve()
-                          : Promise.reject(
-                            new Error("Số tuổi phải lớn hơn 18"),
-                          ),
+                          : Promise.reject(new Error('Số tuổi phải lớn hơn 18')),
                     },
                   ]}
                 >
-                  <DatePicker
-                    format='DD/MM/YYYY'
-                    value={dob}
-                    onChange={onChangeDate}
-                    style={{ width: "100%" }}
-                  />
+                  <DatePicker format="DD/MM/YYYY" value={dob} onChange={onChangeDate} style={{ width: '100%' }} />
                 </Form.Item>
               </Col>
             </Row>
@@ -339,11 +316,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
               </Col>
               <Col span={6}>
                 <Form.Item label="Doanh nghiệp" name="companyId">
-                  {typeId === 2 ? (
-                    <Select placeholder="Chọn">{companyOptions}</Select>
-                  ) : (
-                    <Input />
-                  )}
+                  {typeId === 2 ? <Select placeholder="Chọn">{companyOptions}</Select> : <Input />}
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -352,7 +325,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                   name="email"
                   rules={[
                     {
-                      type: "email",
+                      type: 'email',
                     },
                   ]}
                 >
@@ -367,8 +340,8 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Mã số hợp đồng" name="contract_number">
-                  <Input />
+                <Form.Item label="Mã số hợp đồng" name="contractNumber">
+                  <Input readOnly />
                 </Form.Item>
               </Col>
             </Row>

@@ -1,7 +1,25 @@
 import { measureTextWidth, Pie } from '@ant-design/plots';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+const template = [
+  {
+    type: 'Cuộc hẹn có hợp đồng',
+    value: 0,
+  },
+  {
+    type: 'Cuộc hẹn không có hợp đồng',
+    value: 0,
+  },
+];
 export default function RatioContractPie(props) {
+  const [data, setData] = useState(template);
+
+  useEffect(() => {
+    if (props?.data?.length > 0) {
+      setData(props.data);
+    }
+  }, [props.data]);
+
   function renderStatistic(containerWidth, text, style) {
     const { width: textWidth, height: textHeight } = measureTextWidth(text, style);
     const R = containerWidth / 2; // r^2 = (w / 2)^2 + (h - offsetY)^2
@@ -13,19 +31,9 @@ export default function RatioContractPie(props) {
     }
 
     const textStyleStr = `width:${containerWidth}px;`;
-    return `<div style="font-size:${scale}em;line-height:${scale < 1 ? 1 : 'inherit'};">${text}</div>`;
+    return `<div style="font-size:14px;height:20px;line-height:${scale < 1 ? 1 : 'inherit'};">${text}</div>`;
   }
 
-  const data = [
-    {
-      type: 'Cuộc hẹn có hợp đồng',
-      value: 27,
-    },
-    {
-      type: 'Cuộc hẹn không có hợp đồng',
-      value: 25,
-    },
-  ];
   const config = {
     appendPadding: 10,
     data,
@@ -71,7 +79,9 @@ export default function RatioContractPie(props) {
         },
         customHtml: (container, view, datum, data) => {
           const { width } = container.getBoundingClientRect();
-          const text = datum ? `${Math.floor((datum.value / data.reduce((r, d) => r + d.value, 0)) * 100)}%` : `100%`;
+          const text = datum
+            ? `${Math.floor((datum.value / data.reduce((r, d) => r + d.value, 0) || 0) * 100)}%`
+            : data.reduce((r, d) => r + d.value, 0);
           return renderStatistic(width, text, {
             fontSize: 32,
           });

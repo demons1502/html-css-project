@@ -5,8 +5,9 @@ import Filter from '../../../../components/common/Filter';
 import { options } from '../../constants';
 import * as S from '../../styles';
 
-export default function AppointmentItemTitle(props) {
+export default function AppointmentItemTitle({ props }) {
   const { t } = useTranslation();
+  const { done, total } = props;
   const [payload, setPayload] = useState('');
 
   return (
@@ -16,9 +17,11 @@ export default function AppointmentItemTitle(props) {
       </Col>
       <Col flex="auto">
         <Row>
-          <S.WrapTextCenter span={24}>Hoàn thành 12/64</S.WrapTextCenter>
+          <S.WrapTextCenter span={24}>
+            Hoàn thành {done}/{total}
+          </S.WrapTextCenter>
           <Col span={24}>
-            <Slider defaultValue={30} />
+            <Slider max={total} value={done} />
           </Col>
         </Row>
       </Col>

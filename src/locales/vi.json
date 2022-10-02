@@ -77,7 +77,9 @@
     "ratio-contract": "Tỷ lệ hợp đồng/cuộc hẹn"
   },
   "call-schedule": {
-    "call": "Gọi điện"
+    "call": "Gọi điện",
+    "user": "Cá nhân",
+    "company": "Doanh nghiệp"
   },
   "customer-care-dashboard": {
     "remind": "Nhắc phí",

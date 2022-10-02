@@ -1,44 +1,21 @@
-import React, { useState } from 'react';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import PaginationCommon from '../../components/common/Pagination';
+import { getCustomerCares, getRemindFees } from '../../slices/dashboard';
 import CustomerItemBirthday from './commons/CustomerCareDashboard/customer-item-col-birthday';
 import CustomerItemRemind from './commons/CustomerCareDashboard/customer-item-col-remind';
+import { limitItem, offsetItem } from './constants';
 import * as S from './styles';
 
-const dataCustomerCare = [
-  {
-    key: 1,
-    name: 'Devon Lane',
-    birthday: '29/07/2022',
-  },
-  {
-    key: 2,
-    name: 'Cameron Williamson',
-    birthday: '29/07/2022',
-  },
-  {
-    key: 3,
-    name: 'Jane Cooper',
-    birthday: '29/07/2022',
-  },
-  {
-    key: 4,
-    name: 'Courtney Henry',
-    birthday: '29/07/2022',
-  },
-  {
-    key: 5,
-    name: 'Guy Hawkins',
-    birthday: '29/07/2022',
-  },
-];
 const handleCSKH = (value) => {
   console.log('Value:', value);
 };
 const columnCustomerCare = [
   {
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'fullname',
+    key: 'fullname',
     render: (text, record) => <CustomerItemBirthday record={record} />,
   },
   {
@@ -54,43 +31,6 @@ const columnCustomerCare = [
   },
 ];
 
-const dataRemind = [
-  {
-    key: 1,
-    name: 'Marvin McKinney',
-    dueDate: '23/08/2022',
-    contractId: '2121435',
-    money: '20.000.000',
-  },
-  {
-    key: 2,
-    name: 'Marvin McKinney',
-    dueDate: '23/08/2022',
-    contractId: '2121435',
-    money: '20.000.000',
-  },
-  {
-    key: 3,
-    name: 'Marvin McKinney',
-    dueDate: '23/08/2022',
-    contractId: '2121435',
-    money: '20.000.000',
-  },
-  {
-    key: 4,
-    name: 'Marvin McKinney',
-    dueDate: '23/08/2022',
-    contractId: '2121435',
-    money: '20.000.000',
-  },
-  {
-    key: 5,
-    name: 'Marvin McKinney',
-    dueDate: '23/08/2022',
-    contractId: '2121435',
-    money: '20.000.000',
-  },
-];
 const handleRemind = (value) => {
   console.log('Value:', value);
 };
@@ -101,9 +41,9 @@ const columnsRemind = [
     render: (text, record) => <CustomerItemRemind record={record} />,
   },
   {
-    dataIndex: '',
-    key: '',
-    render: (record) => (
+    dataIndex: 'value',
+    key: 'value',
+    render: (_, record) => (
       <S.WrapButtonTable>
         <S.Button $type="ghost" onClick={() => handleRemind(record)}>
           Nhắc nộp phí
@@ -115,19 +55,62 @@ const columnsRemind = [
 
 export default function CustomerCareDashBoard() {
   const { t } = useTranslation();
-  const [dataTable, setDataTable] = useState(dataCustomerCare);
+  const [remind, setRemind] = useState(false);
+  const storeCustomerCare = useSelector((state) => state.dashboard.customerCares);
+  const storeRemindFee = useSelector((state) => state.dashboard.remindFees);
+  const [result, setResult] = useState(remind ? storeRemindFee : storeCustomerCare);
+  const storeLoading = useSelector((state) => state.dashboard.loadingCustomerCare);
+  const dispatch = useDispatch();
+  const [dataTable, setDataTable] = useState(result.data || []);
   const [columns, setColumns] = useState(columnCustomerCare);
   const [toggle, setToggle] = useState(false);
-  const [remind, setRemind] = useState(false);
+  const [offset, setOffset] = useState(offsetItem);
+  const [limit, setLimit] = useState(limitItem);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(storeLoading);
+  useEffect(() => {
+    let payload = {};
+    if (remind) {
+      payload = {
+        limit: 4,
+        offset,
+      };
+      dispatch(getRemindFees(payload));
+    } else {
+      payload = {
+        limit,
+        offset,
+      };
+      dispatch(getCustomerCares(payload));
+    }
+  }, [dispatch, limit, offset, remind]);
+
+  useEffect(() => {
+    if (remind) {
+      setResult(storeRemindFee);
+    } else {
+      setResult(storeCustomerCare);
+    }
+  }, [storeCustomerCare, storeRemindFee, remind]);
+
+  useEffect(() => {
+    setDataTable(result.data || result.contracts || []);
+    setColumns(remind ? columnsRemind : columnCustomerCare);
+    setTotal(result.count || 0);
+    setLoading(storeLoading);
+  }, [result]);
+
+  const setPaginate = (value) => {
+    setOffset(value.offset);
+    setLimit(value.limit);
+  };
 
   const handleSwitchMode = () => {
     setRemind(!remind);
-    setDataTable(!remind ? dataRemind : dataCustomerCare);
-    setColumns(!remind ? columnsRemind : columnCustomerCare);
   };
 
   return (
-    <S.WrapContainer $toggle={toggle}>
+    <S.WrapContainer $toggle={toggle} $height="473px">
       <S.WrapTitle $toggle={toggle}>
         <S.IconDown onClick={() => setToggle(!toggle)} />
         <S.Title>{t('dashboard-page.customer-care-dashboard')}</S.Title>
@@ -141,13 +124,18 @@ export default function CustomerCareDashBoard() {
         <S.Table
           dataSource={dataTable}
           columns={columns}
+          rowKey={(record) => record.customerId || record.id}
+          loading={loading}
           pagination={false}
           bordered={false}
           scroll={{ scrollToFirstRowOnChange: false }}
           showHeader={false}
-          $borderBottom={true}
+          $height="320px"
+          $endLine
+          $borderBottom={dataTable.length < 3 ? (dataTable.length === 0 ? false : '') : false}
+          $heightRow={remind ? false : '63px'}
         />
-        <PaginationCommon total={50} showSizeChanger={false} setPaginate={{ limit: 10, offset: 0 }} />
+        <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />
       </S.WrapContent>
     </S.WrapContainer>
   );

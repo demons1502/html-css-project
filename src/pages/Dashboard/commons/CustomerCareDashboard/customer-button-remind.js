@@ -14,7 +14,7 @@ export default function CustomerButtonRemind(props) {
   const [titleEmail, setTitleEmail] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
-  const { customerId } = props.record;
+  const { customerId } = props?.record?.customer || {};
 
   const showModal = (value) => {
     setIsModalOpen(true);

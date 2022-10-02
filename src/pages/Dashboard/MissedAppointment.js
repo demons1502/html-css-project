@@ -9,33 +9,6 @@ import MissedItemDateTime from './commons/MissedAppointment/missed-item-col-date
 import MissedItemName from './commons/MissedAppointment/missed-item-col-name';
 import { limitItem, offsetItem } from './constants';
 import * as S from './styles';
-const navigate = useNavigate();
-
-const handleCSKH = () => {
-  navigate('/customer-care');
-};
-const columns = [
-  {
-    dataIndex: 'host',
-    key: 'host',
-    render: (_, record) => <MissedItemName record={record} />,
-  },
-  {
-    dataIndex: 'time',
-    key: 'time',
-    render: (_, record) => <MissedItemDateTime record={record} />,
-  },
-  {
-    key: 'action',
-    render: () => (
-      <S.WrapButtonTable>
-        <S.Button $type="ghost" onClick={handleCSKH}>
-          CSKH
-        </S.Button>
-      </S.WrapButtonTable>
-    ),
-  },
-];
 
 export default function MissedAppointment() {
   const { t } = useTranslation();
@@ -47,6 +20,34 @@ export default function MissedAppointment() {
   const [limit, setLimit] = useState(limitItem);
   const [dataTable, setDataTable] = useState(result.data || []);
   const [total, setTotal] = useState(result.count || 0);
+  const navigate = useNavigate();
+
+  const handleCSKH = () => {
+    navigate('/customer-care');
+  };
+  
+  const columns = [
+    {
+      dataIndex: 'host',
+      key: 'host',
+      render: (_, record) => <MissedItemName record={record} />,
+    },
+    {
+      dataIndex: 'time',
+      key: 'time',
+      render: (_, record) => <MissedItemDateTime record={record} />,
+    },
+    {
+      key: 'action',
+      render: () => (
+        <S.WrapButtonTable>
+          <S.Button $type="ghost" onClick={handleCSKH}>
+            CSKH
+          </S.Button>
+        </S.WrapButtonTable>
+      ),
+    },
+  ];
 
   useEffect(() => {
     const payload = {

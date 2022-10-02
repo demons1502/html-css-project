@@ -36,6 +36,7 @@ function ConfigUser() {
     setTimeout(()=>{dispatch(getMe())},100)
     
   };
+  // dispatch(getMe())
 
   useEffect(() => {
     axios.get('https://provinces.open-api.vn/api/')

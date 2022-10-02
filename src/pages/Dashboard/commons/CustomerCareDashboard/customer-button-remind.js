@@ -50,7 +50,7 @@ export default function CustomerButtonRemind(props) {
           customerId,
         };
         dispatch(sendEmail(payload));
-        // setIsModalOpen(false);
+        setIsModalOpen(false);
         break;
       default:
         break;

@@ -14,12 +14,13 @@
         font-size: calc(0.73 * 24px);
         &::before {
           content: "★★★★★";
-          color: $icon-color;
-          background: linear-gradient(
-            90deg,
-            $icon-color var(--percent),
-            $background-color-card var(--percent)
-          );
+          font-size: 25px;
+          background: -webkit-linear-gradient(
+          0deg,
+          $icon-color $percent,
+          $text-color calc(100% - $percent));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
       }
       &-reviewers__info {

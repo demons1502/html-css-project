@@ -67,9 +67,10 @@ export const getPotentialCustomer = createAsyncThunk('potentialCustomers/GET_POT
 
 export const updatePotentialCustomer = createAsyncThunk(
   'potentialCustomers/UPDATE_POTENTIAL_CUSTOMER',
-  async (data) => {
+  async (data, { dispatch }) => {
     try {
       const res = await updatePotentialCustomerApi(data);
+      dispatch(getPotentialCustomers());
       return res;
     } catch (error) {
       return Promise.reject(error.data);

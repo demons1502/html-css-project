@@ -1,15 +1,17 @@
-import axios from "axios";
-import configs from "../config";
-import store from "../store";
+import axios from 'axios';
+import configs from '../config';
+import store from '../store';
+import queryString from 'query-string';
 
-import { message } from "antd";
+import { message } from 'antd';
 
 const baseApiConfig = {
   baseURL: configs.API_DOMAIN,
   headers: {
-    "content-type": "application/json",
+    'content-type': 'application/json',
   },
   timeout: 60000, // 60s
+  paramsSerializer: (params) => queryString.stringify(params),
 };
 
 const SESSION_EXPIRED_STATUS_CODE = 401;
@@ -19,8 +21,8 @@ const baseApiClient = axios.create(baseApiConfig);
 const request = ({
   enableFlashMessageError = true,
   enableFlashMessageSuccess = false,
-  messageError = "",
-  messageSuccess = "",
+  messageError = '',
+  messageSuccess = '',
   isAuth = true,
   ...options
 }) => {
@@ -30,9 +32,7 @@ const request = ({
   }
 
   const onSuccess = (response) => {
-    enableFlashMessageSuccess &&
-      messageSuccess &&
-      message.success(messageSuccess);
+    enableFlashMessageSuccess && messageSuccess && message.success(messageSuccess);
     return response;
   };
 

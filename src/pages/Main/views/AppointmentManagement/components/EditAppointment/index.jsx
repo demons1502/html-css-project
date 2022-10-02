@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
+import { getTitleAppointment } from '../../../../../../ultis/appointment';
 
 //COMPONENTS
 import { Col, Form, message } from 'antd';
 import TimePicker from '../TimePicker';
-import { Select, ModalSelect } from '../../../../../../components/common';
+import { ModalSelect } from '../../../../../../components/common';
 import { Calender } from '../../../../../../assets/images/icons/components';
 import FormUsers from '../FromUsers';
 import SelectTable from '../SelectTable';
@@ -14,19 +15,34 @@ import InputSelect from '../InputSelect';
 
 // STYLES
 import * as S from './styles';
-import { createAppointment } from '../../../../../../slices/appointmentManagement';
+import { editAppointment } from '../../../../../../slices/appointmentManagement';
 
-export const CreateAppointment = ({ open, handleCancel }) => {
+export const EditAppointment = ({ open, handleCancel, info }) => {
   const dispatch = useDispatch();
-  const { Option } = Select;
   const [form] = Form.useForm();
-  const [typeId, setTypeId] = useState(1);
   const [customer, setCustomer] = useState({});
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(getTitleAppointment(info.title));
 
-  const handleChangeSelectCustomer = (value) => {
-    setTypeId(value);
-  };
+  useEffect(() => {
+    const fields = form.getFieldsValue();
+    const data = {
+      ...fields,
+      title: getTitleAppointment(info.title),
+      date: moment(info.startTime).utc(),
+      startTime: moment(info.startTime).utc(),
+      endTime: moment(info.endTime).utc(),
+      location: info.location,
+      note: info.note,
+    };
+    form.setFieldsValue({ ...data });
+  }, [form, info]);
+
+  useEffect(() => {
+    setCustomer({
+      name: info.host,
+      fullname: info.host,
+    });
+  }, [info]);
 
   const handleChangeCustomer = (value) => {
     setCustomer(value);
@@ -51,54 +67,44 @@ export const CreateAppointment = ({ open, handleCancel }) => {
       moment(values.endTime).format('HH:mm:ss');
 
     const data = {
-      typeId: typeId,
-      customerId: customer.customerId,
+      typeId: info.typeId,
+      customerId: info.companyCustomerId,
       title: title,
       startTime: startTime,
       endTime: endTime,
       location: values.location,
       note: values.note,
       subCustomerIds: subCustomerIds,
+      isCompleted: info.isCompleted,
     };
-    dispatch(createAppointment(data)).then(({ error }) => {
+
+    dispatch(editAppointment({ id: info.apptId, data })).then(({ error }) => {
       if (!error) {
         handleCancel();
         message.success(
-          'Lịch hẹn của bạn vừa được tạo thành công. Chọn lịch hẹn để xem chi tiết.'
+          'Lịch hẹn của bạn vừa được sửa thành công. Chọn lịch hẹn để xem chi tiết.'
         );
       } else {
         message.error(
-          'Lịch hẹn của bạn vừa được tạo thất bại. Vui lòng thử lại'
+          'Lịch hẹn của bạn vừa được sửa thất bại. Vui lòng thử lại'
         );
       }
     });
   };
 
   const onCancel = () => {
-    form.resetFields();
     handleCancel();
   };
 
   return (
     <ModalSelect
-      title='Tạo mới lịch hẹn'
+      title='Sửa lịch hẹn'
       width='650px'
       isModalOpen={open}
       handleCancel={onCancel}
       handleOk={form.submit}
-      cancelText='Huỷ tạo'
-      okText='Tạo lịch hẹn'
-      renderSelect={
-        <Select
-          defaultValue={typeId}
-          onChange={(selected) => handleChangeSelectCustomer(selected)}
-          style={{ width: '150px' }}
-        >
-          <Option value={1}>Cá nhân</Option>
-          <Option value={2}>NV doanh nghiệp</Option>
-          <Option value={3}>Doanh nghiệp</Option>
-        </Select>
-      }
+      cancelText='Huỷ sửa'
+      okText='Sửa lịch hẹn'
     >
       <Form form={form} colon={false} layout='vertical' onFinish={onFinish}>
         <S.WrapRow gutter={12}>
@@ -116,7 +122,7 @@ export const CreateAppointment = ({ open, handleCancel }) => {
               <SelectTable
                 customer={customer}
                 handleChangeValue={handleChangeCustomer}
-                typeId={typeId}
+                typeId={info.typeId}
               />
             </Form.Item>
           </Col>
@@ -163,7 +169,10 @@ export const CreateAppointment = ({ open, handleCancel }) => {
           </Col>
 
           <Col span={16}>
-            <TimePicker />
+            <TimePicker
+              start={moment(info.startTime)}
+              end={moment(info.endTime)}
+            />
           </Col>
         </S.WrapRow>
         <S.WrapRow gutter={12}>
@@ -180,12 +189,16 @@ export const CreateAppointment = ({ open, handleCancel }) => {
             </Form.Item>
           </Col>
         </S.WrapRow>
-        {typeId === 3 && (
+        {info.typeId === 3 && (
           <>
             <S.WrapRow>
               <S.WrapTitleUser>Thông tin người tham gia</S.WrapTitleUser>
             </S.WrapRow>
-            <FormUsers form={form} companyId={customer.companyId} />
+            <FormUsers
+              form={form}
+              companyId={customer.companyId}
+              customerApptRecords={info.customerApptRecords}
+            />
           </>
         )}
       </Form>
@@ -193,9 +206,10 @@ export const CreateAppointment = ({ open, handleCancel }) => {
   );
 };
 
-CreateAppointment.prototype = {
+EditAppointment.prototype = {
   open: PropTypes.bool,
   handleCancel: PropTypes.func,
+  info: PropTypes.object,
 };
 
-export default CreateAppointment;
+export default EditAppointment;

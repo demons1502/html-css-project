@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import moment from 'moment';
-import { getMonday, getSunday } from '../../../../../../ultis/date';
+import { useDispatch } from 'react-redux';
+import { getAppointments } from '../../../../../../slices/appointmentManagement';
 
 // STYLES
 import * as S from './styles';
@@ -14,14 +15,65 @@ import CreateAppointment from '../CreateAppointment';
 
 function CalendarToolbar(props) {
   const { date, onNavigate } = props;
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const sunDay = getMonday(new Date(date));
-  const monDay = getSunday(new Date(date));
+  const monDay = moment(new Date(date)).clone().weekday(0).format('DD/MM/YYYY');
+  const sunDay = moment(new Date(date)).clone().weekday(6).format('DD/MM/YYYY');
 
   const goToBack = () => {
+    const endDate = moment(
+      new Date(date).setDate(
+        new Date(date).getDate() - new Date(date).getDay() - 6
+      )
+    )
+      .clone()
+      .weekday(6)
+      .format('YYYY-MM-DD');
+
+    const startDate = moment(
+      new Date(date).setDate(
+        new Date(date).getDate() - new Date(date).getDay() - 6
+      )
+    )
+      .clone()
+      .weekday(0)
+      .format('YYYY-MM-DD');
+
+    dispatch(
+      getAppointments({
+        startDate: `${startDate} 00:00:00`,
+        endDate: `${endDate} 23:59:59`,
+      })
+    );
     onNavigate('PREV');
   };
+
   const goToNext = () => {
+    const endDate = moment(
+      new Date(date).setDate(
+        new Date(date).getDate() - new Date(date).getDay() + 14
+      )
+    )
+      .clone()
+      .weekday(6)
+      .format('YYYY-MM-DD');
+
+    const startDate = moment(
+      new Date(date).setDate(
+        new Date(date).getDate() - new Date(date).getDay() + 14
+      )
+    )
+      .clone()
+      .weekday(0)
+      .format('YYYY-MM-DD');
+
+    dispatch(
+      getAppointments({
+        startDate: `${startDate} 00:00:00`,
+        endDate: `${endDate} 23:59:59`,
+      })
+    );
+
     onNavigate('NEXT');
   };
 
@@ -58,7 +110,7 @@ function CalendarToolbar(props) {
 
             <S.ContentCaledar>
               <Calender />
-              <S.TextDate>{`${sunDay} - ${monDay}`}</S.TextDate>
+              <S.TextDate>{`${monDay} - ${sunDay}`}</S.TextDate>
             </S.ContentCaledar>
 
             <S.Action onClick={goToNext}>

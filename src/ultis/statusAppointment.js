@@ -5,29 +5,55 @@ export const statusAppointment = (
   isCompleted,
   isEventActive
 ) => {
-  if (isEventActive) {
-    return {
-      color: '#FFFAFA',
-      backgroundColor: '#EDBF21',
-    };
+  if (isCompleted) {
+    return activeComplete(isEventActive);
   } else {
-    if (isCompleted) {
-      return {
-        color: '#3DBD77',
-        backgroundColor: '#EFF9F8',
-      };
+    if (end < now) {
+      return activeClose(isEventActive);
     } else {
-      if (end < now) {
-        return {
-          color: '#FF5855',
-          backgroundColor: '#FFFAFA',
-        };
-      } else {
-        return {
-          color: '#F6CF47',
-          backgroundColor: '#FFF8DE',
-        };
-      }
+      return activeWaiting(isEventActive);
     }
   }
+};
+
+const activeComplete = (active) => {
+  console.log(active);
+  if (!active) {
+    return {
+      color: '#3DBD77',
+      backgroundColor: '#EFF9F8',
+    };
+  }
+  return {
+    color: '#fff',
+    backgroundColor: '#3DBD77',
+  };
+};
+
+const activeClose = (active) => {
+  if (!active) {
+    return {
+      color: '#FF5855',
+      backgroundColor: '#FFFAFA',
+    };
+  }
+
+  return {
+    color: '#fff',
+    backgroundColor: '#FF5855',
+  };
+};
+
+const activeWaiting = (active) => {
+  if (!active) {
+    return {
+      color: '#F6CF47',
+      backgroundColor: '#FFF8DE',
+    };
+  }
+
+  return {
+    color: '#fff',
+    backgroundColor: '#F6CF47',
+  };
 };

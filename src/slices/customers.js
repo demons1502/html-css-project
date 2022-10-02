@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getCustomers, updateCustomer } from "../services/customers";
-import {message} from 'antd'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getCustomersContracts, updateCustomer } from '../services/customers';
+import { message } from 'antd';
 
 const initialState = {
   data: [],
@@ -8,26 +8,26 @@ const initialState = {
   updateCustomer: {},
   isLoading: false,
   isError: false,
-  error: "",
+  error: '',
 };
 
-export const getCustomerList = createAsyncThunk("customers/get", async () => {
+export const getCustomerList = createAsyncThunk('customers/get', async () => {
   try {
-    const res = await getCustomers();
+    const res = await getCustomersContracts();
     return res.data;
   } catch (error) {
     return Promise.reject(error.data);
   }
 });
 
-export const editCustomer = createAsyncThunk("customers/update", async ({ id, data }) => {
+export const editCustomer = createAsyncThunk('customers/update', async ({ id, data }) => {
   try {
     const res = await updateCustomer(id, data);
     if (res?.status === 201 || res?.status === 200) {
-      message.success("Lưu thông tin cá nhân thành công");
+      message.success('Lưu thông tin cá nhân thành công');
       return res.data;
     } else {
-      message.error("Lưu thông tin cá nhân không thành công");
+      message.error('Lưu thông tin cá nhân không thành công');
     }
   } catch (error) {
     return Promise.reject(error.data);
@@ -35,7 +35,7 @@ export const editCustomer = createAsyncThunk("customers/update", async ({ id, da
 });
 
 const customerSlice = createSlice({
-  name: "customers",
+  name: 'customers',
   initialState,
   reducers: {
     setSelectedCustomer: (state, action) => {
@@ -54,7 +54,7 @@ const customerSlice = createSlice({
       .addCase(editCustomer.fulfilled, (state, action) => {
         state.isLoading = false;
         state.updateCustomer = action.payload;
-        state.error = "";
+        state.error = '';
       })
       .addCase(editCustomer.rejected, (state, action) => {
         state.isLoading = false;

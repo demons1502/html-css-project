@@ -8,8 +8,7 @@ import { dateFormat } from '../../constants';
 
 export default function SignedContractCalendar(props) {
   const { t } = useTranslation();
-  const [startDate, setStartDate] = useState(moment().subtract(7, 'days'));
-  const [endDate, setEndDate] = useState(moment());
+  const { startDate, endDate, setDate, total } = props;
   const [active, setActive] = useState(false);
 
   const disabledDate = (current) => {
@@ -18,8 +17,7 @@ export default function SignedContractCalendar(props) {
 
   const onChange = (date) => {
     if (date) {
-      setEndDate(date);
-      setStartDate(moment(date).subtract(7, 'days'));
+      setDate(date);
       setActive(false);
     }
   };
@@ -38,9 +36,9 @@ export default function SignedContractCalendar(props) {
           </Col>
           <Col span={24}>
             <S.TextColor $color="#3DBD77" $fontSize="20px">
-              120
+              {total}
             </S.TextColor>
-            hợp đồng
+            {` hợp đồng`}
           </Col>
           <S.DatePicker $display={active} onChange={onChange} disabledDate={disabledDate} />
         </Row>

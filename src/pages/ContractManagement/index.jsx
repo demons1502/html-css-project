@@ -11,6 +11,8 @@ import CreateContract from './CreateContract';
 import { retrieveData } from '../../slices/contractManagement';
 import { DEFAULT_SIZE } from '../../ultis/constant'
 import { formatDataNumber,getTimeByTZ } from "../../helper"
+import { EditOutlined } from '@ant-design/icons';
+
 export default function ContractManagement() {
   const dispatch = useDispatch()
   const { data, totalItem, refreshData } = useSelector((state) => state.contractManagement)
@@ -57,7 +59,7 @@ export default function ContractManagement() {
     },
     {
       title: 'Giá trị',
-      className: 'value',
+      className: 'green-color text-right value',
       dataIndex: 'value',
       render: (record) => {
         return (
@@ -109,11 +111,13 @@ export default function ContractManagement() {
       title: '',
       dataIndex: '',
       width: '118px',
-      render: () => <Button size='small' className='btn_modal_example btn-bgWhite-textGreen-borGreen'>Bảng minh hoạ</Button>
+      render: () => <Button size='small' className=''>Bảng minh hoạ</Button>
     },
     {
       title: '',
-      render: (record) => <img className='edit_icon' src={IconEdit} onClick={() => handleEditUser(record)} />,
+      // render: (record) => <img className='edit_icon' src={IconEdit} onClick={() => handleEditUser(record)} />,
+      render: (record) => <Button onClick={() => handleEditUser(record)}  icon={<EditOutlined style={{ fontSize: '14px' }} />}></Button>,
+      
     }
   ];
 

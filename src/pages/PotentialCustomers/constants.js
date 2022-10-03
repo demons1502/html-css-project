@@ -122,6 +122,18 @@ export const columns = [
     ),
   },
   {
+    title: 'Nguồn gốc',
+    dataIndex: 'connectFrom',
+    key: 'connectFrom',
+    align: 'center',
+  },
+  {
+    title: 'Quan hệ',
+    dataIndex: 'relationship',
+    key: 'relationship',
+    align: 'center',
+  },
+  {
     title: 'Khác',
     dataIndex: 'note',
     key: 'note',

@@ -1,59 +1,47 @@
-import moment from 'moment';
+import { Col } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import PaginationCommon from '../../components/common/Pagination';
 import { getCustomerCares, getRemindFees } from '../../slices/dashboard';
+import CustomerButtonRemind from './commons/CustomerCareDashboard/customer-button-remind';
 import CustomerItemBirthday from './commons/CustomerCareDashboard/customer-item-col-birthday';
 import CustomerItemRemind from './commons/CustomerCareDashboard/customer-item-col-remind';
 import { limitItem, offsetItem } from './constants';
 import * as S from './styles';
 
-const handleCSKH = (value) => {
-  console.log('Value:', value);
-};
-const columnCustomerCare = [
-  {
-    dataIndex: 'fullname',
-    key: 'fullname',
-    render: (text, record) => <CustomerItemBirthday record={record} />,
-  },
-  {
-    dataIndex: '',
-    key: '',
-    render: (record) => (
-      <S.WrapButtonTable>
-        <S.Button $type="ghost" onClick={() => handleCSKH(record)}>
-          CSKH
-        </S.Button>
-      </S.WrapButtonTable>
-    ),
-  },
-];
-
-const handleRemind = (value) => {
-  console.log('Value:', value);
-};
-const columnsRemind = [
-  {
-    dataIndex: 'name',
-    key: 'name',
-    render: (text, record) => <CustomerItemRemind record={record} />,
-  },
-  {
-    dataIndex: 'value',
-    key: 'value',
-    render: (_, record) => (
-      <S.WrapButtonTable>
-        <S.Button $type="ghost" onClick={() => handleRemind(record)}>
-          Nhắc nộp phí
-        </S.Button>
-      </S.WrapButtonTable>
-    ),
-  },
-];
-
 export default function CustomerCareDashBoard() {
+  const columnCustomerCare = [
+    {
+      dataIndex: 'fullname',
+      key: 'fullname',
+      render: (text, record) => <CustomerItemBirthday record={record} />,
+    },
+    {
+      dataIndex: '',
+      key: '',
+      render: () => (
+        <S.WrapButtonTable>
+          <S.Button $type="ghost" onClick={handleCSKH}>
+            CSKH
+          </S.Button>
+        </S.WrapButtonTable>
+      ),
+    },
+  ];
+  const columnsRemind = [
+    {
+      dataIndex: 'name',
+      key: 'name',
+      render: (text, record) => <CustomerItemRemind record={record} />,
+    },
+    {
+      dataIndex: 'value',
+      key: 'value',
+      render: (_, record) => <CustomerButtonRemind record={record} />,
+    },
+  ];
   const { t } = useTranslation();
   const [remind, setRemind] = useState(false);
   const storeCustomerCare = useSelector((state) => state.dashboard.customerCares);
@@ -68,12 +56,19 @@ export default function CustomerCareDashBoard() {
   const [limit, setLimit] = useState(limitItem);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(storeLoading);
+  const navigate = useNavigate();
+
+  const handleCSKH = () => {
+    navigate('/customer-care');
+  };
+
   useEffect(() => {
     let payload = {};
     if (remind) {
       payload = {
         limit: 4,
         offset,
+        sortByDue: true,
       };
       dispatch(getRemindFees(payload));
     } else {
@@ -96,9 +91,12 @@ export default function CustomerCareDashBoard() {
   useEffect(() => {
     setDataTable(result.data || result.contracts || []);
     setColumns(remind ? columnsRemind : columnCustomerCare);
-    setTotal(result.count || 0);
-    setLoading(storeLoading);
+    setTotal(result.count || result.total || 0);
   }, [result]);
+
+  useEffect(() => {
+    setLoading(storeLoading);
+  }, [storeLoading]);
 
   const setPaginate = (value) => {
     setOffset(value.offset);
@@ -111,10 +109,12 @@ export default function CustomerCareDashBoard() {
 
   return (
     <S.WrapContainer $toggle={toggle} $height="473px">
-      <S.WrapTitle $toggle={toggle}>
+      <S.WrapTitle $toggle={toggle} wrap={false} $padding="0px 23px 0px 0px">
         <S.IconDown onClick={() => setToggle(!toggle)} />
-        <S.Title>{t('dashboard-page.customer-care-dashboard')}</S.Title>
-        <S.WrapButtonTitle flex="auto">
+        <Col>
+          <S.Title>{t('dashboard-page.customer-care-dashboard')}</S.Title>
+        </Col>
+        <S.WrapButtonTitle>
           <S.Button $type={!remind && 'disabled'} onClick={() => handleSwitchMode()}>
             {t('customer-care-dashboard.remind')}
           </S.Button>
@@ -128,7 +128,7 @@ export default function CustomerCareDashBoard() {
           loading={loading}
           pagination={false}
           bordered={false}
-          scroll={{ scrollToFirstRowOnChange: false }}
+          scroll={{ x: dataTable.length > 0 && 460 }}
           showHeader={false}
           $height="320px"
           $endLine

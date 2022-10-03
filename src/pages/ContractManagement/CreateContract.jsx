@@ -181,10 +181,10 @@ function CreateContract(props) {
       </Col>
       <Col span={24}>
         <Form.Item className="footer-modal">
-          <Button key="back" className="btn-danger" onClick={() => setVisibleModal(false)}>
+          <Button key="back" className="btn-danger" onClick={() => setVisibleModal(false)} style={{fontSize : '14px'}}>
             {t('common.cancel')}
           </Button>
-          <Button key="submit" htmlType="submit" type="primary">
+          <Button key="submit" htmlType="submit" type="primary" style={{fontSize : '14px'}}>
             {/* {Object.keys(dataEdit).length > 0 ? t('common.save') : t('common.create')} */}
             Lưu
           </Button>

@@ -24,14 +24,6 @@ export default function ContractManagement() {
     offset: 1
   });
 
-  useEffect(() => {
-    // data.map((item,index)=>{
-    // return (item.depositTerm == 30) ? item.depositTerm = "Tháng" : (item.depositTerm == 180) ? item.depositTerm = "Nửa năm" : (item.depositTerm == 360) ? item.depositTerm = "Năm" : null;
-    // console.log(index,item.depositTerm);
-    // })
-    // (data[0].depositTerm == 30) ? data[0].depositTerm = "Tháng" : (data[0].depositTerm == 180) ? data[0].depositTerm = "Nửa năm" : (data[0].depositTerm == 360) ? data[0].depositTerm = "Năm" : null;
-  }, [data])
-
   const [inputText, setInputText] = useState('')
 
   const convertDepositTerm = (value) => {

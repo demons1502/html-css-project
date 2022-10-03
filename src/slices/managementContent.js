@@ -29,7 +29,7 @@ export const createContent = createAsyncThunk(
   async ({ type, payload }, { rejectWithValue }) => {
     try {
       const res = await create(type, payload);
-      return { data: res.data, message: res.statusText };
+      return { data: res.data, message: 'Tạo mới thành công' };
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.response.data);
@@ -52,7 +52,7 @@ export const updateContent = createAsyncThunk(
 export const deleteContent = createAsyncThunk('manageContent/delete', async ({ type, id }, { rejectWithValue }) => {
   try {
     const res = await remove(type, id);
-    return { id, message: res.statusText };
+    return { id, message: 'Bài viết đã được xóa!' };
   } catch (error) {
     return rejectWithValue(error.response.data);
   }

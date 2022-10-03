@@ -31,10 +31,11 @@ const ManageFinanceKnowledge = () => {
   const handleChange = (e) => {
     let values;
     const name = e.target.name;
-    // if (option === MANAGEMENT_CONTENT[0].value) {
+    // if (option !== MANAGEMENT_CONTENT[0].value) {
     //   values = { ...itemContent, [name]: e.target.value };
     //   setItemContent(values);
     // }
+    // console.log(e.target.value);
     values = { ...itemContent, [name]: e.target.value };
     setItemContent(values);
   };
@@ -62,6 +63,7 @@ const ManageFinanceKnowledge = () => {
         },
         answers: data?.answers ? [...data.answers, { answer: data.answer }] : [{ answer: data.answer }],
       };
+      console.log(information);
       if (!data.id) {
         dispatch(createContent({ type: option, payload: information }));
         setItemContent(null);

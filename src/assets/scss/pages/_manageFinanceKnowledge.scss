@@ -329,7 +329,24 @@
         .ant-input-prefix {
           min-width: 80px;
         }
-
+        &-container {
+          position: relative;
+          .ant-carousel {
+            .slick-list {
+              padding: 0 !important;
+              .slick-track {
+                width: 100%;
+                overflow: hidden;
+              }
+              .slick-current {
+                // display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 1000 !important;
+              }
+            }
+          }
+        }
         &-answer {
           padding: 15px 17px;
           &_main {
@@ -371,45 +388,45 @@
             background-color: #f3f3f3;
             border-radius: 6px;
             border-top: 1px dashed #c5c5c5;
-            .ant-carousel {
-              width: 100%;
-              height: inherit;
-              .slick-arrow {
-                width: 30px;
-                height: 30px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: $bg-grey;
-                color: $blue-dark-color;
-                z-index: 99999999;
-                &.slick-prev {
-                  left: 0;
-                  &::before {
-                    width: 100%;
-                    height: 100%;
-                    content: 'prev';
-                    color: blue;
-                  }
-                }
-                &.slick-next {
-                  right: 0;
-                }
-              }
-              .slick-initialized {
-                width: 100%;
-                height: 100%;
-                .slick-track {
-                  width: 100% !important;
-                }
-              }
-              .slick-list {
-                width: 100% !important;
-              }
-              .slick-slide {
-                width: 100% !important;
-              }
-            }
+            // .ant-carousel {
+            //   width: 100%;
+            //   height: inherit;
+            //   .slick-arrow {
+            //     width: 30px;
+            //     height: 30px;
+            //     display: flex;
+            //     justify-content: center;
+            //     align-items: center;
+            //     background-color: $bg-grey;
+            //     color: $blue-dark-color;
+            //     z-index: 99999999;
+            //     &.slick-prev {
+            //       left: 0;
+            //       &::before {
+            //         width: 100%;
+            //         height: 100%;
+            //         content: 'prev';
+            //         color: blue;
+            //       }
+            //     }
+            //     &.slick-next {
+            //       right: 0;
+            //     }
+            //   }
+            //   .slick-initialized {
+            //     width: 100%;
+            //     height: 100%;
+            //     .slick-track {
+            //       width: 100% !important;
+            //     }
+            //   }
+            //   .slick-list {
+            //     width: 100% !important;
+            //   }
+            //   .slick-slide {
+            //     width: 100% !important;
+            //   }
+            // }
           }
         }
         &-pagination {

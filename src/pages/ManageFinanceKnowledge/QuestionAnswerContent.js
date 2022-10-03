@@ -48,6 +48,7 @@ const QuestionAnswerContent = (props) => {
   // useEffect(() => {
   //   content && setAnswers(content?.answers);
   // }, [content]);
+  console.log(content?.answers);
 
   return (
     <div className="questionAnswerContent">

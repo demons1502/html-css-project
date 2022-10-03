@@ -73,7 +73,7 @@ export const gender = [
   },
 ];
 
-export const connectFrom = [
+export const relationship = [
   {
     label: 'Nóng',
     value: 1,
@@ -88,7 +88,7 @@ export const connectFrom = [
   },
 ];
 
-export const relationship = [
+export const connectFrom = [
   {
     label: 'Gia đình',
     value: 1,

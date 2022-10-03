@@ -13,10 +13,14 @@ const template = [
 ];
 export default function RatioContractPie(props) {
   const [data, setData] = useState(template);
-
   useEffect(() => {
     if (props?.data?.length > 0) {
-      setData(props.data);
+      let loadData = props.data;
+      const countDataRemove = loadData.filter((item) => item.value === 0);
+      if (countDataRemove.length === 1) {
+        loadData = loadData.filter((item) => item.value > 0);
+      }
+      setData(loadData);
     }
   }, [props.data]);
 
@@ -59,6 +63,24 @@ export default function RatioContractPie(props) {
     },
     legend: {
       position: 'bottom',
+    },
+    tooltip: {
+      customContent: (title, items) => {
+        return (
+          <>
+            <div style={{ padding: '10px' }}>
+              {items?.map((item, idx) => {
+                const { value } = item;
+                return (
+                  <span key={idx} className="g2-tooltip-list-item-value">
+                    {value} hợp đồng
+                  </span>
+                );
+              })}
+            </div>
+          </>
+        );
+      },
     },
     statistic: {
       title: {

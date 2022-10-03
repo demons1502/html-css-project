@@ -11,8 +11,8 @@ export default function AppointmentItemTitle({ props }) {
   const [payload, setPayload] = useState('');
 
   return (
-    <S.WrapTitle $noneIcon $toggle>
-      <Col>
+    <S.WrapTitle $toggle $height="auto" $padding="19px 23px 0px">
+      <Col flex={1}>
         <S.Title $nonePadding>{t('dashboard-page.appointment-schedule')}</S.Title>
       </Col>
       <Col flex="auto">
@@ -25,7 +25,7 @@ export default function AppointmentItemTitle({ props }) {
           </Col>
         </Row>
       </Col>
-      <Col>
+      <Col flex={1}>
         <Filter options={options} setPayload={setPayload}></Filter>
       </Col>
     </S.WrapTitle>

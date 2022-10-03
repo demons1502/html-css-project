@@ -38,7 +38,7 @@ const ListCalculation = () => {
           label="Lãi suất ngân hàng"
           rules={[
             {
-              required: false,
+              required: true,
             },
           ]}>
           {/* <InputNumber
@@ -55,7 +55,7 @@ const ListCalculation = () => {
               onChange={(e) => setPercent(Number(e.target.value))}
               placeholder="0"
               type="text"
-              style={{ width: 45, paddingRight: 0 }}
+              style={{ width: 65, paddingRight: 0 }}
               value={Percent}
             />
             <span className="pIcon">%</span>
@@ -66,11 +66,13 @@ const ListCalculation = () => {
           label="Tổng tiền chi tiêu thiết yếu/tháng"
           rules={[
             {
-              required: false,
+              required: true,
             },
           ]}>
-          <InputNumber
+          <InputNumber style={{width:'150px'}}
             defaultValue={0}
+            min={0}
+            placeholder="0" 
             formatter={(value) =>
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }

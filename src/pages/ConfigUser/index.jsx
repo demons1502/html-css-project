@@ -84,7 +84,7 @@ function ConfigUser() {
       <div className="config_header">
         <h3>Cấu hình</h3>
         <Popover content={content} placement="bottomRight" trigger='click'
-          open={showModal}
+          open={showModal} onOpenChange={(e)=>setShowModal(e)}
         >
           <Button type="primary" onClick={() => setShowModal(!showModal)}>
             <img src='../images/lock_icon.svg' />

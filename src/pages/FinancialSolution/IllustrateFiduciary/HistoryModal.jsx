@@ -1,4 +1,4 @@
-import { Modal, Empty } from "antd";
+import { Modal, Empty, Popover } from "antd";
 import React, { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Table from "../../../components/common/TableNormal";
@@ -48,7 +48,7 @@ const dataSource = [
   },
 ];
 
-export const HistoryModal = ({ isModalOpen, toggleModal }) => {
+export const HistoryModal = ({  }) => {
   const { t } = useTranslation();
   const [dataTable, setDataTable] = useState(dataSource);
   const columns = [
@@ -78,20 +78,7 @@ export const HistoryModal = ({ isModalOpen, toggleModal }) => {
     }
   }, [dataTable]);
 
-  const handleOk = () => {
-    toggleModal();
-  };
-
   return (
-    <Modal
-      title="Lịch sử tư vấn"
-      open={isModalOpen}
-      onOk={handleOk}
-      onCancel={toggleModal}
-      className="history-modal modal-custom"
-      width={430}
-    >
-      {table}
-    </Modal>
+    <div>{table}</div>
   );
 };

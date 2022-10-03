@@ -1,4 +1,5 @@
-import { Button, Tabs } from "antd";
+import { Tabs, Popover } from "antd";
+import { Button } from "../../../components/styles";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PageBack from "../../../assets/images/financial/PageBack";
@@ -13,20 +14,23 @@ import { ClosingModal } from "./ClosingModal";
 import { SaveConfirmation } from "./SaveConfirmation";
 
 const IllustrateFiduciary = () => {
+  const navigate = useNavigate()
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+
+  const closeHistoryModal = () => {
+    setIsHistoryModalOpen(false);
+  };
 
   const toggleHistoryModal = () => {
     setIsHistoryModalOpen(!isHistoryModalOpen);
-  };
-
-  const showHistory = () => {
-    toggleHistoryModal();
-  };
-
+  }
   const sendEmail = () => {
-    window.location.href =
-      "https://mail.google.com/mail/u/0/#inbox?compose=new";
+    // window.location.href =
+    //   "https://mail.google.com/mail/u/0/#inbox?compose=new";
   };
+  const handleContractBtn=()=>{
+    navigate('/advise/contract-management')
+  }
   const tabExtra = () => {
     return (
       <>
@@ -56,22 +60,40 @@ const IllustrateFiduciary = () => {
           </Link>
           <div className="minh-header_btns">
             <div className="finance-btn-wrapper">
-              <Button
-                type="primary"
-                htmlType="button"
-                className="btn-primary-outline"
-                block
-                onClick={showHistory}
+              <Popover
+                title="Lịch sử tư vấn"
+                open={isHistoryModalOpen}
+                placement="bottomRight"
+                onOpenChange={(e)=>setIsHistoryModalOpen(e)}
+                content={<HistoryModal />}
+                trigger="click"
               >
-                <div className="btn-icon">
-                  <Clock />
-                </div>
-                <span> Lịch sử</span>
-              </Button>
+                <Button
+                  // type="primary"
+                  style={{color:'black'}}
+                  htmlType="button"
+                  className="btn-primary-outline"
+                  block
+                  onClick={() => toggleHistoryModal()}
+                >
+                  <div className="btn-icon">
+                    <Clock />
+                  </div>
+                  <span> Lịch sử</span>
+                </Button>
+              </Popover>
             </div>
 
             <div className="finance-btn-wrapper">
-              <ClosingModal />
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="btn-primary finance-btn-small"
+                block
+                onClick={handleContractBtn}
+              >
+                Chốt hợp đồng
+              </Button>
             </div>
 
             <div className="finance-btn-wrapper">
@@ -96,7 +118,7 @@ const IllustrateFiduciary = () => {
               >
                 Lưu
               </Button> */}
-              <SaveConfirmation />
+              <ClosingModal />
             </div>
           </div>
         </div>
@@ -109,10 +131,6 @@ const IllustrateFiduciary = () => {
           </Tabs.TabPane>
         </Tabs>
       </div>
-      <HistoryModal
-        isModalOpen={isHistoryModalOpen}
-        toggleModal={toggleHistoryModal}
-      />
     </>
   );
 };

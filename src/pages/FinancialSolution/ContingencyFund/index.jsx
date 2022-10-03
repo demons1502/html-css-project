@@ -5,18 +5,43 @@ import SearchInputBox from "./SearchInputBox";
 import ListCalculation from "./ListCalculation";
 import ListDetails from "./ListDetails";
 import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAppointment } from "../../../slices/financialSolutions";
+import moment from 'moment';
+
 const ContingencyFund = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const [title] = useState(location?.state?.title);
 
   const [itemContent, setItemContent] = useState({});
-  const [lists, setLists] = useState(sideBarMenuItems);
+  const [lists, setLists] = useState(null);
   const [payload, setPayload] = useState("");
-
+  var customerAppointment = useSelector((state) => state.financialSolution.customerAppRecords)
+  // console.log(customerAppointment);
   useEffect(() => {
-    setItemContent(lists[0]);
+    let endDate = new Date();
+    endDate =  endDate.setHours(23, 59, 59, 999);
+    let startDate = new Date();
+    //dispatch(getAppointment({titles: "finance", startDate: moment(startDate), endDate: moment(endDate)})) //main code
+    dispatch(getAppointment({ titles: "consult", startDate: moment(startDate), endDate: moment(endDate) })) //fake date
+
   }, []);
 
+  useEffect(() => {
+    let arr = []
+    arr.push(customerAppointment.map(item => {
+      return { title: item.customerApptRecords[0].name }
+    }))
+    setLists(arr[0])
+  }, [customerAppointment])
+  
+  useEffect(()=>{
+    if(lists){
+      setItemContent(lists[0]);
+    }
+  },[lists])
+  
   return (
     <div className="quyduphone">
       {/* quyduphone-nav start */}
@@ -56,16 +81,19 @@ const ContingencyFund = () => {
                     <SearchInputBox setPayload={setPayload}></SearchInputBox>
                   </div>
 
-                  <List
-                    dataSource={lists}
-                    renderItem={(item, index) => (
-                      <List.Item
-                        onClick={() => setItemContent(item)}
-                        className={`${item === itemContent ? "active" : ""}`}>
-                        <Typography.Text ellipsis>{item.title}</Typography.Text>
-                      </List.Item>
-                    )}
-                  />
+                  {
+                    lists?.length > 0 &&
+                    <List
+                      dataSource={lists}
+                      renderItem={(item, index) => (
+                        <List.Item
+                          onClick={() => setItemContent(item)}
+                          className={`${item === itemContent ? "active" : ""}`}>
+                          <Typography.Text ellipsis>{item.title}</Typography.Text>
+                        </List.Item>
+                      )}
+                    />
+                  }
                 </div>
 
                 {/* container-right start */}

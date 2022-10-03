@@ -1,19 +1,17 @@
-import { Button, Col, Layout, List, Row, Segmented, Spin, Typography, notification, message } from 'antd';
+import { Button, Col, Layout, List, message, notification, Row, Segmented, Spin, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { options } from '../../assets/fake-data/data';
-import { MANAGEMENT_CONTENT } from '../../ultis/constant';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import Pagination from '../../components/common/Pagination';
 import ModalConfirm from '../../components/ModalConfirm';
+import * as S from '../../components/styles';
 import Title from '../../components/Title';
-import { createContent, deleteContent, retrieveData, updateContent, uploadImage } from '../../slices/managementContent';
-import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
+import { uploadFile } from '../../services/manageContent';
+import { createContent, deleteContent, retrieveData, updateContent } from '../../slices/managementContent';
+import { DEFAULT_SIZE, LOADING_STATUS, MANAGEMENT_CONTENT } from '../../ultis/constant';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
-import * as S from '../../components/styles';
-import { uploadFile } from '../../services/manageContent';
 
 const ManageFinanceKnowledge = () => {
   const { t } = useTranslation();
@@ -31,11 +29,12 @@ const ManageFinanceKnowledge = () => {
   const handleChange = (e) => {
     let values;
     const name = e.target.name;
+    const id = e.target.id;
     // if (option !== MANAGEMENT_CONTENT[0].value) {
-    //   values = { ...itemContent, [name]: e.target.value };
+    //   const index = itemContent.answers.findIndex(item=>item.id === id)
+    //   values = { ...itemContent, answers:[...itemContent.answers,{itemContent.answers[index]?.answer=e.target.value}] };
     //   setItemContent(values);
     // }
-    // console.log(e.target.value);
     values = { ...itemContent, [name]: e.target.value };
     setItemContent(values);
   };

@@ -1,5 +1,5 @@
 import { DeleteOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { Carousel, List, Pagination } from 'antd';
+import { Carousel, List, Pagination, Form } from 'antd';
 import React from 'react';
 import { useRef } from 'react';
 import { useState } from 'react';
@@ -16,9 +16,9 @@ const QuestionAnswerContent = (props) => {
   const { onChange, content, onDelete, onSave, onCancel, isEdit, setEdit } = props;
   const [answers, setAnswers] = useState(null);
   const [current, setCurrent] = useState(1);
-  console.log(current);
 
   const carouselRef = useRef();
+  const [form] = Form.useForm();
 
   const itemRender = (_, type) => {
     if (type === 'prev') {
@@ -49,6 +49,16 @@ const QuestionAnswerContent = (props) => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
+  // const handleChange = (e) => {
+  //   let values;
+  //   const id = e.target.id ? e.target.id : undefined;
+  //   const name = e.target.name;
+  //   const index = answers.findIndex((item) => item.id === id);
+  //   values = { ...answers[index], [name]: e.target.value };
+  //   setAnswers([...answers, values]);
+  //   console.log(answers[index]);
+  // };
 
   const handleAddAnswer = () => {
     const newAnswer = {
@@ -135,6 +145,7 @@ const QuestionAnswerContent = (props) => {
                       <div className="questionAnswerContent-answer_content">
                         <ManageContentInput
                           name="answer"
+                          id={answer?.id}
                           textarea
                           onChange={onChange}
                           value={answer?.answer}

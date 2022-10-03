@@ -23,11 +23,12 @@ export const menuItems = [
 ];
 export const randomColor = ['green', 'yellow', 'blue', 'orange', 'purple'];
 export const options = [
-  { label: 'Khảo sát', value: 1 },
-  { label: 'Tư vấn tài chính', value: 2 },
-  { label: 'Tư vấn giải pháp', value: 3 },
-  { label: 'Ký hợp đồng', value: 4 },
-  { label: 'Khác', value: 5 },
+  { label: 'Khảo sát', value: 'survey' },
+  { label: 'Tư vấn tài chính', value: 'finance' },
+  { label: 'Tư vấn giải pháp', value: 'consult' },
+  { label: 'Ký hợp đồng', value: 'contract' },
+  { label: 'Khác', value: 'other' },
 ];
+export const selectOptions = ['survey', 'finance', 'consult', 'contract', 'other'];
 export const limitItem = 5;
 export const offsetItem = 0;

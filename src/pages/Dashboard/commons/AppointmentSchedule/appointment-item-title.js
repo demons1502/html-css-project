@@ -1,14 +1,14 @@
 import { Col, Row, Slider } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Filter from '../../../../components/common/Filter';
 import { options } from '../../constants';
 import * as S from '../../styles';
 
-export default function AppointmentItemTitle({ props }) {
+export default function AppointmentItemTitle(props) {
   const { t } = useTranslation();
-  const { done, total } = props;
-  const [payload, setPayload] = useState('');
+  const { done, total } = props.slider;
+  const { select, setSelect } = props;
 
   return (
     <S.WrapTitle $toggle $height="auto" $padding="19px 23px 0px">
@@ -26,7 +26,7 @@ export default function AppointmentItemTitle({ props }) {
         </Row>
       </Col>
       <Col flex={1}>
-        <Filter options={options} setPayload={setPayload}></Filter>
+        <Filter options={options} setPayload={setSelect} defaultValue={select}></Filter>
       </Col>
     </S.WrapTitle>
   );

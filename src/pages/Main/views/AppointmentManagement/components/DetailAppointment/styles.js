@@ -65,12 +65,13 @@ export const wrapMiddle = styled.div`
   flex-direction: row;
   padding: 13px 10px;
   border-bottom: 1px dashed #e6e6e6;
-  justify-content: space-between;
+  justify-content: start;
 `;
 
 export const ItemMiddle = styled.div`
   display: flex;
   flex-direction: row;
+  margin-right: 20px;
 `;
 
 export const ItemMiddleContent = styled.div`

@@ -1,5 +1,5 @@
-import { Table as AntTable } from "antd";
-import styled from "styled-components";
+import { Table as AntTable } from 'antd';
+import styled from 'styled-components';
 
 export const Table = styled(AntTable)`
   tr {
@@ -37,5 +37,25 @@ export const Table = styled(AntTable)`
   }
   .ant-table-row:hover .other {
     display: none;
+  }
+
+  //customize for table history payment
+  &.history-table {
+    tr {
+      &:hover {
+        /* background: #35b46f; */
+        td {
+          border-bottom: none;
+        }
+      }
+      th {
+        &::before {
+          display: none;
+        }
+        &:first-child {
+          border-top-left-radius: 0 !important;
+        }
+      }
+    }
   }
 `;

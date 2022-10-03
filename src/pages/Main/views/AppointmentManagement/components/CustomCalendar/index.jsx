@@ -13,100 +13,7 @@ import DayEvent from '../CustomDayEvent';
 import * as S from './styles';
 import 'react-big-calendar/lib/sass/styles.scss';
 import CustomHeader from '../CustomHeader';
-
-const myEventsList = [
-  {
-    apptId: 9,
-    typeId: 3,
-    title: 'Video Record',
-    start: new Date('2022-09-20T08:24:00'),
-    end: new Date('2022-09-20T09:50:00'),
-    description: 'Tư vấn hợp đồng',
-    status: 'cancel',
-    address: 'Lô 22, số 35 Lê Văn Thiêm',
-    note: 'Mang theo hợp đồng, quà tặng cho khách hàng',
-    isCompleted: false,
-    customerApptRecords: [
-      {
-        customerApptRecordsId: 14,
-        customeId: 111,
-        financeConsultId: null,
-        fundId: null,
-        contractId: null,
-        surveryId: null,
-        name: 'Brooklyn Simmons',
-      },
-      {
-        customerApptRecordsId: 15,
-        customeId: 112,
-        financeConsultId: null,
-        fundId: null,
-        contractId: null,
-        surveryId: null,
-        name: 'Marvin McKinney',
-      },
-    ],
-  },
-  {
-    apptId: 10,
-    typeId: 1,
-    title: 'Jenny Wilson',
-    start: new Date('2022-09-19T08:24:00'),
-    end: new Date('2022-09-19T09:50:00'),
-    description: 'Tư vấn hợp đồng',
-    status: 'success',
-    address: 'Lô 22, số 35 Lê Văn Thiêm',
-    note: 'Mang theo hợp đồng, quà tặng cho khách hàng',
-    isCompleted: true,
-  },
-  {
-    apptId: 12,
-    typeId: 3,
-    title: 'Jenny Wilson',
-    start: new Date('2022-09-21T08:24:00'),
-    end: new Date('2022-09-21T09:15:00'),
-    description: 'Tư vấn hợp đồng',
-    company: {
-      members: 4,
-    },
-    status: 'wait',
-    address: 'Lô 22, số 35 Lê Văn Thiêm',
-    note: 'Mang theo hợp đồng, quà tặng cho khách hàng',
-    isCompleted: false,
-    customerApptRecords: [
-      {
-        customerApptRecordsId: 14,
-        customeId: 111,
-        financeConsultId: null,
-        fundId: null,
-        contractId: null,
-        surveryId: null,
-        name: 'Marvin McKinney',
-      },
-      {
-        customerApptRecordsId: 15,
-        customeId: 112,
-        financeConsultId: null,
-        fundId: null,
-        contractId: null,
-        surveryId: null,
-        name: 'Marvin McKinney',
-      },
-    ],
-  },
-  {
-    apptId: 13,
-    typeId: 1,
-    title: 'Jenny Wilson',
-    start: new Date('2022-09-24T08:24:00'),
-    end: new Date('2022-09-24T09:15:00'),
-    description: 'Tư vấn hợp đồng',
-    status: 'waiting',
-    address: 'Lô 22, số 35 Lê Văn Thiêm',
-    note: 'Mang theo hợp đồng, quà tặng cho khách hàng',
-    isCompleted: false,
-  },
-];
+import { useSelector } from 'react-redux';
 
 const defaultTZ = DateTime.local().zoneName;
 const date = new Date();
@@ -116,8 +23,9 @@ function getDate(str, DateTimeObj) {
 }
 
 const CalendarCustom = ({ handleEvent, eventActive }) => {
+  const appointmentReducer = useSelector((state) => state.appointment);
+  const { data } = appointmentReducer;
   const [timezone] = useState(defaultTZ);
-
   const { defaultDate, getNow, localizer, scrollToTime } = useMemo(() => {
     Settings.defaultZone = timezone;
     return {
@@ -140,7 +48,7 @@ const CalendarCustom = ({ handleEvent, eventActive }) => {
   //FORMAT
   const formats = {
     timeGutterFormat: (date, culture, localizer) =>
-      localizer.format(date, 'H:mm', culture),
+      localizer.format(date, 'HH:mm', culture),
   };
 
   const today = new Date();
@@ -148,20 +56,21 @@ const CalendarCustom = ({ handleEvent, eventActive }) => {
     today.getFullYear(),
     today.getMonth(),
     today.getDate(),
-    7
+    6
   );
+
   const maximum = new Date(
     today.getFullYear(),
     today.getMonth(),
     today.getDate(),
-    18
+    20
   );
 
   return (
     <S.WrapContainer
       defaultDate={defaultDate}
       defaultView={Views.WEEK}
-      events={myEventsList}
+      events={data}
       getNow={getNow}
       localizer={localizer}
       scrollToTime={scrollToTime}
@@ -178,6 +87,7 @@ const CalendarCustom = ({ handleEvent, eventActive }) => {
         event: (event) => DayEvent(event, eventActive),
         header: CustomHeader,
       }}
+      style={{ height: 600 }}
     />
   );
 };

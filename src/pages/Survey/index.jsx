@@ -1,4 +1,4 @@
-import { Button, Col, Layout, List, Row, Typography } from "antd";
+import { Button, Col, Layout, List, Row, Typography, Spin } from "antd";
 import React, { Fragment, useEffect, useState } from "react";
 import SearchInputBox from "./SearchInputBox";
 import ListDetails from "./ListDetails";
@@ -13,17 +13,30 @@ import calender from "../../assets/images/icons/calendar.svg";
 import left_arrow from "../../assets/images/icons/left-arrow.svg";
 import { HistoryPopup } from "./Modals/HistoryPopup";
 import { getTimeByTZ } from "../../helper/index";
+import { getSppechScriptInfo, clearSurvey } from "../../slices/surveys";
 
 const Survey = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [customerList, setCustomerList] = useState([]);
   const [payload, setPayload] = useState("");
   const { customers, surveys } = useSelector((state) => state);
   const { data, selectedCustomer } = customers;
+  const { objective, procedure, dialouges } = surveys?.surveyScript;
+
+  useEffect(() => {
+    if (!isEmpty(surveys?.survey)) {
+      const filteredCustomer = data?.filter((customer) => customer?.customerId === selectedCustomer?.customerId);
+      setCustomerList(filteredCustomer);
+    } else {
+      setCustomerList(data);
+    }
+  }, [customers, surveys?.survey]);
 
   useEffect(() => {
     dispatch(getCustomerList());
+    dispatch(getSppechScriptInfo());
   }, [dispatch]);
 
   useEffect(() => {
@@ -32,6 +45,10 @@ const Survey = () => {
 
   const handleSelectCustomer = (id) => {
     dispatch(setSelectedCustomer(id));
+  };
+
+  const backToSurvey = () => {
+    dispatch(clearSurvey());
   };
 
   const historyHandler = () => {
@@ -63,9 +80,9 @@ const Survey = () => {
                       <SearchInputBox setPayload={setPayload}></SearchInputBox>
                     </div>
 
-                    {data?.length > 0 && (
+                    {customerList?.length > 0 && (
                       <List
-                        dataSource={data}
+                        dataSource={customerList}
                         renderItem={(customer, index) => (
                           <List.Item
                             onClick={() => handleSelectCustomer(customer?.customerId)}
@@ -98,8 +115,8 @@ const Survey = () => {
                       </div>
                     ) : (
                       <div className="container-right-header" style={{ padding: "20px" }}>
-                        <div>
-                          <img src={left_arrow} alt="calender" height={12} style={{ marginRight: "5px" }} />
+                        <div onClick={backToSurvey} className="back-to-survey">
+                          <img src={left_arrow} alt="back" height={12} style={{ marginRight: "5px" }} />
                         </div>
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: "5px" }} />
@@ -114,13 +131,19 @@ const Survey = () => {
               </Layout.Content>
             </Col>
 
-            <Col lg={9} md={24} sm={24} xs={24}>
-              <Layout.Content className="manageContent">
-                <div className="content-div-2">
-                  <ListDetails />
-                </div>
-              </Layout.Content>
-            </Col>
+            {objective || procedure || dialouges?.length > 0 ? (
+              <Col lg={9} md={24} sm={24} xs={24}>
+                <Layout.Content className="manageContent">
+                  <div className="content-div-2">
+                    <ListDetails />
+                  </div>
+                </Layout.Content>
+              </Col>
+            ) : (
+              <div>
+                <Spin />
+              </div>
+            )}
           </Row>
         </div>
       </div>

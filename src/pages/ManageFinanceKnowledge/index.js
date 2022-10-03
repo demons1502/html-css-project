@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { options } from '../../assets/fake-data/data';
+import { MANAGEMENT_CONTENT } from '../../ultis/constant';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import Pagination from '../../components/common/Pagination';
 import ModalConfirm from '../../components/ModalConfirm';
@@ -12,6 +13,7 @@ import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
 import * as S from '../../components/styles';
+import { uploadFile } from '../../services/manageContent';
 
 const ManageFinanceKnowledge = () => {
   const { t } = useTranslation();
@@ -27,6 +29,8 @@ const ManageFinanceKnowledge = () => {
     offset: 0,
   });
   const [fileList, setFileList] = useState(null);
+  const [editDisabled, setEditDisabled] = useState(true);
+  const [file, setFile] = useState(null);
 
   const handleChange = (e) => {
     let values;
@@ -49,7 +53,7 @@ const ManageFinanceKnowledge = () => {
     setItemContent({ ...itemContent, image: newFile[0]?.originFileObj });
   };
 
-  const handleSave = (item) => {
+  const handleSave = async (item) => {
     if (!item) {
       ModalConfirm({
         content: `Vui lòng nhập nội dung bài viết`,
@@ -58,27 +62,21 @@ const ManageFinanceKnowledge = () => {
         },
       });
     } else {
+    }
+    try {
       const formData = new FormData();
-      formData.append('image', item.image);
-      formData.append('title', item.title);
-      formData.append('subTitle', item.subTitle);
-      formData.append('url', item.url);
-      formData.append('body', item.body);
-      console.log(item);
-      if (!item.id) {
-        dispatch(createContent({ type: option, payload: formData }));
-        setItemContent(null);
-        setFileList([]);
-      } else {
-        dispatch(updateContent({ type: option, id: item.id, payload: formData }));
-        setItemContent(null);
-        setFileList([]);
-      }
+      formData.append('file', item.image);
+      const res = await uploadFile(formData);
+      setFile(res.data);
+      file && handleSaveData(item);
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const handleCancel = () => {
     setItemContent(prevItem);
+    setEditDisabled(true);
     if (!prevItem) {
       setItemContent(null);
       setFileList(null);
@@ -102,6 +100,20 @@ const ManageFinanceKnowledge = () => {
       });
     }
   };
+
+  const handleAddNew = () => {
+    setEditDisabled(false);
+    setItemContent(null);
+    setFileList(null);
+  };
+
+  const handleChangeOption = (e) => {
+    setEditDisabled(true);
+    setItemContent(null);
+    setFileList(null);
+    setOption(e);
+  };
+
   useEffect(() => {
     //fetch data
     dispatch(retrieveData({ type: option, params: paginate }));
@@ -120,32 +132,32 @@ const ManageFinanceKnowledge = () => {
           <Col lg={7} md={24} sm={24} xs={24}>
             <Layout.Content>
               <div className="list-option">
-                <Segmented options={options} onChange={(e) => setOption(e)} defaultValue={option} value={option} />
+                <Segmented
+                  options={MANAGEMENT_CONTENT}
+                  onChange={handleChangeOption}
+                  defaultValue={option}
+                  value={option}
+                />
               </div>
               <Spin spinning={loading === LOADING_STATUS.pending}>
                 <List
                   className="manageFinanceKnowledge-container_list"
                   size="small"
-                  // pagination={{
-                  //   className: 'manageFinanceKnowledge-pagination',
-                  //   pageSize: 7,
-                  //   showLessItems: true,
-                  // }}
                   header={
                     <Title
                       title={
-                        option !== 'q&a' ? t('manage content.articles list title') : t('manage content.q&a list title')
+                        option !== MANAGEMENT_CONTENT[1].value
+                          ? t('manage content.articles list title')
+                          : t('manage content.q&a list title')
                       }
                     />
                   }
                   footer={
                     <Button
-                      type="primary"
-                      className="btn-add-new"
+                      // type="primary"
+                      className="btn-add-new "
                       icon={<img src={IconPlus} alt="" />}
-                      onClick={() => {
-                        setItemContent(null), setFileList(null);
-                      }}
+                      onClick={handleAddNew}
                     >
                       Thêm mới
                     </Button>
@@ -157,10 +169,11 @@ const ManageFinanceKnowledge = () => {
                         setItemContent(item);
                         setPrevItem(item);
                         setFileList([{ url: item.image }]);
+                        setEditDisabled(true);
                       }}
                       className={`${item.id === itemContent?.id ? 'active' : ''}`}
                     >
-                      <Typography.Text ellipsis>{item.title}</Typography.Text>
+                      <Typography.Text ellipsis>{item.title || item.question}</Typography.Text>
                     </List.Item>
                   )}
                 ></List>
@@ -171,22 +184,27 @@ const ManageFinanceKnowledge = () => {
 
           <Col xs={16} lg={17} flex={1}>
             <Layout.Content className="manageContent">
-              {option !== 'q&a' ? (
+              {option !== MANAGEMENT_CONTENT[1].value ? (
                 <FinanceKnowledgeContent
                   content={itemContent}
                   onChange={handleChange}
                   onUpload={handleFileList}
                   fileList={fileList}
-                  onClick={handleSave}
+                  onSave={handleSave}
                   onDelete={handleDelete}
                   onCancel={handleCancel}
+                  isEdit={editDisabled}
+                  setEdit={setEditDisabled}
                 />
               ) : (
                 <QuestionAnswerContent
                   onChange={handleChange}
                   content={itemContent}
                   onDelete={handleDelete}
+                  onCancel={handleCancel}
                   onSave={handleSave}
+                  isEdit={editDisabled}
+                  setEdit={setEditDisabled}
                 />
               )}
             </Layout.Content>

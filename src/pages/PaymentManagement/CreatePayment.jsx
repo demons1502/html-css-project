@@ -4,7 +4,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DatePicker from '../../components/common/DatePicker';
 import Input from '../../components/common/Input';
-import { InputNumber } from '../../components/common/Input/styles';
+import InputNumber from '../../components/common/InputNumber';
 import { Button } from '../../components/styles';
 import { createPayment } from '../../slices/paymentManagement';
 import { LOADING_STATUS } from '../../ultis/constant';
@@ -101,7 +101,12 @@ const CreatePayment = (props) => {
             },
           ]}
         >
-          <DatePicker size="large" format={getTimeByTZ} placeholder="MM/DD/YYYY" disabledDate={disabledDateStart} />
+          <DatePicker
+            size="large"
+            format={getTimeByTZ}
+            placeholder={moment.localeData().longDateFormat('L')}
+            disabledDate={disabledDateStart}
+          />
         </Form.Item>
         <Form.Item
           name="dueDate"
@@ -113,7 +118,12 @@ const CreatePayment = (props) => {
             },
           ]}
         >
-          <DatePicker size="large" format={getTimeByTZ} placeholder="MM/DD/YYYY" disabledDate={disabledDateEnd} />
+          <DatePicker
+            size="large"
+            format={getTimeByTZ}
+            placeholder={moment.localeData().longDateFormat('L')}
+            disabledDate={disabledDateEnd}
+          />
         </Form.Item>
         <Form.Item name="amount" label="Số tiền" rules={[{ required: true }]}>
           <InputNumber size="large" controls={false} formatter={formatDataNumber} placeholder="Nhập" />
@@ -121,7 +131,7 @@ const CreatePayment = (props) => {
         <Form.Item name="description" label="Nội dung">
           <Textarea autoSize placeholder="Nội dung" />
         </Form.Item>
-        <Form.Item className="createPayment-modal_button">
+        <Form.Item className="paymentManagement-modal_button">
           <Button className="btn-danger" onClick={handleCancel}>
             Hủy
           </Button>

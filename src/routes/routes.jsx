@@ -15,6 +15,7 @@ const Login = lazy(() => import('../pages/Auth/views/Login'));
 
 // MAIN VIEWS
 const Dashboard = lazy(() => import('../pages/Dashboard'));
+const CallDetails = lazy(() => import('../pages/CallDetails'));
 const CustomerCare = lazy(() => import('../pages/CustomerCare'));
 const FinanceConsultant = lazy(() => import('../pages/FinanceConsultant'));
 const Survey = lazy(() => import('../pages/Survey'));
@@ -54,6 +55,10 @@ export const routes = () => [
       {
         path: 'dashboard',
         element: <GuestGuard element={<Dashboard />} />,
+      },
+      { 
+        path: 'call-details',
+        element: <GuestGuard element={<CallDetails />} />
       },
       {
         path: 'potential-customers',

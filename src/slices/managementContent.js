@@ -20,7 +20,6 @@ export const createContent = createAsyncThunk(
   async ({ type, payload }, { rejectWithValue }) => {
     try {
       const res = await create(type, payload);
-
       return { data: res.data, message: res.statusText };
     } catch (error) {
       console.log(error);
@@ -28,8 +27,19 @@ export const createContent = createAsyncThunk(
     }
   }
 );
+
+// export const createAnswer = createAsyncThunk('manageContent/createAnswer', async (payload, { rejectWithValue }) => {
+//   try {
+//     const res = await create(type, payload);
+//     return { data: res.data, message: res.statusText };
+//   } catch (error) {
+//     console.log(error);
+//     return rejectWithValue(error.response.data);
+//   }
+// });
+
 export const updateContent = createAsyncThunk(
-  'manageContent/update',
+  'manageContent/updateContent',
   async ({ type, id, payload }, { rejectWithValue }) => {
     try {
       const res = await update(type, id, payload);

@@ -1,85 +1,84 @@
-import {  List } from 'antd';
+import { List } from 'antd';
 import React from 'react';
-import { useState } from 'react';
-import DeleteIcon from '../../assets/images/icons/deleteIcon.svg';
-import EditIcon from '../../assets/images/icons/edit-green.svg';
+import Edit from '../../assets/images/icons/components/Edit';
+import Delete from '../../assets/images/icons/components/Delete';
 import Title from '../../components/Title';
 import ManageContentInput from './ManageContentInput';
-import {Button} from '../../components/styles'
+import { Button } from '../../components/styles';
 
 const FinanceKnowledgeContent = (props) => {
-  const { content, onChange, fileList, onClick, onDelete, onUpload, onCancel } =
-    props;
-
-  const [edit, setEdit] = useState(true)
+  const { content, onChange, fileList, onSave, onDelete, onUpload, onCancel, isEdit, setEdit } = props;
 
   return (
-    <div className='financeKnowledgeContent'>
+    <div className="financeKnowledgeContent">
       <List
-        size='small'
+        size="small"
         header={
-          <div className='manageContent-header'>
-            <Title title='Nội dung' />
-            {content && 
-            <div className='manageContent-header_icon'>
-              {edit && 
-              <img src={EditIcon} onClick={()=>setEdit(false)}/>
-              }
-              <img src={DeleteIcon} onClick={() => onDelete(content)} />
-            </div>
-            }
+          <div className="manageContent-header">
+            <Title title="Nội dung" />
+            {content && (
+              <div className="manageContent-header_icon">
+                {isEdit && (
+                  <span onClick={() => setEdit(false)}>
+                    <Edit color="#36b872" />
+                  </span>
+                )}
+
+                <span onClick={() => onDelete(content)}>
+                  <Delete color="#999" />
+                </span>
+              </div>
+            )}
           </div>
         }
         footer={
-          <div className='manageContent-footer'>
+          <div className="manageContent-footer">
             <ManageContentInput
               onChange={onChange}
-              name='url'
-              title='Link'
+              name="url"
+              title="Link"
               value={content?.url}
-              placeholder='Nhập link'
+              placeholder="Nhập link"
+              isDisabled={isEdit}
             />
-            <div className='manageContent-footer_button'>
-              <Button
-                className="btn-danger"
-                onClick={() => onCancel(content)}
-              >
+            <div className="manageContent-footer_button">
+              <Button danger className="btn-cancer" onClick={() => onCancel()}>
                 Hủy
               </Button>
-              <Button
-                type='primary'
-                onClick={() => onClick(content)}
-              >
+              <Button type="primary" className="btn-save" onClick={() => onSave(content)}>
                 Lưu
               </Button>
             </div>
           </div>
         }
       >
-        <div className='manageContent-container'>
+        <div className="manageContent-container">
           <ManageContentInput
-            name='title'
+            name="title"
             onChange={onChange}
             value={content?.title}
-            title='Tiêu đề'
-            placeholder='Nhập nội dung tiêu đề'
+            title="Tiêu đề"
+            placeholder="Nhập nội dung tiêu đề"
+            isDisabled={isEdit}
           />
           <ManageContentInput
-            name='image'
+            name="image"
             input={false}
-            title='Ảnh đại diện: '
-            type='file'
+            title="Ảnh đại diện: "
+            type="file"
             onChange={onUpload}
             fileList={fileList}
+            isDisabled={isEdit}
           />
           <ManageContentInput
-            name='subTitle'
+            name="subTitle"
             onChange={onChange}
             value={content?.subTitle}
-            title='Nội dung vắn tắt'
+            title="Nội dung vắn tắt"
             textarea
             input={false}
-            placeholder='Nội dung'
+            placeholder="Nội dung"
+            isDisabled={isEdit}
           />
         </div>
       </List>

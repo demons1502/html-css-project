@@ -38,7 +38,7 @@ export const WrapContainer = styled(CalendarBig)`
           flex: unset;
           height: 97px;
           border-left: 1px solid #ddd;
-          margin-left: 0.2px;
+          margin-left: -0.2px;
           > .rbc-time-slot {
             border: none;
           }

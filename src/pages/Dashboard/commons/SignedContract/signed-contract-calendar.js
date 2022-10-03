@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd';
+import { Col, DatePicker, Row, Tooltip } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,8 +8,7 @@ import { dateFormat } from '../../constants';
 
 export default function SignedContractCalendar(props) {
   const { t } = useTranslation();
-  const [startDate, setStartDate] = useState(moment().subtract(7, 'days'));
-  const [endDate, setEndDate] = useState(moment());
+  const { startDate, endDate, setDate, total } = props;
   const [active, setActive] = useState(false);
 
   const disabledDate = (current) => {
@@ -18,8 +17,7 @@ export default function SignedContractCalendar(props) {
 
   const onChange = (date) => {
     if (date) {
-      setEndDate(date);
-      setStartDate(moment(date).subtract(7, 'days'));
+      setDate(date);
       setActive(false);
     }
   };
@@ -30,7 +28,15 @@ export default function SignedContractCalendar(props) {
 
   return (
     <Row>
-      <S.WrapIconImageCalendar src={signedContract} onClick={handleSelectCalendar} />
+      <Tooltip
+        placement="rightTop"
+        color="#fff"
+        overlayInnerStyle={{ borderRadius: '15px' }}
+        title={<DatePicker onChange={onChange} disabledDate={disabledDate} />}
+      >
+        <S.WrapIconImageCalendar src={signedContract} onClick={handleSelectCalendar} />
+      </Tooltip>
+
       <S.WrapTextAlign flex="auto">
         <Row gutter={[0, 5]}>
           <Col span={24}>
@@ -38,11 +44,10 @@ export default function SignedContractCalendar(props) {
           </Col>
           <Col span={24}>
             <S.TextColor $color="#3DBD77" $fontSize="20px">
-              120
+              {total}
             </S.TextColor>
-            hợp đồng
+            {` hợp đồng`}
           </Col>
-          <S.DatePicker $display={active} onChange={onChange} disabledDate={disabledDate} />
         </Row>
       </S.WrapTextAlign>
     </Row>

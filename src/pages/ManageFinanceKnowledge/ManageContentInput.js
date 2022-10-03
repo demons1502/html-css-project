@@ -14,6 +14,7 @@ const ManageContentInput = (props) => {
     placeholder,
     color = false,
     fileList,
+    isDisabled,
   } = props;
 
   const handleFile = (e) => {
@@ -32,6 +33,7 @@ const ManageContentInput = (props) => {
           value={value}
           type={type}
           className={color && 'color-green'}
+          disabled={isDisabled}
         />
       ) : !input && textarea ? (
         <div className="textarea">
@@ -45,6 +47,7 @@ const ManageContentInput = (props) => {
             type={type}
             autoSize={{ minRows: 5 }}
             className="textarea-input"
+            disabled={isDisabled}
           />
         </div>
       ) : (
@@ -59,6 +62,7 @@ const ManageContentInput = (props) => {
             beforeUpload={Upload.LIST_IGNORE}
             fileList={fileList}
             accept=".jpeg,.jpg,.png,.webp,.svg"
+            disabled={isDisabled}
           >
             <div className="upload-content">
               <CameraOutlined />

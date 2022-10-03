@@ -105,16 +105,6 @@ export default function FinanceConsultant() {
 
   const dispatch = useDispatch();
 
-  const handleCount = useCallback(() => {
-    let cks = 0;
-    for (let i = 0; i < consults.data.length; i++) {
-      if (consults.data[i].status === 'NOT_CALL_YET') {
-        cks += 1;
-      }
-    }
-    return cks;
-  }, [consults.data]);
-
   useEffect(() => {
     const offset = (paginate.offset - 1) * paginate.limit;
     const params = { limit: paginate.limit, offset: offset, status };
@@ -147,7 +137,7 @@ export default function FinanceConsultant() {
           </div>
         </div>
         <div className="header_right">
-          <FilterCommon options={options} setPayload={setStatus} />
+          <FilterCommon options={options} setPayload={setStatus} defaultChecked />
         </div>
       </div>
       <div className="contract_list">

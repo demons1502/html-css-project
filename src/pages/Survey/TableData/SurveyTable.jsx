@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Checkbox, Empty } from "antd";
+import { Checkbox, Empty, message } from "antd";
 import TableCommon from "../../../components/common/TableNormal";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, FormProvider } from "react-hook-form";
@@ -19,10 +19,13 @@ const CustomerServeyTable = () => {
   const [formValue, setFromValue] = useState({});
   const [formValues, setFromValues] = useState([]);
 
+  console.log("formValues", formValues);
+
   //get data from redux
   const { surveys, customers } = useSelector((state) => state);
   const { selectedCustomer } = customers;
-  const { finance, influence, priority, others, ...value } = surveys?.survey;
+  const { survey, isClearSurvey } = surveys;
+  const { finance, influence, priority, others, ...value } = survey;
   const financeValue = finance ? JSON.parse(finance) : {};
   const influenceValue = influence ? JSON.parse(influence) : {};
   const priorityValue = priority ? JSON.parse(priority) : {};
@@ -41,9 +44,28 @@ const CustomerServeyTable = () => {
   });
   const { watch, control, reset } = methods;
 
+  //back to reset data
+
+  useEffect(() => {
+    if (isClearSurvey && formValues?.length > 0) {
+      const formInfos = [...formValues];
+      const currentIndex = formInfos?.findIndex((item) => item?.id === selectedCustomer?.customerId);
+      const selectedFormInfo = formInfos[currentIndex];
+      selectedFormInfo["hintName"] = "";
+      selectedFormInfo["isPotential"] = false;
+      selectedFormInfo["others"]["other1"] = [];
+      selectedFormInfo["others"]["other2"] = [];
+      selectedFormInfo["others"]["other3"] = [];
+      selectedFormInfo["others"]["other4"] = [];
+      formInfos[currentIndex] = selectedFormInfo;
+      setFromValues(formInfos);
+    }
+  }, [isClearSurvey]);
+
   //reset form after submit
   useEffect(() => {
     if (!isEmpty(surveys?.data)) {
+      console.log("isClearSurvey", isClearSurvey);
       const tableInfos = [...dataTables];
       const formInfos = [...formValues];
       const currentTableIndex = tableInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
@@ -138,7 +160,7 @@ const CustomerServeyTable = () => {
     }
   }, [watchOther1, watchOther2, watchOther3, watchOther4, watchPotential, watchHintName]);
 
-  // for survey details
+  // for   details
   useEffect(() => {
     if (!isEmpty(surveys?.survey)) {
       const tableData = [
@@ -222,6 +244,15 @@ const CustomerServeyTable = () => {
         potential: value?.isPotential,
         hintName: value?.hintName,
       });
+    } else {
+      reset({
+        other1: [],
+        other2: [],
+        other3: [],
+        other4: [],
+        potential: false,
+        hintName: "",
+      });
     }
   }, [surveys?.survey]);
 
@@ -300,13 +331,12 @@ const CustomerServeyTable = () => {
       children: [
         {
           title: "Rất quan trọng",
-
           children: [
             {
               dataIndex: "infulence1",
-              key: "infulence1",
               className:"textaline",
               width: "5rem",
+              key: "infulence1",
               render: (value, record, rowIndex) => (
                 <Checkbox checked={value} value="1" onChange={handleCheckboxChangeFactory(rowIndex, "infulence1")} />
               ),
@@ -318,9 +348,9 @@ const CustomerServeyTable = () => {
           children: [
             {
               dataIndex: "infulence2",
-              key: "infulence2",
-              width: "5rem",
               className:"textaline",
+              width: "5rem",
+              key: "infulence2",
               render: (value, record, rowIndex) => (
                 <Checkbox checked={value} value="2" onChange={handleCheckboxChangeFactory(rowIndex, "infulence2")} />
               ),
@@ -332,9 +362,9 @@ const CustomerServeyTable = () => {
           children: [
             {
               dataIndex: "infulence3",
-              key: "infulence3",
-              width: "5rem",
               className:"textaline",
+              width: "5rem",
+              key: "infulence3",
               render: (value, record, rowIndex) => (
                 <Checkbox
                   className="radius-5"
@@ -358,8 +388,8 @@ const CustomerServeyTable = () => {
             {
               dataIndex: "finance1",
               key: "finance1",
-              width: "5rem",
               className:"textaline",
+              width: "5rem",
               render: (value, record, rowIndex) => (
                 <Checkbox
                   className="radius-5"
@@ -396,12 +426,13 @@ const CustomerServeyTable = () => {
             {
               dataIndex: "money",
               key: "money",
-              textaline:"center",
-              width: "10rem",
+              className:"textaline",
+              width: "5rem",
               render: (value, record, rowIndex) => (
                 <Input
-                  size="large"
+                  // style={{ backgroundColor: "#F8F8F8", border: 0 }}
                   className="radius-10"
+                  size="large"
                   value={value}
                   onChange={handleInput(rowIndex, "money")}
                 />
@@ -418,6 +449,8 @@ const CustomerServeyTable = () => {
       key: "prior",
       render: (value, record, rowIndex) => (
         <Input
+          // style={{ backgroundColor: "#F8F8F8", border: 0 }}
+          className="radius-10 "
           size="large"
           value={value}
           onChange={handleInput(rowIndex, "prior")}
@@ -489,7 +522,12 @@ const CustomerServeyTable = () => {
       hintName: formValue?.hintName,
       isPotential: formValue?.isPotential,
     };
-    dispatch(createSurvey(submitFormData));
+
+    if (formValue?.hintName) {
+      dispatch(createSurvey(submitFormData));
+    } else {
+      message.error("Bạn chưa nhập tên gợi nhớ");
+    }
   };
 
   return (
@@ -500,8 +538,6 @@ const CustomerServeyTable = () => {
           <div className="">{table}</div>
         </div>
         <SurveyForm />
-
-        {/* {isEmpty(surveys?.survey) && ( */}
         <div className={`container-right-submit ${!isEmpty(surveys?.survey) && "content-hide"}`}>
           <div>
             <CheckboxControl control={control} name="isPotential" label="Không còn tiềm năng" />
@@ -510,7 +546,6 @@ const CustomerServeyTable = () => {
             <ClosingModal onSubmit={onSubmit} />
           </div>
         </div>
-        {/* )} */}
       </form>
     </FormProvider>
   );

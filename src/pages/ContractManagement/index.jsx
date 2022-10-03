@@ -125,7 +125,6 @@ export default function ContractManagement() {
   }, [refreshData])
 
   useEffect(() => {
-    console.log('vcc');
     let offset = (paginate.offset - 1) * paginate.limit;
     inputText ?
       dispatch(retrieveData({ userSearch: inputText, limit: paginate.limit, offset: offset }))

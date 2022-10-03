@@ -50,6 +50,7 @@ function CreateContract(props) {
   };
 
   const onSelectCustomer = (value, option) => {
+    console.log(value, option);
     customerId.value = option.key;
   };
 

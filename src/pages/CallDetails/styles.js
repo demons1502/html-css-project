@@ -1,4 +1,4 @@
-import { Checkbox } from 'antd';
+import { Checkbox, Button } from 'antd';
 import styled, { css } from 'styled-components';
 
 const greyColor = '#e6e6e6';
@@ -140,7 +140,9 @@ const btnColorScheme = {
   error: error
 }
 
-export const WrapBtn = styled.div`
+export const WrapBtn = styled(Button)`
+  display: flex;
+  align-items: center;
   cursor: pointer;
 	padding: ${({ $padding }) => $padding ? $padding : '8px'};
 	border-radius: ${({ $borderRadius }) => $borderRadius ? $borderRadius : '8px'};

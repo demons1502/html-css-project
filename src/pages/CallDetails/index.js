@@ -11,9 +11,9 @@ import CustomerVoiceCall from './CustomerVoiceCall';
 
 
 export default function CallDetails() {
-  const [callData, setCallData] = useState({ callRecord: {}, customerInfo: {} })
+  const [callData, setCallData] = useState({ callRecord: {}, customerInfo: {}, customerCall: {} })
   const params = useParams();
-  console.log(params);
+  // console.log(params);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,7 +22,12 @@ export default function CallDetails() {
         setCallData({
           ...callData,
           callRecord: customerCall?.latestCall,
-          customerInfo: customerCall?.customerCall?.customer
+          customerInfo: customerCall?.customerCall?.customer,
+          customerCall: {
+            noteCount: customerCall?.customerCall?.noteCount,
+            id: customerCall?.customerCall?.id,
+            isPotential: customerCall?.customerCall?.isPotential,
+          }
         })
         // console.log('customerCall api', customerCall);
       } catch (error) {
@@ -32,7 +37,14 @@ export default function CallDetails() {
 
     fetchData();
   }, []);
-  console.log('callData', callData);
+  // console.log('callData', callData);
+
+  if (!callData.callRecord) 
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: 300 }}>
+        <S.WrapText $color={S.gray200}>{`Không có cuộc gọi nào`}</S.WrapText>
+      </div>
+    )
 
   return (
     <div>
@@ -43,7 +55,7 @@ export default function CallDetails() {
           </S.BtnIcon>
         </Link>
         <S.WrapHeader>
-          <h3>{`Goi dien`}</h3>
+          <h3>{`Gọi điện`}</h3>
         </S.WrapHeader>
       </Space>
       <Row gutter={[15, 15]}>
@@ -51,7 +63,7 @@ export default function CallDetails() {
           <Row gutter={[15, 15]} style={{ height: '100%' }}>
             <Col span={24}>
               <S.WrapContainer>
-                <CallRecordInfo callrecordData={callData.callRecord} customerData={callData.customerInfo} />
+                <CallRecordInfo callrecordData={callData.callRecord} customerData={callData.customerInfo} customerCallData={callData.customerCall}/>
               </S.WrapContainer>
             </Col>
             <Col span={24}>

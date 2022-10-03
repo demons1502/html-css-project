@@ -3,12 +3,15 @@ import { Space, } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
 import * as S from './styles';
 
+// import { getSpeechScript } from '../../services/customerCalls';
+
 const CUSTOMER_INFO_SUMARY = [
   '27 tuổi, 1 vợ, 2 con, chưa có nhà, đang làm nghề môi giới chứng khóang.',
   'Thu nhập 62 triệu.',
 ];
 
 export default function CustomerSumaryInfo() {
+
   return (
     <div>
       <Space size={12} style={{ padding: '15px 30px' }}>
@@ -16,7 +19,7 @@ export default function CustomerSumaryInfo() {
           <CopyOutlined />
         </div>
         <S.WrapText $fontSize="16px" $fontWeight="600">
-          Thong tin tong hop Khach hang
+          {`Thông tin tổng hợp Khách hàng`}
         </S.WrapText>
       </Space>
       <Space direction="vertical" size={6} style={{ padding: '15px 30px', borderTop: `1px solid ${S.gray100}` }}>

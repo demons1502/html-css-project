@@ -526,7 +526,7 @@ const CustomerServeyTable = () => {
     if (formValue?.hintName) {
       dispatch(createSurvey(submitFormData));
     } else {
-      message.error("Hint Name is required");
+      message.error("Bạn chưa nhập tên gợi nhớ");
     }
   };
 

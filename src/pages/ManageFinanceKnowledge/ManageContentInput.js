@@ -15,6 +15,7 @@ const ManageContentInput = (props) => {
     color = false,
     fileList,
     isDisabled,
+    id,
   } = props;
 
   return (
@@ -22,6 +23,7 @@ const ManageContentInput = (props) => {
       {input && !textarea ? (
         <Input
           name={name}
+          id={id}
           placeholder={placeholder}
           bordered={false}
           onChange={onChange}
@@ -36,6 +38,7 @@ const ManageContentInput = (props) => {
           {title && <span className="textarea-title">{`${title}: `}</span>}
           <Input.TextArea
             name={name}
+            id={id}
             placeholder={placeholder}
             bordered={false}
             onChange={onChange}

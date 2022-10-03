@@ -63,7 +63,6 @@ const ManageFinanceKnowledge = () => {
         },
         answers: data?.answers ? [...data.answers, { answer: data.answer }] : [{ answer: data.answer }],
       };
-      console.log(information);
       if (!data.id) {
         dispatch(createContent({ type: option, payload: information }));
         setItemContent(null);
@@ -267,6 +266,7 @@ const ManageFinanceKnowledge = () => {
                   onSave={handleSave}
                   isEdit={editDisabled}
                   setEdit={setEditDisabled}
+                  option={option}
                 />
               )}
             </Layout.Content>

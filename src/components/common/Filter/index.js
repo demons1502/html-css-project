@@ -1,14 +1,14 @@
-import React, {Button, Checkbox, Row, Col, Popover} from 'antd';
-import {useTranslation} from 'react-i18next';
-import {useMemo, useState} from 'react';
+import React, { Checkbox, Row, Col, Popover } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { useMemo, useState } from 'react';
 import FilterIcon from '../../../assets/images/icons/filter.svg';
-import * as S from "./styles";
+import * as S from './styles';
 
 export default function Filter(props) {
-  const {t} = useTranslation();
-  const {options, setPayload} = props;
+  const { t } = useTranslation();
+  const { options, setPayload, defaultValue } = props;
   const [open, setOpen] = useState(false);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(defaultValue?.length !== 0 ? options.length : 0);
 
   const checkFilter = (checkedValues) => {
     setPayload(checkedValues);
@@ -21,34 +21,31 @@ export default function Filter(props) {
 
   const checkboxRender = useMemo(() => {
     return (
-      <Checkbox.Group style={{'maxWidth': '400px'}} onChange={checkFilter} className="checkbox-item">
+      <Checkbox.Group style={{ maxWidth: '400px' }} onChange={checkFilter} className="checkbox-item" defaultValue={defaultValue}>
         <Row>
-          {
-            options.map((val, index) => {
-              return <Col key={index} span={24}>
-                <Checkbox value={val?.value}>{val?.label}</Checkbox>
+          {options.map((val, index) => {
+            return (
+              <Col key={index} span={24}>
+                <Checkbox value={val?.value}>
+                  {val?.label}
+                </Checkbox>
               </Col>
-            })
-          }
+            );
+          })}
         </Row>
       </Checkbox.Group>
-    )
+    );
   });
 
   return (
     <div className="filter">
-      <Popover
-        content={checkboxRender}
-        trigger="click"
-        placement="bottomLeft"
-        onOpenChange={handleOpenChange}
-      >
+      <Popover content={checkboxRender} trigger="click" placement="bottomLeft" onOpenChange={handleOpenChange}>
         <S.ButtonFilter active={open ? 1 : 0}>
           <S.Div>
             <S.Span>{count}</S.Span>
             {t('common.filter')}
           </S.Div>
-          <img src={FilterIcon} alt=""/>
+          <img src={FilterIcon} alt="" />
         </S.ButtonFilter>
       </Popover>
     </div>

@@ -3,7 +3,7 @@ import { Form,  notification, Space } from 'antd';
 import { Button, Input, Upload, Select } from "../../components/styles";
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import useFormErrors from "../../hooks/useFormErrors";
-import { changePassword, login, resetPassword } from '../../slices/configUser'
+import { changePassword} from '../../slices/configUser'
 import { useDispatch, useSelector } from 'react-redux';
 import Lock from '../../assets/images/icons/lock.svg'
 
@@ -11,17 +11,50 @@ import Lock from '../../assets/images/icons/lock.svg'
 function ModalChangePass(props) {
   const { closeCreateUser } = props
   const dispatch = useDispatch()
-  const userInfo = useSelector((state) => state.auth.me)
-  const resetCode = useSelector((state) => state.configUser.resetCode)
-
+  const loading = useSelector((state) => state.loading)
   const onFinishChangePass =async (values) => {
     if (values.newPassword === values.confirmPassword) {
-      dispatch(resetPassword({ loginId: userInfo.loginId }))
-      dispatch(login({ username: userInfo.loginId, password: values.password }))
-      dispatch(changePassword({ loginId: userInfo.loginId, code: resetCode, password: values.newPassword }))
-      // console.log(values);
+      dispatch(changePassword({currentPassword: values.password, newPassword: values.newPassword, retypedPassword:values.confirmPassword }))
+    }
+    else{
+      form.setFields([
+        {
+          name: 'confirmPassword',
+          errors: ['Mật khẩu không trùng nhau']
+        }, 
+        {
+          name: 'newPassword',
+          errors: ['Mật khẩu không trùng nhau']
+        }
+      ])
     }
   }
+  useEffect(() => {
+    if (loading.loading == "failed" && !loading.message) {
+      form.setFields([
+        {
+          name: 'password',
+          errors: ['Mật khẩu không đúng']
+        }
+      ])
+    }
+  }, [loading.loading])
+
+  const onValuesChange = values => {
+    Object.keys(values).forEach(field => {
+      const error = form.getFieldError(field);
+      if (!error.length) {
+        return;
+      }
+      form.setFields([
+        {
+          name: field,
+          errors: []
+        }
+      ]);
+    });
+  };
+
   const [form] = Form.useForm();
   useFormErrors(form);
   return (
@@ -33,7 +66,7 @@ function ModalChangePass(props) {
         <div className="linear">
           <p>Đổi mật khẩu</p>
         </div>
-        <Form form={form}
+        <Form form={form} onValuesChange={onValuesChange}
           initialValues={{
             remember: true
           }}

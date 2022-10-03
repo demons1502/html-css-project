@@ -11,15 +11,20 @@ import CustomerVoiceCall from './CustomerVoiceCall';
 
 
 export default function CallDetails() {
-  const [currentCheck, setCurrentCheck] = useState('');
-  const { ...params } = useParams();
+  const [callData, setCallData] = useState({ callRecord: {}, customerInfo: {} })
+  const params = useParams();
   console.log(params);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const customerCall = await getCustomerCallById(1);
-        console.log('customerCall api', customerCall);
+        const customerCall = await getCustomerCallById(params.customerCallId || 0);
+        setCallData({
+          ...callData,
+          callRecord: customerCall?.latestCall,
+          customerInfo: customerCall?.customerCall?.customer
+        })
+        // console.log('customerCall api', customerCall);
       } catch (error) {
         console.log('customerCall api err', error);
       }
@@ -27,6 +32,7 @@ export default function CallDetails() {
 
     fetchData();
   }, []);
+  console.log('callData', callData);
 
   return (
     <div>
@@ -45,12 +51,12 @@ export default function CallDetails() {
           <Row gutter={[15, 15]} style={{ height: '100%' }}>
             <Col span={24}>
               <S.WrapContainer>
-                <CallRecordInfo />
+                <CallRecordInfo callrecordData={callData.callRecord} customerData={callData.customerInfo} />
               </S.WrapContainer>
             </Col>
             <Col span={24}>
               <S.WrapContainer>
-                <CustomerSumaryInfo />
+                <CustomerSumaryInfo customerData={callData.customerInfo} />
               </S.WrapContainer>
             </Col>
           </Row>

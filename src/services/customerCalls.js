@@ -1,10 +1,14 @@
 import { sendGet, sendPost } from './axios';
 import { ENDPOINT } from '../config/endpoint';
 
-export const getCustomerCallById = (cId) => {
-  return sendGet(ENDPOINT + '/' + cId);
+export const getCustomerCallById = async (cId) => {
+  const response = await sendGet(ENDPOINT.customerCall + '/' + cId);
+
+  return response.data;
 };
 
-export const updateCustomerCallRecord = (id) => {
-  return sendPost(ENDPOINT.customerCall + `/records/${id}`, {});
+export const updateCustomerCallRecord = async (id) => {
+  const response = await sendPost(ENDPOINT.customerCall + `/records/${id}`, {});
+
+  return response.data;
 };

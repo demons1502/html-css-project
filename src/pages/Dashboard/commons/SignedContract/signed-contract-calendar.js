@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd';
+import { Col, DatePicker, Row, Tooltip } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +28,15 @@ export default function SignedContractCalendar(props) {
 
   return (
     <Row>
-      <S.WrapIconImageCalendar src={signedContract} onClick={handleSelectCalendar} />
+      <Tooltip
+        placement="rightTop"
+        color="#fff"
+        overlayInnerStyle={{ borderRadius: '15px' }}
+        title={<DatePicker onChange={onChange} disabledDate={disabledDate} />}
+      >
+        <S.WrapIconImageCalendar src={signedContract} onClick={handleSelectCalendar} />
+      </Tooltip>
+
       <S.WrapTextAlign flex="auto">
         <Row gutter={[0, 5]}>
           <Col span={24}>
@@ -40,7 +48,6 @@ export default function SignedContractCalendar(props) {
             </S.TextColor>
             {` hợp đồng`}
           </Col>
-          <S.DatePicker $display={active} onChange={onChange} disabledDate={disabledDate} />
         </Row>
       </S.WrapTextAlign>
     </Row>

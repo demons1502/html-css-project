@@ -9,6 +9,8 @@ import {
   getRemindFeeApi,
   getSignedContractApi,
   getTopPotentialCustomerApi,
+  sendEmailApi,
+  sendSMSApi,
   updateAppointmentScheduleApi,
 } from '../services/dashboard';
 
@@ -34,6 +36,22 @@ export const getCustomerCares = createAsyncThunk('dashboard/GET_CUSTOMER_CARES',
 export const getRemindFees = createAsyncThunk('dashboard/GET_REMIND_FEES', async (data) => {
   try {
     const response = await getRemindFeeApi(data);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
+export const sendSMS = createAsyncThunk('dashboard/SEND_SMS', async (data) => {
+  try {
+    const response = await sendSMSApi(data);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
+export const sendEmail = createAsyncThunk('dashboard/SEND_EMAIL', async (data) => {
+  try {
+    const response = await sendEmailApi(data);
     return response.data;
   } catch (error) {
     return Promise.reject(error.data);
@@ -227,7 +245,7 @@ const dashboardSlice = createSlice({
       state.error = action.error;
     },
     [createCallTransfer.fulfilled]: (state, action) => {
-      state.loadingTopPotentialTopPotential = false;
+      state.loadingTopPotential = false;
       state.callTransfer = !state.callTransfer;
     },
     [createCallTransfer.pending]: (state) => {

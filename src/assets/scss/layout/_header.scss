@@ -35,11 +35,15 @@
       margin-right: 10px;
       font-size: 1.4rem;
       cursor: pointer;
-      
+
       &__name {
+        max-width: 160px;
         font-weight: 600;
         font-size: 14px;
         color: $white-color;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       &__avatar {
@@ -52,14 +56,13 @@
         width: 13px;
         height: 13px;
       }
-
     }
   }
 
   &__menu {
     padding: 20;
     width: 140px;
-    
+
     &__box {
       @extend %align-items-center;
     }

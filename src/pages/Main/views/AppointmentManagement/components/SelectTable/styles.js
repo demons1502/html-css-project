@@ -10,6 +10,7 @@ export const Select = styled(AntSelect)`
     align-items: center;
     height: 40px;
     width: 100%;
+    font-size: 14px !important;
     border: none;
     &:hover,
     &:focus,
@@ -33,5 +34,10 @@ export const Select = styled(AntSelect)`
     font-weight: 600;
     font-size: 14px;
     color: #333333;
+  }
+  
+  .ant-select-selection-placeholder {
+    font-weight: 600;
+    font-size: 13px;
   }
 `;

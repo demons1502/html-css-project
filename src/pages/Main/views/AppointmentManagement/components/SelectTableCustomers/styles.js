@@ -31,7 +31,11 @@ export const Select = styled(AntSelect)`
   }
   & .ant-select-selection-item {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     color: #333333;
+  }
+
+  .ant-select-selection-placeholder {
+    font-size: 13px;
   }
 `;

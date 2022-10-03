@@ -2,10 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
   updateUser,
-  changePasswordApi,
   sendAvatar,
-  loginApi,
-  resetPasswordApi
+  updatePassword,
 } from '../services/configUser';
 
 const initialState = {
@@ -14,39 +12,16 @@ const initialState = {
   custom: [],
   contractById: null,
   refreshData: false,
-  resetCode: ''
 };
-
-
-
-export const resetPassword = createAsyncThunk(
-  'configUser/resetPassword',
-  async (payload) => {
-    const res = await resetPasswordApi(payload);
-    return res
-  }
-);
-
-export const login = createAsyncThunk(
-  'configUser/changePassword',
-  async (payload, { rejectWithValue }) => {
-    try {
-      const res = await loginApi(payload);
-      return res.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
 
 export const changePassword = createAsyncThunk(
   'configUser/changePassword',
   async (payload, { rejectWithValue }) => {
     try {
-      const res = await changePasswordApi(payload);
+      const res = await updatePassword(payload);
       return { data: res.data, message: 'Thay đổi mật khẩu thành công' };
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data.message = "Mật khẩu cũ không đúng");
     }
   }
 );
@@ -57,7 +32,6 @@ export const sendAvatars = createAsyncThunk(
     try {
       const res = await sendAvatar(payload);
       return { data: res.data, message: 'Thay đổi người dùng thành công!' };
-      // dispath(getme())
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -79,10 +53,12 @@ const configUser = createSlice({
   name: 'configUser',
   initialState,
   extraReducers: {
-    [login.fulfilled]: (state, action) => {
-      console.log(action.payload.userInfo.resetCode);
-      state.resetCode = action.payload.userInfo.resetCode
+    [changePassword.fulfilled]: (state, action) => {
+      console.log(action.payload);
     },
+    [updateUsers.rejected]: (state, action) => {
+      console.log(action.payload);
+    }
   },
 });
 

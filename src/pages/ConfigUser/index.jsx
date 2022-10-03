@@ -5,7 +5,7 @@ import { CameraOutlined } from '@ant-design/icons';
 import useFormErrors from "../../hooks/useFormErrors";
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { changePasswords, updateUsers, sendAvatars } from '../../slices/configUser';
+import { updateUsers, sendAvatars } from '../../slices/configUser';
 import { Button, Upload, Select } from "../../components/styles";
 import ModalChangePass from './ModalChangePass';
 import { useNavigate } from "react-router-dom";
@@ -19,10 +19,10 @@ function ConfigUser() {
   const [fileList, setFileList] = useState(null);
   const [showModal, setShowModal] = useState(false)
   const [fileChange, setFileChange] = useState(false)
-
+  const loading = useSelector((state) => state.loading)
+  console.log(loading);
   const dispatch = useDispatch()
   const userInfo = useSelector((state) => state.auth.me)
-  // console.log(userInfo);
   const [form] = Form.useForm();
   useFormErrors(form);
   
@@ -34,9 +34,12 @@ function ConfigUser() {
     }
     dispatch(updateUsers(values))
     setTimeout(()=>{dispatch(getMe())},100)
-    
+    // if(loading.loading == "succeeded"){
+    // }
+    // else{
+    //   return 0;
+    // }
   };
-  // dispatch(getMe())
 
   useEffect(() => {
     axios.get('https://provinces.open-api.vn/api/')

@@ -65,30 +65,30 @@ const PrivateRoutes = [
     label: 'Kiến thức tư vấn tài chính',
     icon: Book,
   },
-  {
-    path: '/retirement',
-    key: 'retirement',
-  },
-  {
-    path: '/startup-fund',
-    key: 'startup-fund',
-  },
-  {
-    path: '/inheritance-fund',
-    key: 'inheritance-fund',
-  },
-  {
-    path: '/contingency-fund',
-    key: 'contingency-fund',
-  },
-  {
-    path: '/education-foundation',
-    key: 'education-foundation',
-  },
-  {
-    path: '/health-foundation',
-    key: 'health-foundation',
-  },
+  // {
+  //   path: '/retirement',
+  //   key: 'retirement',
+  // },
+  // {
+  //   path: '/startup-fund',
+  //   key: 'startup-fund',
+  // },
+  // {
+  //   path: '/inheritance-fund',
+  //   key: 'inheritance-fund',
+  // },
+  // {
+  //   path: '/contingency-fund',
+  //   key: 'contingency-fund',
+  // },
+  // {
+  //   path: '/education-foundation',
+  //   key: 'education-foundation',
+  // },
+  // {
+  //   path: '/health-foundation',
+  //   key: 'health-foundation',
+  // },
   // {
   //   path: "/qminh-hoa-gia",
   //   key: "minh-hoa-gia",

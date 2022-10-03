@@ -256,8 +256,9 @@
         padding-top: 21px;
 
         .contents {
-          padding-left: 29px;
-          padding-right: 29px;
+          // padding-left: 29px;
+          // padding-right: 29px;
+          padding: 20px 29px;
 
           p {
             font-family: "Quicksand";
@@ -539,6 +540,28 @@
 
     .personal-date {
       width: 280px;
+    }
+  }
+}
+
+.info-footer {
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 10px;
+  .info-btn {
+    width: 127px;
+    .btn-cancel {
+      @extend %btn-bg-white;
+      color: $red-color;
+      border: 1px solid $red-color;
+      &:hover,
+      &:active,
+      &:focus {
+        @extend %btn-bg-white;
+        color: $red-color;
+        border: 1px solid $red-color;
+        opacity: 0.7;
+      }
     }
   }
 }

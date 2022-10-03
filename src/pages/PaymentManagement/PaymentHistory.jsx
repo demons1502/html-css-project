@@ -7,6 +7,7 @@ import { getHistoriesData } from '../../slices/paymentManagement';
 import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import TableCommon from '../../components/common/TableNormal';
 import PaginationCommon from '../../components/common/Pagination';
+import { formatDataNumber } from '../../helper';
 
 const columns = [
   {
@@ -26,9 +27,9 @@ const columns = [
 ];
 
 const PaymentHistory = ({ customer }) => {
-  const format = new Intl.NumberFormat('vi-VN').format(customer?.amount);
-
   const [paginate, setPaginate] = useState({ page: 1, limit: DEFAULT_SIZE });
+  const [data, setData] = useState(null);
+  const [rowActive, setRowActive] = useState(null);
 
   const { histories, isReload } = useSelector((state) => state.paymentManagementReducer);
   const loading = useSelector((state) => state.loading.loading);
@@ -39,6 +40,10 @@ const PaymentHistory = ({ customer }) => {
     customer && dispatch(getHistoriesData({ loginId: customer?.loginId, params: params }));
   }, [customer, paginate, isReload]);
 
+  useEffect(() => {
+    setData(customer);
+  }, [customer]);
+
   return (
     <div className="paymentHistory">
       {customer ? (
@@ -48,7 +53,7 @@ const PaymentHistory = ({ customer }) => {
               <div className="paymentHistory-title">
                 <h4>{customer?.userFullname} </h4>
                 <p>
-                  Số tiền: <span>{format}</span>
+                  Số tiền: <span>{formatDataNumber(data?.amount)}</span>
                 </p>
               </div>
               <div className="paymentHistory-time">
@@ -58,7 +63,7 @@ const PaymentHistory = ({ customer }) => {
                     <span>Ngày thanh toán</span>
                   </div>
                   <div className="paymentHistory-time_date">
-                    <span>{getTimeByTZ(customer?.startDate)}</span>
+                    <span>{getTimeByTZ(data?.startDate)}</span>
                   </div>
                 </div>
 
@@ -68,7 +73,7 @@ const PaymentHistory = ({ customer }) => {
                     <span>Ngày hiệu lực</span>
                   </div>
                   <div className="paymentHistory-time_date">
-                    <span>{getTimeByTZ(customer?.startDate)}</span>
+                    <span>{getTimeByTZ(data?.startDate)}</span>
                   </div>
                 </div>
 
@@ -78,7 +83,7 @@ const PaymentHistory = ({ customer }) => {
                     <span>Ngày kết thúc</span>
                   </div>
                   <div className="paymentHistory-time_date">
-                    <span>{getTimeByTZ(customer?.dueDate)}</span>
+                    <span>{getTimeByTZ(data?.dueDate)}</span>
                   </div>
                 </div>
               </div>
@@ -86,7 +91,20 @@ const PaymentHistory = ({ customer }) => {
           </div>
           <div className="paymentHistory-group">
             <Spin spinning={loading === LOADING_STATUS.pending}>
-              <TableCommon dataSource={histories.data} columnTable={columns} />
+              <TableCommon
+                className="history-table"
+                dataSource={histories.data}
+                columnTable={columns}
+                rowClassName={(record) => (rowActive === record.id ? 'active' : '')}
+                onRow={(record) => {
+                  return {
+                    onClick: () => {
+                      setData(record);
+                      setRowActive(record.id);
+                    },
+                  };
+                }}
+              />
             </Spin>
             <PaginationCommon total={histories.count} setPaginate={setPaginate} />
             {/* <Pagination total={payments.total} setPaginate={onChangePage} /> */}

@@ -135,7 +135,7 @@ export default function FinanceConsultant() {
                 </span>
               </li>
               <li>
-                <span className="list_item_badge">{handleCount()}</span>
+                <span className="list_item_badge">12</span>
                 <span> Chờ tư vấn</span>
               </li>
               <li>
@@ -153,7 +153,7 @@ export default function FinanceConsultant() {
         <Spin spinning={loading === LOADING_STATUS.pending}>
           <TableCommon dataSource={consults.data} columnTable={columns} />
         </Spin>
-        <Pagination total={100} setPaginate={setPaginate} />
+        <Pagination total={consults.count} setPaginate={setPaginate} />
       </div>
     </div>
   );

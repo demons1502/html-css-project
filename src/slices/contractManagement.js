@@ -5,7 +5,7 @@ const initialState = {
   data: [],
   dataEdit: [],
   totalItem: 0,
-  custom: [],
+  custom: null,
   contractById: null,
   refreshData: false,
 };
@@ -63,8 +63,8 @@ const contractManagement = createSlice({
   initialState,
   extraReducers: {
     [createContract.fulfilled]: (state) => {
+      // contractManagement.caseReducers.retrieveData()
       state.refreshData = true;
-      state.refreshData = false;
     },
     [retrieveData.fulfilled]: (state, action) => {
       state.data = [...action.payload.contracts];
@@ -77,8 +77,6 @@ const contractManagement = createSlice({
     },
     [updateContract.fulfilled]: (state) => {
       state.refreshData = true;
-      state.refreshData = false;
-
     },
     [getByIdApi.fulfilled]: (state, action) => {
       (action.payload.depositTerm == 30) ? action.payload.depositTerm = "Tháng" : (action.payload.depositTerm == 180) ? action.payload.depositTerm = "Nửa năm" : (action.payload.depositTerm == 360) ? action.payload.depositTerm = "Năm" : action.payload.depositTerm

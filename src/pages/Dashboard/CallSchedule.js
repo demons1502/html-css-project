@@ -3,66 +3,48 @@ import { useTranslation } from 'react-i18next';
 import PaginationCommon from '../../components/common/Pagination';
 import CallScheduleItemCall from './commons/CallSchedule/call-schedule-item-call';
 import * as S from './styles';
-import { menuItems } from './constants';
+import { limitItem, menuItems, offsetItem } from './constants';
 import { randomColor } from './constants';
-
-const dataSource = [
-  {
-    key: 1,
-    name: 'Devon Lane',
-    type: 'Cá nhân',
-    phone: '0984 294 902',
-    lastCall: '12/08/2022',
-    afterCall: '17/08/2022',
-    note: 'Đã làm khảo sát',
-  },
-  {
-    key: 2,
-    name: 'Cameron Williamson',
-    type: 'Cá nhân',
-    phone: '0293 893 920',
-    lastCall: '02/08/2022',
-    afterCall: '17/08/2022',
-    note: 'Đã gọi 2 lần',
-  },
-  {
-    key: 3,
-    name: 'Jane Cooper',
-    type: 'Doanh nghiệp',
-    phone: '0392 439 344',
-    lastCall: '12/08/2022',
-    afterCall: '17/08/2022',
-    note: 'Bỏ lỡ lịch tư vấn',
-  },
-  {
-    key: 4,
-    name: 'Courtney Henry',
-    type: 'Doanh nghiệp',
-    phone: '0238 939 893',
-    lastCall: '04/08/2022',
-    afterCall: '17/08/2022',
-    note: 'Chưa gọi điện',
-  },
-  {
-    key: 5,
-    name: 'Guy Hawkins',
-    type: 'Cá nhân',
-    phone: '0293 929 199',
-    lastCall: '11/08/2022',
-    afterCall: '17/08/2022',
-    note: 'Chưa gọi điện',
-  },
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { getCallSchedules } from '../../slices/dashboard';
+import CallScheduleItemNote from './commons/CallSchedule/call-schedule-item-note';
 
 export default function CallSchedule() {
   const { t } = useTranslation();
-  const [dataTable, setDataTable] = useState(dataSource);
   const [toggle, setToggle] = useState(false);
-
+  const loading = useSelector((state) => state.dashboard.loadingCallSchedule);
+  const reloadData = useSelector((state) => state.dashboard.callTransfer);
+  const result = useSelector((state) => state.dashboard.callSchedules);
+  const dispatch = useDispatch();
+  const [interval, setInterval] = useState(menuItems[0].value);
+  const [dataTable, setDataTable] = useState(result.customerCalls || []);
+  const [total, setTotal] = useState(0);
+  const [offset, setOffset] = useState(offsetItem);
+  const [limit, setLimit] = useState(limitItem);
   const useColor = [];
 
+  useEffect(() => {
+    const payload = {
+      limit,
+      offset,
+      interval,
+    };
+    dispatch(getCallSchedules(payload));
+  }, [dispatch, offset, limit, interval, reloadData]);
+
+  useEffect(() => {
+    setDataTable(result.customerCalls || []);
+    setTotal(result.count || 0);
+  }, [result]);
+
+  const setPaginate = (value) => {
+    setOffset(value.offset);
+    setLimit(value.limit);
+  };
+
   const handleSelect = (value) => {
-    console.log(`selected ${value}`);
+    setInterval(value);
   };
 
   const randomNotDuplicate = () => {
@@ -77,19 +59,21 @@ export default function CallSchedule() {
   const columns = [
     {
       title: t('common.customer name'),
-      dataIndex: 'name',
+      dataIndex: 'customer',
       key: 'name',
-      render: (_, { name }) => <S.TagVertical $color={randomColor[randomNotDuplicate()]}>{name}</S.TagVertical>,
+      render: ({ fullname }) => <S.TagVertical $color={randomColor[randomNotDuplicate()]}>{fullname}</S.TagVertical>,
     },
     {
       title: t('common.customer type'),
-      dataIndex: 'type',
+      dataIndex: 'customer',
       key: 'type',
+      render: ({ typeId }) => (typeId === 1 ? t('call-schedule.user') : t('call-schedule.company')),
     },
     {
       title: t('common.phone'),
-      dataIndex: 'phone',
+      dataIndex: 'customer',
       key: 'phone',
+      render: ({ phone1, phone2, phone3 }) => phone1 || phone2 || phone3,
     },
     {
       title: t('common.last call'),
@@ -98,42 +82,43 @@ export default function CallSchedule() {
     },
     {
       title: t('common.after call'),
-      dataIndex: 'afterCall',
-      key: 'afterCall',
+      dataIndex: 'nextCall',
+      key: 'nextCall',
     },
     {
       title: t('common.note'),
-      dataIndex: 'note',
+      dataIndex: 'customer',
       key: 'note',
+      render: (_, record) => <CallScheduleItemNote props={record} />,
     },
     {
-      key: 'phone',
-      render: (_, record) => <CallScheduleItemCall record={record} />,
+      dataIndex: 'customer',
+      render: ({ phone1, phone2, phone3 }) => <CallScheduleItemCall record={{ phone1, phone2, phone3 }} />,
     },
   ];
 
   return (
-    <S.WrapContainer $toggle={toggle}>
+    <S.WrapContainer $toggle={toggle} $height="432px">
       <S.WrapTitle $toggle={toggle}>
         <S.IconDown onClick={() => setToggle(!toggle)} />
         <S.Title>{t('dashboard-page.call-schedule')}</S.Title>
-        <S.Select
-          popupClassName="popup-select"
-          defaultValue={menuItems[0]?.value}
-          options={menuItems}
-          onChange={handleSelect}
-        />
+        <S.Select popupClassName="popup-select" defaultValue={interval} options={menuItems} onChange={handleSelect} />
       </S.WrapTitle>
       <S.WrapContent $display={!toggle ? 'block' : 'none'}>
         <S.Table
           dataSource={dataTable}
           columns={columns}
+          rowKey={(record) => record.id}
           pagination={false}
           bordered={false}
-          scroll={{ scrollToFirstRowOnChange: false }}
-          $borderBottom={true}
+          scroll={{ x: dataTable.length > 0 && 910 }}
+          $borderBottom={dataTable.length < 4 ? (dataTable.length === 0 ? false : '') : false}
+          loading={loading}
+          $height="280px"
+          $heightRow="46px"
+          $endLine
         />
-        <PaginationCommon total={50} showSizeChanger={false} setPaginate={{ limit: 10, offset: 0 }} />
+        <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />
       </S.WrapContent>
     </S.WrapContainer>
   );

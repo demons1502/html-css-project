@@ -121,6 +121,13 @@
         height: 40px !important;
     }
 }
+.ant-select-selection-search{
+    display: flex;
+    align-items: center;
+}
+#customerName{
+    height: 40px !important;
+}
 .ant-btn:active {
     background-color: $green-color;
 }

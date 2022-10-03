@@ -1,27 +1,77 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+import { useDispatch } from 'react-redux';
 
 //COMPONENTS
-import { Col, Form } from 'antd';
+import { Col, Form, message } from 'antd';
 import TimePicker from '../TimePicker';
 import { Select, ModalSelect } from '../../../../../../components/common';
 import { Calender } from '../../../../../../assets/images/icons/components';
+import FormUsers from '../FromUsers';
+import SelectTable from '../SelectTable';
+import InputSelect from '../InputSelect';
 
 // STYLES
 import * as S from './styles';
-import FormUsers from '../FromUsers';
+import { createAppointment } from '../../../../../../slices/appointmentManagement';
 
 export const CreateAppointment = ({ open, handleCancel }) => {
+  const dispatch = useDispatch();
   const { Option } = Select;
   const [form] = Form.useForm();
-  const [typeId, setTypeId] = useState(3);
+  const [typeId, setTypeId] = useState(1);
+  const [customer, setCustomer] = useState({});
+  const [title, setTitle] = useState('');
+
   const handleChangeSelectCustomer = (value) => {
     setTypeId(value);
   };
 
-  const onFinish = (value) => {
-    console.log(value);
-    // onCancel();
+  const handleChangeCustomer = (value) => {
+    setCustomer(value);
+  };
+
+  const handleChangeTitle = (value) => {
+    setTitle(value);
+  };
+
+  const onFinish = (values) => {
+    const subCustomerIds =
+      values?.users && values?.users.length !== 0
+        ? values?.users.map((i) => i.customerId)
+        : [];
+
+    const startTime =
+      moment(values.date).format('YYYY-MM-DD ') +
+      moment(values.startTime).format('HH:mm:ss');
+
+    const endTime =
+      moment(values.date).format('YYYY-MM-DD ') +
+      moment(values.endTime).format('HH:mm:ss');
+
+    const data = {
+      typeId: typeId,
+      customerId: customer.customerId,
+      title: title,
+      startTime: startTime,
+      endTime: endTime,
+      location: values.location,
+      note: values.note,
+      subCustomerIds: subCustomerIds,
+    };
+    dispatch(createAppointment(data)).then(({ error }) => {
+      if (!error) {
+        handleCancel();
+        message.success(
+          'Lịch hẹn của bạn vừa được tạo thành công. Chọn lịch hẹn để xem chi tiết.'
+        );
+      } else {
+        message.error(
+          'Lịch hẹn của bạn vừa được tạo thất bại. Vui lòng thử lại'
+        );
+      }
+    });
   };
 
   const onCancel = () => {
@@ -45,8 +95,8 @@ export const CreateAppointment = ({ open, handleCancel }) => {
           style={{ width: '150px' }}
         >
           <Option value={1}>Cá nhân</Option>
+          <Option value={2}>NV doanh nghiệp</Option>
           <Option value={3}>Doanh nghiệp</Option>
-          {/* <Option value={2}>NV doanh nghiệp</Option> */}
         </Select>
       }
     >
@@ -55,29 +105,33 @@ export const CreateAppointment = ({ open, handleCancel }) => {
           <Col span={12}>
             <Form.Item
               label='Tên khách hàng'
-              name='name'
+              name='customerId'
               rules={[
                 {
-                  required: true,
+                  required: Object.keys(customer).length === 0 ? true : false,
                   message: 'Vui lòng nhập tên khách hàng',
                 },
               ]}
             >
-              <S.WrapInput />
+              <SelectTable
+                customer={customer}
+                handleChangeValue={handleChangeCustomer}
+                typeId={typeId}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
               label='Nội dung lịch hẹn'
-              name='descripton'
+              name='title'
               rules={[
                 {
-                  required: true,
+                  required: title === '' ? true : false,
                   message: 'Vui lòng nhập nội dung lịch hẹn',
                 },
               ]}
             >
-              <S.WrapInput />
+              <InputSelect handleChange={handleChangeTitle} value={title} />
             </Form.Item>
           </Col>
         </S.WrapRow>
@@ -92,7 +146,6 @@ export const CreateAppointment = ({ open, handleCancel }) => {
                 {
                   required: true,
                   message: 'Vui lòng nhập thời gian',
-                  // message: `${t('potential customers.message.birthday')}`,
                 },
               ]}
             >
@@ -101,6 +154,10 @@ export const CreateAppointment = ({ open, handleCancel }) => {
                 suffixIcon={<Calender color='#999999' />}
                 style={{ width: '100%' }}
                 placeholder='DD/MM/YYYY'
+                disabledDate={(current) => {
+                  let customDate = moment().format('YYYY-MM-DD');
+                  return current && current < moment(customDate, 'YYYY-MM-DD');
+                }}
               />
             </Form.Item>
           </Col>
@@ -111,15 +168,15 @@ export const CreateAppointment = ({ open, handleCancel }) => {
         </S.WrapRow>
         <S.WrapRow gutter={12}>
           <Col span={24}>
-            <Form.Item label='Địa điểm' name='address'>
-              <S.WrapInput />
+            <Form.Item label='Địa điểm' name='location'>
+              <S.WrapInput placeholder='Địa điểm' />
             </Form.Item>
           </Col>
         </S.WrapRow>
         <S.WrapRow gutter={12}>
           <Col span={24}>
             <Form.Item label='Ghi Chú' name='note'>
-              <S.WrapInput />
+              <S.WrapInput placeholder='Ghi Chú' />
             </Form.Item>
           </Col>
         </S.WrapRow>
@@ -128,7 +185,7 @@ export const CreateAppointment = ({ open, handleCancel }) => {
             <S.WrapRow>
               <S.WrapTitleUser>Thông tin người tham gia</S.WrapTitleUser>
             </S.WrapRow>
-            <FormUsers />
+            <FormUsers form={form} companyId={customer.companyId} />
           </>
         )}
       </Form>

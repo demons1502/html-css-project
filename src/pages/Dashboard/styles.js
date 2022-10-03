@@ -11,6 +11,7 @@ import {
   Table as AntDTable,
   Tabs as AntDTabs,
   DatePicker as AntDDatePicker,
+  Modal as AntDModal,
 } from 'antd';
 import styled, { css } from 'styled-components';
 
@@ -78,6 +79,18 @@ export const WrapTitle = styled(AntDRow)`
     css`
       padding: 19px 23px;
     `};
+
+  ${(props) =>
+    props.$height &&
+    css`
+      height: ${props.$height};
+    `};
+
+  ${(props) =>
+    props.$padding &&
+    css`
+      padding: ${props.$padding};
+    `};
 `;
 
 export const IconDown = styled(AntDCaretDownOutlined)`
@@ -98,7 +111,7 @@ export const Select = styled(AntDSelect)`
   min-height: 32px;
 
   &.ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    background-color: ${primaryColor};
+    background-color: ${primaryColor} !important;
     border: none;
     border-radius: 10px;
     color: white;
@@ -191,7 +204,8 @@ export const TagVertical = styled.div`
 
 export const WrapButtonTitle = styled(AntDCol)`
   text-align: right;
-  padding-right: 23px;
+  min-width: 88px;
+  flex: 1 1 auto;
 `;
 
 export const WrapButtonTable = styled.div`
@@ -228,7 +242,7 @@ export const CircleTag = styled.div`
 
 export const Button = styled(AntDButton)`
   background: ${primaryColor};
-  color: #fff;
+  color: ${(props) => props?.$color || '#fff'};
   border-radius: 10px;
   border: none;
   &:hover,
@@ -252,17 +266,29 @@ export const Button = styled(AntDButton)`
       case 'ghost':
         return css`
           background: #ffffff;
-          color: ${primaryColor};
-          border: 1px solid ${primaryColor};
+          color: ${(props) => props?.$color || primaryColor};
+          border: 1px solid ${(props) => props?.$color || primaryColor};
           &:hover,
           &:focus {
             background: #ffffff;
-            color: ${primaryColor};
-            border: 1px solid ${primaryColor};
+            color: ${(props) => props?.$color || primaryColor};
+            border: 1px solid ${(props) => props?.$color || primaryColor};
           }
         `;
     }
   }}
+
+  ${(props) =>
+    props.$height &&
+    css`
+      height: ${props.$height || '32px'};
+    `};
+
+  ${(props) =>
+    props.$width &&
+    css`
+      width: ${props.$width || '94px'};
+    `};
 `;
 
 export const WrapIconTable = styled.img`
@@ -360,6 +386,12 @@ export const Table = styled(AntDTable)`
           }}
         }
       }
+
+      ${(props) =>
+        props.$heightRow &&
+        css`
+          height: ${props.$heightRow};
+        `};
     }
   }
 
@@ -375,6 +407,12 @@ export const Table = styled(AntDTable)`
     props.$height &&
     css`
       height: ${props.$height};
+    `};
+
+  ${(props) =>
+    props.$minHeight &&
+    css`
+      min-height: ${props.$minHeight};
     `};
 
   ${(props) =>
@@ -523,6 +561,9 @@ export const WrapIconImageCalendar = styled.img`
   height: 40px;
   margin-right: 10px;
   position: relative;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const DatePicker = styled(AntDDatePicker)`
@@ -546,4 +587,25 @@ export const WrapTabs = styled.div`
   width: 100%;
   height: 620px;
   overflow: auto;
+
+  ${(props) =>
+    props.$center &&
+    css`
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    `};
+`;
+
+export const linkStyle = {
+  display: 'flex',
+};
+
+export const Modal = styled(AntDModal)`
+  .ant-modal-header {
+    border-radius: 20px 20px 0 0;
+  }
+  .ant-modal-content {
+    border-radius: 20px;
+  }
 `;

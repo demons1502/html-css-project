@@ -6,6 +6,8 @@ export const ENDPOINT = {
     resetPassword: 'reset-password',
   },
   customers: 'customers',
+  customersByCompany: 'customers-by-company',
+  customerCare: 'customer-care',
   customersContracts: 'customers/contracts',
   customerCare: 'customer-care', 
   customerCall: 'customer-calls',
@@ -13,8 +15,8 @@ export const ENDPOINT = {
   eventsSend: 'events/send',
   financeKnowledge: {
     getArticles: 'articles',
-    getMostView: 'most-view'
+    getMostView: 'most-view',
   },
   userSearch: 'users/search',
-  surveys: "surveys",
-}
+  surveys: 'surveys',
+};

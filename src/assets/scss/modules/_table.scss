@@ -33,6 +33,12 @@
           }
         }
       }
+      &.active {
+        td {
+          background-color: $green-color;
+          color: $white-color;
+        }
+      }
     }
 
     .ant-table-measure-row {
@@ -41,6 +47,7 @@
       }
     }
   }
+
   //check box color
   .ant-checkbox-checked .ant-checkbox-inner {
     background-color: $green-color !important;

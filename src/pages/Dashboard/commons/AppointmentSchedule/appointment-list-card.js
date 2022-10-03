@@ -1,4 +1,4 @@
-import { Spin } from 'antd';
+import { Empty, Spin } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,28 +10,28 @@ import AppointmentItemCard from './appointment-item-card';
 
 export default function AppointmentListCard(props) {
   const { t } = useTranslation();
+  const { handleSlider } = props;
   const [weeks, setWeeks] = useState([]);
-  const [activeKey, setActiveKey] = useState('1');
+  const [activeKey, setActiveKey] = useState('0');
   const result = useSelector((state) => state.dashboard.appointmentSchedules);
   const item = useSelector((state) => state.dashboard.appointmentSchedule);
-  const loading = useSelector((state) => state.dashboard.loading);
+  const loading = useSelector((state) => state.dashboard.loadingAppointmentSchedule);
   const dispatch = useDispatch();
-  const [startDate, setStartDate] = useState(moment().subtract(2, 'days'));
+  const [startDate, setStartDate] = useState(moment());
   const [data, setData] = useState([]);
   const [update, setUpdate] = useState(false);
 
   const handleActiveKey = (value) => {
     setActiveKey(value);
-    setStartDate(weeks[value - 1].timestamp);
+    setStartDate(weeks[value].timestamp);
   };
 
   const getListDateOfWeek = () => {
-    const now = moment();
-    const formatDate = moment(`${now.date() - 1}-${now.month() + 1}-${now.year()}`, 'DD/MM/YYYY');
+    const now = moment().subtract(1, 'days');
     const templateWeek = [];
     for (let index = 0; index < 7; index++) {
-      const currentDay = moment(formatDate.add(1, 'days'));
-      const dayOfWeek = arrWeek[currentDay.day()];
+      const currentDay = moment(now.add(1, 'days'));
+      const dayOfWeek = arrWeek[moment(currentDay).day()];
       const date = moment(currentDay).format('DD/MM');
       const timestamp = moment(currentDay);
       templateWeek.push({ dayOfWeek, date, timestamp });
@@ -65,20 +65,22 @@ export default function AppointmentListCard(props) {
 
   useEffect(() => {
     setData(result.data || []);
+    handleSlider({
+      done: result?.data?.filter((item) => item.isCompleted)?.length || 0,
+      total: result?.data?.length || 0,
+    });
   }, [result]);
 
   return (
     <S.Tabs activeKey={activeKey} onChange={handleActiveKey}>
       {weeks.map((element, idx) => (
-        <S.Tabs.TabPane
-          tab={idx + 1 == activeKey ? `${element.dayOfWeek}(${element.date})` : element.dayOfWeek}
-          key={idx + 1}
-        >
+        <S.Tabs.TabPane tab={idx == activeKey ? `${element.dayOfWeek}(${element.date})` : element.dayOfWeek} key={idx}>
           <Spin spinning={loading}>
-            <S.WrapTabs>
+            <S.WrapTabs $center={data.length === 0 ? true : false}>
               {data.map((item, idx) => (
                 <AppointmentItemCard item={item} key={idx} handleUpdateItem={handleUpdateItem} update={update} />
               ))}
+              {data.length === 0 && <Empty />}
             </S.WrapTabs>
           </Spin>
         </S.Tabs.TabPane>

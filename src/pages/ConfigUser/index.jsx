@@ -33,8 +33,10 @@ function ConfigUser() {
       dispatch(sendAvatars(formData)) 
     }
     dispatch(updateUsers(values))
-    dispatch(getMe())
+    setTimeout(()=>{dispatch(getMe())},100)
+    
   };
+  // dispatch(getMe())
 
   useEffect(() => {
     axios.get('https://provinces.open-api.vn/api/')
@@ -237,7 +239,7 @@ function ConfigUser() {
             <div className="config_content_body_button-group">
               <Button type='primary' onClick={goHome}>Về trang chủ</Button>
               <div className="config_content_body_button-group_right">
-                <Button className='btn-danger'>Huỷ</Button>
+                <Button className='btn-danger' onClick={() => navigate(-1)}>Huỷ</Button>
                 <Form.Item>
                   <Button type="primary" htmlType="submit">Lưu thay đổi</Button>
                 </Form.Item>

@@ -5,17 +5,21 @@ import { useRef } from 'react';
 import { useState } from 'react';
 import { memo } from 'react';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Edit from '../../assets/images/icons/components/Edit';
 import LikeIcon from '../../assets/images/icons/likeIcon.svg';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import { Button } from '../../components/styles';
 import Title from '../../components/Title';
+import { likeContent } from '../../slices/managementContent';
 import ManageContentInput from './ManageContentInput';
 
 const QuestionAnswerContent = (props) => {
-  const { onChange, content, onDelete, onSave, onCancel, isEdit, setEdit } = props;
+  const { onChange, content, onDelete, onSave, onCancel, isEdit, setEdit, option } = props;
   const [answers, setAnswers] = useState(null);
   const [current, setCurrent] = useState(1);
+
+  const dispatch = useDispatch();
 
   const carouselRef = useRef();
   const [form] = Form.useForm();
@@ -68,6 +72,11 @@ const QuestionAnswerContent = (props) => {
     setAnswers([...answers, newAnswer]);
     setCurrent(answers.length);
     setEdit(false);
+  };
+
+  const onLike = (id) => {
+    const payload = { type: option, id: id };
+    dispatch(likeContent(payload));
   };
 
   useEffect(() => {
@@ -139,7 +148,7 @@ const QuestionAnswerContent = (props) => {
                           Tác giả: <span>{answer?.author?.fullname}</span>
                         </p>
                         <p>
-                          <img src={LikeIcon} /> {answer?.like}
+                          <img src={LikeIcon} onClick={() => onLike(answer.id)} /> {answer?.like}
                         </p>
                       </div>
                       <div className="questionAnswerContent-answer_content">

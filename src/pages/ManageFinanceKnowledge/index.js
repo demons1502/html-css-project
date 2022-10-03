@@ -12,6 +12,7 @@ import { createContent, deleteContent, retrieveData, updateContent } from '../..
 import { DEFAULT_SIZE, LOADING_STATUS, MANAGEMENT_CONTENT } from '../../ultis/constant';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
+import QuestionContent from './QuestionContent';
 
 const ManageFinanceKnowledge = () => {
   const { t } = useTranslation();
@@ -86,32 +87,6 @@ const ManageFinanceKnowledge = () => {
         setEditDisabled(true);
       }
     }
-
-    // if (option !== MANAGEMENT_CONTENT[0].value) {
-    //   if (!data.id) {
-    //     dispatch(createContent({ type: option, payload: data }));
-    //     setItemContent(null);
-    //     setFileList(null);
-    //     setEditDisabled(true);
-    //   } else {
-    //     dispatch(updateContent({ type: option, id: data.id, payload: data }));
-    //     setItemContent(null);
-    //     setFileList(null);
-    //     setEditDisabled(true);
-    //   }
-    // } else {
-    //   if (!data.id) {
-    //     dispatch(createContent({ type: option, payload: data }));
-    //     setItemContent(null);
-    //     setFileList(null);
-    //     setEditDisabled(true);
-    //   } else {
-    //     dispatch(updateContent({ type: option, id: data.id, payload: data }));
-    //     setItemContent(null);
-    //     setFileList(null);
-    //     setEditDisabled(true);
-    //   }
-    // }
   };
 
   const handleClick = async (item) => {
@@ -257,16 +232,19 @@ const ManageFinanceKnowledge = () => {
                   setEdit={setEditDisabled}
                 />
               ) : (
-                <QuestionAnswerContent
-                  onChange={handleChange}
-                  content={itemContent}
-                  onDelete={handleDelete}
-                  onCancel={handleCancel}
-                  onSave={handleSave}
-                  isEdit={editDisabled}
-                  setEdit={setEditDisabled}
-                  option={option}
-                />
+                <>
+                  <QuestionAnswerContent
+                    onChange={handleChange}
+                    content={itemContent}
+                    onDelete={handleDelete}
+                    onCancel={handleCancel}
+                    onSave={handleSave}
+                    isEdit={editDisabled}
+                    setEdit={setEditDisabled}
+                    option={option}
+                  />
+                  {/* <QuestionContent id={itemContent?.id} option={option} /> */}
+                </>
               )}
             </Layout.Content>
           </Col>

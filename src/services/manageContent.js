@@ -16,6 +16,7 @@ export const update = (type, id, payload) => {
   }
 };
 export const remove = (type, id) => sendDelete(`${type}/${id}`);
+export const like = (type, id) => sendPatch(`${type}/like/${id}`);
 
 export const uploadFile = (file) =>
   sendPost('file/upload', file, { headers: { 'Content-Type': 'multipart/form-data' } });

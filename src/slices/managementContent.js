@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { create, getAll, getOne, remove, update } from '../services/manageContent';
+import { create, getAll, getOne, like, remove, update } from '../services/manageContent';
 
-const initialState = { isReload: false, data: [], count: 0, itemDetail: null };
+const initialState = { isReload: false, data: [], count: 0, detail: null };
 
 export const retrieveData = createAsyncThunk(
   'manageContent/getAll',
@@ -19,6 +19,14 @@ export const getDetail = createAsyncThunk('manageContent/getDetail', async (payl
   try {
     const res = await getOne(payload.type, payload.id);
     return res.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const likeContent = createAsyncThunk('manageContent/like', async (payload, { rejectWithValue }) => {
+  try {
+    await like(payload.type, payload.id);
   } catch (error) {
     return rejectWithValue(error.response.data);
   }
@@ -67,7 +75,7 @@ const manageContentSlice = createSlice({
       state.isReload = true;
     },
     [getDetail.fulfilled]: (state, action) => {
-      state.itemDetail = action.payload;
+      state.detail = action.payload;
       state.isReload = false;
     },
     [retrieveData.fulfilled]: (state, action) => {

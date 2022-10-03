@@ -31,7 +31,7 @@ export default function CallSchedule() {
       interval,
     };
     dispatch(getCallSchedules(payload));
-  }, [dispatch, interval, reloadData]);
+  }, [dispatch, offset, limit, interval, reloadData]);
 
   useEffect(() => {
     setDataTable(result.customerCalls || []);
@@ -111,10 +111,11 @@ export default function CallSchedule() {
           rowKey={(record) => record.id}
           pagination={false}
           bordered={false}
-          scroll={{ scrollToFirstRowOnChange: false }}
-          $borderBottom=""
+          scroll={{ x: dataTable.length > 0 && 910 }}
+          $borderBottom={dataTable.length < 4 ? (dataTable.length === 0 ? false : '') : false}
           loading={loading}
           $height="280px"
+          $heightRow="46px"
           $endLine
         />
         <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />

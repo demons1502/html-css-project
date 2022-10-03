@@ -8,12 +8,9 @@ import * as S from '../../styles';
 export default function CallScheduleItemCall(props) {
   const { t } = useTranslation();
   const { record, onClickCall } = props;
-  const { phone1, phone2, phone3 } = props.record;
 
   const handleCall = (value) => {
-    console.log('Call,', value);
-    if (onClickCall)
-      onClickCall(value)
+    if (onClickCall) onClickCall(value);
   };
 
   return (
@@ -23,9 +20,11 @@ export default function CallScheduleItemCall(props) {
         placement="topLeft"
         overlayInnerStyle={{ borderRadius: '15px', padding: '10px 15px' }}
       >
-        <Link to="/call-details"><img src={call} alt="call" onClick={() => handleCall(record)} /></Link>
+        <Link to="/call-details" style={S.linkStyle}>
+          <img src={call} alt="call" onClick={() => handleCall(record)} />
+        </Link>
       </Tooltip>
-      <Checkbox className="checkbox-item" />
+      <Checkbox className="checkbox-item dashboard__checkbox" />
     </S.WrapTableAction>
   );
 }

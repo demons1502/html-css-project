@@ -9,7 +9,7 @@ import { dateFormat } from '../../constants';
 export default function SignedContractCalendar(props) {
   const { t } = useTranslation();
   const { startDate, endDate, setDate, total } = props;
-  const [active, setActive] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const disabledDate = (current) => {
     return current && current > moment().endOf('day');
@@ -18,24 +18,25 @@ export default function SignedContractCalendar(props) {
   const onChange = (date) => {
     if (date) {
       setDate(date);
-      setActive(false);
+      setOpen(false);
     }
   };
 
-  const handleSelectCalendar = () => {
-    setActive(true);
+  const handleOpenChange = (newOpen) => {
+    setOpen(newOpen);
   };
 
   return (
     <Row>
-      <Tooltip
-        placement="rightTop"
-        color="#fff"
-        overlayInnerStyle={{ borderRadius: '15px' }}
-        title={<DatePicker onChange={onChange} disabledDate={disabledDate} />}
+      <S.Popover
+        placement="right"
+        content={<S.WrapDatePicker open={open} onChange={onChange} disabledDate={disabledDate} format="DD/MM/YYYY" />}
+        trigger="click"
+        open={open}
+        onOpenChange={handleOpenChange}
       >
-        <S.WrapIconImageCalendar src={signedContract} onClick={handleSelectCalendar} />
-      </Tooltip>
+        <S.WrapIconImageCalendar src={signedContract} />
+      </S.Popover>
 
       <S.WrapTextAlign flex="auto">
         <Row gutter={[0, 5]}>

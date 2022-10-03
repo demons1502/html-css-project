@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Popover, Divider } from "antd";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { FieldLabel } from "../../../components/controls";
+import { useSelector } from "react-redux";
+import { isEmpty } from "lodash";
 import { Input, Button } from "../../../components/styles";
 
 export const ClosingModal = ({ onSubmit }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { control } = useFormContext();
+  const { data } = useSelector((state) => state?.surveys);
+
+  console.log("survey data", data);
+
+  useEffect(() => {
+    if (!isEmpty(data)) {
+      onCancel();
+    }
+  }, [data]);
 
   const handleOpenChange = (newOpen) => {
     setOpen(newOpen);
@@ -29,13 +40,13 @@ export const ClosingModal = ({ onSubmit }) => {
       <Divider />
       <div className="closing-footer">
         <div className="closing-btn">
-          <Button onClick={onCancel} onBlur={onCancel} block className="btn-danger">
+          <Button htmlType="button" className="btn-cancel" block onClick={onCancel} onBlur={onCancel}>
             Hủy+
           </Button>
         </div>
 
         <div className="closing-btn">
-          <Button type="primary" onClick={onSubmit} block>
+          <Button type="primary" htmlType="button"  block onClick={onSubmit}>
             Tạo
           </Button>
         </div>
@@ -51,7 +62,7 @@ export const ClosingModal = ({ onSubmit }) => {
       overlayClassName="closing-popover"
       visible={open}
     >
-      <Button type="primary" block>
+      <Button type="primary" htmlType="button"  block>
         {t("survey.save")}
       </Button>
     </Popover>

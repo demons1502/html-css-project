@@ -78,7 +78,7 @@ const ListDetails = () => {
   };
 
   return (
-    <Card className="content-div-2-header" title={t('survey.rttitle')}>
+    <Card className="content-div-2-header" title={t('financial consultant.process title')}>
       <div className="content-div-2-content">
         <div className="content-body">
           <Button type="primary" htmlType="submit" className="btn-primary">

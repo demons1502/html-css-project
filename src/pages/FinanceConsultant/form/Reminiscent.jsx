@@ -3,15 +3,20 @@ import { Form } from 'antd';
 import Input from '../../../components/common/Input';
 import { Button } from '../../../components/styles';
 
-const Reminiscent = ({ form }) => {
-  console.log(form);
+const Reminiscent = ({ form, onOk, setReminiscent }) => {
+  const handleCancel = () => {
+    form.resetFields();
+  };
+
   return (
     <div className="financialConsultant-reminiscent">
       <span>Tên gợi nhớ</span>
-      <Input placeholder="Nhập" />
+      <Input placeholder="Nhập" onChange={(e) => setReminiscent(e.target.value)} />
       <div className="financialConsultant-reminiscent_button">
-        <Button className="btn-danger">Hủy</Button>
-        <Button type="primary" htmlType="submit">
+        <Button className="btn-danger" onClick={handleCancel}>
+          Hủy
+        </Button>
+        <Button type="primary" onClick={() => onOk()}>
           Tạo
         </Button>
       </div>

@@ -1,5 +1,8 @@
 @use "../abstracts/" as *;
 
+.slick-next::before, .slick-prev::before {
+  color:#000;
+}
 .review{
     img {
       width: 100%;

@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
-  getAppointments,
+  getAppointments,getSpeechScript
 } from '../services/financialSolutions';
 
 const initialState = {
   data: [],
   customerAppRecords: [],
-
+  getSpeechScript: null,
 };
 
 
@@ -20,17 +20,17 @@ export const getAppointment = createAsyncThunk(
   }
 );
 
-// export const login = createAsyncThunk(
-//   'financialSolotions/changePassword',
-//   async (payload, { rejectWithValue }) => {
-//     try {
-//       const res = await loginApi(payload);
-//       return res.data;
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
+export const getSpeechScriptType = createAsyncThunk(
+  'financialSolotions/getSpeechScript',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await getSpeechScript(payload);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 // export const changePassword = createAsyncThunk(
 //   'financialSolotions/changePassword',
@@ -74,6 +74,10 @@ const financialSolotions = createSlice({
   extraReducers: {
     [getAppointment.fulfilled]: (state, action) => {
       state.customerAppRecords = action.payload.data
+    },
+    [getSpeechScriptType.fulfilled]: (state, action) => {
+      console.log(action.payload);
+      state.getSpeechScript = action.payload
     },
   },
 });

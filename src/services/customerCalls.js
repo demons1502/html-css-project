@@ -8,11 +8,12 @@ export const getCustomerCallById = async (cId) => {
 };
 
 export const updateCustomerCallRecord = async ({
+  customerCallId,
   customerCallRecordId,
   isPotential,
   isCompleted
 }) => {
-  const response = await sendPatch(ENDPOINT.customerCall + `/${customerCallRecordId}/records/current`, {
+  const response = await sendPatch(ENDPOINT.customerCall + `/${customerCallId}/records/current`, {
     customerCallRecordId,
     isPotential,
     isCompleted

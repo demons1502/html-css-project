@@ -2,9 +2,18 @@ import { Space } from 'antd';
 import { FileDoneOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import * as S from './styles';
+import { updateCustomerCallRecord } from '../../services/customerCalls';
+import { useNavigate } from 'react-router-dom';
+import CreateAppointment from '../Main/views/AppointmentManagement/components/CreateAppointment';
 
 export default function CallRecordInfo(props) {
   const [currentCheck, setCurrentCheck] = useState('1');
+  const [loadingBtn, setLoadingBtn] = useState({
+    complete: false,
+    cancel: false
+  });
+  const [openAppointment, setOpenAppointment] = useState(false);
+  const navigate = useNavigate();
   const { callrecordData, customerData, customerCallData } = props;
   const isCompleted = callrecordData?.completedAt;
 
@@ -27,6 +36,43 @@ export default function CallRecordInfo(props) {
     }
   };
 
+  const handleUpdateCallRecord = async (action) => {
+    if (!action) return;
+    let isCompleted = null;
+    // console.log({ callrecordData, customerData, customerCallData })
+    if (action === 'complete') { isCompleted = true }
+    if (action === 'cancel') { isCompleted = false }
+
+    setLoadingBtn({ ...loadingBtn, [action]: true });
+    await updateCustomerCallRecord({
+      customerCallId: customerCallData.id,
+      customerCallRecordId: callrecordData.id,
+      isCompleted,
+      isPotential: currentCheck === '1' ? true : false
+    })
+    setLoadingBtn({ ...loadingBtn, [action]: false });
+    navigate('/dashboard')
+  };
+
+  const handleClickFuncBtn = (action) => {
+    setLoadingBtn({ ...loadingBtn, [action]: true })
+    switch (action) {
+      case 'appointment':
+        setOpenAppointment(true)
+        break;
+      // case 'survey':
+      //   break;
+      // case 'consult':
+      //   break;
+      // case 'solution':
+      //   break;
+      default:
+        window.open('/advise/financial-solutions', '_blank')
+        break;
+    }
+    setLoadingBtn({ ...loadingBtn, [action]: false })
+  }
+
   return (
     <div>
       <S.WrapContent $padding="30px">
@@ -46,10 +92,10 @@ export default function CallRecordInfo(props) {
                   {customerData?.fullname}
                 </S.WrapText>
                 <Space>
-                  <S.WrapBtn $variant="filled" disabled={isCompleted} onClick={() => console.log('complete')}>
+                  <S.WrapBtn $variant="filled" disabled={isCompleted || loadingBtn['complete']} onClick={() => handleUpdateCallRecord('complete')}>
                     {'Hoàn thành'}
                   </S.WrapBtn>
-                  <S.WrapBtn $variant="filled" $colorScheme="error" disabled={isCompleted}>
+                  <S.WrapBtn $variant="filled" $colorScheme="error" disabled={isCompleted || loadingBtn['cancel']} onClick={() => handleUpdateCallRecord('cancel')}>
                     {'Hủy gọi'}
                   </S.WrapBtn>
                 </Space>
@@ -86,16 +132,16 @@ export default function CallRecordInfo(props) {
                 </Space>
               </S.WrapContent>
               <Space align="center">
-                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted}>
+                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted || loadingBtn['appointment']} onClick={() => handleClickFuncBtn('appointment')}>
                   {`Đặt hẹn`}
                 </S.WrapBtn>
-                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted}>
+                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted || loadingBtn['survey']} onClick={() => handleClickFuncBtn('survey')}>
                   {`Khảo sát`}
                 </S.WrapBtn>
-                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted}>
+                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted || loadingBtn['consult']} onClick={() => handleClickFuncBtn('consult')}>
                   {`Tư vấn`}
                 </S.WrapBtn>
-                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted}>
+                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted || loadingBtn['solution']} onClick={() => handleClickFuncBtn('solution')}>
                   {`Giải pháp`}
                 </S.WrapBtn>
               </Space>
@@ -115,6 +161,7 @@ export default function CallRecordInfo(props) {
           </Space>
         </Space>
       </S.WrapContent>
+      <CreateAppointment open={openAppointment} handleCancel={() => setOpenAppointment(false)}/>
     </div>
   );
 }

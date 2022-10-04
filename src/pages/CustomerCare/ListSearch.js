@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 export default function ListSearch() {
   const [selectId, setSelectId] = useState(0);
   const [keyword, setKeyword] = useState('');
-  const [optionsFilter, setOptionsFilter] = useState('');
+  const [optionsFilter, setOptionsFilter] = useState(_.map(CUSTOMER_FILTER_OPTIONS, 'value'));
   const [listCustomer, setListCustomer] = useState([]);
   const [total, setTotal] = useState([]);
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ export default function ListSearch() {
   return (
     <>
       <InputSearch setPayload={setKeyword} />
-      <Filter options={CUSTOMER_FILTER_OPTIONS} setPayload={setOptionsFilter} />
+      <Filter options={CUSTOMER_FILTER_OPTIONS} optionsFilter={optionsFilter} setPayload={setOptionsFilter} />
       <List type={TYPE_LIST_CUSTOMERS} dataList={listCustomer} selectId={selectId} setSelectId={setSelectId} />
       <Pagination total={total} showSizeChanger={false} setPaginate={setPaginate} />
     </>

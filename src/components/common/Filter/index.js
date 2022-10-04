@@ -6,7 +6,7 @@ import * as S from "./styles";
 
 export default function Filter(props) {
   const {t} = useTranslation();
-  const {options, setPayload} = props;
+  const {options, optionsFilter, setPayload} = props;
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
 
@@ -21,7 +21,7 @@ export default function Filter(props) {
 
   const checkboxRender = useMemo(() => {
     return (
-      <Checkbox.Group style={{'maxWidth': '400px'}} onChange={checkFilter} className="checkbox-item">
+      <Checkbox.Group value={optionsFilter} style={{'maxWidth': '400px'}} onChange={checkFilter} className="checkbox-item">
         <Row>
           {
             options.map((val, index) => {

@@ -11,6 +11,7 @@ import {
   getTopPotentialCustomerApi,
   sendEmailApi,
   sendSMSApi,
+  setNextCallApi,
   updateAppointmentScheduleApi,
 } from '../services/dashboard';
 
@@ -18,6 +19,14 @@ import {
 export const getCallSchedules = createAsyncThunk('dashboard/GET_CALL_SCHEDULES', async (data) => {
   try {
     const response = await getCallScheduleApi(data);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
+export const setNextCall = createAsyncThunk('dashboard/SET_NEXT_CALL', async (data) => {
+  try {
+    const response = await setNextCallApi(data);
     return response.data;
   } catch (error) {
     return Promise.reject(error.data);
@@ -127,6 +136,7 @@ export const getRatioContracts = createAsyncThunk('contracts/GET_RATIO_CONTRACTS
 const initialState = {
   // CallSchedule
   callSchedules: {},
+  callSchedule: {},
   // CustomerCareDashboard
   customerCares: {},
   remindFees: {},
@@ -166,6 +176,17 @@ const dashboardSlice = createSlice({
       state.loadingCallSchedule = true;
     },
     [getCallSchedules.rejected]: (state, action) => {
+      state.loadingCallSchedule = false;
+      state.error = action.error;
+    },
+    [setNextCall.fulfilled]: (state, action) => {
+      state.loadingCallSchedule = false;
+      state.callSchedule = action.payload;
+    },
+    [setNextCall.pending]: (state) => {
+      state.loadingCallSchedule = true;
+    },
+    [setNextCall.rejected]: (state, action) => {
       state.loadingCallSchedule = false;
       state.error = action.error;
     },

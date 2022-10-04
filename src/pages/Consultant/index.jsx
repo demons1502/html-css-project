@@ -13,7 +13,7 @@ import { marriageStatus, acquaintanceLevel, typeCustomer } from '../../constants
 import { useNavigate } from 'react-router-dom';
 
 export default function FinanceConsultant() {
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState(_.map(options, 'value'));
   const [paginate, setPaginate] = useState({ limit: DEFAULT_SIZE, offset: 1 });
 
   const consults = useSelector((state) => state.consultReducer);
@@ -137,7 +137,7 @@ export default function FinanceConsultant() {
           </div>
         </div>
         <div className="header_right">
-          <FilterCommon options={options} setPayload={setStatus} defaultChecked />
+          <FilterCommon options={options} setPayload={setStatus} optionsFilter={status} />
         </div>
       </div>
       <div className="contract_list">

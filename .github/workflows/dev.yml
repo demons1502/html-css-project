@@ -17,7 +17,6 @@ jobs:
           node-version: 16.x
           cache: 'npm'
       - run: npm install
-      - run: cp .env.development.local .env
       - run: CI=false npm run build --omit=dev
       - run: zip -r fe.zip build
       - name: Upload file build to host

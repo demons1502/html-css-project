@@ -16,7 +16,7 @@ const Appointment = () => {
   const appointmentReducer = useSelector((state) => state.appointment);
   const { data } = appointmentReducer;
   const nowDate = new Date();
-  const [event, setEvent] = useState({});
+  const [event, setEvent] = useState();
   const startDate = moment().clone().weekday(0).format('YYYY-MM-DD 00:00:00');
   const endDate = moment().clone().weekday(6).format('YYYY-MM-DD 23:59:59');
   useEffect(() => {
@@ -29,14 +29,12 @@ const Appointment = () => {
   }, []);
 
   useEffect(() => {
-    checkAppointment(data) && setEvent(checkAppointment(data));
-    // if (Object.keys(event).length === 0) {
-
-    // } else {
-    //   const dataEvent = data.find((i) => i.apptId === event.apptId);
-    //   console.log('dataEvent', dataEvent);
-    //   // setEvent(dataEvent);
-    // }
+    if (!event) {
+      setEvent(checkAppointment(data));
+    } else {
+      const dataEvent = data.find((i) => i.apptId === event.apptId);
+      dataEvent ? setEvent(dataEvent) : setEvent(checkAppointment(data));
+    }
   }, [data]);
 
   const sort = (array) => {
@@ -81,11 +79,11 @@ const Appointment = () => {
   return (
     <S.WrapContainer>
       <S.WrapTitle>Quản lý lịch hẹn</S.WrapTitle>
-      <Row gutter={8}>
-        <Col span={14}>
+      <Row gutter={[8, 16]}>
+        <Col lg={14} md={24} sm={24}>
           <CalendarCustom eventActive={event} handleEvent={handleEvent} />
         </Col>
-        <Col span={10}>
+        <Col lg={10} md={24} sm={24}>
           <InformationAppointment info={event} />
         </Col>
       </Row>

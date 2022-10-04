@@ -35,10 +35,11 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
       note: info.note,
     };
     form.setFieldsValue({ ...data });
-  }, [form, info]);
+  }, []);
 
   useEffect(() => {
     setCustomer({
+      ...info,
       name: info.host,
       fullname: info.host,
     });
@@ -53,22 +54,15 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
   };
 
   const onFinish = (values) => {
-    const subCustomerIds =
-      values?.users && values?.users.length !== 0
-        ? values?.users.map((i) => i.customerId)
-        : [];
+    const subCustomerIds = values?.users && values?.users.length !== 0 ? values?.users.map((i) => i.customerId) : [];
 
-    const startTime =
-      moment(values.date).format('YYYY-MM-DD ') +
-      moment(values.startTime).format('HH:mm:ss');
+    const startTime = moment(values.date).format('YYYY-MM-DD ') + moment(values.startTime).format('HH:mm:ss');
 
-    const endTime =
-      moment(values.date).format('YYYY-MM-DD ') +
-      moment(values.endTime).format('HH:mm:ss');
-
+    const endTime = moment(values.date).format('YYYY-MM-DD ') + moment(values.endTime).format('HH:mm:ss');
+    const customerId = info.typeId === 1 ? info.customerApptRecords[0].customerId : info.companyCustomerId;
     const data = {
       typeId: info.typeId,
-      customerId: info.companyCustomerId,
+      customerId: customerId,
       title: title,
       startTime: startTime,
       endTime: endTime,
@@ -81,13 +75,9 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
     dispatch(editAppointment({ id: info.apptId, data })).then(({ error }) => {
       if (!error) {
         handleCancel();
-        message.success(
-          'Lịch hẹn của bạn vừa được sửa thành công. Chọn lịch hẹn để xem chi tiết.'
-        );
+        message.success('Lịch hẹn của bạn vừa được sửa thành công. Chọn lịch hẹn để xem chi tiết.');
       } else {
-        message.error(
-          'Lịch hẹn của bạn vừa được sửa thất bại. Vui lòng thử lại'
-        );
+        message.error('Lịch hẹn của bạn vừa được sửa thất bại. Vui lòng thử lại');
       }
     });
   };
@@ -98,20 +88,20 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
 
   return (
     <ModalSelect
-      title='Sửa lịch hẹn'
-      width='650px'
+      title="Sửa lịch hẹn"
+      width="650px"
       isModalOpen={open}
       handleCancel={onCancel}
       handleOk={form.submit}
-      cancelText='Huỷ sửa'
-      okText='Sửa lịch hẹn'
+      cancelText="Huỷ sửa"
+      okText="Sửa lịch hẹn"
     >
-      <Form form={form} colon={false} layout='vertical' onFinish={onFinish}>
+      <Form form={form} colon={false} layout="vertical" onFinish={onFinish}>
         <S.WrapRow gutter={12}>
           <Col span={12}>
             <Form.Item
-              label='Tên khách hàng'
-              name='customerId'
+              label="Tên khách hàng"
+              name="customerId"
               rules={[
                 {
                   required: Object.keys(customer).length === 0 ? true : false,
@@ -119,17 +109,13 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
                 },
               ]}
             >
-              <SelectTable
-                customer={customer}
-                handleChangeValue={handleChangeCustomer}
-                typeId={info.typeId}
-              />
+              <SelectTable customer={customer} handleChangeValue={handleChangeCustomer} typeId={info.typeId} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label='Nội dung lịch hẹn'
-              name='title'
+              label="Nội dung lịch hẹn"
+              name="title"
               rules={[
                 {
                   required: title === '' ? true : false,
@@ -147,7 +133,7 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
         <S.WrapRow gutter={8}>
           <Col span={8}>
             <Form.Item
-              name='date'
+              name="date"
               rules={[
                 {
                   required: true,
@@ -157,35 +143,33 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
             >
               <S.WrapDatePicker
                 format={'DD/MM/YYYY'}
-                suffixIcon={<Calender color='#999999' />}
+                suffixIcon={<Calender color="#999999" />}
                 style={{ width: '100%' }}
-                placeholder='DD/MM/YYYY'
+                placeholder="DD/MM/YYYY"
                 disabledDate={(current) => {
                   let customDate = moment().format('YYYY-MM-DD');
                   return current && current < moment(customDate, 'YYYY-MM-DD');
                 }}
+                onOpenChange={() => form.setFieldsValue({ startTime: undefined, endTime: undefined })}
               />
             </Form.Item>
           </Col>
 
           <Col span={16}>
-            <TimePicker
-              start={moment(info.startTime)}
-              end={moment(info.endTime)}
-            />
+            <TimePicker start={moment(info.startTime)} end={moment(info.endTime)} form={form} />
           </Col>
         </S.WrapRow>
         <S.WrapRow gutter={12}>
           <Col span={24}>
-            <Form.Item label='Địa điểm' name='location'>
-              <S.WrapInput placeholder='Địa điểm' />
+            <Form.Item label="Địa điểm" name="location">
+              <S.WrapInput placeholder="Địa điểm" />
             </Form.Item>
           </Col>
         </S.WrapRow>
         <S.WrapRow gutter={12}>
           <Col span={24}>
-            <Form.Item label='Ghi Chú' name='note'>
-              <S.WrapInput placeholder='Ghi Chú' />
+            <Form.Item label="Ghi Chú" name="note">
+              <S.WrapInput placeholder="Ghi Chú" />
             </Form.Item>
           </Col>
         </S.WrapRow>
@@ -194,11 +178,7 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
             <S.WrapRow>
               <S.WrapTitleUser>Thông tin người tham gia</S.WrapTitleUser>
             </S.WrapRow>
-            <FormUsers
-              form={form}
-              companyId={customer.companyId}
-              customerApptRecords={info.customerApptRecords}
-            />
+            <FormUsers form={form} companyId={customer.companyId} customerApptRecords={info.customerApptRecords} />
           </>
         )}
       </Form>

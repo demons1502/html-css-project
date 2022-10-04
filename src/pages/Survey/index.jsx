@@ -1,4 +1,4 @@
-import { Button, Col, Layout, List, Row, Typography,Spin } from "antd";
+import { Button, Col, Layout, List, Row, Typography, Spin } from "antd";
 import React, { Fragment, useEffect, useState } from "react";
 import SearchInputBox from "./SearchInputBox";
 import ListDetails from "./ListDetails";
@@ -13,30 +13,52 @@ import calender from "../../assets/images/icons/calendar.svg";
 import left_arrow from "../../assets/images/icons/left-arrow.svg";
 import { HistoryPopup } from "./Modals/HistoryPopup";
 import { getTimeByTZ } from "../../helper/index";
-import { getSppechScriptInfo } from "../../slices/surveys";
+import { getSppechScriptInfo, clearSurvey } from "../../slices/surveys";
+import { getAppointments } from "../../slices/appointmentManagement";
+import moment from "moment";
 
 const Survey = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [customerList, setCustomerList] = useState([]);
   const [payload, setPayload] = useState("");
   const { customers, surveys } = useSelector((state) => state);
+  const appointments = useSelector((state) => state.appointment);
+
   const { data, selectedCustomer } = customers;
   const { objective, procedure, dialouges } = surveys?.surveyScript;
 
-
+  useEffect(() => {
+    if (!isEmpty(surveys?.survey)) {
+      const filteredCustomer = data?.filter((customer) => customer?.customerId === selectedCustomer?.customerId);
+      setCustomerList(filteredCustomer);
+    } else {
+      setCustomerList(data);
+    }
+  }, [customers, surveys?.survey]);
 
   useEffect(() => {
-    dispatch(getCustomerList());
+    const data = {
+      titles: ['survey'],
+      startDate: moment().format('YYYY-MM-DD HH:mm'),
+      endDate: moment().add(30, 'm').format('YYYY-MM-DD HH:mm')
+    }
+    // dispatch(getCustomerList());
+    dispatch(getAppointments(data));
     dispatch(getSppechScriptInfo());
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(setSelectedCustomer(data?.[0]?.customerId));
+    dispatch(setSelectedCustomer(data[0]?.customerId));
   }, [data, dispatch]);
 
   const handleSelectCustomer = (id) => {
     dispatch(setSelectedCustomer(id));
+  };
+
+  const backToSurvey = () => {
+    dispatch(clearSurvey());
   };
 
   const historyHandler = () => {
@@ -68,15 +90,15 @@ const Survey = () => {
                       <SearchInputBox setPayload={setPayload}></SearchInputBox>
                     </div>
 
-                    {data?.length > 0 && (
+                    {appointments.data?.length > 0 && (
                       <List
-                        dataSource={data}
+                        dataSource={appointments.data[0].customerApptRecords}
                         renderItem={(customer, index) => (
                           <List.Item
                             onClick={() => handleSelectCustomer(customer?.customerId)}
                             className={`${customer?.customerId === selectedCustomer?.customerId ? "active" : ""}`}
                           >
-                            <Typography.Text ellipsis>{customer?.fullname}</Typography.Text>
+                            <Typography.Text ellipsis>{customer?.name}</Typography.Text>
                           </List.Item>
                         )}
                       />
@@ -103,8 +125,8 @@ const Survey = () => {
                       </div>
                     ) : (
                       <div className="container-right-header" style={{ padding: "20px" }}>
-                        <div>
-                          <img src={left_arrow} alt="calender" height={12} style={{ marginRight: "5px" }} />
+                        <div onClick={backToSurvey} className="back-to-survey">
+                          <img src={left_arrow} alt="back" height={12} style={{ marginRight: "5px" }} />
                         </div>
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: "5px" }} />

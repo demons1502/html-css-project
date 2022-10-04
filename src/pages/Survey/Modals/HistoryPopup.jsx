@@ -5,7 +5,6 @@ import { Spin, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { getSurveyDetails } from "../../../slices/surveys";
 import { getTimeByTZ } from "../../../helper/index";
-import { isEmpty } from "lodash";
 
 export const HistoryPopup = ({ historyHandler }) => {
   const { t } = useTranslation();
@@ -46,8 +45,8 @@ export const HistoryPopup = ({ historyHandler }) => {
         <table className="history-table">
           <thead>
             <tr>
-              <th>{t("Date")}</th>
-              <th>{t("Name")}</th>
+              <th>Ngày tháng</th>
+              <th>Tên gợi nhớ</th>
             </tr>
           </thead>
           <tbody>

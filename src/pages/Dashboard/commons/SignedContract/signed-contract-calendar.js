@@ -1,10 +1,10 @@
-import { Col, DatePicker, Row, Tooltip } from 'antd';
+import { Col, Row } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import signedContract from '../../../../assets/images/icons/signedContract.svg';
-import * as S from '../../styles';
 import { dateFormat } from '../../constants';
+import * as S from '../../styles';
 
 export default function SignedContractCalendar(props) {
   const { t } = useTranslation();

@@ -23,6 +23,8 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
   const [typeId, setTypeId] = useState(data.typedId);
   const [connectFromValue, setConnectFromValue] = useState();
   const [relationshipValue, setRelationshipValue] = useState();
+  const [currencyString, setCurrencyString] = useState();
+
   const companies = useSelector((state) => state.potentialCustomersReducer.companies);
 
   const marriageOptions = useMemo(
@@ -85,6 +87,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
         ...value,
         customerId: data.customerId,
         typeId,
+        income: currencyString,
       })
     );
     handleCancel();
@@ -94,7 +97,9 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
     handleCancel();
   };
 
-  const onChangeCurrency = (value) => {};
+  const onChangeCurrency = (value) => {
+    setCurrencyString(`${value}`);
+  };
 
   useEffect(() => {
     if (data) {
@@ -365,12 +370,6 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   label="Nguồn gốc"
                   name="connectFrom"
                   initialValue={+data.connectFrom}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Vui lòng chọn nguồn gốc!',
-                    },
-                  ]}
                 >
                   <Select
                     value={connectFromValue}
@@ -386,12 +385,6 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   label="Quan hệ"
                   name="relationship"
                   initialValue={+data.relationship}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Vui lòng chọn quan hệ!',
-                    },
-                  ]}
                 >
                   <Select
                     value={relationshipValue}

@@ -3,9 +3,11 @@ import { Form } from 'antd';
 import Input from '../../../components/common/Input';
 import { Button } from '../../../components/styles';
 
-const Reminiscent = ({ form, onOk, setReminiscent }) => {
+const Reminiscent = ({ form, onOk, setReminiscent, setOpen, setTotal }) => {
   const handleCancel = () => {
     form.resetFields();
+    setOpen(false);
+    setTotal(0);
   };
 
   return (

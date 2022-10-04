@@ -1,23 +1,63 @@
-import { Form, Checkbox, Popover } from 'antd';
+import { Form, Checkbox, Popover, message } from 'antd';
 import React, { useState } from 'react';
 import InputNumber from '../../../components/common/InputNumber';
 import { Button } from '../../../components/styles';
 import DotImg from '../../../assets/images/icons/dot.svg';
 import { formatDataNumber } from '../../../helper';
 import Reminiscent from './Reminiscent';
+import { useDispatch } from 'react-redux';
+import { AddNewConsultant } from '../../../slices/financialConsultant';
+import { useMemo } from 'react';
+import { useEffect } from 'react';
 
-const spendingForm = () => {
-  const [reminiscent, setReminiscent] = useState('');
+const spendingForm = (props) => {
+  const { id } = props;
+
+  const [reminiscent, setReminiscent] = useState(null);
   const [checked, setChecked] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [data, setData] = useState(null);
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
 
   const handleFinish = (values) => {
-    console.log({ ...values, reminiscent: reminiscent });
+    const consultAttrs = [];
+    for (const key of Object.keys(values)) {
+      consultAttrs.push({ label: key, value: values[key] });
+    }
+
+    const info = {
+      title: reminiscent,
+      total: total,
+      customerId: id,
+      isPotential: checked,
+      consultAttrs: consultAttrs,
+    };
+    if (!id) {
+      message.error('Vui lòng chọn khách hàng', 3);
+      return;
+    }
+    if (!reminiscent) {
+      message.error('Vui lòng nhập tên gợi nhớ', 3);
+      return;
+    } else {
+      dispatch(AddNewConsultant(info));
+    }
   };
 
   const onOk = () => {
     form.submit();
   };
+
+  const handleChange = (values) => {
+    setData({ ...data, ...values });
+  };
+
+  useEffect(() => {
+    const count = data && Object.values(data).reduce((curr, acc) => curr + acc, 0);
+    setTotal(count);
+  }, [data]);
 
   return (
     <div className="financialConsultant-content">
@@ -35,6 +75,7 @@ const spendingForm = () => {
         layout="horizontal"
         onFinish={handleFinish}
         className="financialConsultant-form"
+        onValuesChange={handleChange}
       >
         <Form.Item
           label={
@@ -45,7 +86,7 @@ const spendingForm = () => {
           labelAlign="left"
           name="marketMoney"
         >
-          <InputNumber placeholder="Nhập" />
+          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -56,7 +97,7 @@ const spendingForm = () => {
           labelAlign="left"
           name="studyMoney"
         >
-          <InputNumber placeholder="Nhập" />
+          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -67,7 +108,7 @@ const spendingForm = () => {
           labelAlign="left"
           name="giftMoney"
         >
-          <InputNumber placeholder="Nhập" />
+          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -78,7 +119,7 @@ const spendingForm = () => {
           labelAlign="left"
           name="gasMoney"
         >
-          <InputNumber placeholder="Nhập" />
+          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -89,7 +130,7 @@ const spendingForm = () => {
           labelAlign="left"
           name="cost"
         >
-          <InputNumber placeholder="Nhập" />
+          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -100,7 +141,7 @@ const spendingForm = () => {
           labelAlign="left"
           name="personalCosts"
         >
-          <InputNumber placeholder="Nhập" />
+          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -111,7 +152,7 @@ const spendingForm = () => {
           labelAlign="left"
           name="credit"
         >
-          <InputNumber placeholder="Nhập" />
+          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -122,7 +163,7 @@ const spendingForm = () => {
           labelAlign="left"
           name="nurturingFund"
         >
-          <InputNumber placeholder="Nhập" />
+          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
         </Form.Item>
         <Form.Item
           label={
@@ -133,11 +174,11 @@ const spendingForm = () => {
           labelAlign="left"
           name="otherCosts"
         >
-          <InputNumber placeholder="Nhập" />
+          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
         </Form.Item>
         <div className="financialConsultant-form_total">
           <p>Tổng chi tiêu: </p>
-          <span>{formatDataNumber(123000000)}</span>
+          <span>{formatDataNumber(total)}</span>
         </div>
         <div className="financialConsultant-form_submit">
           <Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)}>
@@ -145,8 +186,18 @@ const spendingForm = () => {
           </Checkbox>
           <Popover
             placement="topRight"
-            content={<Reminiscent form={form} onOk={onOk} setReminiscent={setReminiscent} />}
+            content={
+              <Reminiscent
+                form={form}
+                onOk={onOk}
+                setReminiscent={setReminiscent}
+                setOpen={setOpen}
+                setTotal={setTotal}
+              />
+            }
             trigger="click"
+            open={open}
+            onOpenChange={(e) => setOpen(e)}
           >
             <Button type="primary">Lưu thông tin</Button>
           </Popover>

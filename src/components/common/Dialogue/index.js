@@ -1,13 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { getSpeechScript } from "../../../services/common";
 import { Button } from "../../styles";
 import { Card, Carousel } from "./styles";
 
 const Dialogue = (props) => {
-  const { t } = useTranslation();
-  const { surveys } = useSelector((state) => state);
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(1);
 
@@ -20,15 +16,15 @@ const Dialogue = (props) => {
         const res = await getSpeechScript(props.type);
         let count = 0;
         setDialogData(res.data);
-        if (dialogData) {
-          if (dialogData?.objective) {
+        if (res.data) {
+          if (res.data?.objective) {
             count = 1;
           }
-          if (dialogData?.procedure) {
+          if (res.data?.procedure) {
             count += 1;
           }
-          if (dialogData?.dialogues) {
-            dialogData.dialogues.map((item) => {
+          if (res.data?.dialogues) {
+            res.data.dialogues.map((item) => {
               count += 1;
             });
           }
@@ -42,6 +38,8 @@ const Dialogue = (props) => {
   }, []);
 
   const nextPage = () => {
+    console.log(page);
+    console.log(limit);
     if (page < limit - 1) {
       dialogItems.current.next();
     }

@@ -24,7 +24,7 @@ export const Card = styled(AntCard)`
     }
   }
   .contents {
-    padding: 20px 20px 20px 36px;
+    padding: 20px;
 
     p {
       font-family: "Quicksand";
@@ -97,6 +97,7 @@ export const Card = styled(AntCard)`
 
 export const Carousel = styled(AntCarousel)`
   ul {
+    margin-left: 16px;
     list-style-image: url('/images/dot.svg');
     &.slick-dots {
       display: none !important;

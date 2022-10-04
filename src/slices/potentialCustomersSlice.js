@@ -111,7 +111,11 @@ const initialState = {
 const potentialCustomersSlice = createSlice({
   name: 'potentialCustomers',
   initialState,
-  reducers: {},
+  reducers: {
+    setEmptyPotentialCustomers: (state) => {
+      state.potentialCustomers = []
+    }
+  },
   extraReducers: {
     [getPotentialCustomers.fulfilled]: (state, action) => {
       state.loading = false;
@@ -197,4 +201,5 @@ const potentialCustomersSlice = createSlice({
   },
 });
 
+export const { setEmptyPotentialCustomers } = potentialCustomersSlice.actions
 export default potentialCustomersSlice.reducer;

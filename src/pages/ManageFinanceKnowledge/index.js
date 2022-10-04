@@ -20,7 +20,7 @@ const ManageFinanceKnowledge = () => {
   const contents = useSelector((state) => state.managementContentReducer);
   const contents1 = useSelector((state) => state.appointment);
   const loading = useSelector((state) => state.loading.loading);
-  console.log(contents1);
+
   const [itemContent, setItemContent] = useState(null);
   const [prevItem, setPrevItem] = useState(null);
   const [option, setOption] = useState('articles');
@@ -31,6 +31,7 @@ const ManageFinanceKnowledge = () => {
   const handleChange = (e) => {
     let values;
     const name = e.target.name;
+    console.log(e.target.value);
     const id = e.target.id;
     // if (option !== MANAGEMENT_CONTENT[0].value) {
     //   const index = itemContent.answers.findIndex(item=>item.id === id)

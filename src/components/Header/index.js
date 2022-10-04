@@ -83,17 +83,19 @@ export default function Header() {
           classStyle='input-item-search-dark'
           setPayload={ setPayload }
         />
-        <Dropdown overlay={ menu } placement='bottom'>
-          <div className='header__right__user'>
-            <span className='header__right__user__name'>{ me.fullname }</span>
+
+        <div className='header__right__user'>
+          <span className='header__right__user__name'>{ me.fullname }</span>
+          <Dropdown overlay={ menu } placement="bottomRight">
             <div className='header__right__user__avatar'>
               <Avatar size={ 30 } src={ !me.avatar ? AvantarDefault : me.avatar } />
               <div className='header__right__user__box-icon'>
                 <img src={ ArrowDownIcon } alt='' />
               </div>
             </div>
-          </div>
-        </Dropdown>
+          </Dropdown>
+        </div>
+
       </div>
     </header>
   );

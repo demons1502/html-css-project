@@ -24,6 +24,7 @@ import {
   deletePotentialCustomers,
   getPotentialCustomer,
   getPotentialCustomers,
+  setEmptyPotentialCustomers,
 } from '../../slices/potentialCustomersSlice';
 import {
   acquaintanceLevel,
@@ -51,7 +52,7 @@ export default function PotentialCustomers() {
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [search, setSearch] = useState('');
-  const [optionsFilter, setOptionsFilter] = useState('');
+  const [optionsFilter, setOptionsFilter] = useState(filterListOption.map((item) => item.value));
   const [filterValue, setFilterValue] = useState();
 
   const { Option } = Select;
@@ -179,7 +180,12 @@ export default function PotentialCustomers() {
   };
 
   useEffect(() => {
-    dispatch(getPotentialCustomers({ name: search, status: optionsFilter, ...filterValue }));
+    if (optionsFilter.length) {
+      dispatch(getPotentialCustomers({ name: search, status: optionsFilter, ...filterValue }));
+    }
+    if (!optionsFilter.length) {
+      dispatch(setEmptyPotentialCustomers())
+    }
   }, [dispatch, search, optionsFilter, filterValue]);
 
   return (
@@ -200,7 +206,7 @@ export default function PotentialCustomers() {
           </S.WrapIcon>
           <S.WrapButton>
             <Upload action={URL_IMPORT_CUSTOMERS} showUploadList={false} accept=".xlsx, .xls" {...importProps}>
-              <S.Button onClick={() => {}}>
+              <S.Button onClick={() => { }}>
                 <img src={Import} alt="Import customer icon" />
                 Import
               </S.Button>
@@ -209,7 +215,7 @@ export default function PotentialCustomers() {
               <img src={Import} alt="Add customer icon" />
               Tạo mới
             </S.Button>
-            <Filter options={filterListOption} setPayload={setOptionsFilter} />
+            <Filter options={filterListOption} defaultValue={optionsFilter} setPayload={setOptionsFilter} />
           </S.WrapButton>
         </S.WrapAction>
       </S.WrapHeader>

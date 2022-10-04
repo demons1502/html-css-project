@@ -6,16 +6,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { editCustomer } from "../../../slices/customers";
 import { DatePicker } from 'antd';
 import { FORMAT_DATE } from '../../../ultis/constant';
+import { Col, Row } from 'antd';
+import { getTimeByTZ } from '../../../helper/index';
 
 export const PersonalInfoForm = () => {
   const dispatch = useDispatch();
   const { customers } = useSelector((state) => state);
+  console.log(customers);
   const selectedCustomer = customers?.selectedCustomer || {};
   const { control, handleSubmit } = useForm({
     mode: "all",
     defaultValues: {
-      fullName: "",
-      sex: [1],
+      fullName: selectedCustomer.fullname,
+      sex: selectedCustomer?.gender,
+      dob: selectedCustomer.dob? getTimeByTZ(selectedCustomer.dob) : '',
       familyStatus: [1],
     },
   });
@@ -55,91 +59,74 @@ export const PersonalInfoForm = () => {
   return (
     <div className="personal-info-container">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <table className="personal-info-table">
-          <tr>
-            <td>
+        <div className="personal-info-content">
+          <Row gutter={[8, 16]}>
+            <Col span={7}>
               <div className="form-group">
                 <FieldLabel name="fullName" label="Họ và tên" required />
                 <Input control={control} name="fullName" />
               </div>
-            </td>
-            <td className="personal-date">
+            </Col>
+            <Col span={7}>
               <div className="form-group">
-                <FieldLabel name="dob" label="Ngày sinh" />
-                <DatePicker className="input-item-outline"format={FORMAT_DATE} placeholder={FORMAT_DATE} />
+                <FieldLabel for="dob" label="Ngày sinh" />
+                <DatePicker className="input-item-outline dob" format={FORMAT_DATE} placeholder={FORMAT_DATE} name="dob"/>
               </div>
-            </td>
-            <td className="personal-checkbox">
+            </Col>
+            <Col span={10}>
               <FieldLabel name="sex" label="Giới tính" />
               <div style={{ marginTop: "10px" }}>
                 <CheckboxGroup name="sex" control={control} options={sex} />
               </div>
-            </td>
-          </tr>
-
-          <tr>
-            <td>
+            </Col>
+            <Col span={7}>
               <div>
                 <FieldLabel name="job" label="Nghề nghiệp" />
                 <Input control={control} name="job" placeholder="Chọn" />
               </div>
-            </td>
-            <td colSpan={2}>
+            </Col>
+            <Col span={17}>
               <div>
                 <FieldLabel name="interests" label="Sở thích" />
                 <Input control={control} name="interests" placeholder="Nhập" />
               </div>
-            </td>
-          </tr>
-
-          <tr>
-            <td>
+            </Col>
+            <Col span={7}>
               <div>
                 <FieldLabel name="phone" label="Số điện thoại" />
                 <Input control={control} name="phone" placeholder="Nhập" />
               </div>
-            </td>
-            <td className="" colSpan={2}>
-              <div>
-                <FieldLabel name="address" label="Địa chỉ" />
-                <Input control={control} name="address" placeholder="Nhập" />
-              </div>
-            </td>
-          </tr>
-
-          <tr>
-            <td colSpan={3}>
+            </Col>
+            <Col span={17}>
+            
+              <FieldLabel name="address" label="Địa chỉ" />
+              <Input control={control} name="address" placeholder="Nhập" />
+               
+            </Col>
+            <Col span={24}>
               <FieldLabel name="familyStatus" label="Tình trạng gia đình" />
               <div style={{ marginTop: "10px" }}>
                 <CheckboxGroup name="familyStatus" control={control} options={familyStatus} />
               </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
+            </Col>
+            <Col span={7}>
               <FieldLabel name="numOfChildren" label="Số con" />
               <div>
                 <Input control={control} name="numOfChildren" placeholder="Nhập" />
               </div>
-            </td>
-            <td>
+            </Col>
+            <Col span={7}>
               <FieldLabel name="numOfDependents" label="Số người phụ thuộc" />
               <div>
                 <Input control={control} name="numOfDependents" placeholder="Nhập" />
               </div>
-            </td>
-          </tr>
-        </table>
+            </Col>
+          </Row>
+        </div>
         <div className="info-footer">
           <div className="info-btn">
-            <Button htmlType="button" className="btn-cancel" block>
-              Hủy+
-            </Button>
-          </div>
-
-          <div className="info-btn">
             <Button type="primary" htmlType="submit" className="btn-primary" block>
-              Tạo
+              Lưu thông tin
             </Button>
           </div>
         </div>

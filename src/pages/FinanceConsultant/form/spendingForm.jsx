@@ -8,6 +8,7 @@ import Reminiscent from './Reminiscent';
 
 const spendingForm = () => {
   const [checked, setChecked] = useState(false);
+  const { form } = Form.useForm();
 
   const handleFinish = (values) => {
     console.log({ ...values, tien: checked });
@@ -23,6 +24,7 @@ const spendingForm = () => {
         <h3>Danh mục chi tiêu</h3>
       </div>
       <Form
+        form={form}
         labelCol={{
           span: 19,
         }}
@@ -137,11 +139,14 @@ const spendingForm = () => {
           <span>{formatDataNumber(123000000)}</span>
         </div>
         <div className="financialConsultant-form_submit">
-          <Checkbox onChange={handleChecked}>Không còn tiềm năng</Checkbox>
-          <Popover placement="topRight" content={<Reminiscent />} trigger="click">
-            <Button type="primary" htmlType="submit">
-              Lưu thông tin
-            </Button>
+          <Form.Item name="check">
+            <Checkbox>Không còn tiềm năng</Checkbox>
+          </Form.Item>
+          <Button type="primary" htmlType="submit">
+            Lưu thông tin
+          </Button>
+          <Popover placement="topRight" content={<Reminiscent form={form} />} trigger="click">
+            <Button type="primary">Lưu thông tin</Button>
           </Popover>
         </div>
       </Form>

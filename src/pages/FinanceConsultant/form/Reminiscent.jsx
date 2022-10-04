@@ -3,7 +3,8 @@ import { Form } from 'antd';
 import Input from '../../../components/common/Input';
 import { Button } from '../../../components/styles';
 
-const Reminiscent = () => {
+const Reminiscent = ({ form }) => {
+  console.log(form);
   return (
     <div className="financialConsultant-reminiscent">
       <span>Tên gợi nhớ</span>

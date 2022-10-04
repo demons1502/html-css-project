@@ -42,10 +42,10 @@ const FinanceKnowledgeContent = (props) => {
               isDisabled={isEdit}
             />
             <div className="manageContent-footer_button">
-              <Button danger className="btn-cancer" onClick={() => onCancel()}>
+              <Button className="btn-danger" onClick={() => onCancel()}>
                 Hủy
               </Button>
-              <Button type="primary" className="btn-save" onClick={() => onSave(content)}>
+              <Button type="primary" onClick={() => onSave(content)}>
                 Lưu
               </Button>
             </div>

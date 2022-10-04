@@ -3,10 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { useMemo, useState } from 'react';
 import FilterIcon from '../../../assets/images/icons/filter.svg';
 import * as S from './styles';
+import { useEffect } from 'react';
+import { useCallback } from 'react';
 
 export default function Filter(props) {
   const { t } = useTranslation();
-  const { options, setPayload } = props;
+  const { options, setPayload, defaultChecked } = props;
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
 
@@ -19,9 +21,27 @@ export default function Filter(props) {
     setOpen(newOpen);
   };
 
+  const handleCheck = useCallback(() => {
+    const listChecked = [];
+    for (let i = 0; i < options.length; i++) {
+      listChecked.push(options[i].value);
+    }
+    return listChecked;
+  }, [defaultChecked]);
+
+  useEffect(() => {
+    defaultChecked && setCount(handleCheck().length);
+    defaultChecked && setPayload(handleCheck());
+  }, [defaultChecked]);
+
   const checkboxRender = useMemo(() => {
     return (
-      <Checkbox.Group style={{ maxWidth: '400px' }} onChange={checkFilter} className="checkbox-item">
+      <Checkbox.Group
+        style={{ maxWidth: '400px' }}
+        onChange={checkFilter}
+        className="checkbox-item"
+        defaultValue={defaultChecked ? handleCheck() : null}
+      >
         <Row>
           {options.map((val, index) => {
             return (

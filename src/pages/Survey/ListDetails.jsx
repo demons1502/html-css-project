@@ -60,12 +60,29 @@ const ListDetails = () => {
       return "";
     }
   };
+
+  const getTitle = (page) => {
+    if (objective) {
+      if (page === 1) {
+        return 'Mục tiêu';
+      } else if (procedure) {
+        if (page === 2) {
+          return 'Quy trình';
+        } else {
+          return 'Lời thoại' + $(page - 2);
+        }
+      }
+    } else {
+      return 'Lời thoại ' + page ;
+    }
+  };
+
   return (
     <Card className="content-div-2-header" title={t("survey.rttitle")}>
       <div className="content-div-2-content">
         <div className="content-body">
           <Button type="primary" htmlType="submit" className="btn-primary">
-            Lời thoại {page}
+            {getTitle(page)}
           </Button>
           <div className="contents">{getContent(page)}</div>
         </div>

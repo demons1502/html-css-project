@@ -532,7 +532,7 @@ const CustomerServeyTable = () => {
 
   return (
     <FormProvider {...methods}>
-      <form>
+      <form className="form-survey">
         <div>
           <h2 className="title">{t("survey.formTitle.title1")}</h2>
           <div className="">{table}</div>

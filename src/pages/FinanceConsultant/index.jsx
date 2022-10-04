@@ -15,22 +15,34 @@ import { data } from './fakeData/customer';
 import History from './history';
 import HistoryDetail from './components/historyDetail';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getConsultants, getConsultScript } from '../../slices/financialConsultant';
+import { useEffect } from 'react';
 
 export default function FinanceConsultant() {
   const { t } = useTranslation();
   const [selectId, setSelectId] = useState(null);
   const [history, setHistory] = useState(null);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { data } = useSelector((state) => state.financialConsultant);
+  const customers = useSelector((state) => state.consultReducer);
+  console.log(data);
   const handleSelect = (id) => {
     setSelectId(id);
   };
+
+  useEffect(() => {
+    const payload = { limit: 10, offset: 0, customerId: 160 };
+    dispatch(getConsultants(payload));
+    dispatch(getConsultScript());
+  }, []);
 
   return (
     <Fragment>
       <div className="financialConsultant">
         <h3 className="title">{t('financial consultant.title')}</h3>
-
         <div className="financialConsultant-container">
           <Row gutter={[16, 10]} justify="start" align="stretch">
             <Col lg={15} md={24} sm={24} xs={24}>
@@ -50,7 +62,7 @@ export default function FinanceConsultant() {
                             onClick={() => handleSelect(customer?.customerId)}
                             className={`${customer?.customerId === selectId ? 'active' : ''}`}
                           >
-                            <Typography.Text ellipsis>{customer?.fullname}</Typography.Text>
+                            <Typography.Text ellipsis>{customer?.title}</Typography.Text>
                           </List.Item>
                         )}
                       />

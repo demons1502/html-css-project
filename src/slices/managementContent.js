@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { create, getAll, remove, update } from '../services/manageContent';
+import { create, getAll, getOne, like, remove, update } from '../services/manageContent';
 
-const initialState = { isReload: false, data: [], count: 0 };
+const initialState = { isReload: false, data: [], count: 0, detail: null };
 
 export const retrieveData = createAsyncThunk(
   'manageContent/getAll',
@@ -15,12 +15,29 @@ export const retrieveData = createAsyncThunk(
   }
 );
 
+export const getDetail = createAsyncThunk('manageContent/getDetail', async (payload, { rejectWithValue }) => {
+  try {
+    const res = await getOne(payload.type, payload.id);
+    return res.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const likeContent = createAsyncThunk('manageContent/like', async (payload, { rejectWithValue }) => {
+  try {
+    await like(payload.type, payload.id);
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
 export const createContent = createAsyncThunk(
   'manageContent/create',
   async ({ type, payload }, { rejectWithValue }) => {
     try {
       const res = await create(type, payload);
-      return { data: res.data, message: res.statusText };
+      return { data: res.data, message: 'Tạo mới thành công' };
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.response.data);
@@ -28,22 +45,12 @@ export const createContent = createAsyncThunk(
   }
 );
 
-// export const createAnswer = createAsyncThunk('manageContent/createAnswer', async (payload, { rejectWithValue }) => {
-//   try {
-//     const res = await create(type, payload);
-//     return { data: res.data, message: res.statusText };
-//   } catch (error) {
-//     console.log(error);
-//     return rejectWithValue(error.response.data);
-//   }
-// });
-
 export const updateContent = createAsyncThunk(
   'manageContent/updateContent',
   async ({ type, id, payload }, { rejectWithValue }) => {
     try {
       const res = await update(type, id, payload);
-      return { data: { ...res.data }, message: res.statusText };
+      return { data: { ...res.data }, message: 'Cập nhập bài viết thành công' };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -53,7 +60,7 @@ export const updateContent = createAsyncThunk(
 export const deleteContent = createAsyncThunk('manageContent/delete', async ({ type, id }, { rejectWithValue }) => {
   try {
     const res = await remove(type, id);
-    return { id, message: res.statusText };
+    return { id, message: 'Bài viết đã được xóa!' };
   } catch (error) {
     return rejectWithValue(error.response.data);
   }
@@ -67,8 +74,12 @@ const manageContentSlice = createSlice({
     [createContent.fulfilled]: (state) => {
       state.isReload = true;
     },
+    [getDetail.fulfilled]: (state, action) => {
+      state.detail = action.payload;
+      state.isReload = false;
+    },
     [retrieveData.fulfilled]: (state, action) => {
-      state.data = action.payload.articles;
+      state.data = action.payload.articles || action.payload.data;
       state.count = action.payload.articlesCount;
       state.isReload = false;
     },

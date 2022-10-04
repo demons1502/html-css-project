@@ -18,8 +18,9 @@ const ManageFinanceKnowledge = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const contents = useSelector((state) => state.managementContentReducer);
+  const contents1 = useSelector((state) => state.appointment);
   const loading = useSelector((state) => state.loading.loading);
-
+  console.log(contents1);
   const [itemContent, setItemContent] = useState(null);
   const [prevItem, setPrevItem] = useState(null);
   const [option, setOption] = useState('articles');

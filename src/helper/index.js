@@ -15,6 +15,13 @@ export const pad = (num, size) => {
 };
 
 export const getTimeByTZ = (date, format = moment.localeData().longDateFormat('L')) => {
+  // const userLocale =
+  // navigator.languages && navigator.languages.length
+  //   ? navigator.languages[0]
+  //   : navigator.language;
+
+  // console.log(userLocale); // 👉️ "en-US"
+
   return moment(date).local().format(format);
 };
 

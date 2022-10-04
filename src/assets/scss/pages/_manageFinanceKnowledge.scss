@@ -64,10 +64,6 @@
         .btn-add-new {
           margin-left: auto;
         }
-        .ant-btn-primary:focus,
-        .ant-btn-primary:hover {
-          background: unset;
-        }
       }
 
       &-item {
@@ -113,13 +109,6 @@
       box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.05);
       border-radius: 20px;
       overflow: hidden;
-    }
-    .ant-btn {
-      &.ant-btn-circle {
-        @extend .btn-add-new;
-        margin-right: unset;
-        margin-top: unset;
-      }
     }
 
     .manageContent {
@@ -289,37 +278,14 @@
           align-items: center;
           margin-left: auto;
           .ant-btn {
-            font-size: $font-size-base;
-            font-weight: $font-weight-bold;
             padding: 10px 50px;
-            margin-right: 4px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
-          }
-          .btn-cancer {
-            &:hover {
-              border-color: unset;
-            }
-            &:focus {
-              border-color: $red-color;
-              color: $red-color;
-            }
-          }
-
-          .btn-save {
-            font-size: 1.2rem;
-            margin-right: unset;
-            background-color: $green-color;
-            border-color: $green-color;
-            &:hover,
-            &:focus {
-              background: $green-color;
+            &:first-child {
+              margin-right: 5px;
             }
           }
         }
       }
+
       .ant-input-prefix,
       .avatar-title,
       .textarea-title {
@@ -329,7 +295,24 @@
         .ant-input-prefix {
           min-width: 80px;
         }
-
+        &-container {
+          position: relative;
+          .ant-carousel {
+            .slick-list {
+              padding: 0 !important;
+              .slick-track {
+                width: 100%;
+                overflow: hidden;
+              }
+              .slick-current {
+                // display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 1000 !important;
+              }
+            }
+          }
+        }
         &-answer {
           padding: 15px 17px;
           &_main {
@@ -365,6 +348,9 @@
             }
           }
           &_content {
+            width: 100%;
+            height: 100%;
+            min-height: 140px;
             background-color: #f3f3f3;
             border-radius: 6px;
             border-top: 1px dashed #c5c5c5;
@@ -429,13 +415,11 @@
                 }
               }
             }
-            /* &-prev {
-              .btn-prev {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              }
-            } */
+            .slide-btn {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
           }
         }
       }

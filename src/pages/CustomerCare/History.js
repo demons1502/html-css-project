@@ -24,7 +24,7 @@ export default function History() {
   const scrollConfig = useScrollTableConfig(ref, data);
   const [visibleModalAddInfo, setVisibleModalAddInfo] = useState(false)
   const [detailData, setDetailData] = useState({})
-  const [optionsFilter, setOptionsFilter] = useState('')
+  const [optionsFilter, setOptionsFilter] = useState(_.map(CUSTOMER_CARE_INFO, 'value'));
   const [lastGift, setLastGift] = useState('')
   const dispatch = useDispatch();
 
@@ -117,7 +117,7 @@ export default function History() {
       <div className="customer-care__right--event">
         <div className="customer-care__right--event--left">
           <h5>{t('customer care.history title')}</h5>
-          <Filter options={CUSTOMER_CARE_INFO} setPayload={setOptionsFilter} />
+          <Filter options={CUSTOMER_CARE_INFO} optionsFilter={optionsFilter} setPayload={setOptionsFilter} />
         </div>
       </div>
       <div className="customer-care__right--list" ref={ref}>

@@ -15,17 +15,15 @@ const ManageContentInput = (props) => {
     color = false,
     fileList,
     isDisabled,
+    id,
   } = props;
-
-  const handleFile = (e) => {
-    console.log(e);
-  };
 
   return (
     <>
       {input && !textarea ? (
         <Input
           name={name}
+          id={id}
           placeholder={placeholder}
           bordered={false}
           onChange={onChange}
@@ -40,6 +38,7 @@ const ManageContentInput = (props) => {
           {title && <span className="textarea-title">{`${title}: `}</span>}
           <Input.TextArea
             name={name}
+            id={id}
             placeholder={placeholder}
             bordered={false}
             onChange={onChange}

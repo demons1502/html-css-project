@@ -1,18 +1,17 @@
-import React, { Button, Checkbox, Row, Col, Popover } from 'antd';
+import React, { Checkbox, Row, Col, Popover } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useMemo, useState } from 'react';
 import FilterIcon from '../../../assets/images/icons/filter.svg';
 import * as S from './styles';
 
 export default function Filter(props) {
-  const { t } = useTranslation();
-  const { options, setPayload, defaultValue } = props;
+
+  const {t} = useTranslation();
+  const {options, optionsFilter, setPayload} = props;
   const [open, setOpen] = useState(false);
-  const [count, setCount] = useState(defaultValue?.length || 0);
 
   const checkFilter = (checkedValues) => {
     setPayload(checkedValues);
-    setCount(checkedValues.length);
   };
 
   const handleOpenChange = (newOpen) => {
@@ -21,12 +20,14 @@ export default function Filter(props) {
 
   const checkboxRender = useMemo(() => {
     return (
-      <Checkbox.Group style={{ maxWidth: '400px' }} defaultValue={defaultValue} onChange={checkFilter} className="checkbox-item">
+      <Checkbox.Group value={optionsFilter} style={{'maxWidth': '400px'}} onChange={checkFilter} className="checkbox-item">
         <Row>
           {options.map((val, index) => {
             return (
               <Col key={index} span={24}>
-                <Checkbox value={val?.value}>{val?.label}</Checkbox>
+                <Checkbox value={val?.value}>
+                  {val?.label}
+                </Checkbox>
               </Col>
             );
           })}
@@ -40,7 +41,7 @@ export default function Filter(props) {
       <Popover content={checkboxRender} trigger="click" placement="bottomLeft" onOpenChange={handleOpenChange}>
         <S.ButtonFilter active={open ? 1 : 0}>
           <S.Div>
-            <S.Span>{count}</S.Span>
+            <S.Span>{optionsFilter.length}</S.Span>
             {t('common.filter')}
           </S.Div>
           <img src={FilterIcon} alt="" />

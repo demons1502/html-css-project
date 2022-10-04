@@ -89,9 +89,9 @@ export const columns = [
             switch (true) {
               case record < 5:
                 return <p style={{ color: '#FF5855' }}>{record}0%</p>;
-              case record >= 5:
+              case record >= 5 && record <= 6:
                 return <p style={{ color: '#F6CF47' }}>{record}0%</p>;
-              case record >= 7:
+              case record >= 7 && record <= 9:
                 return <p style={{ color: '#3DBD78' }}>{record}0%</p>;
               case record >= 10:
                 return <p style={{ color: '#3DBD78' }}>{record}0%</p>;
@@ -104,10 +104,10 @@ export const columns = [
           title={(() => {
             switch (true) {
               case record < 5:
-                return <p style={{ color: '#FF5855' }}>Không tiềm năng</p>;
-              case record >= 5:
+                return null;
+              case record >= 5 && record <= 6:
                 return <p style={{ color: '#F6CF47' }}>Hơi tiềm năng</p>;
-              case record >= 7:
+              case record >= 7 && record <= 9:
                 return <p style={{ color: '#3DBD78' }}>Có tiềm năng</p>;
               case record >= 10:
                 return <p style={{ color: '#3DBD78' }}>Rất tiềm năng</p>;

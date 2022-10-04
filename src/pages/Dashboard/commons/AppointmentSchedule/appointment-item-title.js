@@ -26,7 +26,7 @@ export default function AppointmentItemTitle(props) {
         </Row>
       </Col>
       <Col flex={1}>
-        <Filter options={options} setPayload={setSelect} defaultValue={select}></Filter>
+        <Filter options={options} setPayload={setSelect} optionsFilter={select}></Filter>
       </Col>
     </S.WrapTitle>
   );

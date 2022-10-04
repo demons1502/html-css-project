@@ -9,6 +9,7 @@ import { getCustoms } from '../../slices/contractManagement';
 import useFormErrors from '../../hooks/useFormErrors'
 import { formatDataNumber, getTimeByTZ } from "../../helper"
 import { VALIDATE_MESSAGES, FORMAT_DATE } from '../../ultis/constant';
+import InputNumber from '../../components/common/InputNumber';
 
 function CreateContract(props) {
   const { t } = useTranslation();
@@ -121,7 +122,7 @@ function CreateContract(props) {
           name='beneficiary'
           rules={[{ required: true }]}
         >
-          <Input placeholder='Nhập' className="input-item-outline" />
+          <Input placeholder='Nhập' className="input-item-outline"/>
         </Form.Item>
       </Col>
       <Col span={6}>
@@ -130,7 +131,7 @@ function CreateContract(props) {
           name='value'
           rules={[{ required: true }]}
         >
-          <Input placeholder='Nhập' type='number' className="input-item-outline" />
+          <Input type='number' placeholder='Nhập' className="input-item-outline"/>
         </Form.Item>
       </Col>
       <Col span={6}>

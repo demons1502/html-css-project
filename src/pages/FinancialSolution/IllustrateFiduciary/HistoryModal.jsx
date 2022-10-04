@@ -71,7 +71,7 @@ export const HistoryModal = ({  }) => {
   const table = useMemo(() => {
     if (!!dataTable && dataTable.length > 0) {
       return (
-        <Table dataSource={dataTable} columnTable={columns} />
+        <Table dataSource={dataTable} columnTable={columns} rowKey="id"/>
       );
     } else {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;

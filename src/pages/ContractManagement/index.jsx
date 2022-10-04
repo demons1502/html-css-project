@@ -129,6 +129,7 @@ export default function ContractManagement() {
   }, [inputText, paginate, ])
 
   const handleEditUser = (record) => {
+    console.log(record);
     setDataEdit({id:record.id})
     setVisibleModal(true)
     setTitleModal('Thay đổi nội dung hợp đồng')

@@ -1,27 +1,33 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { useEffect } from 'react';
 
 import {
-  getAppointments,getSpeechScript
+  getAppointments,getSpeechScript, getAppointmentsById, getCustomerContract
 } from '../services/financialSolutions';
 
 const initialState = {
   data: [],
   customerAppRecords: [],
   getSpeechScript: null,
+  customerSelect: null,
+  customerContract: [],
 };
 
-
-
 export const getAppointment = createAsyncThunk(
-  'financialSolotions/getAppointments',
-  async (payload) => {
-    const res = await getAppointments(payload);
-    return res.data
+  'financialSolutions/getAppointment',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await getAppointments(payload);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
+
 export const getSpeechScriptType = createAsyncThunk(
-  'financialSolotions/getSpeechScript',
+  'financialSolutions/getSpeechScriptType',
   async (payload, { rejectWithValue }) => {
     try {
       const res = await getSpeechScript(payload);
@@ -32,56 +38,67 @@ export const getSpeechScriptType = createAsyncThunk(
   }
 );
 
-// export const changePassword = createAsyncThunk(
-//   'financialSolotions/changePassword',
-//   async (payload, { rejectWithValue }) => {
-//     try {
-//       const res = await changePasswordApi(payload);
-//       return { data: res.data, message: 'Thay đổi mật khẩu thành công' };
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
+export const getAppointmentByIds = createAsyncThunk(
+  'financialSolutions/getAppointmentByIds',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await getAppointmentsById(payload);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const getCustomerContracts = createAsyncThunk(
+  'financialSolutions/getCustomerContract',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await getCustomerContract(payload);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
-// export const sendAvatars = createAsyncThunk(
-//   'financialSolotions/sendAvatar',
-//   async (payload, { rejectWithValue }) => {
-//     try {
-//       const res = await sendAvatar(payload);
-//       return { data: res.data, message: 'Thay đổi người dùng thành công!' };
-//       // dispath(getme())
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
-// export const updateUsers = createAsyncThunk(
-//   'financialSolotions/updateUser',
-//   async (payload, { rejectWithValue }) => {
-//     try {
-//       const res = await updateUser(payload);
-//       return { data: res.data, message: 'Thay đổi người dùng thành công!' };
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
-
-const financialSolotions = createSlice({
-  name: 'financialSolotions',
+const financialSolutions = createSlice({
+  name: 'financialSolutions',
   initialState,
+  reducers:{
+    updateSelectCustomer: (state, action)=>{
+      console.log(action.payload);
+      state.customerSelect= action.payload
+    }
+  },
   extraReducers: {
+    [getAppointment.pending]: (state) => {
+      state.customerAppRecords = []
+    },
     [getAppointment.fulfilled]: (state, action) => {
       state.customerAppRecords = action.payload.data
     },
+    [getAppointmentByIds.pending]: (state) => {
+      state.customerAppRecords = []
+    },
+    [getAppointmentByIds.fulfilled]: (state, action) => {
+      state.customerAppRecords = action.payload.data
+    },
+    [getSpeechScriptType.pending]: (state) => {
+      state.getSpeechScript = null
+    },
     [getSpeechScriptType.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.getSpeechScript = action.payload
+    },
+    [getCustomerContracts.pending]: (state) => {
+      state.customerContract = []
+    },
+    [getCustomerContracts.fulfilled]: (state, action) => {
+      state.customerContract = action.payload
     },
   },
 });
 
-const { reducer } = financialSolotions;
+export const {updateSelectCustomer} =financialSolutions.actions
+const { reducer } = financialSolutions;
 
 export default reducer;

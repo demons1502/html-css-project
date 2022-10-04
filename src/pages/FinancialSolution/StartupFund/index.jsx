@@ -5,6 +5,10 @@ import SearchInputBox from "./SearchInputBox";
 import ListCalculation from "./ListCalculation";
 import ListDetails from "./ListDetails";
 import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux"
+import { getAppointment, getSpeechScriptType } from "../../../slices/financialSolutions";
+import moment from 'moment';
+
 const StartupFund = () => {
   const location = useLocation();
   const [title] = useState(location?.state?.title);
@@ -13,9 +17,31 @@ const StartupFund = () => {
   const [lists, setLists] = useState(sideBarMenuItems);
   const [payload, setPayload] = useState("");
 
+  const dispatch = useDispatch();
+  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution)
+
   useEffect(() => {
-    setItemContent(lists[0]);
+    let endDate = new Date();
+    // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
+    endDate = endDate.setHours(23, 59, 59, 999);
+    let startDate = new Date();
+    dispatch(getAppointment({titles: "finance", startDate: moment(startDate), endDate: moment(endDate)})) //main code
+    dispatch(getSpeechScriptType('preventionFund'))
   }, []);
+  
+  useEffect(() => {
+    let arr = []
+    arr.push(customerAppRecords?.map(item => {
+      return { title: item.customerApptRecords[0].name }
+    }))
+    setLists(arr[0])
+  }, [customerAppRecords])
+
+  useEffect(() => {
+    if (lists) {
+      setItemContent(lists[0]);
+    }
+  }, [lists])
 
   return (
     <div className="quyduphone">

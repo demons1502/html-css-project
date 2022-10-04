@@ -14,6 +14,8 @@ import left_arrow from "../../assets/images/icons/left-arrow.svg";
 import { HistoryPopup } from "./Modals/HistoryPopup";
 import { getTimeByTZ } from "../../helper/index";
 import { getSppechScriptInfo, clearSurvey } from "../../slices/surveys";
+import { getAppointments } from "../../slices/appointmentManagement";
+import moment from "moment";
 
 const Survey = () => {
   const { t } = useTranslation();
@@ -22,6 +24,8 @@ const Survey = () => {
   const [customerList, setCustomerList] = useState([]);
   const [payload, setPayload] = useState("");
   const { customers, surveys } = useSelector((state) => state);
+  const appointments = useSelector((state) => state.appointment);
+
   const { data, selectedCustomer } = customers;
   const { objective, procedure, dialouges } = surveys?.surveyScript;
 
@@ -35,7 +39,13 @@ const Survey = () => {
   }, [customers, surveys?.survey]);
 
   useEffect(() => {
-    dispatch(getCustomerList());
+    const data = {
+      titles: ['survey'],
+      startDate: moment().format('YYYY-MM-DD HH:mm'),
+      endDate: moment().add(30, 'm').format('YYYY-MM-DD HH:mm')
+    }
+    // dispatch(getCustomerList());
+    dispatch(getAppointments(data));
     dispatch(getSppechScriptInfo());
   }, [dispatch]);
 
@@ -80,15 +90,15 @@ const Survey = () => {
                       <SearchInputBox setPayload={setPayload}></SearchInputBox>
                     </div>
 
-                    {customerList?.length > 0 && (
+                    {appointments.data?.length > 0 && (
                       <List
-                        dataSource={customerList}
+                        dataSource={appointments.data[0].customerApptRecords}
                         renderItem={(customer, index) => (
                           <List.Item
                             onClick={() => handleSelectCustomer(customer?.customerId)}
                             className={`${customer?.customerId === selectedCustomer?.customerId ? "active" : ""}`}
                           >
-                            <Typography.Text ellipsis>{customer?.fullname}</Typography.Text>
+                            <Typography.Text ellipsis>{customer?.name}</Typography.Text>
                           </List.Item>
                         )}
                       />

@@ -9,11 +9,9 @@ export default function Filter(props) {
   const {t} = useTranslation();
   const {options, optionsFilter, setPayload} = props;
   const [open, setOpen] = useState(false);
-  const [count, setCount] = useState(defaultValue?.length !== 0 ? options.length : 0);
 
   const checkFilter = (checkedValues) => {
     setPayload(checkedValues);
-    setCount(checkedValues.length);
   };
 
   const handleOpenChange = (newOpen) => {
@@ -43,7 +41,7 @@ export default function Filter(props) {
       <Popover content={checkboxRender} trigger="click" placement="bottomLeft" onOpenChange={handleOpenChange}>
         <S.ButtonFilter active={open ? 1 : 0}>
           <S.Div>
-            <S.Span>{count}</S.Span>
+            <S.Span>{optionsFilter.length}</S.Span>
             {t('common.filter')}
           </S.Div>
           <img src={FilterIcon} alt="" />

@@ -52,8 +52,8 @@ const CreatePayment = (props) => {
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
     form.resetFields();
+    setIsModalOpen(false);
   };
 
   const disabledDateStart = (current) => {
@@ -67,82 +67,80 @@ const CreatePayment = (props) => {
   };
 
   return (
-    <div className="createPayment">
-      <Modal
-        className="paymentManagement-modal"
-        title={<h3>Thanh toán mới</h3>}
-        open={isModalOpen}
-        footer={false}
-        keyboard={false}
-        centered
-        onCancel={() => {
-          setIsModalOpen(false), form.resetFields();
-        }}
-      >
-        <Form name="nest-messages" onFinish={handleAddNew} form={form}>
-          <Form.Item
-            name="loginId"
-            label="ID Login"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Input placeholder="ID login" size="large" />
-          </Form.Item>
+    <Modal
+      className="createPayment-modal"
+      title={<h3>Thanh toán mới</h3>}
+      open={isModalOpen}
+      footer={false}
+      keyboard={false}
+      centered
+      onCancel={() => {
+        setIsModalOpen(false), form.resetFields();
+      }}
+    >
+      <Form name="nest-messages" onFinish={handleAddNew} form={form}>
+        <Form.Item
+          name="loginId"
+          label="ID Login"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input placeholder="ID login" size="large" />
+        </Form.Item>
 
-          <Form.Item
-            name="startDate"
-            label="Ngày thanh toán"
-            rules={[
-              {
-                required: true,
-                type: 'date',
-              },
-            ]}
-          >
-            <DatePicker
-              size="large"
-              format={getTimeByTZ}
-              placeholder={moment.localeData().longDateFormat('L')}
-              disabledDate={disabledDateStart}
-            />
-          </Form.Item>
-          <Form.Item
-            name="dueDate"
-            label="Ngày kết thúc"
-            rules={[
-              {
-                type: 'date',
-                required: true,
-              },
-            ]}
-          >
-            <DatePicker
-              size="large"
-              format={getTimeByTZ}
-              placeholder={moment.localeData().longDateFormat('L')}
-              disabledDate={disabledDateEnd}
-            />
-          </Form.Item>
-          <Form.Item name="amount" label="Số tiền" rules={[{ required: true }]}>
-            <InputNumber size="large" controls={false} formatter={formatDataNumber} placeholder="Nhập" />
-          </Form.Item>
-          <Form.Item name="description" label="Nội dung">
-            <Textarea autoSize placeholder="Nội dung" />
-          </Form.Item>
-          <Form.Item className="paymentManagement-modal_button">
-            <Button className="btn-danger" onClick={handleCancel}>
-              Hủy
-            </Button>
-            <Button type="primary" htmlType="submit">
-              Thêm mới
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-    </div>
+        <Form.Item
+          name="startDate"
+          label="Ngày thanh toán"
+          rules={[
+            {
+              required: true,
+              type: 'date',
+            },
+          ]}
+        >
+          <DatePicker
+            size="large"
+            format={getTimeByTZ}
+            placeholder={moment.localeData().longDateFormat('L')}
+            disabledDate={disabledDateStart}
+          />
+        </Form.Item>
+        <Form.Item
+          name="dueDate"
+          label="Ngày kết thúc"
+          rules={[
+            {
+              type: 'date',
+              required: true,
+            },
+          ]}
+        >
+          <DatePicker
+            size="large"
+            format={getTimeByTZ}
+            placeholder={moment.localeData().longDateFormat('L')}
+            disabledDate={disabledDateEnd}
+          />
+        </Form.Item>
+        <Form.Item name="amount" label="Số tiền" rules={[{ required: true }]}>
+          <InputNumber size="large" controls={false} formatter={formatDataNumber} placeholder="Nhập" />
+        </Form.Item>
+        <Form.Item name="description" label="Nội dung">
+          <Textarea autoSize placeholder="Nội dung" />
+        </Form.Item>
+        <Form.Item className="paymentManagement-modal_button">
+          <Button className="btn-danger" onClick={handleCancel}>
+            Hủy
+          </Button>
+          <Button type="primary" htmlType="submit">
+            Thêm mới
+          </Button>
+        </Form.Item>
+      </Form>
+    </Modal>
   );
 };
 

@@ -10,7 +10,7 @@ import AppointmentItemCard from './appointment-item-card';
 
 export default function AppointmentListCard(props) {
   const { t } = useTranslation();
-  const { handleSlider } = props;
+  const { handleSlider, select } = props;
   const [weeks, setWeeks] = useState([]);
   const [activeKey, setActiveKey] = useState('0');
   const result = useSelector((state) => state.dashboard.appointmentSchedules);
@@ -48,12 +48,24 @@ export default function AppointmentListCard(props) {
   }, []);
 
   useEffect(() => {
-    const payload = {
+    let payload = {
       startDate: decodeURIComponent(moment(startDate).hour(0).minute(0).second(0)),
       endDate: decodeURIComponent(moment(startDate).hour(23).minute(59).second(59)),
     };
+
+    if (select?.length === 0) {
+      setData([]);
+      handleSlider({
+        done: 0,
+        total: 0,
+      });
+      return;
+    } else {
+      payload.titles = select;
+    }
+
     dispatch(getAppointmentSchedules(payload));
-  }, [dispatch, startDate]);
+  }, [dispatch, startDate, select]);
 
   useEffect(() => {
     const payload = {

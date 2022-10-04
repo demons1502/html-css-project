@@ -5,9 +5,8 @@ import FilterIcon from '../../../assets/images/icons/filter.svg';
 import * as S from './styles';
 
 export default function Filter(props) {
-
-  const {t} = useTranslation();
-  const {options, optionsFilter, setPayload} = props;
+  const { t } = useTranslation();
+  const { options, optionsFilter, setPayload } = props;
   const [open, setOpen] = useState(false);
 
   const checkFilter = (checkedValues) => {
@@ -20,14 +19,17 @@ export default function Filter(props) {
 
   const checkboxRender = useMemo(() => {
     return (
-      <Checkbox.Group value={optionsFilter} style={{'maxWidth': '400px'}} onChange={checkFilter} className="checkbox-item">
+      <Checkbox.Group
+        value={optionsFilter}
+        style={{ maxWidth: '400px' }}
+        onChange={checkFilter}
+        className="checkbox-item"
+      >
         <Row>
           {options.map((val, index) => {
             return (
               <Col key={index} span={24}>
-                <Checkbox value={val?.value}>
-                  {val?.label}
-                </Checkbox>
+                <Checkbox value={val?.value}>{val?.label}</Checkbox>
               </Col>
             );
           })}

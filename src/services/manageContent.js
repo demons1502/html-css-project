@@ -6,6 +6,8 @@ export const create = (type, payload) =>
 
 export const getAll = (type, params) => sendGet(`${type}`, params);
 
+export const getOne = (type, id) => sendGet(`${type}/${id}`);
+
 export const update = (type, id, payload) => {
   if (type === MANAGEMENT_CONTENT[0].value) {
     return sendPut(`${type}/${id}`, payload);
@@ -14,6 +16,7 @@ export const update = (type, id, payload) => {
   }
 };
 export const remove = (type, id) => sendDelete(`${type}/${id}`);
+export const like = (type, id) => sendPatch(`${type}/like/${id}`);
 
 export const uploadFile = (file) =>
   sendPost('file/upload', file, { headers: { 'Content-Type': 'multipart/form-data' } });

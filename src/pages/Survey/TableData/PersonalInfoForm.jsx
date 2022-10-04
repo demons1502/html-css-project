@@ -7,16 +7,19 @@ import { editCustomer } from "../../../slices/customers";
 import { DatePicker } from 'antd';
 import { FORMAT_DATE } from '../../../ultis/constant';
 import { Col, Row } from 'antd';
+import { getTimeByTZ } from '../../../helper/index';
 
 export const PersonalInfoForm = () => {
   const dispatch = useDispatch();
   const { customers } = useSelector((state) => state);
+  console.log(customers);
   const selectedCustomer = customers?.selectedCustomer || {};
   const { control, handleSubmit } = useForm({
     mode: "all",
     defaultValues: {
-      fullName: "",
-      sex: [1],
+      fullName: selectedCustomer.fullname,
+      sex: selectedCustomer?.gender,
+      dob: selectedCustomer.dob? getTimeByTZ(selectedCustomer.dob) : '',
       familyStatus: [1],
     },
   });

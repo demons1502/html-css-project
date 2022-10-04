@@ -40,7 +40,7 @@ export const ClosingModal = ({ onSubmit }) => {
       <div className="closing-footer">
         <div className="closing-btn">
           <Button htmlType="button" className="btn-cancel" block onClick={onCancel} onBlur={onCancel}>
-            Hủy+
+            Hủy
           </Button>
         </div>
 

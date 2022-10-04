@@ -39,7 +39,7 @@ export const InformationAppointment = ({ info }) => {
     <S.WrapContainer>
       {info ? (
         <>
-          <GroupButton handleOpenEdit={handleOpenEdit} handleDelete={handleDelete} />
+          <GroupButton info={info} handleOpenEdit={handleOpenEdit} handleDelete={handleDelete} />
           <DetailAppointment info={info} />
           <EditAppointment open={openEdit} handleCancel={handleCancelEdit} info={info} />
         </>

@@ -27,24 +27,15 @@ export const Card = styled(AntCard)`
     padding: 20px;
 
     p {
-      font-family: "Quicksand";
-      font-style: normal;
-      font-weight: 600;
-      font-size: 14px;
       line-height: 18px;
       color: #333333;
       padding-bottom: 17px;
-
-      img {
-        margin-right: 7px;
-      }
     }
   }
 
   .footer {
     border-top: 1px solid #E6E6E6;
     padding-top: 13px;
-
     padding-right: 21px;
 
     .buttons {
@@ -53,44 +44,26 @@ export const Card = styled(AntCard)`
       gap: 7px;
       float: right;
       padding-bottom: 13px;
-
-      .prev-btn-text {
-        font-family: "Quicksand";
-        font-style: normal;
-        font-weight: 600;
-        font-size: 14px;
-        line-height: 18px;
-        color: #999999;
-      }
-      .next-btn-text {
-        font-family: "Quicksand";
-        font-style: normal;
-        font-weight: 600;
-        font-size: 14px;
-        line-height: 18px;
-        color: #333333;
-      }
-
-      .prev-btn {
-        border: 0px;
-        margin-top: 0px !important;
-        margin-left: 0px !important;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .next-btn {
-        border: 0px;
+      
+      button {
         width: 35px;
         height: 35px;
-        background: #eff9f8;
-        border-radius: 8px;
+        border: 0px;
         margin-top: 0px !important;
         margin-left: 0px !important;
         display: flex;
         align-items: center;
         justify-content: center;
+        &.btn-active {
+          background: #eff9f8;
+        }
       }
+      >span {
+        color: #999999;
+        &.text-active {
+          color: #333333;
+        }
+      }      
     }
   }
 `;

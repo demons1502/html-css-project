@@ -89,9 +89,9 @@ const Dialogue = (props) => {
       </div>
       <div className="footer">
         <div className="buttons">
-          <span className="prev-btn-text">Trước</span>
+          <span className={`prev-btn-text ${page > 0 ?"text-active": ""}`}>Trước</span>
           <Button
-            className="prev-btn"
+            className={`prev-btn ${page > 0 ?"btn-active": ""}`}
             htmlType="button"
             onClick={prevPage}
             icon={
@@ -105,7 +105,7 @@ const Dialogue = (props) => {
           ></Button>
 
           <Button
-            className="next-btn"
+            className={`next-btn ${page < limit - 1 ?"btn-active": ""}`}
             htmlType="button"
             onClick={nextPage}
             icon={
@@ -118,7 +118,7 @@ const Dialogue = (props) => {
             }
           ></Button>
 
-          <span className="next-btn-text">Tiếp</span>
+          <span className={`next-btn-text ${page < limit - 1 ?"text-active": ""}`}>Tiếp</span>
         </div>
       </div>
     </Card>

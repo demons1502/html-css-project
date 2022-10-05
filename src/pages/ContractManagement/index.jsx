@@ -27,7 +27,7 @@ export default function ContractManagement() {
   const [inputText, setInputText] = useState('')
 
   const convertDepositTerm = (value) => {
-    return (value == 30) ? value = "Tháng" : (value == 180) ? value = "Nửa năm" : (value == 360) ? value = "Năm" : value
+    return (value == 1) ? value = "Tháng" : (value == 3) ? value = "Quý" : (value == 6) ? value = "Nửa năm" : (value == 12) ? value = "Năm" : value
   }
 
   const convertUnderscore=(value)=>{

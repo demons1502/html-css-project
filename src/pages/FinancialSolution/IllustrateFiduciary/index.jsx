@@ -15,7 +15,9 @@ import { SaveConfirmation } from "./SaveConfirmation";
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerContracts } from "../../../slices/financialSolutions";
 
-const IllustrateFiduciary = () => {
+const IllustrateFiduciary = ({route}) => {
+  // const {values} = route.params
+  // console.log(values);
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);

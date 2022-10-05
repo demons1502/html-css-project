@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { getCustoms } from '../../slices/contractManagement';
 import useFormErrors from '../../hooks/useFormErrors'
 import { formatDataNumber, getTimeByTZ } from "../../helper"
-import { VALIDATE_MESSAGES, FORMAT_DATE } from '../../ultis/constant';
+import { DEPOSIT_TERM as depositTermOptions } from '../../ultis/constant';
 
 function CreateContract(props) {
   const { t } = useTranslation();
@@ -27,7 +27,6 @@ function CreateContract(props) {
   var { Option } = AutoComplete;
 
   const onFinish = (values) => {
-    (values.depositTerm == "Tháng") ? values.depositTerm = 30 : (values.depositTerm == "Nửa năm") ? values.depositTerm = 180 : values.depositTerm = 360
     const data = {
       contractNumber: values.contractNumber,
       customerId: parseInt(customerId.value),
@@ -35,7 +34,7 @@ function CreateContract(props) {
       value: + values.value,
       startDate: moment(values.startDate).format(),
       duration: + values.duration,
-      depositTerm: +values.depositTerm,
+      depositTerm: + values.depositTerm,
     };
     if (Object.keys(dataEdit).length > 0) {
       dispatch(updateContract({ id: dataEdit.id, data: data }));
@@ -169,12 +168,13 @@ function CreateContract(props) {
           label='Chu kỳ nộp phí'
           name='depositTerm'
           // initialValue={dataEdit.depositTerm}
+          defaultValue={customerEdit?.depositTerm}
           rules={[{ required: true }]}
         >
           <Select className='select-item-outline' placeholder='Chọn'>
-            <Option value='30'>Tháng</Option>
-            <Option value='180'>Nửa năm</Option>
-            <Option value='360'>Năm</Option>
+            { depositTermOptions.map((option, index) => {
+              return (<Option key={index} value={option.value}>{option.label}</Option>);
+            })}
           </Select>
         </Form.Item>
       </Col>

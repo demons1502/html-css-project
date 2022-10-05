@@ -12,6 +12,7 @@ import { retrieveData } from '../../slices/contractManagement';
 import { DEFAULT_SIZE } from '../../ultis/constant'
 import { formatDataNumber,getTimeByTZ } from "../../helper"
 import { EditOutlined } from '@ant-design/icons';
+import { getDepositTermLabel } from '../../ultis/despositTerm';
 
 export default function ContractManagement() {
   const dispatch = useDispatch()
@@ -87,7 +88,7 @@ export default function ContractManagement() {
       title: 'Chu kì nộp phí',
       render: (record) => {
         return (
-          <span>{convertDepositTerm(record.depositTerm)}</span>
+          <span>{getDepositTermLabel(record.depositTerm)}</span>
         );
       }
     },

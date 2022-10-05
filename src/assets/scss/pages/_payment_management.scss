@@ -108,6 +108,7 @@
       align-items: center;
     }
   }
+
   .paymentHistory {
     width: 100%;
     &-customer {
@@ -182,44 +183,46 @@
       }
     }
   }
-  &-modal {
-    width: 600px !important;
-    .ant-modal-content {
-      border-radius: 10px;
-      overflow: hidden;
+}
+
+.ant-modal.createPayment-modal {
+  width: 600px !important;
+  .ant-modal-content {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .ant-modal-body {
+    padding: 20px;
+  }
+  .ant-form-item {
+    margin-bottom: 10px;
+    &:last-child {
+      margin: unset;
     }
-    .ant-modal-body {
-      padding: 20px;
-    }
-    .ant-form-item {
-      margin-bottom: 10px;
-      &:last-child {
-        margin: unset;
+    .ant-row {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-direction: column;
+      .ant-form-item-control,
+      .ant-picker {
+        width: 100%;
       }
-      .ant-row {
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        flex-direction: column;
-        .ant-form-item-control,
-        .ant-picker {
-          width: 100%;
-        }
-        .ant-picker-focused {
-          box-shadow: 0 0 0 2px rgba($color: $green-color, $alpha: 0.2);
-        }
+      .ant-picker-focused {
+        box-shadow: 0 0 0 2px rgba($color: $green-color, $alpha: 0.2);
       }
     }
-    &_button {
-      margin-top: 20px !important;
-      .ant-form-item-control-input-content {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        button {
-          &:first-child {
-            margin-right: 15px;
-          }
+  }
+
+  .createPayment-modal_button {
+    margin-top: 20px !important;
+    .ant-form-item-control-input-content {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      button {
+        &:first-child {
+          margin-right: 15px;
         }
       }
     }

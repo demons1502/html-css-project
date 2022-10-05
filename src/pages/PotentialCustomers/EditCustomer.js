@@ -397,6 +397,13 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
               </Col>
             </Row>
             <Row gutter={12}>
+              <Col span={24}>
+                <Form.Item label="Email" name="email" initialValue={data.email} rules={[{ type: 'email' }]}>
+                  <Input />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={12}>
               <Col span={12}>
                 <Form.Item label="Địa chỉ" name="address" initialValue={data.address}>
                   <Input />
@@ -434,10 +441,10 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                         title={(() => {
                           switch (true) {
                             case data.successfulProb < 5:
-                              return <p style={{ color: '#FF5855' }}>Không tiềm năng</p>;
-                            case data.successfulProb >= 5:
+                              return null;
+                            case data.successfulProb >= 5 && data.successfulProb <= 6:
                               return <p style={{ color: '#F6CF47' }}>Hơi tiềm năng</p>;
-                            case data.successfulProb >= 7:
+                            case data.successfulProb >= 7 && data.successfulProb <= 9:
                               return <p style={{ color: '#3DBD78' }}>Có tiềm năng</p>;
                             case data.successfulProb >= 10:
                               return <p style={{ color: '#3DBD78' }}>Rất tiềm năng</p>;
@@ -452,19 +459,13 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                   />
                 </Form.Item>
               </Col>
-              <Row gutter={12}>
-                <Col span={24}>
-                  <Form.Item label="Email" name="email" initialValue={data.email} rules={[{ type: 'email' }]}>
-                    <Input />
-                  </Form.Item>
-                </Col>
-              </Row>
               <Col span={12}>
                 <Form.Item label="Khác" name="note" initialValue={data.note}>
                   <Input />
                 </Form.Item>
               </Col>
             </Row>
+
           </>
         )}
       </Form>

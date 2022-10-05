@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getCallSchedules } from '../../slices/dashboard';
 import CallScheduleItemNote from './commons/CallSchedule/call-schedule-item-note';
+import CallScheduleItemNextCall from './commons/CallSchedule/call-schedule-item-next-call';
 
 export default function CallSchedule() {
   const { t } = useTranslation();
@@ -16,6 +17,7 @@ export default function CallSchedule() {
   const loading = useSelector((state) => state.dashboard.loadingCallSchedule);
   const reloadData = useSelector((state) => state.dashboard.callTransfer);
   const result = useSelector((state) => state.dashboard.callSchedules);
+  const itemCallSchedule = useSelector((state) => state.dashboard.callSchedule);
   const dispatch = useDispatch();
   const [interval, setInterval] = useState(menuItems[0].value);
   const [dataTable, setDataTable] = useState(result.customerCalls || []);
@@ -31,7 +33,7 @@ export default function CallSchedule() {
       interval,
     };
     dispatch(getCallSchedules(payload));
-  }, [dispatch, offset, limit, interval, reloadData]);
+  }, [dispatch, offset, limit, interval, reloadData, itemCallSchedule]);
 
   useEffect(() => {
     setDataTable(result.customerCalls || []);
@@ -84,6 +86,7 @@ export default function CallSchedule() {
       title: t('common.after call'),
       dataIndex: 'nextCall',
       key: 'nextCall',
+      render: (_,record) => <CallScheduleItemNextCall record={record} />,
     },
     {
       title: t('common.note'),

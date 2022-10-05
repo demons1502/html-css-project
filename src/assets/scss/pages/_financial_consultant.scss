@@ -1,8 +1,7 @@
-.survey {
-  padding-bottom: 35px;
+.financialConsultant {
   &-title {
     font-family: Quicksand;
-    font-size: 1.2rem;
+    font-size: 16px;
     font-weight: 600;
     line-height: 20px;
     letter-spacing: 0em;
@@ -22,11 +21,11 @@
         height: 100%;
       }
       .container-search-box {
+        width: 186px;
         border-bottom: 1px solid #e6e6e6;
-        padding: 0 12px;
 
         &-header {
-          font-family: "Quicksand";
+          font-family: 'Quicksand';
           font-style: normal;
           font-weight: 600;
           font-size: 13px;
@@ -37,15 +36,17 @@
           padding-bottom: 7px;
         }
         .top-search-input {
-
+          width: 161px;
           height: 35px;
           background: #f8f8f8;
           border: 1px solid #f5f7fb;
           border-radius: 10px;
           margin-bottom: 11px;
+          margin-left: 13px;
+          margin-right: 12px;
           input {
             background: #f8f8f8;
-            font-family: "Quicksand";
+            font-family: 'Quicksand';
             font-style: normal;
             font-weight: 500;
             font-size: 13px;
@@ -87,7 +88,7 @@
           .ant-typography {
             width: 100%;
             padding: 10px 18px;
-            font-family: "Quicksand";
+            font-family: 'Quicksand';
             font-style: normal;
             font-weight: 700;
             font-size: 13px;
@@ -126,21 +127,31 @@
             gap: 4px;
           }
         }
+        .container-right-header_arrow {
+          width: 24px;
+          height: 24px;
+          font-size: 1rem;
+          font-weight: bold;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 50%;
+          background-color: #f3f3f3;
+          cursor: pointer;
+        }
 
         .ant-tabs-nav-wrap {
-          padding-left: 20px !important;
+          padding-left: 33px !important;
         }
         .ant-tabs-content-holder {
-          form.form-survey {
-            padding-left: 15px;
-            padding-right: 15px;
-          }
+          padding-left: 15px;
+          padding-right: 15px;
         }
         .title {
           column-gap: 0px !important;
           padding: 0px !important;
           padding-bottom: 20px !important;
-          font-family: "Quicksand";
+          font-family: 'Quicksand';
           font-style: normal;
           font-weight: 700;
           font-size: 1.4rem;
@@ -152,7 +163,7 @@
           padding: 0px !important;
           padding-top: 15px !important;
           padding-bottom: 9px !important;
-          font-family: "Quicksand";
+          font-family: 'Quicksand';
           font-style: normal;
           font-weight: 700;
           font-size: 14px;
@@ -163,7 +174,6 @@
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
           border: 1px solid #d5d5d5;
-          font-size: 1.2rem;
           border-radius: 9px;
           padding: 15px 17px;
         }
@@ -172,17 +182,10 @@
           grid-template-columns: 1fr 1fr 1fr 1fr;
           border: 1px solid #d5d5d5;
           border-radius: 9px;
-          font-size: 1.2rem;
           padding: 15px 17px;
         }
         .ant-table-thead > tr > th {
           background-color: white;
-          font-family: "Quicksand";
-          font-style: normal;
-          font-weight: 600;
-          font-size: 12px;
-          line-height: 15px;
-          color: #333333;
         }
 
         &-bottom {
@@ -197,7 +200,7 @@
             padding-bottom: 10px;
           }
           p {
-            font-family: "Quicksand";
+            font-family: 'Quicksand';
             font-style: normal;
             font-weight: 600;
             font-size: 14px;
@@ -226,13 +229,115 @@
       }
     }
 
+    .content-div-2 {
+      &-header {
+        border-bottom: 1px solid $grey-border-color;
+
+        .ant-card-head {
+          min-height: 0px;
+          .ant-card-head-title {
+            padding-top: 17px;
+            padding-bottom: 14px;
+            font-family: 'Quicksand';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 25px;
+            color: #333333;
+          }
+        }
+      }
+      .ant-card-body {
+        padding: 0px;
+
+        button {
+          margin-top: 14px;
+          margin-left: 23px;
+        }
+      }
+      &-content {
+        padding-top: 21px;
+
+        .contents {
+          padding-left: 29px;
+          padding-right: 29px;
+
+          p {
+            font-family: 'Quicksand';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 18px;
+            color: #333333;
+            padding-bottom: 17px;
+
+            img {
+              margin-right: 7px;
+            }
+          }
+        }
+
+        .footer {
+          border-top: 1px solid $grey-border-color;
+          padding-top: 13px;
+
+          padding-right: 21px;
+
+          .buttons {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            float: right;
+            padding-bottom: 13px;
+
+            .prev-btn-text {
+              font-family: 'Quicksand';
+              font-style: normal;
+              font-weight: 600;
+              font-size: 14px;
+              line-height: 18px;
+              color: #999999;
+            }
+            .next-btn-text {
+              font-family: 'Quicksand';
+              font-style: normal;
+              font-weight: 600;
+              font-size: 14px;
+              line-height: 18px;
+              color: #333333;
+            }
+
+            .prev-btn {
+              border: 0px;
+              margin-top: 0px !important;
+              margin-left: 0px !important;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            .next-btn {
+              border: 0px;
+              width: 35px;
+              height: 35px;
+              background: #eff9f8;
+              border-radius: 8px;
+              margin-top: 0px !important;
+              margin-left: 0px !important;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+          }
+        }
+      }
+    }
+
     .ant-layout-content {
       width: 100%;
       background-color: $white-color;
       box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.05);
       border-radius: 20px;
       overflow: hidden;
-
     }
     .ant-btn {
       &.ant-btn-circle {
@@ -364,110 +469,93 @@
       }
     }
   }
-}
-
-//new styles
-
-.other-box {
-  border: 1px solid $grey-border-color;
-  padding: 10px;
-  border-radius: 10px;
-  display: grid;
-  justify-content: space-between;
-}
-
-.other-box1 {
-  @extend .other-box;
-  .ant-checkbox-group-item {
-    margin-right: 40px;
-  }
-}
-.other-box2 {
-  @extend .other-box;
-  .ant-checkbox-group-item {
-    margin-right: 10px;
-  }
-}
-.table-common .ant-table-tbody tr td {
-  font-family: "Quicksand";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 15px;
-  color: #333333;
-}
-.checkbox-item {
-  font-family: "Quicksand";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 15px;
-  color: #333333;
-}
-
-.table-common .ant-table-thead tr th {
-  padding: 0px 10px;
-}
-
-// new personal information
-.personal-info-container {
-  font-family: "Quicksand";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 18px;
-  .personal-info-content {
-    padding: 20px;
-    .dob {
-      margin-top: 7px;
-    }
-    .personal-info-table {
-      width: 100%;
-      tr {
-        td {
-          &:first-child {
-            margin-right: 10px;
-            padding: 10px;
-            width: 280px;
-          }
+  &-content.history {
+    .ant-form-item {
+      .ant-form-item-control {
+        span {
+          font-size: $font-size-base;
+          color: $black-color;
+          display: flex;
+          justify-content: flex-end;
+          // align-items: center;
         }
       }
-  
-      .personal-checkbox {
+    }
+  }
+  &-popover {
+    button {
+      padding: 0 10px;
+    }
+  }
+
+  &-table {
+    padding: unset !important;
+    margin-left: -28px;
+    margin-top: -18px;
+    max-width: unset;
+    width: calc(100% + 36px);
+  }
+
+  &-form_header {
+    padding: 10px 20px;
+  }
+  &-form {
+    .ant-form-item {
+      padding: 0 20px;
+      label {
+        &::after {
+          display: none;
+        }
+      }
+    }
+    &_total {
+      padding: 20px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: $font-size-base;
+      // border-bottom: 1px solid #000;
+      p {
+        font-size: $font-size-base;
+        font-weight: $font-weight-bold;
+      }
+      span {
+        font-size: 1.6rem;
+        font-weight: $font-weight-bold;
+        color: $green-color;
         padding-left: 10px;
       }
-  
-      .personal-date {
-        width: 280px;
+      &.history {
+        border-top: 1px solid $grey-border-color;
+      }
+    }
+    &_submit {
+      padding: 13px 20px !important;
+      border-top: 1px solid $grey-border-color;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .ant-checkbox.ant-checkbox-checked {
+        .ant-checkbox-inner {
+          background: $green-color;
+        }
       }
     }
   }
-  
-}
-
-.info-footer {
-  border-top: 1px solid #E6E6E6;
-  padding: 13px 20px 35px;
-  display: flex;
-  justify-content: flex-end;
-  column-gap: 10px;
-  .info-btn {
-    width: 127px;
-    .btn-cancel {
-      @extend %btn-bg-white;
-      color: $red-color;
-      border: 1px solid $red-color;
-      &:hover,
-      &:active,
-      &:focus {
-        @extend %btn-bg-white;
-        color: $red-color;
-        border: 1px solid $red-color;
-        opacity: 0.7;
+  &-reminiscent {
+    margin-left: -20px;
+    margin-top: -8px;
+    margin-bottom: -8px;
+    max-width: unset;
+    padding: 10px !important;
+    &_button {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      button {
+        width: calc(100% / 2 - 10px);
       }
     }
   }
-}
-.back-to-survey {
-  cursor: pointer;
 }

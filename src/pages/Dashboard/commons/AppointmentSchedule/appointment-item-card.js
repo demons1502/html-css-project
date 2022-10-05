@@ -1,6 +1,6 @@
 import { Checkbox, Col, Row } from 'antd';
 import moment from 'moment';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import alarmGray from '../../../../assets/images/icons/alarmGray.svg';
@@ -15,6 +15,30 @@ import * as S from '../../styles';
 export default function AppointmentItemCard(props) {
   const { t } = useTranslation();
   const { apptId, typeId, host, title, startTime, endTime, location, isCompleted } = props.item;
+  const [titleFormat, setTitleFormat] = useState(title);
+
+  useEffect(() => {
+    switch (title) {
+      case 'survey':
+        setTitleFormat('Khảo sát');
+        break;
+      case 'finance':
+        setTitleFormat('Tư vấn tài chính');
+        break;
+      case 'consult':
+        setTitleFormat('Tư vấn giải pháp');
+        break;
+      case 'contract':
+        setTitleFormat('Ký hợp đồng');
+        break;
+      case 'other':
+        setTitleFormat('Khác');
+        break;
+      default:
+        break;
+    }
+  }, [title]);
+
   const dispatch = useDispatch();
 
   const handleSelectDone = () => {
@@ -41,7 +65,7 @@ export default function AppointmentItemCard(props) {
                     {host}
                   </S.WrapTextItem>
                   <S.WrapTextItem $fontWeight="600" $lineHeight="15px" span={24}>
-                    {title}
+                    {titleFormat}
                   </S.WrapTextItem>
                 </Row>
               </Col>

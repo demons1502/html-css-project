@@ -29,18 +29,18 @@ export const BoxTimePicker = styled.div`
 export const TimePicker = styled(TimePickerAntd)`
   & .ant-picker-input > input {
     &::placeholder {
-      font-weight: normal;
-      color: #000 !important;
+      font-weight: 600;
+      color: #ccc !important;
       opacity: 1 !important;
     }
 
     &:-ms-input-placeholder {
-      color: #000 !important;
+       color: #ccc !important;
       opacity: 1;
     }
 
     &::-ms-input-placeholder {
-      color: #000 !important;
+       color: #ccc !important;
     }
   }
 `;
@@ -56,10 +56,12 @@ export const DropDownBtn = styled(ButtonAntd)`
   align-items: center;
   padding: 0;
   margin: 0;
+  background-color: #f8f8f8;
+  border: none;
 
   &:hover,
   &:focus {
-    border: none;
+   
     background-color: unset;
   }
 `;

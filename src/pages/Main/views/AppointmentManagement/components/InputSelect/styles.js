@@ -20,7 +20,7 @@ export const Input = styled(InputComon)`
 export const Select = styled(AntSelect)`
   position: absolute;
   width: 20px !important;
-  right: 0;
+  right: 3px;
 
   &:not(.ant-select-customize-input) .ant-select-selector {
     background-color: #f8f8f8 !important;
@@ -31,6 +31,7 @@ export const Select = styled(AntSelect)`
     :focus-within {
       border-color: unset !important;
       box-shadow: unset !important;
+      border: unset !important;
     }
   }
 

@@ -15,6 +15,7 @@ export const WrapSelect = styled(Select)`
 
 export const WrapDatePicker = styled(DatePicker)`
   height: 40px;
+  
   background-color: #f8f8f8 !important;
   & .ant-picker-input {
     display: flex;

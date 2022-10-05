@@ -22,7 +22,7 @@ export const getTimeByTZ = (date, format = moment.localeData().longDateFormat('L
 
   // console.log(userLocale); // 👉️ "en-US"
 
-  return moment(date).local().format(format);
+  return date?moment(date).local().format(format) : '';
 };
 
 export const getCustomerCareLabel = (customerValue) => {

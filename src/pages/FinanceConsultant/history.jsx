@@ -1,27 +1,23 @@
-import { Col, Empty } from 'antd';
-import React, { useMemo, useState } from 'react';
-import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Col } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Table from '../../components/common/TableNormal';
 import { formatDataNumber, getTimeByTZ } from '../../helper/';
-import { getConsultById } from '../../services/financialConsultant';
-import { getConsult } from '../../slices/consult';
-import { createData } from '../../slices/customerCare';
-import { getConsultants, getConsultantsById } from '../../slices/financialConsultant';
+import { getConsultants } from '../../slices/financialConsultant';
 
 export default function History(props) {
   const { setHistory, id } = props;
-  const { t } = useTranslation();
+  const [activeRow, setActiveRow] = useState(null);
 
   const dispatch = useDispatch();
   const { data, isReload } = useSelector((state) => state.financialConsultant);
+
   const columns = [
     {
       title: 'Ngày tháng',
       key: 'stt',
       render: (record) => {
-        return <span>{getTimeByTZ(record.createAt)}</span>;
+        return <span>{getTimeByTZ(record.createdAt)}</span>;
       },
     },
     {
@@ -50,11 +46,15 @@ export default function History(props) {
       <Table
         dataSource={data}
         columnTable={columns}
-        className="financialConsultant-table"
+        className="financialConsultant-table table-common"
+        rowClassName={(record) => (activeRow === record.id ? 'active' : '')}
         pagination={false}
         onRow={(record) => {
           return {
-            onClick: () => setHistory(record),
+            onClick: () => {
+              setHistory(record);
+              setActiveRow(record.id);
+            },
           };
         }}
       />

@@ -68,7 +68,7 @@ export default function FinanceConsultant() {
       title: 'Loại',
       render: (record) => {
         const index = typeCustomer.findIndex((item) => item.value === +record.typeId);
-        return <span>{typeCustomer[index]?.label || `${record.typeId}`}</span>;
+        return <span>{typeCustomer[index]?.label}</span>;
       },
     },
     {
@@ -88,7 +88,7 @@ export default function FinanceConsultant() {
       title: '',
       dataIndex: '',
       render: (record) =>
-        record.appointment_schedule ? (
+        record.nextAppointment ? (
           <Button size="small">Nhắc lịch</Button>
         ) : (
           <Button size="small" type="primary" onClick={() => navigate('/appointment-management')}>

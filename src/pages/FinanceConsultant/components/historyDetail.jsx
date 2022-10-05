@@ -9,7 +9,12 @@ const HistoryDetail = (props) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    console.log(history?.consultAttrs);
+    const histories = history?.consultAttrs.reduce((obj, item) => Object.assign(obj, { [item.label]: item.value }), {});
+    if (Object.keys(histories).length > 0) {
+      form.setFieldsValue({ ...histories });
+    } else {
+      form.resetFields();
+    }
   }, [history]);
 
   return (
@@ -26,6 +31,7 @@ const HistoryDetail = (props) => {
         }}
         layout="horizontal"
         className="financialConsultant-form"
+        form={form}
       >
         <Form.Item
           label={
@@ -36,9 +42,9 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="marketMoney"
         >
-          <InputNumber disabled />
-          {/* <span>12000000</span> */}
+          <InputNumber disabled formatter={formatDataNumber} />
         </Form.Item>
+
         <Form.Item
           label={
             <p>
@@ -48,8 +54,7 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="studyMoney"
         >
-          <InputNumber disabled />
-          {/* <span>12000000</span> */}
+          <InputNumber disabled formatter={formatDataNumber} />
         </Form.Item>
         <Form.Item
           label={
@@ -60,8 +65,7 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="giftMoney"
         >
-          <InputNumber disabled />
-          {/* <span>12000000</span> */}
+          <InputNumber disabled formatter={formatDataNumber} />
         </Form.Item>
         <Form.Item
           label={
@@ -72,8 +76,7 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="gasMoney"
         >
-          <InputNumber disabled />
-          {/* <span>12000000</span> */}
+          <InputNumber disabled formatter={formatDataNumber} />
         </Form.Item>
         <Form.Item
           label={
@@ -84,8 +87,7 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="cost"
         >
-          <InputNumber disabled />
-          {/* <span>12000000</span> */}
+          <InputNumber disabled formatter={formatDataNumber} />
         </Form.Item>
         <Form.Item
           label={
@@ -96,8 +98,7 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="personalCosts"
         >
-          <InputNumber disabled />
-          {/* <span>12000000</span> */}
+          <InputNumber disabled formatter={formatDataNumber} />
         </Form.Item>
         <Form.Item
           label={
@@ -108,8 +109,7 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="credit"
         >
-          <InputNumber disabled />
-          {/* <span>12000000</span> */}
+          <InputNumber disabled formatter={formatDataNumber} />
         </Form.Item>
         <Form.Item
           label={
@@ -120,8 +120,7 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="nurturingFund"
         >
-          <InputNumber disabled />
-          {/* <span>12000000</span> */}
+          <InputNumber disabled formatter={formatDataNumber} />
         </Form.Item>
         <Form.Item
           label={
@@ -132,8 +131,7 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="otherCosts"
         >
-          <InputNumber disabled />
-          {/* <span>12000000</span> */}
+          <InputNumber disabled formatter={formatDataNumber} />
         </Form.Item>
         <div className="financialConsultant-form_total history">
           <p>Tổng chi tiêu: </p>

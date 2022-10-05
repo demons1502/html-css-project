@@ -25,6 +25,10 @@ const spendingForm = (props) => {
     for (const key of Object.keys(values)) {
       consultAttrs.push({ label: key, value: values[key] });
     }
+    if (total <= 0) {
+      message.error('Vui lòng nhập số tiền', 3);
+      return;
+    }
 
     const info = {
       title: reminiscent,
@@ -45,6 +49,7 @@ const spendingForm = (props) => {
       form.resetFields();
       setTotal(0);
       setReminiscent(null);
+      setOpen(false);
     }
   };
 
@@ -192,6 +197,7 @@ const spendingForm = (props) => {
               <Reminiscent
                 form={form}
                 onOk={onOk}
+                reminiscent={reminiscent}
                 setReminiscent={setReminiscent}
                 setOpen={setOpen}
                 setTotal={setTotal}

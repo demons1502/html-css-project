@@ -12,33 +12,19 @@ export const GroupButton = ({ handleOpenEdit, handleDelete }) => {
   return (
     <S.WrapContainer>
       <S.WrapLeft>
-        <S.Button
-          onClick={() => navigate('/advise/finance-consultant')}
-          type='primary'
-        >
+        <S.Button onClick={() => navigate('/advise')} type="primary">
           Tư vấn
         </S.Button>
-        <S.Button onClick={() => navigate('/advise/survey')} type='primary'>
+        <S.Button onClick={() => navigate('/advise/survey')} type="primary">
           Khảo sát
         </S.Button>
-        <S.Button
-          onClick={() => navigate('/advise/financial-solutions')}
-          type='primary'
-        >
+        <S.Button onClick={() => navigate('/advise/financial-solutions')} type="primary">
           Giải pháp
         </S.Button>
       </S.WrapLeft>
       <S.WrapRight>
-        <S.ButtonIcon
-          onClick={handleOpenEdit}
-          type='text'
-          icon={<Edit />}
-        ></S.ButtonIcon>
-        <S.ButtonIcon
-          onClick={handleDelete}
-          type='text'
-          icon={<Delete />}
-        ></S.ButtonIcon>
+        <S.ButtonIcon onClick={handleOpenEdit} type="text" icon={<Edit color="#D3D3D3" />}></S.ButtonIcon>
+        <S.ButtonIcon onClick={handleDelete} type="text" icon={<Delete color="#D3D3D3" />}></S.ButtonIcon>
       </S.WrapRight>
     </S.WrapContainer>
   );

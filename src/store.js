@@ -19,6 +19,7 @@ import customerReducer from './slices/customers';
 import consultReducer from './slices/consult';
 import configUser from './slices/configUser';
 import financialSolution from './slices/financialSolutions'
+import financialConsultant from './slices/financialConsultant';
 
 const persistConfig = {
   key: 'root',
@@ -45,6 +46,7 @@ const rootReducer = combineReducers({
   configUser: configUser,
   potentialCustomersReducer: potentialCustomersReducer,
   financialSolution: financialSolution,
+  financialConsultant: financialConsultant,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

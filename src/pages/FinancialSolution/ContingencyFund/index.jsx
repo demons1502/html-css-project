@@ -6,15 +6,32 @@ import ListCalculation from "./ListCalculation";
 import ListDetails from "./ListDetails";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAppointment, getSpeechScriptType, getAppointmentByIds,updateSelectCustomer } from "../../../slices/financialSolutions";
+import { getAppointment, getSpeechScriptType, getAppointmentByIds,updateSelectCustomer, } from "../../../slices/financialSolutions";
+import {  } from "../../../slices/financeSolutions";
+
 import moment from 'moment';
 
 const ContingencyFund = ({ apptId = null }) => {
-
   const location = useLocation();
-  const dispatch = useDispatch();
+  // title
   const [title] = useState(location?.state?.title);
 
+  // id
+  const { id } = location.state;
+
+  // dispatch
+  const dispatch = useDispatch();
+
+  // dispatch getFinanceDatas
+  useEffect(() => {
+    dispatch(getFinanceDatas(id));
+  }, [getFinanceDatas]);
+
+  // useSelector
+  const finaceDatas = useSelector(
+    (state) => state.financeReducer.getFinanceDatas
+  );
+  console.log("finaceDatas ==>", finaceDatas);
   const [itemContent, setItemContent] = useState({});
   const [lists, setLists] = useState(null);
   const [payload, setPayload] = useState("");
@@ -107,7 +124,7 @@ const ContingencyFund = ({ apptId = null }) => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation />
+                  <ListCalculation finaceDatas={finaceDatas} />
                 </div>
 
                 {/* container-right end */}

@@ -16,6 +16,7 @@ import { getTimeByTZ } from "../../helper/index";
 import { getSppechScriptInfo, clearSurvey } from "../../slices/surveys";
 import { getAppointments } from "../../slices/appointmentManagement";
 import moment from "moment";
+import Dialogue from "../../components/common/Dialogue";
 
 const Survey = () => {
   const { t } = useTranslation();
@@ -145,7 +146,7 @@ const Survey = () => {
               <Col lg={9} md={24} sm={24} xs={24}>
                 <Layout.Content className="manageContent">
                   <div className="content-div-2">
-                    <ListDetails />
+                    <Dialogue title="Quy trình khảo sát" type="survey"/>
                   </div>
                 </Layout.Content>
               </Col>

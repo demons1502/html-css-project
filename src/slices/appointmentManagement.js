@@ -72,6 +72,7 @@ const appointmentSlice = createSlice({
     builder.addCase(getAppointments.rejected, (state) => {
       state.status = 'rejected';
       state.loading = false;
+      state.data = [];
     });
 
     // CREATE APPOINTMENTS

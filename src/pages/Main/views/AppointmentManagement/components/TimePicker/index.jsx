@@ -17,8 +17,6 @@ export const TimePicker = ({ start, end, form }) => {
   const [showEnd, setShowEnd] = useState(false);
   const [startTime, setStartTime] = useState(start && start);
   const [endTime, setEndTime] = useState(end && end);
-  const diffTime = new Date(endTime) - new Date(startTime);
-  const minutes = moment.duration(diffTime, 'milliseconds').asMinutes().toFixed();
   const hoursDisables = [0, 1, 2, 3, 4, 5, 6, 23];
   const now = new Date();
   const formDate = new Date(fields.date);
@@ -31,23 +29,19 @@ export const TimePicker = ({ start, end, form }) => {
     const selectTime = new Date(time);
     if (formDate.getDate() === now.getDate()) {
       if (now.getTime() > selectTime.getTime()) {
-        setStartTime(moment(now));
-        form.setFieldsValue({ startTime: moment(now) });
+        setStartTime(time.add(5, 'minutes'));
+        formValue.setFieldsValue({ startTime: time.add(5, 'minutes'), endTime: undefined });
       }
     }
     setStartTime(time);
-    form.setFieldsValue({ startTime: time, endTime: undefined });
+    formValue.setFieldsValue({ startTime: time, endTime: undefined });
     setShowStart(false);
   };
 
   const handleOnChangeEnd = (time) => {
-    const end = new Date(time);
-    const start = new Date(startTime);
-    if (start.getTime() < end.getTime()) {
-      form.setFieldsValue({ endTime: moment(time) });
-      setEndTime(time);
-      setShowEnd(false);
-    }
+    form.setFieldsValue({ endTime: moment(time) });
+    setEndTime(time);
+    setShowEnd(false);
   };
 
   const disabledHoursStart = () => {
@@ -65,14 +59,14 @@ export const TimePicker = ({ start, end, form }) => {
   const disabledMinutesStart = (selectedHour) => {
     const minutes = [];
     if (selectedHour === moment(now).hour()) {
-      for (let i = 0; i < moment(now).minute(); i += 1) minutes.push(i);
+      for (let i = 0; i <= moment(now).minute(); i += 1) minutes.push(i);
     }
     return minutes;
   };
 
   const disabledHoursEnd = () => {
     const hours = [];
-    const currentHour = moment(startTime).hour();
+    const currentHour = startTime.hour();
     for (let i = 0; i <= 24; i++) {
       i < currentHour && hours.push(i);
     }
@@ -81,10 +75,17 @@ export const TimePicker = ({ start, end, form }) => {
 
   const disabledMinutesEnd = (selectedHour) => {
     const minutes = [];
-    if (selectedHour === moment(startTime).hour()) {
-      for (let i = 0; i < moment(startTime).minute(); i += 1) minutes.push(i);
+    if (selectedHour === startTime.hour()) {
+      for (let i = 0; i <= startTime.minute(); i += 1) minutes.push(i);
     }
     return minutes;
+  };
+
+  const totalMinutes = () => {
+    const start = startTime.hour() * 60 + startTime.minute();
+    const end = endTime.hour() * 60 + endTime.minute();
+
+    return end - start;
   };
 
   return (
@@ -100,7 +101,7 @@ export const TimePicker = ({ start, end, form }) => {
           <S.TimePicker
             name="start"
             open={showStart}
-            placeholder="HH:mm"
+            placeholder="Giờ"
             format={'HH:mm'}
             hideDisabledOptions={true}
             bordered={false}
@@ -122,7 +123,7 @@ export const TimePicker = ({ start, end, form }) => {
         >
           <S.TimePicker
             open={showEnd}
-            placeholder="HH:mm"
+            placeholder="Giờ"
             format={'HH:mm'}
             hideDisabledOptions={true}
             bordered={false}
@@ -146,7 +147,7 @@ export const TimePicker = ({ start, end, form }) => {
           <S.BoxClock>
             <Clock color="#999" />
           </S.BoxClock>
-          <span>{startTime && endTime && !isNaN(minutes) && parseInt(minutes) > 0 ? minutes : ''}</span>
+          <span>{startTime && endTime && parseInt(totalMinutes()) > 0 ? totalMinutes() : ''}</span>
         </S.WrapMinutesLeft>
         <S.WrapMinutesRight>Phút</S.WrapMinutesRight>
       </S.WrapMinutes>

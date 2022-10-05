@@ -1,10 +1,14 @@
-import { Col, Empty, Table } from 'antd';
+import { Col, Empty } from 'antd';
 import React, { useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-// import Table from '../../components/common/TableNormal';
-import { formatDataNumber } from '../../helper/';
+import Table from '../../components/common/TableNormal';
+import { formatDataNumber, getTimeByTZ } from '../../helper/';
+import { getConsultById } from '../../services/financialConsultant';
+import { getConsult } from '../../slices/consult';
 import { createData } from '../../slices/customerCare';
+import { getConsultants, getConsultantsById } from '../../slices/financialConsultant';
 
 const dataSource = [
   {
@@ -34,67 +38,46 @@ const dataSource = [
 ];
 
 export default function History(props) {
-  const { setHistory } = props;
+  const { setHistory, id } = props;
   const { t } = useTranslation();
   const customerCare = useSelector((state) => state.customerCare);
-  const [dataTable, setDataTable] = useState(dataSource);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
+  const { data } = useSelector((state) => state.financialConsultant);
   const columns = [
     {
       title: 'Ngày tháng',
-      dataIndex: 'date',
       key: 'stt',
+      render: (record) => {
+        return <span>{getTimeByTZ(record.createAt)}</span>;
+      },
     },
     {
       title: 'Tên gợi nhớ',
-      dataIndex: 'info',
-      key: 'date',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
       title: 'Tổng chi tiêu',
-      dataIndex: 'content',
+      dataIndex: '',
       key: 'content',
       render: (record) => {
-        return <span>{formatDataNumber(record)}</span>;
+        const total = record?.consultAttrs.reduce((curr, acc) => curr + acc.value, 0);
+        return <span>{formatDataNumber(total)}</span>;
       },
     },
   ];
 
-  // const initFetch = useCallback(() => {
-  //   dispatch(getData());
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   initFetch();
-  // }, [initFetch]);
-
-  // useEffect(() => {
-  //   //re render
-  // }, [customerCare]);
-
-  const saveData = (e) => {
-    dispatch(
-      createData({
-        id: 1,
-        title: e.target.value,
-      })
-    );
-  };
-
-  const table = useMemo(() => {
-    if (!!dataTable && dataTable.length > 0) {
-      return <Table dataSource={dataTable} columnTable={columns} className="financialConsultant-table" />;
-    } else {
-      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
-    }
-  }, [dataTable]);
+  useEffect(() => {
+    const payload = { limit: 10, offset: 0, customerId: id };
+    dispatch(getConsultants(payload));
+  }, [id]);
 
   return (
     <Col span={24} className="financialConsultant-history">
       <Table
-        dataSource={dataTable}
-        columns={columns}
+        dataSource={data}
+        columnTable={columns}
         className="financialConsultant-table"
         pagination={false}
         onRow={(record) => {
@@ -103,7 +86,6 @@ export default function History(props) {
           };
         }}
       />
-      {/* {table} */}
     </Col>
   );
 }

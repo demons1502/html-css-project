@@ -1,6 +1,6 @@
 import { React, useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import {Button} from "../../components/styles"
+import { Button } from "../../components/styles"
 import IconPlus from '../../assets/images/icons/plus.svg';
 import IconEdit from '../../assets/images/icons/edit-green.svg';
 import InputSearch from '../../components/common/InputSearch'
@@ -10,8 +10,9 @@ import Modal from '../../components/common/Modal';
 import CreateContract from './CreateContract';
 import { retrieveData } from '../../slices/contractManagement';
 import { DEFAULT_SIZE } from '../../ultis/constant'
-import { formatDataNumber,getTimeByTZ } from "../../helper"
+import { formatDataNumber, getTimeByTZ } from "../../helper"
 import { EditOutlined } from '@ant-design/icons';
+// import { getDepositTermLabel } from '../../ultis/despositTerm';
 
 export default function ContractManagement() {
   const dispatch = useDispatch()
@@ -30,9 +31,9 @@ export default function ContractManagement() {
     return (value == 1) ? value = "Tháng" : (value == 3) ? value = "Quý" : (value == 6) ? value = "Nửa năm" : (value == 12) ? value = "Năm" : value
   }
 
-  const convertUnderscore=(value)=>{
-    let timeFormat= getTimeByTZ(value)
-    return timeFormat.replaceAll('-','/')
+  const convertUnderscore = (value) => {
+    let timeFormat = getTimeByTZ(value)
+    return timeFormat.replaceAll('-', '/')
   }
 
   const columns = [
@@ -79,6 +80,7 @@ export default function ContractManagement() {
       title: 'Chu kì nộp phí',
       render: (record) => {
         return (
+          // <span>{getDepositTermLabel(record.depositTerm)}</span>
           <span>{convertDepositTerm(record.depositTerm)}</span>
         );
       }
@@ -108,14 +110,14 @@ export default function ContractManagement() {
     {
       title: '',
       // render: (record) => <img className='edit_icon' src={IconEdit} onClick={() => handleEditUser(record)} />,
-      render: (record) => <Button onClick={() => handleEditUser(record)}  icon={<EditOutlined style={{ fontSize: '14px' }} />}></Button>,
-      
+      render: (record) => <Button onClick={() => handleEditUser(record)} icon={<EditOutlined style={{ fontSize: '14px' }} />}></Button>,
+
     }
   ];
 
   useEffect(() => {
     let offset = (paginate.offset - 1) * paginate.limit;
-    if(refreshData){
+    if (refreshData) {
       dispatch(retrieveData({ limit: paginate.limit, offset: offset }))
     }
   }, [refreshData])
@@ -126,11 +128,11 @@ export default function ContractManagement() {
       dispatch(retrieveData({ userSearch: inputText, limit: paginate.limit, offset: offset }))
       :
       dispatch(retrieveData({ limit: paginate.limit, offset: offset }))
-  }, [inputText, paginate, ])
+  }, [inputText, paginate,])
 
   const handleEditUser = (record) => {
     console.log(record);
-    setDataEdit({id:record.id})
+    setDataEdit({ id: record.id })
     setVisibleModal(true)
     setTitleModal('Thay đổi nội dung hợp đồng')
   }
@@ -147,7 +149,7 @@ export default function ContractManagement() {
         <h3>Quản lý hợp đồng</h3>
         <div className="header_right">
           <InputSearch setPayload={setInputText} />
-          <Button type='primary'  onClick={handleCreateContract}>
+          <Button type='primary' onClick={handleCreateContract}>
             <img src={IconPlus} alt="" />
             Thêm hợp đồng
           </Button>
@@ -158,7 +160,7 @@ export default function ContractManagement() {
         <Pagination total={totalItem} pageSize={paginate.limit} setPaginate={setPaginate} />
       </div>
     </div>
-    <Modal isVisible={visibleModal} setIsVisible={setVisibleModal} title={titleModal} width={800} 
+    <Modal isVisible={visibleModal} setIsVisible={setVisibleModal} title={titleModal} width={800}
       content={<CreateContract dataEdit={dataEdit} setVisibleModal={setVisibleModal} />} />
   </>
 }

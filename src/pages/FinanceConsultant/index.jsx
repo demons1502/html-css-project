@@ -18,25 +18,34 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getConsultants, getConsultScript } from '../../slices/financialConsultant';
 import { useEffect } from 'react';
+import { getConsult } from '../../slices/consult';
+import { getTimeByTZ } from '../../helper';
 
 export default function FinanceConsultant() {
   const { t } = useTranslation();
   const [selectId, setSelectId] = useState(null);
   const [history, setHistory] = useState(null);
-
+  console.log(history);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { data } = useSelector((state) => state.financialConsultant);
+  // const { data } = useSelector((state) => state.financialConsultant);
   const customers = useSelector((state) => state.consultReducer);
-  console.log(data);
+
   const handleSelect = (id) => {
     setSelectId(id);
+    setHistory(null);
   };
 
   useEffect(() => {
-    const payload = { limit: 10, offset: 0, customerId: 160 };
-    dispatch(getConsultants(payload));
+    // const payload = { limit: 10, offset: 0, customerId: 160 };
+    // dispatch(getConsultants(payload));
     dispatch(getConsultScript());
+  }, []);
+
+  useEffect(() => {
+    const payload = { limit: 10, offset: 0 };
+    dispatch(getConsult(payload));
+    // dispatch(getConsultScript());
   }, []);
 
   return (
@@ -54,15 +63,15 @@ export default function FinanceConsultant() {
                       <SearchInputBox />
                     </div>
 
-                    {data?.length > 0 && (
+                    {customers.data?.length > 0 && (
                       <List
-                        dataSource={data}
+                        dataSource={customers?.data}
                         renderItem={(customer, index) => (
                           <List.Item
                             onClick={() => handleSelect(customer?.customerId)}
                             className={`${customer?.customerId === selectId ? 'active' : ''}`}
                           >
-                            <Typography.Text ellipsis>{customer?.title}</Typography.Text>
+                            <Typography.Text ellipsis>{customer?.fullname}</Typography.Text>
                           </List.Item>
                         )}
                       />
@@ -70,12 +79,12 @@ export default function FinanceConsultant() {
                   </div>
 
                   <div className="container-right">
-                    {history === null ? (
+                    {!history ? (
                       <div className="container-right-header">
                         <div className="financialConsultant-popover">
                           <Popover
                             placement="bottomLeft"
-                            content={<History setHistory={setHistory} />}
+                            content={<History setHistory={setHistory} id={selectId} />}
                             title={
                               <div className="financialConsultant-popover_title">
                                 <h5>{t('financial consultant.history title')}</h5>
@@ -104,11 +113,11 @@ export default function FinanceConsultant() {
                         </div>
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: '5px' }} />
-                          <span>Ngày: 12/08/2022</span>
+                          <span>Ngày: {getTimeByTZ(history?.createdAt)}</span>
                         </div>
                       </div>
                     )}
-                    {history !== null ? <HistoryDetail setHistory={setHistory} /> : <SpendingForm />}
+                    {history ? <HistoryDetail setHistory={setHistory} /> : <SpendingForm id={selectId} />}
                   </div>
                 </div>
               </Layout.Content>

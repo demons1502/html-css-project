@@ -7,9 +7,10 @@ import { createContract, updateContract, getByIdApi } from '../../slices/contrac
 import { useTranslation } from 'react-i18next';
 import { getCustoms } from '../../slices/contractManagement';
 import useFormErrors from '../../hooks/useFormErrors'
-import { formatDataNumber, getTimeByTZ } from "../../helper"
-import { VALIDATE_MESSAGES, FORMAT_DATE } from '../../ultis/constant';
-import InputNumber from '../../components/common/InputNumber';
+// import { formatDataNumber, getTimeByTZ } from "../../helper"
+// import { VALIDATE_MESSAGES, FORMAT_DATE } from '../../ultis/constant';
+// import InputNumber from '../../components/common/InputNumber';
+// import { DEPOSIT_TERM as depositTermOptions } from '../../ultis/constant';
 
 function CreateContract(props) {
   const { t } = useTranslation();
@@ -29,7 +30,7 @@ function CreateContract(props) {
 
   const onFinish = (values) => {
     // dùng để chuyển đổi dữ liệu khi edit nhưng k sửa chu kì nộp phí
-    (values.depositTerm == "Tháng") ? values.depositTerm = 1 : (values.depositTerm == "Nửa năm") ? values.depositTerm = 6 : (values.depositTerm == "Quý") ? values.depositTerm = 3 : (values.depositTerm == "Năm") ? values.depositTerm = 12 : values.depositTerm ;
+    (values.depositTerm == "Tháng") ? values.depositTerm = 1 : (values.depositTerm == "Nửa năm") ? values.depositTerm = 6 : (values.depositTerm == "Quý") ? values.depositTerm = 3 : (values.depositTerm == "Năm") ? values.depositTerm = 12 : values.depositTerm;
     const data = {
       contractNumber: values.contractNumber,
       customerId: parseInt(customerId.value),
@@ -38,7 +39,7 @@ function CreateContract(props) {
       startDate: values.date._d,
       // startDate: values.date,
       duration: + values.duration,
-      depositTerm: +values.depositTerm,
+      depositTerm: + values.depositTerm,
     };
     // console.log(values);
     // console.log(data);
@@ -85,13 +86,13 @@ function CreateContract(props) {
 
   const formatNumber = (e) => {
     let value = e.target.value.replace(/,/g, '')
-    
+
     if (!isNaN(value)) {
-      const formatter = new Intl.NumberFormat("en-US"); 
+      const formatter = new Intl.NumberFormat("en-US");
 
       let formatValue = !!value ? formatter.format(value) : null;
       form.setFieldValue('value', formatValue)
-    } else {     
+    } else {
       form.setFieldValue('value', e.target.value.slice(0, -1))
     }
   }
@@ -150,10 +151,10 @@ function CreateContract(props) {
         <Form.Item
           label='Giá trị'
           name='value'
-          rules={[{ required: true},
-            ({getFieldValue}) => ({
+          rules={[{ required: true },
+            ({ getFieldValue }) => ({
               validator(_) {
-                if (!!getFieldValue('value') && getFieldValue('value').replace(/,/g, '') < 50000000 ) {
+                if (!!getFieldValue('value') && getFieldValue('value').replace(/,/g, '') < 50000000) {
                   return Promise.reject(new Error('Số tiền tối thiểu là 50.000.000'));
                 }
                 return Promise.resolve();
@@ -210,6 +211,19 @@ function CreateContract(props) {
             <Option value='12'>Năm</Option>
           </Select>
         </Form.Item>
+        {/* <Form.Item
+          label='Chu kỳ nộp phí'
+          name='depositTerm'
+          // initialValue={dataEdit.depositTerm}
+          defaultValue={customerEdit?.depositTerm}
+          rules={[{ required: true }]}
+        >
+          <Select className='select-item-outline' placeholder='Chọn'>
+            {depositTermOptions.map((option, index) => {
+              return (<Option key={index} value={option.value}>{option.label}</Option>);
+            })}
+          </Select>
+        </Form.Item> */}
       </Col>
       <Col span={24}>
         <Form.Item className="footer-modal">

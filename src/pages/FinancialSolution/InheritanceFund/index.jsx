@@ -1,11 +1,14 @@
 import { Col, Layout, List, Row, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { sideBarMenuItems } from '../../../assets/fake-data/QuyDuPhongData';
-import SearchInputBox from './SearchInputBox';
+import SearchInputBox from '../../../components/common/InputSearch';
 import ListCalculation from './ListCalculation';
-import ListDetails from './ListDetails';
 import { Link, useLocation } from 'react-router-dom';
 import Dialogue from '../../../components/common/Dialogue';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAppointment } from '../../../slices/financialSolutions';
+import moment from 'moment';
+
 const InheritanceFund = () => {
   const location = useLocation();
   const [title] = useState(location?.state?.title);
@@ -15,9 +18,32 @@ const InheritanceFund = () => {
   const [lists, setLists] = useState(sideBarMenuItems);
   const [payload, setPayload] = useState('');
 
+  const dispatch = useDispatch();
+  var { customerAppRecords } = useSelector((state) => state.financialSolution);
+
   useEffect(() => {
-    setItemContent(lists[0]);
+    let endDate = new Date();
+    // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
+    endDate = endDate.setHours(23, 59, 59, 999);
+    let startDate = new Date();
+    dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
   }, []);
+
+  useEffect(() => {
+    let arr = [];
+    arr.push(
+      customerAppRecords?.map((item) => {
+        return { title: item.customerApptRecords[0].name };
+      })
+    );
+    setLists(arr[0]);
+  }, [customerAppRecords]);
+
+  useEffect(() => {
+    if (lists) {
+      setItemContent(lists[0]);
+    }
+  }, [lists]);
 
   return (
     <div className="quyduphone">
@@ -89,8 +115,7 @@ const InheritanceFund = () => {
           <Col lg={12} md={24} sm={24} xs={24} xl={12} xxl={9}>
             <Layout.Content className="manageContent">
               <div className="content-div-2">
-                <Dialogue title="Lời thoại" /*type="preventionFund"*/ type="consult" />
-                {/* <ListDetails /> */}
+                <Dialogue title="Lời thoại" type="preventionFund" />
               </div>
             </Layout.Content>
           </Col>

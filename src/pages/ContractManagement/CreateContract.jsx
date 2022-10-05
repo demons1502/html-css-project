@@ -7,8 +7,10 @@ import { createContract, updateContract, getByIdApi } from '../../slices/contrac
 import { useTranslation } from 'react-i18next';
 import { getCustoms } from '../../slices/contractManagement';
 import useFormErrors from '../../hooks/useFormErrors'
-import { formatDataNumber, getTimeByTZ } from "../../helper"
-import { VALIDATE_MESSAGES, FORMAT_DATE } from '../../ultis/constant';
+// import { formatDataNumber, getTimeByTZ } from "../../helper"
+// import { VALIDATE_MESSAGES, FORMAT_DATE } from '../../ultis/constant';
+// import InputNumber from '../../components/common/InputNumber';
+// import { DEPOSIT_TERM as depositTermOptions } from '../../ultis/constant';
 
 function CreateContract(props) {
   const { t } = useTranslation();
@@ -27,16 +29,20 @@ function CreateContract(props) {
   var { Option } = AutoComplete;
 
   const onFinish = (values) => {
-    (values.depositTerm == "Tháng") ? values.depositTerm = 30 : (values.depositTerm == "Nửa năm") ? values.depositTerm = 180 : values.depositTerm = 360
+    // dùng để chuyển đổi dữ liệu khi edit nhưng k sửa chu kì nộp phí
+    (values.depositTerm == "Tháng") ? values.depositTerm = 1 : (values.depositTerm == "Nửa năm") ? values.depositTerm = 6 : (values.depositTerm == "Quý") ? values.depositTerm = 3 : (values.depositTerm == "Năm") ? values.depositTerm = 12 : values.depositTerm;
     const data = {
       contractNumber: values.contractNumber,
       customerId: parseInt(customerId.value),
       beneficiary: values.beneficiary,
       value: + values.value,
-      startDate: moment(values.startDate).format(),
+      startDate: values.date._d,
+      // startDate: values.date,
       duration: + values.duration,
-      depositTerm: +values.depositTerm,
+      depositTerm: + values.depositTerm,
     };
+    // console.log(values);
+    // console.log(data);
     if (Object.keys(dataEdit).length > 0) {
       dispatch(updateContract({ id: dataEdit.id, data: data }));
     } else {
@@ -50,6 +56,7 @@ function CreateContract(props) {
   };
 
   const onSelectCustomer = (value, option) => {
+    console.log(value, option);
     customerId.value = option.key;
   };
 
@@ -59,9 +66,13 @@ function CreateContract(props) {
     }
   }, [dataEdit])
 
+  const convertDepositTerm = (value) => {
+    return (value == 1) ? value = "Tháng" : (value == 3) ? value = "Quý" : (value == 6) ? value = "Nửa năm" : (value == 12) ? value = "Năm" : value
+  }
+
   useEffect(() => {
     if (Object.keys(customerEdit).length > 0 && Object.keys(dataEdit).length > 0) {
-      form.setFieldsValue({ ...customerEdit, ...{ date: moment(customerEdit.startDate) } })
+      form.setFieldsValue({ ...customerEdit, ...{ date: moment(customerEdit.startDate), ...{ depositTerm: convertDepositTerm(customerEdit.depositTerm) } } })
     } else {
       form.resetFields()
     }
@@ -72,6 +83,19 @@ function CreateContract(props) {
       setVisibleModal(false)
     }
   }, [refreshData])
+
+  const formatNumber = (e) => {
+    let value = e.target.value.replace(/,/g, '')
+
+    if (!isNaN(value)) {
+      const formatter = new Intl.NumberFormat("en-US");
+
+      let formatValue = !!value ? formatter.format(value) : null;
+      form.setFieldValue('value', formatValue)
+    } else {
+      form.setFieldValue('value', e.target.value.slice(0, -1))
+    }
+  }
 
   return <Form layout="vertical" form={form} onFinish={onFinish} autoComplete='off'>
     <input type='hidden' ref={customerId} name="customerId" value="" />
@@ -127,9 +151,18 @@ function CreateContract(props) {
         <Form.Item
           label='Giá trị'
           name='value'
-          rules={[{ required: true }]}
+          rules={[{ required: true },
+            ({ getFieldValue }) => ({
+              validator(_) {
+                if (!!getFieldValue('value') && getFieldValue('value').replace(/,/g, '') < 50000000) {
+                  return Promise.reject(new Error('Số tiền tối thiểu là 50.000.000'));
+                }
+                return Promise.resolve();
+              },
+            })
+          ]}
         >
-          <Input placeholder='Nhập' type='number' className="input-item-outline" />
+          <Input onChange={formatNumber} placeholder='Nhập' className="input-item-outline" />
         </Form.Item>
       </Col>
       <Col span={6}>
@@ -146,7 +179,7 @@ function CreateContract(props) {
         ) : (
           <Form.Item
             label='Ngày hiệu lực'
-            // name="createAt"
+            name="date"
             rules={[{ required: true }]}
           >
             <DatePicker className="input-item-outline"
@@ -168,22 +201,36 @@ function CreateContract(props) {
         <Form.Item
           label='Chu kỳ nộp phí'
           name='depositTerm'
-          // initialValue={dataEdit.depositTerm}
+          // initialValue={customerEdit.depositTerm}
           rules={[{ required: true }]}
         >
           <Select className='select-item-outline' placeholder='Chọn'>
-            <Option value='30'>Tháng</Option>
-            <Option value='180'>Nửa năm</Option>
-            <Option value='360'>Năm</Option>
+            <Option value='1'>Tháng</Option>
+            <Option value='3'>Quý</Option>
+            <Option value='6'>Nửa năm</Option>
+            <Option value='12'>Năm</Option>
           </Select>
         </Form.Item>
+        {/* <Form.Item
+          label='Chu kỳ nộp phí'
+          name='depositTerm'
+          // initialValue={dataEdit.depositTerm}
+          defaultValue={customerEdit?.depositTerm}
+          rules={[{ required: true }]}
+        >
+          <Select className='select-item-outline' placeholder='Chọn'>
+            {depositTermOptions.map((option, index) => {
+              return (<Option key={index} value={option.value}>{option.label}</Option>);
+            })}
+          </Select>
+        </Form.Item> */}
       </Col>
       <Col span={24}>
         <Form.Item className="footer-modal">
-          <Button key="back" className="btn-danger" onClick={() => setVisibleModal(false)}>
+          <Button key="back" className="btn-danger" onClick={() => setVisibleModal(false)} style={{ fontSize: '14px' }}>
             {t('common.cancel')}
           </Button>
-          <Button key="submit" htmlType="submit" type="primary">
+          <Button key="submit" htmlType="submit" type="primary" style={{ fontSize: '14px' }}>
             {/* {Object.keys(dataEdit).length > 0 ? t('common.save') : t('common.create')} */}
             Lưu
           </Button>

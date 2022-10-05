@@ -43,6 +43,7 @@ export const updateContract = createAsyncThunk(
   async ({ id, data }, { rejectWithValue }) => {
     try {
       const res = await update({ id, data });
+      console.log(data);
       return { data: res.data, message: res.statusText };
     } catch (error) {
       return rejectWithValue(error.response.data)

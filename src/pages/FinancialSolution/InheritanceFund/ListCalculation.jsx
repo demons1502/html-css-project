@@ -1,20 +1,25 @@
-import { Select, Checkbox, Form } from 'antd';
+import { Checkbox, Form } from 'antd';
 import React from 'react';
-import InputNumber from '../../../components/common/InputNumber';
+import { useNavigate } from 'react-router-dom';
 import Input from '../../../components/common/Input';
+import InputNumber from '../../../components/common/InputNumber';
 import { Button } from '../../../components/styles';
+import { formatDataNumber } from '../../../helper';
 
 const ListCalculation = () => {
   const [form] = Form.useForm();
+
+  const navigate = useNavigate();
+
   const onFinish = (values) => {
-    console.log('Success:', values);
+    // console.log(values);
+    navigate('/advise/financial-solutions/minh-hoa-gia', { state: { values: values } });
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
-  const { Option } = Select;
   return (
     <Form form={form} name="control-hooks" onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">
       <div className="container-right-middle">
@@ -27,7 +32,7 @@ const ListCalculation = () => {
             },
           ]}
         >
-          <InputNumber placeholder="0" min={0} style={{ width: 152 }} controls={false} />
+          <InputNumber placeholder="0" min={0} style={{ width: 152 }} controls={false} formatter={formatDataNumber} />
         </Form.Item>
         <Form.Item
           name="name2"

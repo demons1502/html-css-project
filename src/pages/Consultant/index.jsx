@@ -8,7 +8,7 @@ import { Button } from '../../components/styles';
 import { getConsult } from '../../slices/consult';
 import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import { options } from './options';
-import { formatDataNumber, getTimeByTZ } from '../../helper/index';
+import { formatDataNumber, getTimeByTZ, pad } from '../../helper/index';
 import { marriageStatus, acquaintanceLevel, typeCustomer } from '../../constants/common';
 import { useNavigate } from 'react-router-dom';
 

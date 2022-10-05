@@ -117,7 +117,7 @@ export default function FinanceConsultant() {
                         </div>
                       </div>
                     )}
-                    {history ? <HistoryDetail setHistory={setHistory} /> : <SpendingForm id={selectId} />}
+                    {history ? <HistoryDetail history={history} /> : <SpendingForm id={selectId} />}
                   </div>
                 </div>
               </Layout.Content>

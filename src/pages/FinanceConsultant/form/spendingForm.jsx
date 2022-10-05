@@ -1,14 +1,12 @@
-import { Form, Checkbox, Popover, message } from 'antd';
-import React, { useState } from 'react';
+import { Checkbox, Form, message, Popover } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import DotImg from '../../../assets/images/icons/dot.svg';
 import InputNumber from '../../../components/common/InputNumber';
 import { Button } from '../../../components/styles';
-import DotImg from '../../../assets/images/icons/dot.svg';
 import { formatDataNumber } from '../../../helper';
-import Reminiscent from './Reminiscent';
-import { useDispatch } from 'react-redux';
 import { AddNewConsultant } from '../../../slices/financialConsultant';
-import { useMemo } from 'react';
-import { useEffect } from 'react';
+import Reminiscent from './Reminiscent';
 
 const spendingForm = (props) => {
   const { id } = props;
@@ -18,6 +16,7 @@ const spendingForm = (props) => {
   const [open, setOpen] = useState(false);
   const [total, setTotal] = useState(0);
   const [data, setData] = useState(null);
+
   const [form] = Form.useForm();
   const dispatch = useDispatch();
 
@@ -43,6 +42,9 @@ const spendingForm = (props) => {
       return;
     } else {
       dispatch(AddNewConsultant(info));
+      form.resetFields();
+      setTotal(0);
+      setReminiscent(null);
     }
   };
 

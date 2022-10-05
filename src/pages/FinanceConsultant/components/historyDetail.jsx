@@ -1,9 +1,17 @@
 import { Form } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import DotImg from '../../../assets/images/icons/dot.svg';
+import InputNumber from '../../../components/common/InputNumber';
 import { formatDataNumber } from '../../../helper';
 
 const HistoryDetail = (props) => {
+  const { history } = props;
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    console.log(history?.consultAttrs);
+  }, [history]);
+
   return (
     <div className="financialConsultant-content history">
       <div className="financialConsultant-form_header">
@@ -28,7 +36,8 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="marketMoney"
         >
-          <span>12000000</span>
+          <InputNumber disabled />
+          {/* <span>12000000</span> */}
         </Form.Item>
         <Form.Item
           label={
@@ -39,7 +48,8 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="studyMoney"
         >
-          <span>12000000</span>
+          <InputNumber disabled />
+          {/* <span>12000000</span> */}
         </Form.Item>
         <Form.Item
           label={
@@ -50,7 +60,8 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="giftMoney"
         >
-          <span>12000000</span>
+          <InputNumber disabled />
+          {/* <span>12000000</span> */}
         </Form.Item>
         <Form.Item
           label={
@@ -61,7 +72,8 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="gasMoney"
         >
-          <span>12000000</span>
+          <InputNumber disabled />
+          {/* <span>12000000</span> */}
         </Form.Item>
         <Form.Item
           label={
@@ -72,7 +84,8 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="cost"
         >
-          <span>12000000</span>
+          <InputNumber disabled />
+          {/* <span>12000000</span> */}
         </Form.Item>
         <Form.Item
           label={
@@ -83,7 +96,8 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="personalCosts"
         >
-          <span>12000000</span>
+          <InputNumber disabled />
+          {/* <span>12000000</span> */}
         </Form.Item>
         <Form.Item
           label={
@@ -94,7 +108,8 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="credit"
         >
-          <span>12000000</span>
+          <InputNumber disabled />
+          {/* <span>12000000</span> */}
         </Form.Item>
         <Form.Item
           label={
@@ -105,7 +120,8 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="nurturingFund"
         >
-          <span>12000000</span>
+          <InputNumber disabled />
+          {/* <span>12000000</span> */}
         </Form.Item>
         <Form.Item
           label={
@@ -116,11 +132,12 @@ const HistoryDetail = (props) => {
           labelAlign="left"
           name="otherCosts"
         >
-          <span>12000000</span>
+          <InputNumber disabled />
+          {/* <span>12000000</span> */}
         </Form.Item>
         <div className="financialConsultant-form_total history">
           <p>Tổng chi tiêu: </p>
-          <span>{formatDataNumber(123000000)}</span>
+          <span>{formatDataNumber(history.total)}</span>
         </div>
       </Form>
     </div>

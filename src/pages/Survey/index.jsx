@@ -12,7 +12,7 @@ import { isEmpty } from "lodash";
 import calender from "../../assets/images/icons/calendar.svg";
 import left_arrow from "../../assets/images/icons/left-arrow.svg";
 import { HistoryPopup } from "./Modals/HistoryPopup";
-import { getTimeByTZ } from "../../helper/index";
+import { formatDate } from "../../helper/index";
 import { getSppechScriptInfo, clearSurvey } from "../../slices/surveys";
 import { getAppointments } from "../../slices/appointmentManagement";
 import moment from "moment";
@@ -130,8 +130,8 @@ const Survey = () => {
                           <img src={left_arrow} alt="back" height={12} style={{ marginRight: '5px' }} />
                         </div>
                         <div className="right">
-                          <img src={calender} alt="calender" height={16} style={{ marginRight: '5px' }} />
-                          <span>Ngày: {surveys?.survey?.createdAt ? getTimeByTZ(surveys?.survey?.createdAt) : ''}</span>
+                          <img src={calender} alt="calender" height={16} style={{ marginRight: "5px" }} />
+                          <span>Ngày: {surveys?.survey?.createdAt ? formatDate(surveys?.survey?.createdAt) : ""}</span>
                         </div>
                       </div>
                     )}

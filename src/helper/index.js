@@ -14,15 +14,14 @@ export const pad = (num, size) => {
   return num;
 };
 
-export const getTimeByTZ = (date, format = moment.localeData().longDateFormat('L')) => {
-  // const userLocale =
-  // navigator.languages && navigator.languages.length
-  //   ? navigator.languages[0]
-  //   : navigator.language;
-
-  // console.log(userLocale); // 👉️ "en-US"
-
-  return date?moment(date).local().format(format) : '';
+export const formatDate = (date, format = 'DD/MM/YYYY') => {
+  // format = moment.localeData().longDateFormat('L')
+  return date?moment.utc(date).local().format(format) : '';
+};
+export const formatLocalDate = (date) => {
+  // format = moment.localeData().longDateFormat('L')
+  // return date?moment(date).utc().format(format) : '';
+  return moment(date).utc().format('YYYY-MM-DD');
 };
 
 export const getCustomerCareLabel = (customerValue) => {

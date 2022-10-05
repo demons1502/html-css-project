@@ -8,9 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { editCustomer } from '../../../slices/customers';
 import { FORMAT_DATE } from '../../../ultis/constant';
 import { Col, Row } from 'antd';
-import { getTimeByTZ } from '../../../helper/index';
-import moment from 'moment';
 import{DatePicker} from 'antd'
+import { formatDate } from '../../../helper/index';
 
 export const PersonalInfoForm = () => {
   const dispatch = useDispatch();
@@ -26,9 +25,10 @@ export const PersonalInfoForm = () => {
     mode: 'all',
     defaultValues: {
       fullName: selectedCustomer.fullname,
-      // sex: selectedCustomer?.gender,
       dob: '',
-      // familyStatus: [1],
+      sex: selectedCustomer?.gender,
+      dob: selectedCustomer.dob? formatDate(selectedCustomer.dob) : '',
+      familyStatus: [1],
     },
     resolver: yupResolver(PersonalInfoSchema),
   });

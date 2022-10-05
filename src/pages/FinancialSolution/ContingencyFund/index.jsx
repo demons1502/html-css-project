@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import { sideBarMenuItems } from "../../../assets/fake-data/QuyDuPhongData";
 import SearchInputBox from "./SearchInputBox";
 import ListCalculation from "./ListCalculation";
-import ListDetails from "./ListDetails";
+// import ListDetails from "./ListDetails";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAppointment, getSpeechScriptType, getAppointmentByIds,updateSelectCustomer } from "../../../slices/financialSolutions";
 import moment from 'moment';
+import Dialogue from "../../../components/common/Dialogue/index"
 import { getFinanceDatas } from "../../../slices/financeSolutions";
 
 const ContingencyFund = ({ apptId = null }) => {
@@ -138,7 +139,7 @@ const ContingencyFund = ({ apptId = null }) => {
           <Col lg={12} md={24} sm={24} xs={24}>
             <Layout.Content className="manageContent">
               <div className="content-div-2">
-                <ListDetails data={getSpeechScript} />
+                <Dialogue title={"Quy trình tư vấn"} type={'preventionFund'} />
               </div>
             </Layout.Content>
           </Col>

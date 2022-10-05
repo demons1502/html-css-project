@@ -30,7 +30,7 @@ const ListCalculation = () => {
   };
 
   // annualTuitionFee
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   // firstChildAmount
   useEffect(() => {
@@ -64,9 +64,9 @@ const ListCalculation = () => {
   useEffect(() => {
     setTotalAmount(
       firstChildAmount +
-        secondChildAmount +
-        thirdChildAmount +
-        fourthChildAmount
+      secondChildAmount +
+      thirdChildAmount +
+      fourthChildAmount
     );
   }, [
     firstChildAmount,
@@ -98,6 +98,21 @@ const ListCalculation = () => {
     console.log("Failed:", errorInfo);
   };
 
+  const selectChange=(e)=>{
+    switch(e){
+      case "1":
+        setAnnualTuitionFee(80000000)
+        break
+      case "2":
+        setAnnualTuitionFee(600000000)
+        break;
+      case "3":
+        setAnnualTuitionFee(1000000000)
+        break
+      default:
+        setAnnualTuitionFee(80000000)
+    } 
+  }
   const { Option } = Select;
   return (
     <Form
@@ -107,11 +122,17 @@ const ListCalculation = () => {
       onFinishFailed={onFinishFailed}
       autoComplete="off">
       <div className="container-right-middle">
-        <Form.Item name="name1" label="Nền giáo dục" className="input-item">
-          <Select placeholder="Công lập" style={{ width: 152 }}>
-            <Option value="value1">Tháng</Option>
-            <Option value="value2">Nửa năm</Option>
-            <Option value="value3">Năm</Option>
+        <Form.Item name="name1" label="Nền giáo dục" className="input-item"
+          // initialvalues={"3"}
+        >
+          <Select placeholder="Công lập"
+            style={{ width: 152 }}
+            defaultValue="1"
+            onChange={selectChange}
+          >
+            <Option value="1">Công lập</Option>
+            <Option value="2">Dân lập</Option>
+            <Option value="3">Du học</Option>
           </Select>
         </Form.Item>
         <Form.Item
@@ -124,8 +145,10 @@ const ListCalculation = () => {
             },
           ]}>
           <InputNumber
+            defaultValue={80000000}
+            step={5000000}
             style={{ width: 152 }}
-            initialvalues={0}
+            value={annualTuitionFee}
             formatter={(value) =>
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }

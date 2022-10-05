@@ -1,7 +1,7 @@
 import { Tabs, Popover } from "antd";
 import { Button } from "../../../components/styles";
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import PageBack from "../../../assets/images/financial/PageBack";
 import Calender from "../../../assets/images/icons/components/calender";
 import Clock from "../../../assets/images/icons/components/Clock";
@@ -15,9 +15,9 @@ import { SaveConfirmation } from "./SaveConfirmation";
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerContracts } from "../../../slices/financialSolutions";
 
-const IllustrateFiduciary = ({route}) => {
-  // const {values} = route.params
-  // console.log(values);
+const IllustrateFiduciary = () => {
+  const location = useLocation();
+  console.log(location.state);
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
@@ -46,10 +46,6 @@ const IllustrateFiduciary = ({route}) => {
       setContract(data)
     }
   }, [customerContract])
-
-  const closeHistoryModal = () => {
-    setIsHistoryModalOpen(false);
-  };
 
   const toggleHistoryModal = () => {
     setIsHistoryModalOpen(!isHistoryModalOpen);

@@ -44,38 +44,38 @@ const ListCalculation = ({ finaceDatas }) => {
   // submit data
   const onFinish = async (values) => {
     console.log(values);
-    try {
-      if (values?.amount !== undefined && isPotential !== undefined) {
-        await dispatch(
-          postFinanceDatas({
-            fundId: finaceDatas?.id,
-            isPotential: isPotential,
-            result: {
-              key: "",
-              value: String(TotalAmount),
-            },
-            sumInsured: 1000000,
-            baseYears: 5,
-            basePremium: 20000,
-            investmentRate: 6,
-            riderPremium: 20000,
-            topUpPremium: 20000,
-            topUpYears: 10,
-            interestRate: {
-              key: "",
-              value: String(Percent),
-            },
-            expensePerMonth: {
-              key: "",
-              value: String(Amount),
-            },
-          })
-        );
-        navigate("/advise/financial-solutions/minh-hoa-gia", {values: values});
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    // try {
+    //   if (values?.amount !== undefined && isPotential !== undefined) {
+    //     await dispatch(
+    //       postFinanceDatas({
+    //         fundId: finaceDatas?.id,
+    //         isPotential: isPotential,
+    //         result: {
+    //           key: "",
+    //           value: String(TotalAmount),
+    //         },
+    //         sumInsured: 1000000,
+    //         baseYears: 5,
+    //         basePremium: 20000,
+    //         investmentRate: 6,
+    //         riderPremium: 20000,
+    //         topUpPremium: 20000,
+    //         topUpYears: 10,
+    //         interestRate: {
+    //           key: "",
+    //           value: String(Percent),
+    //         },
+    //         expensePerMonth: {
+    //           key: "",
+    //           value: String(Amount),
+    //         },
+    //       })
+    //     );
+    //   }
+    // } catch (e) {
+    //   console.log(e);
+    // }
+    navigate("/advise/financial-solutions/minh-hoa-gia", {state:{values: values,total:TotalAmount}});
   };
 
   const onFinishFailed = (errorInfo) => {

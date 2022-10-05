@@ -202,4 +202,18 @@ export const WrapHTMLString = styled.div`
   }
 `;
 
-
+export const CustomerSummaryItem = styled.li`
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  .dot {
+    height: 4px;
+    width: 4px;
+    background: #333333; 
+    border-radius: 50%; 
+    margin-right: 12px;
+  }
+  p {
+    text-transform: capitalize;
+  }
+`;

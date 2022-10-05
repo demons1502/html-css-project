@@ -1,4 +1,4 @@
-import { Checkbox, Tooltip } from 'antd';
+import { Checkbox, message, Tooltip } from 'antd';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -12,10 +12,14 @@ export default function CallScheduleItemCall(props) {
   const navigate = useNavigate();
 
   const handleCall = async (value) => {
-    console.log('value', value);
-    await createCustomerCallRecord(Number(value?.customerCallId || 0))
-    navigate('/call-details/' + value?.customerCallId || 0)
-    // if (onClickCall) onClickCall(value);
+    try {
+      await createCustomerCallRecord(Number(value?.customerCallId || 0));
+      navigate('/call-details/' + value?.customerCallId || 0);
+      // if (onClickCall) onClickCall(value);
+    } catch (error) {
+      console.log(error);
+      message.error('Không thể tạo cuộc gọi')
+    }
   };
 
   return (

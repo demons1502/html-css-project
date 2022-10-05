@@ -1,10 +1,12 @@
-import { Space } from 'antd';
+import { message, Space } from 'antd';
 import { FileDoneOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import * as S from './styles';
 import { updateCustomerCallRecord } from '../../services/customerCalls';
 import { useNavigate } from 'react-router-dom';
 import CreateAppointment from '../Main/views/AppointmentManagement/components/CreateAppointment';
+import { COMPANY_CUSTOMER_TYPE_ID, EMPLOYEE_CUSTOMER_TYPE_ID, PERSONAL_CUSTOMER_TYPE_ID } from './constants';
 
 export default function CallRecordInfo(props) {
   const [currentCheck, setCurrentCheck] = useState('1');
@@ -14,6 +16,7 @@ export default function CallRecordInfo(props) {
   });
   const [openAppointment, setOpenAppointment] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation()
   const { callrecordData, customerData, customerCallData } = props;
   const isCompleted = callrecordData?.completedAt;
 
@@ -36,6 +39,19 @@ export default function CallRecordInfo(props) {
     }
   };
 
+  const getCustomerType = (typeId) => {
+    switch (typeId) {
+      case PERSONAL_CUSTOMER_TYPE_ID:
+        return t('call-schedule.user');
+      case EMPLOYEE_CUSTOMER_TYPE_ID:
+        return t('call-schedule.user');
+      case COMPANY_CUSTOMER_TYPE_ID:
+        return t('call-schedule.company');
+      default:
+        return '';
+    }
+  }
+
   const handleUpdateCallRecord = async (action) => {
     if (!action) return;
     let isCompleted = null;
@@ -44,21 +60,32 @@ export default function CallRecordInfo(props) {
     if (action === 'cancel') { isCompleted = false }
 
     setLoadingBtn({ ...loadingBtn, [action]: true });
-    await updateCustomerCallRecord({
-      customerCallId: customerCallData.id,
-      customerCallRecordId: callrecordData.id,
-      isCompleted,
-      isPotential: currentCheck === '1' ? true : false
-    })
-    setLoadingBtn({ ...loadingBtn, [action]: false });
-    navigate('/dashboard')
+    try {
+      await updateCustomerCallRecord({
+        customerCallId: customerCallData.id,
+        customerCallRecordId: callrecordData.id,
+        isCompleted,
+        isPotential: currentCheck === '1' ? true : false
+      })
+      setLoadingBtn({ ...loadingBtn, [action]: false });
+      navigate('/dashboard')
+    } catch (error) {
+      message.error('Hoàn thành hoặc hủy cuộc gọi xảy ra lỗi')
+      setLoadingBtn({ ...loadingBtn, [action]: false });
+    }
+  };
+
+  const toggleAppointment = (status) => {
+    if ([true, false].includes(status))
+      return setOpenAppointment(status);
+    return setOpenAppointment(!openAppointment)
   };
 
   const handleClickFuncBtn = (action) => {
     setLoadingBtn({ ...loadingBtn, [action]: true })
     switch (action) {
       case 'appointment':
-        setOpenAppointment(true)
+        toggleAppointment(true)
         break;
       // case 'survey':
       //   break;
@@ -79,10 +106,10 @@ export default function CallRecordInfo(props) {
         <Space direction="vertical" size={15} style={{ width: '100%' }}>
           <Space align="center">
             <S.WrapText $color={S.gray200} $fontSize="13px">
-              {`Trạng thái:`}
+              {`${t('call-schedule.call-status-label')}:`}
             </S.WrapText>
             <S.WrapText $color={isCompleted ? S.error : S.green100} $fontSize="18px">
-              {isCompleted ? 'Đã kết thúc' : 'Đang gọi'}
+              {isCompleted ? t('call-schedule.call-canceled-status') : t('call-schedule.call-pending-status')}
             </S.WrapText>
           </Space>
           <S.WrapContent $padding="15px" $borderColor={S.gray100} $borderRadius="15px" $wFull={true}>
@@ -93,10 +120,10 @@ export default function CallRecordInfo(props) {
                 </S.WrapText>
                 <Space>
                   <S.WrapBtn $variant="filled" disabled={isCompleted || loadingBtn['complete']} onClick={() => handleUpdateCallRecord('complete')}>
-                    {'Hoàn thành'}
+                    {t('call-schedule.call-completed-status')}
                   </S.WrapBtn>
                   <S.WrapBtn $variant="filled" $colorScheme="error" disabled={isCompleted || loadingBtn['cancel']} onClick={() => handleUpdateCallRecord('cancel')}>
-                    {'Hủy gọi'}
+                    {t('call-schedule.call-cancel')}
                   </S.WrapBtn>
                 </Space>
               </S.FlexContent>
@@ -115,10 +142,10 @@ export default function CallRecordInfo(props) {
                     <Space direction="vertical" size={4}>
                       <Space align="center">
                         <div style={{ width: 4, height: 4, borderRadius: '50%', background: S.green100 }}></div>
-                        <S.WrapText>{`Loại khách hàng:`}</S.WrapText>
+                        <S.WrapText>{`${t('call-schedule.customer-type-label')}:`}</S.WrapText>
                       </Space>
                       <S.WrapText $fontWeight="700" style={{ marginLeft: 12 }}>
-                        {[1, 2].includes(customerData?.typeId) ? 'Cá nhân' : 'Doanh nghiệp'}
+                        {getCustomerType(customerData?.typeId)}
                       </S.WrapText>
                     </Space>
                   </Space>
@@ -126,23 +153,23 @@ export default function CallRecordInfo(props) {
                     <div style={{ fontSize: 16, color: S.gray200 }}>
                       <FileDoneOutlined />
                     </div>
-                    <S.WrapText>{`Ghi chú:`}</S.WrapText>
+                    <S.WrapText>{`${'common.note'}:`}</S.WrapText>
                     <S.WrapText $fontWeight="700">{renderNoteStatus(customerData?.status)}</S.WrapText>
                   </Space>
                 </Space>
               </S.WrapContent>
               <Space align="center">
                 <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted || loadingBtn['appointment']} onClick={() => handleClickFuncBtn('appointment')}>
-                  {`Đặt hẹn`}
+                  {t('call-schedule.make-appointment')}
                 </S.WrapBtn>
                 <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted || loadingBtn['survey']} onClick={() => handleClickFuncBtn('survey')}>
-                  {`Khảo sát`}
+                  {t('call-schedule.survey')}
                 </S.WrapBtn>
                 <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted || loadingBtn['consult']} onClick={() => handleClickFuncBtn('consult')}>
-                  {`Tư vấn`}
+                  {t('call-schedule.consult')}
                 </S.WrapBtn>
                 <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted || loadingBtn['solution']} onClick={() => handleClickFuncBtn('solution')}>
-                  {`Giải pháp`}
+                  {t('call-schedule.solution')}
                 </S.WrapBtn>
               </Space>
             </Space>
@@ -153,15 +180,19 @@ export default function CallRecordInfo(props) {
               disabled={isCompleted}
               onChange={() => setCurrentCheck('1')}
             >
-              {`Gọi thêm lần sau`}
+              {t('call-schedule.call-more')}
             </S.WrapCheckbox>
-            <S.WrapCheckbox checked={currentCheck === '2'} disabled={isCompleted} onChange={() => setCurrentCheck('2')}>
-              {`Không còn tiềm năng`}
+            <S.WrapCheckbox 
+              checked={currentCheck === '2'} 
+              disabled={isCompleted} 
+              onChange={() => setCurrentCheck('2')}
+            >
+              {t('call-schedule.no-more-potential')}
             </S.WrapCheckbox>
           </Space>
         </Space>
       </S.WrapContent>
-      <CreateAppointment open={openAppointment} handleCancel={() => setOpenAppointment(false)}/>
+      <CreateAppointment open={openAppointment} handleCancel={toggleAppointment}/>
     </div>
   );
 }

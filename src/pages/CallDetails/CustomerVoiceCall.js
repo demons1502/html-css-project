@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Space } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { message, Space } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import * as S from './styles';
 
@@ -9,22 +10,23 @@ import { getSpeechScript } from '../../services/customerCalls';
 export default function CustomerVoiceCall() {
   const [scriptData, setScriptData] = useState({});
   const [page, setPage] = useState(0);
+  const { t } = useTranslation();
   const speechScriptsList = scriptData?.dialogues || [];
-  console.log('speechScriptsList', speechScriptsList)
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const speechScriptData = await getSpeechScript('call');
-        setScriptData({
-          ...speechScriptData
-        })
-        // console.log('customerCall api', customerCall);
-      } catch (error) {
-        console.log('speechScript api err', error);
-      }
-    };
 
-    fetchData();
+  const fetchSpeechScriptData = async () => {
+    try {
+      const speechScriptData = await getSpeechScript('call');
+      setScriptData({
+        ...speechScriptData
+      })
+    } catch (error) {
+      console.log('speechScript api err', error);
+      message.error(t('call-schedule.fetch-script-error'))
+    }
+  }
+
+  useEffect(() => {
+    fetchSpeechScriptData();
   }, []);
 
   const handleChangePage = (dir) => {
@@ -40,7 +42,7 @@ export default function CustomerVoiceCall() {
   return (
     <div>
       <S.WrapText $fontSize="18px" $fontWeight="700" $padding="15px 30px">
-        {`Lời thoại khi gọi điện`}
+        {t('call-schedule.speech-script')}
       </S.WrapText>
       <div
         style={{
@@ -70,7 +72,7 @@ export default function CustomerVoiceCall() {
       <div style={{ padding: '15px 30px', display: 'flex', justifyContent: 'flex-end' }}>
         {speechScriptsList?.length > 0 && (
           <Space size={10}>
-            <S.WrapText $color={page === 0 ? S.gray300 : 'initial'}>{`Trước`}</S.WrapText>
+            <S.WrapText $color={page === 0 ? S.gray300 : 'initial'}>{t('call-schedule.prev')}</S.WrapText>
             <div
               style={{
                 cursor: 'pointer', borderRadius: 5, padding: 8,
@@ -92,7 +94,7 @@ export default function CustomerVoiceCall() {
             >
               <RightOutlined />
             </div>
-            <S.WrapText $color={page === speechScriptsList.length - 1 ? S.gray300 : 'initial'}>{`Tiếp`}</S.WrapText>
+            <S.WrapText $color={page === speechScriptsList.length - 1 ? S.gray300 : 'initial'}>{t('call-schedule.next')}</S.WrapText>
           </Space>
         )}
       </div>

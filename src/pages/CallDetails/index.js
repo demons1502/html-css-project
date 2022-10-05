@@ -1,48 +1,49 @@
-import { Row, Col, Space, Checkbox } from 'antd';
-import { LeftOutlined, RightOutlined, CopyOutlined, FileDoneOutlined } from '@ant-design/icons';
+import { Row, Col, Space, message } from 'antd';
+import { LeftOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import * as S from './styles';
 import { Link, useParams } from 'react-router-dom';
 
 import { getCustomerCallById } from '../../services/customerCalls';
 import CallRecordInfo from './CallRecordInfo';
-import CustomerSumaryInfo from './CustomerSumaryInfo';
+import CustomerSummaryInfo from './CustomerSummaryInfo';
 import CustomerVoiceCall from './CustomerVoiceCall';
 
 
 export default function CallDetails() {
   const [callData, setCallData] = useState({ callRecord: {}, customerInfo: {}, customerCall: {} })
   const params = useParams();
-  // console.log(params);
+  const { t } = useTranslation()
+
+  const fetchCustomerCallData = async () => {
+    try {
+      const customerCall = await getCustomerCallById(params.customerCallId || 0);
+      setCallData({
+        ...callData,
+        callRecord: customerCall?.latestCall,
+        customerInfo: customerCall?.customerCall?.customer,
+        customerCall: {
+          noteCount: customerCall?.customerCall?.noteCount,
+          id: customerCall?.customerCall?.id,
+          isPotential: customerCall?.customerCall?.isPotential,
+        }
+      })
+    } catch (error) {
+      console.log('customerCall api err', error);
+      message.error(t('common.call-data-error'))
+    }
+  }
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const customerCall = await getCustomerCallById(params.customerCallId || 0);
-        setCallData({
-          ...callData,
-          callRecord: customerCall?.latestCall,
-          customerInfo: customerCall?.customerCall?.customer,
-          customerCall: {
-            noteCount: customerCall?.customerCall?.noteCount,
-            id: customerCall?.customerCall?.id,
-            isPotential: customerCall?.customerCall?.isPotential,
-          }
-        })
-        // console.log('customerCall api', customerCall);
-      } catch (error) {
-        console.log('customerCall api err', error);
-      }
-    };
-
-    fetchData();
+    fetchCustomerCallData();
   }, []);
-  // console.log('callData', callData);
+
 
   if (!callData.callRecord) 
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: 300 }}>
-        <S.WrapText $color={S.gray200}>{`Không có cuộc gọi nào`}</S.WrapText>
+        <S.WrapText $color={S.gray200}>{t('call-schedule.no-call')}</S.WrapText>
       </div>
     )
 
@@ -55,7 +56,7 @@ export default function CallDetails() {
           </S.BtnIcon>
         </Link>
         <S.WrapHeader>
-          <h3>{`Gọi điện`}</h3>
+          <h3>{t('call-schedule.call')}</h3>
         </S.WrapHeader>
       </Space>
       <Row gutter={[15, 15]}>
@@ -68,7 +69,7 @@ export default function CallDetails() {
             </Col>
             <Col span={24}>
               <S.WrapContainer>
-                <CustomerSumaryInfo customerData={callData.customerInfo} />
+                <CustomerSummaryInfo customerData={callData.customerInfo} />
               </S.WrapContainer>
             </Col>
           </Row>

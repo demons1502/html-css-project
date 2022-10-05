@@ -62,7 +62,7 @@ const CreatePayment = (props) => {
   };
 
   const disabledDateEnd = (current) => {
-    // Can not select days after today
+    // Can not select days before today
     return current && current <= form.getFieldValue('startDate');
   };
 
@@ -131,7 +131,7 @@ const CreatePayment = (props) => {
         <Form.Item name="description" label="Nội dung">
           <Textarea autoSize placeholder="Nội dung" />
         </Form.Item>
-        <Form.Item className="paymentManagement-modal_button">
+        <Form.Item className="createPayment-modal_button">
           <Button className="btn-danger" onClick={handleCancel}>
             Hủy
           </Button>

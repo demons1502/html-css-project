@@ -26,14 +26,12 @@ const PaymentManagement = () => {
   const inputRef = useRef();
 
   const payments = useSelector((state) => state.paymentManagementReducer);
-  const loading = useSelector((state) => state.loading.loading);
 
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
   const handleDeleteOne = (item) => {
-    console.log(item);
     ModalConfirm({
       content: `Bạn chắc chắn muốn xóa thanh toán này không`,
       callApi: () => {

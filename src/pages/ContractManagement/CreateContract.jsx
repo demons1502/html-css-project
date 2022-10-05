@@ -10,7 +10,8 @@ import useFormErrors from '../../hooks/useFormErrors'
 // import { formatDataNumber, getTimeByTZ } from "../../helper"
 // import { VALIDATE_MESSAGES, FORMAT_DATE } from '../../ultis/constant';
 // import InputNumber from '../../components/common/InputNumber';
-// import { DEPOSIT_TERM as depositTermOptions } from '../../ultis/constant';
+import { DEPOSIT_TERM as depositTermOptions } from '../../ultis/constant';
+import { getDepositTermLabel } from '../../ultis/despositTerm';
 
 function CreateContract(props) {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ function CreateContract(props) {
   useFormErrors(form);
   const { setVisibleModal, dataEdit } = props
   const customerName = useSelector((state) => state.contractManagement.custom);
-  var customerEdit = useSelector((state) => state.contractManagement.dataEdit);
+  var contractEdit = useSelector((state) => state.contractManagement.dataEdit);
   const refreshData = useSelector((state) => state.contractManagement.refreshData);
   const dispatch = useDispatch();
 
@@ -28,9 +29,11 @@ function CreateContract(props) {
   }, []);
   var { Option } = AutoComplete;
 
+  // const initForm = contractEdit;
+
   const onFinish = (values) => {
     // dùng để chuyển đổi dữ liệu khi edit nhưng k sửa chu kì nộp phí
-    (values.depositTerm == "Tháng") ? values.depositTerm = 1 : (values.depositTerm == "Nửa năm") ? values.depositTerm = 6 : (values.depositTerm == "Quý") ? values.depositTerm = 3 : (values.depositTerm == "Năm") ? values.depositTerm = 12 : values.depositTerm;
+    // (values.depositTerm == "Tháng") ? values.depositTerm = 1 : (values.depositTerm == "Nửa năm") ? values.depositTerm = 6 : (values.depositTerm == "Quý") ? values.depositTerm = 3 : (values.depositTerm == "Năm") ? values.depositTerm = 12 : values.depositTerm;
     const data = {
       contractNumber: values.contractNumber,
       customerId: parseInt(customerId.value),
@@ -66,17 +69,17 @@ function CreateContract(props) {
     }
   }, [dataEdit])
 
-  const convertDepositTerm = (value) => {
-    return (value == 1) ? value = "Tháng" : (value == 3) ? value = "Quý" : (value == 6) ? value = "Nửa năm" : (value == 12) ? value = "Năm" : value
-  }
+  // const convertDepositTerm = (value) => {
+  //   return (value == 1) ? value = "Tháng" : (value == 3) ? value = "Quý" : (value == 6) ? value = "Nửa năm" : (value == 12) ? value = "Năm" : value
+  // }
 
-  useEffect(() => {
-    if (Object.keys(customerEdit).length > 0 && Object.keys(dataEdit).length > 0) {
-      form.setFieldsValue({ ...customerEdit, ...{ date: moment(customerEdit.startDate), ...{ depositTerm: convertDepositTerm(customerEdit.depositTerm) } } })
-    } else {
-      form.resetFields()
-    }
-  }, [customerEdit, dataEdit])
+  // useEffect(() => {
+  //   if (Object.keys(contractEdit).length > 0 && Object.keys(dataEdit).length > 0) {
+  //     form.setFieldsValue({ ...contractEdit, ...{ date: moment(contractEdit.startDate) } })
+  //   } else {
+  //     form.resetFields()
+  //   }
+  // }, [contractEdit, dataEdit])
 
   useEffect(() => {
     if (refreshData) {
@@ -97,7 +100,9 @@ function CreateContract(props) {
     }
   }
 
-  return <Form layout="vertical" form={form} onFinish={onFinish} autoComplete='off'>
+  console.log(contractEdit);
+
+  return <Form layout="vertical" form={form} onFinish={onFinish} autoComplete='off' initialValues={contractEdit}>
     <input type='hidden' ref={customerId} name="customerId" value="" />
     <Row gutter={[6, 13]}>
       <Col span={6}>
@@ -166,7 +171,7 @@ function CreateContract(props) {
         </Form.Item>
       </Col>
       <Col span={6}>
-        {customerEdit.startDate ? (
+        {contractEdit.startDate ? (
           <Form.Item
             label='Ngày hiệu lực'
             name="date"
@@ -201,21 +206,7 @@ function CreateContract(props) {
         <Form.Item
           label='Chu kỳ nộp phí'
           name='depositTerm'
-          // initialValue={customerEdit.depositTerm}
-          rules={[{ required: true }]}
-        >
-          <Select className='select-item-outline' placeholder='Chọn'>
-            <Option value='1'>Tháng</Option>
-            <Option value='3'>Quý</Option>
-            <Option value='6'>Nửa năm</Option>
-            <Option value='12'>Năm</Option>
-          </Select>
-        </Form.Item>
-        {/* <Form.Item
-          label='Chu kỳ nộp phí'
-          name='depositTerm'
-          // initialValue={dataEdit.depositTerm}
-          defaultValue={customerEdit?.depositTerm}
+          initialValue={contractEdit.depositTerm}
           rules={[{ required: true }]}
         >
           <Select className='select-item-outline' placeholder='Chọn'>
@@ -223,7 +214,7 @@ function CreateContract(props) {
               return (<Option key={index} value={option.value}>{option.label}</Option>);
             })}
           </Select>
-        </Form.Item> */}
+        </Form.Item>
       </Col>
       <Col span={24}>
         <Form.Item className="footer-modal">

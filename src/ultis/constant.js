@@ -66,9 +66,9 @@ export const MANAGEMENT_CONTENT = [
   { label: 'Hỏi đáp', value: 'questions' },
 ];
 
-// export const DEPOSIT_TERM = [
-//   { label: 'Tháng', value: '1' },
-//   { label: 'Quý', value: '3' },
-//   { label: 'Nửa năm', value: '6' },
-//   { label: 'Năm', value: '12' },
-// ];
+export const DEPOSIT_TERM = [
+  { label: 'Tháng', value: '1' },
+  { label: 'Quý', value: '3' },
+  { label: 'Nửa năm', value: '6' },
+  { label: 'Năm', value: '12' },
+];

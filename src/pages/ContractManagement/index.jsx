@@ -12,7 +12,7 @@ import { retrieveData } from '../../slices/contractManagement';
 import { DEFAULT_SIZE } from '../../ultis/constant'
 import { formatDataNumber, getTimeByTZ } from "../../helper"
 import { EditOutlined } from '@ant-design/icons';
-// import { getDepositTermLabel } from '../../ultis/despositTerm';
+import { getDepositTermLabel } from '../../ultis/despositTerm';
 
 export default function ContractManagement() {
   const dispatch = useDispatch()
@@ -27,9 +27,9 @@ export default function ContractManagement() {
 
   const [inputText, setInputText] = useState('')
 
-  const convertDepositTerm = (value) => {
-    return (value == 1) ? value = "Tháng" : (value == 3) ? value = "Quý" : (value == 6) ? value = "Nửa năm" : (value == 12) ? value = "Năm" : value
-  }
+  // const convertDepositTerm = (value) => {
+  //   return (value == 1) ? value = "Tháng" : (value == 3) ? value = "Quý" : (value == 6) ? value = "Nửa năm" : (value == 12) ? value = "Năm" : value
+  // }
 
   const convertUnderscore = (value) => {
     let timeFormat = getTimeByTZ(value)
@@ -79,9 +79,8 @@ export default function ContractManagement() {
     {
       title: 'Chu kì nộp phí',
       render: (record) => {
-        return (
-          // <span>{getDepositTermLabel(record.depositTerm)}</span>
-          <span>{convertDepositTerm(record.depositTerm)}</span>
+        return (          
+          <span>{getDepositTermLabel(record.depositTerm)}</span>
         );
       }
     },
@@ -109,8 +108,8 @@ export default function ContractManagement() {
     },
     {
       title: '',
-      // render: (record) => <img className='edit_icon' src={IconEdit} onClick={() => handleEditUser(record)} />,
-      render: (record) => <Button onClick={() => handleEditUser(record)} icon={<EditOutlined style={{ fontSize: '14px' }} />}></Button>,
+      // render: (record) => <img className='edit_icon' src={IconEdit} onClick={() => handleEditContract(record)} />,
+      render: (record) => <Button onClick={() => handleEditContract(record)} icon={<EditOutlined style={{ fontSize: '14px' }} />}></Button>,
 
     }
   ];
@@ -130,8 +129,8 @@ export default function ContractManagement() {
       dispatch(retrieveData({ limit: paginate.limit, offset: offset }))
   }, [inputText, paginate,])
 
-  const handleEditUser = (record) => {
-    console.log(record);
+  const handleEditContract = (record) => {
+    // console.log(record);
     setDataEdit({ id: record.id })
     setVisibleModal(true)
     setTitleModal('Thay đổi nội dung hợp đồng')

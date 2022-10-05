@@ -8,7 +8,7 @@ import { Button } from '../../components/styles';
 import { getConsult } from '../../slices/consult';
 import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import { options } from './options';
-import { formatDataNumber } from '../../helper/index';
+import { formatDataNumber, getTimeByTZ } from '../../helper/index';
 import { marriageStatus, acquaintanceLevel, typeCustomer } from '../../constants/common';
 import { useNavigate } from 'react-router-dom';
 
@@ -89,7 +89,9 @@ export default function FinanceConsultant() {
     },
     {
       title: 'Lịch hẹn sắp tới',
-      dataIndex: 'appointment_schedule',
+      render: (record) => {
+        return <span>{getTimeByTZ(record.nextAppointment)}</span>;
+      },
     },
     {
       title: '',

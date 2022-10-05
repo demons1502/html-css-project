@@ -146,7 +146,7 @@ const Survey = () => {
               <Col lg={9} md={24} sm={24} xs={24}>
                 <Layout.Content className="manageContent">
                   <div className="content-div-2">
-                    <Dialogue title="Lời thoại khảo sát" type="survey"/>
+                    <Dialogue title="Quy trình khảo sát" type="survey"/>
                   </div>
                 </Layout.Content>
               </Col>

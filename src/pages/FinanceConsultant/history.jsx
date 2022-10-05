@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import Table from '../../components/common/TableNormal';
-import { formatDataNumber, getTimeByTZ } from '../../helper/';
+import { formatDataNumber, formatDate } from '../../helper/';
 import { getConsultById } from '../../services/financialConsultant';
 import { getConsult } from '../../slices/consult';
 import { createData } from '../../slices/customerCare';
@@ -49,7 +49,7 @@ export default function History(props) {
       title: 'Ngày tháng',
       key: 'stt',
       render: (record) => {
-        return <span>{getTimeByTZ(record.createAt)}</span>;
+        return <span>{formatDate(record.createAt)}</span>;
       },
     },
     {

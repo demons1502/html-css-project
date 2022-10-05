@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Spin, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { getSurveyDetails } from "../../../slices/surveys";
-import { getTimeByTZ } from "../../../helper/index";
+import { formatDate } from "../../../helper/index";
 
 export const HistoryPopup = ({ historyHandler }) => {
   const { t } = useTranslation();
@@ -20,7 +20,7 @@ export const HistoryPopup = ({ historyHandler }) => {
         apptId: history?.apptId,
         customerId: history?.customerId,
         surveyId: history?.surveyId,
-        date: getTimeByTZ(history?.createdAt),
+        date: formatDate(history?.createdAt),
         info: history?.hintName,
       };
     });

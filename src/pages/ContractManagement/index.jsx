@@ -1,8 +1,7 @@
-import { React, useState, useEffect, useCallback } from 'react'
+import { React, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from "../../components/styles"
 import IconPlus from '../../assets/images/icons/plus.svg';
-import IconEdit from '../../assets/images/icons/edit-green.svg';
 import InputSearch from '../../components/common/InputSearch'
 import Table from '../../components/common/TableNormal'
 import Pagination from '../../components/common/Pagination'
@@ -10,7 +9,7 @@ import Modal from '../../components/common/Modal';
 import CreateContract from './CreateContract';
 import { retrieveData } from '../../slices/contractManagement';
 import { DEFAULT_SIZE } from '../../ultis/constant'
-import { formatDataNumber, getTimeByTZ } from "../../helper"
+import { formatDataNumber, formatDate } from "../../helper"
 import { EditOutlined } from '@ant-design/icons';
 import { getDepositTermLabel } from '../../ultis/despositTerm';
 
@@ -26,15 +25,6 @@ export default function ContractManagement() {
   });
 
   const [inputText, setInputText] = useState('')
-
-  // const convertDepositTerm = (value) => {
-  //   return (value == 1) ? value = "Tháng" : (value == 3) ? value = "Quý" : (value == 6) ? value = "Nửa năm" : (value == 12) ? value = "Năm" : value
-  // }
-
-  const convertUnderscore = (value) => {
-    let timeFormat = getTimeByTZ(value)
-    return timeFormat.replaceAll('-', '/')
-  }
 
   const columns = [
     {
@@ -64,7 +54,7 @@ export default function ContractManagement() {
       title: 'Ngày hiệu lực',
       render: (record) => {
         return (
-          <span>{convertUnderscore(record.startDate)}</span>
+          <span>{formatDate(record.startDate)}</span>
         );
       }
     },
@@ -88,7 +78,7 @@ export default function ContractManagement() {
       title: 'Lần cuối nộp phí',
       render: (record) => {
         return (
-          <span>{convertUnderscore(record.lastDepositDate)}</span>
+          <span>{formatDate(record.lastDepositDate)}</span>
         );
       }
     },
@@ -96,7 +86,7 @@ export default function ContractManagement() {
       title: 'Hạn nộp phí tiếp theo',
       render: (record) => {
         return (
-          <span>{convertUnderscore(record.nextDepositDue)}</span>
+          <span>{formatDate(record.nextDepositDue)}</span>
         );
       }
     },

@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getConsultants, getConsultScript } from '../../slices/financialConsultant';
 import { useEffect } from 'react';
 import { getConsult } from '../../slices/consult';
-import { getTimeByTZ } from '../../helper';
+import { formatDate } from '../../helper';
 
 export default function FinanceConsultant() {
   const { t } = useTranslation();
@@ -113,7 +113,7 @@ export default function FinanceConsultant() {
                         </div>
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: '5px' }} />
-                          <span>Ngày: {getTimeByTZ(history?.createdAt)}</span>
+                          <span>Ngày: {formatDate(history?.createdAt)}</span>
                         </div>
                       </div>
                     )}

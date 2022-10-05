@@ -1,22 +1,19 @@
-import { React, useEffect, useState, useRef } from 'react';
+import { React, useEffect } from 'react';
 import { Form, Row, Col, DatePicker, AutoComplete } from 'antd';
 import { Button, Select, Input } from "../../components/styles"
-import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { createContract, updateContract, getByIdApi } from '../../slices/contractManagement';
 import { useTranslation } from 'react-i18next';
 import { getCustoms } from '../../slices/contractManagement';
 import useFormErrors from '../../hooks/useFormErrors'
-// import { formatDataNumber, getTimeByTZ } from "../../helper"
-// import { VALIDATE_MESSAGES, FORMAT_DATE } from '../../ultis/constant';
-// import InputNumber from '../../components/common/InputNumber';
-import { DEPOSIT_TERM as depositTermOptions } from '../../ultis/constant';
+import { DEPOSIT_TERM as depositTermOptions, FORMAT_DATE } from '../../ultis/constant';
 import { getDepositTermLabel } from '../../ultis/despositTerm';
+import { formatDate, formatLocalDate } from '../../helper/index'
+import moment from 'moment';
 
 function CreateContract(props) {
   const { t } = useTranslation();
   const [form] = Form.useForm();
-  const customerId = useRef();
   useFormErrors(form);
   const { setVisibleModal, dataEdit } = props
   const customerName = useSelector((state) => state.contractManagement.custom);
@@ -29,23 +26,17 @@ function CreateContract(props) {
   }, []);
   var { Option } = AutoComplete;
 
-  // const initForm = contractEdit;
-
   const onFinish = (values) => {
-    // dùng để chuyển đổi dữ liệu khi edit nhưng k sửa chu kì nộp phí
-    // (values.depositTerm == "Tháng") ? values.depositTerm = 1 : (values.depositTerm == "Nửa năm") ? values.depositTerm = 6 : (values.depositTerm == "Quý") ? values.depositTerm = 3 : (values.depositTerm == "Năm") ? values.depositTerm = 12 : values.depositTerm;
     const data = {
       contractNumber: values.contractNumber,
-      customerId: parseInt(customerId.value),
+      customerId: +values.customerId,
       beneficiary: values.beneficiary,
       value: + values.value,
-      startDate: values.date._d,
-      // startDate: values.date,
+      startDate: formatLocalDate(values.date._d),
       duration: + values.duration,
       depositTerm: + values.depositTerm,
     };
-    // console.log(values);
-    // console.log(data);
+
     if (Object.keys(dataEdit).length > 0) {
       dispatch(updateContract({ id: dataEdit.id, data: data }));
     } else {
@@ -58,28 +49,22 @@ function CreateContract(props) {
     dispatch(getCustoms({ name: searchText, limit: 10, offset: 0 }));
   };
 
-  const onSelectCustomer = (value, option) => {
-    console.log(value, option);
-    customerId.value = option.key;
-  };
-
   useEffect(() => {
     if (Object.keys(dataEdit).length > 0) {
       dispatch(getByIdApi(dataEdit.id))
     }
   }, [dataEdit])
 
-  // const convertDepositTerm = (value) => {
-  //   return (value == 1) ? value = "Tháng" : (value == 3) ? value = "Quý" : (value == 6) ? value = "Nửa năm" : (value == 12) ? value = "Năm" : value
-  // }
-
-  // useEffect(() => {
-  //   if (Object.keys(contractEdit).length > 0 && Object.keys(dataEdit).length > 0) {
-  //     form.setFieldsValue({ ...contractEdit, ...{ date: moment(contractEdit.startDate) } })
-  //   } else {
-  //     form.resetFields()
-  //   }
-  // }, [contractEdit, dataEdit])
+  useEffect(() => {
+    if (Object.keys(contractEdit).length > 0 && Object.keys(dataEdit).length > 0) {
+      form.setFieldsValue({ ...contractEdit, ...{ 
+        date: moment.utc(contractEdit.startDate).local(), 
+        depositTermLabel: getDepositTermLabel(contractEdit.depositTerm),
+      } })
+    } else {
+      form.resetFields();
+    }
+  }, [contractEdit, dataEdit])
 
   useEffect(() => {
     if (refreshData) {
@@ -100,10 +85,22 @@ function CreateContract(props) {
     }
   }
 
-  console.log(contractEdit);
-
-  return <Form layout="vertical" form={form} onFinish={onFinish} autoComplete='off' initialValues={contractEdit}>
-    <input type='hidden' ref={customerId} name="customerId" value="" />
+  return <Form layout="vertical" form={form} onFinish={onFinish} autoComplete='off' initialValues={dataEdit}>
+    <Form.Item
+      label='Mã khách hàng'
+      name='customerId'
+      hidden={true}
+    >
+      <Input type='number' name="depositTerm"/>
+    </Form.Item>
+    <Form.Item
+      label='Chu kỳ trả phí'
+      name='depositTerm'
+      rules={[{ required: true }]}
+      hidden={true}
+    >
+      <Input type='number' name="depositTerm"/>
+    </Form.Item>
     <Row gutter={[6, 13]}>
       <Col span={6}>
         <Form.Item
@@ -122,7 +119,7 @@ function CreateContract(props) {
         >
           <AutoComplete
             onSearch={onSearch}
-            onSelect={onSelectCustomer}
+            onSelect={(value, option) => form.setFieldValue('customerId', option.key)}
             dropdownMatchSelectWidth={400}
             placeholder='Nhập'
             className="select-item-outline"
@@ -171,27 +168,15 @@ function CreateContract(props) {
         </Form.Item>
       </Col>
       <Col span={6}>
-        {contractEdit.startDate ? (
-          <Form.Item
-            label='Ngày hiệu lực'
-            name="date"
-            rules={[{ required: true }]}
-          >
-            <DatePicker className="input-item-outline"
-              format={moment.localeData().longDateFormat('L')}
-              placeholder={moment.localeData().longDateFormat('L')} />
-          </Form.Item>
-        ) : (
-          <Form.Item
-            label='Ngày hiệu lực'
-            name="date"
-            rules={[{ required: true }]}
-          >
-            <DatePicker className="input-item-outline"
-              placeholder={moment.localeData().longDateFormat('L')}
-              format={moment.localeData().longDateFormat('L')} />
-          </Form.Item>
-        )}
+        <Form.Item
+          label='Ngày hiệu lực'
+          name="date"
+          rules={[{ required: true }]}
+        >
+          <DatePicker className="input-item-outline"
+            format={FORMAT_DATE}
+            placeholder={FORMAT_DATE} />
+        </Form.Item>
       </Col>
       <Col span={6}>
         <Form.Item
@@ -205,14 +190,12 @@ function CreateContract(props) {
       <Col span={6}>
         <Form.Item
           label='Chu kỳ nộp phí'
-          name='depositTerm'
-          initialValue={contractEdit.depositTerm}
+          name='depositTermLabel'
           rules={[{ required: true }]}
         >
-          <Select className='select-item-outline' placeholder='Chọn'>
-            {depositTermOptions.map((option, index) => {
-              return (<Option key={index} value={option.value}>{option.label}</Option>);
-            })}
+          <Select className='select-item-outline' placeholder='Chọn' 
+            options={depositTermOptions} 
+            onChange={(e) => form.setFieldValue('depositTerm', e)}>
           </Select>
         </Form.Item>
       </Col>

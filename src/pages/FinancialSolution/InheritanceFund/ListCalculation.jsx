@@ -1,24 +1,22 @@
-import { Button, Select, Checkbox, Form, Input } from "antd";
-import React from "react";
+import { Select, Checkbox, Form } from 'antd';
+import React from 'react';
+import InputNumber from '../../../components/common/InputNumber';
+import Input from '../../../components/common/Input';
+import { Button } from '../../../components/styles';
 
 const ListCalculation = () => {
   const [form] = Form.useForm();
   const onFinish = (values) => {
-    console.log("Success:", values);
+    console.log('Success:', values);
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.log('Failed:', errorInfo);
   };
 
   const { Option } = Select;
   return (
-    <Form
-      form={form}
-      name="control-hooks"
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off">
+    <Form form={form} name="control-hooks" onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">
       <div className="container-right-middle">
         <Form.Item
           name="name1"
@@ -26,10 +24,10 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-           
             },
-          ]}>
-          <Input placeholder="0" type="number" min={0} style={{ width: 152 }} />
+          ]}
+        >
+          <InputNumber placeholder="0" min={0} style={{ width: 152 }} controls={false} />
         </Form.Item>
         <Form.Item
           name="name2"
@@ -37,10 +35,10 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-            
             },
-          ]}>
-          <Input placeholder="0" type="text" style={{ width: 152 }} />
+          ]}
+        >
+          <Input placeholder="0" style={{ width: 152 }} />
         </Form.Item>
         <Form.Item
           name="name3"
@@ -48,10 +46,10 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-           
             },
-          ]}>
-          <Input placeholder="0" type="number" min={0} style={{ width: 152 }} />
+          ]}
+        >
+          <Input placeholder="0" min={0} style={{ width: 152 }} />
         </Form.Item>
       </div>
 
@@ -61,7 +59,7 @@ const ListCalculation = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="btn-primary">
+          <Button type="primary" htmlType="submit">
             Bảng minh họa
           </Button>
         </Form.Item>

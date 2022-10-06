@@ -22,7 +22,7 @@ const IllustrateFiduciary = () => {
   const dispatch = useDispatch()
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const [contract, setContract] = useState([]) // contract of user
-  const [dataToSave, setDataToSave] = useState({...location?.state,investmentYear: '', additionalInvestmentYear:''} || {})
+  const [dataToSave, setDataToSave] = useState({...location?.state,investmentYear: '', additionalInvestmentYear:'', hideName: ''} || {})
   const [callSave, setCallSave] = useState(false)
   const [date, setDate] = useState(() => {
     var today = new Date();
@@ -35,7 +35,29 @@ const IllustrateFiduciary = () => {
 
   useEffect(() => {
     if (callSave) {
-      // dispatch(postSaveFinances())
+      let data={
+        customerApptRecordId: dataToSave.userSelected.customerApptRecordId,
+        fundType: dataToSave.typeFund,
+        isPotential: (dataToSave.values.isPotential == undefined) ? "false" : 'true',
+        result: "string",
+        hintName: dataToSave.hideName,
+        version:"string",
+        sumInsured: dataToSave.total,
+        baseYear: dataToSave.additionalInvestmentYear,
+        basePremium: 20000, //???
+        annualBasePremiums: [ 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000 ], //???
+        CISupport: 10000, //???
+        inpatient: "SILVER", //???
+        outpatient: "TITAN",//???
+        premiumSupport: "no", //???
+        topUpPremium: 10000, //???
+        topUpYears: 10, //???
+        annualTopUpPremiums: [ 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000 ],//???
+        rate: dataToSave.investmentYear,
+        interestRate: dataToSave.investmentYear.toString(),
+        expensePerMonth: dataToSave.values.amount,
+      }
+      dispatch(postSaveFinances(data))
       //call api save
       setCallSave(false)
     }
@@ -159,7 +181,7 @@ const IllustrateFiduciary = () => {
               >
                 Lưu
               </Button> */}
-              <ClosingModal setCallSave={(e)=>setCallSave(e)}/>
+              <ClosingModal setCallSave={(e)=>setCallSave(e)} setDataToSave={(e)=>{setDataToSave(e)}}/>
             </div>
           </div>
         </div>

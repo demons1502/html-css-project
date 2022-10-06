@@ -148,12 +148,12 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
       </div>
 
       <div className="container-right-submit">
-        <Form.Item name="remember"
+        <Form.Item name="isPotential"
           valuePropName="checked"
         >
           <Checkbox
-            // onChange={(e) => setIsPotential(e.target.checked)}
             defaultChecked={false}
+            // onChange={(e) => setIsPotential(e.target.checked)}
             // type="checkbox"
           >
             Không còn tiềm năng

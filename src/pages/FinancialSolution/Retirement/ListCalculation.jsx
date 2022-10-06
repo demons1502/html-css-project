@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 
-const ListCalculation = () => {
+const ListCalculation = ({typeFund, userSelected}) => {
   const [form] = Form.useForm();
   const [TotalAmount, setTotalAmount] = useState(0);
   const [TotalAmountAfterMinus, setTotalAmountAfterMinus] = useState(0);
@@ -20,6 +20,16 @@ const ListCalculation = () => {
 
   const onFinish = (values) => {
     console.log("Success:", values);
+    navigate("/advise/financial-solutions/minh-hoa-gia",
+      {
+        state: {
+          values: values, 
+          total: TotalAmount,
+          typeFund: typeFund,
+          userSelected: userSelected
+        }
+      });
+
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -164,7 +174,7 @@ const ListCalculation = () => {
               placeholder="0"
               type="text"
               style={{ width: 45, paddingRight: 0 }}
-              // value={Percent}
+            // value={Percent}
             />
             <span className="pIcon">%</span>
           </div>

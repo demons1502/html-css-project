@@ -12,31 +12,30 @@ import Dialogue from "../../../components/common/Dialogue/index"
 import { getFinanceDatas } from "../../../slices/financeSolutions";
 import { formatCountdown } from "antd/lib/statistic/utils";
 
+// id
+// const { id } = location.state;
+
+// // dispatch
+
+// // dispatch getFinanceDatas
+// useEffect(() => {
+//   dispatch(getFinanceDatas(id));
+// }, [getFinanceDatas]);
+
+// // useSelector
+// const finaceDatas = useSelector(
+//   (state) => state.financeReducer.getFinanceDatas
+// );
+// console.log("finaceDatas ==>", finaceDatas);
 const ContingencyFund = ({ apptId = null }) => {
-
-  const location = useLocation();
-  // title
-  const [title] = useState(location?.state?.title);
-  const dispatch = useDispatch();
-
-  // id
-  // const { id } = location.state;
-
-  // // dispatch
-
-  // // dispatch getFinanceDatas
-  // useEffect(() => {
-  //   dispatch(getFinanceDatas(id));
-  // }, [getFinanceDatas]);
-
-  // // useSelector
-  // const finaceDatas = useSelector(
-  //   (state) => state.financeReducer.getFinanceDatas
-  // );
-  // console.log("finaceDatas ==>", finaceDatas);
   const [itemContent, setItemContent] = useState({});
   const [lists, setLists] = useState(null);
   const [payload, setPayload] = useState("");
+  
+  const location = useLocation();  //thomas code get title from quan ly lich hen
+  // title
+  const [title] = useState(location?.state?.title);
+  const dispatch = useDispatch();
   var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution)
 
   const getAppointmentNoId = () => {
@@ -126,7 +125,7 @@ const ContingencyFund = ({ apptId = null }) => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation typeFund= "contingency-fund" userSelected={itemContent}/>  
+                  <ListCalculation typeFund= "prevention" userSelected={itemContent}/>  
                 </div>
 
                 {/* container-right end */}

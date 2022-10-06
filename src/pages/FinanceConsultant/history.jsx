@@ -2,7 +2,7 @@ import { Col } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Table from '../../components/common/TableNormal';
-import { formatDataNumber, getTimeByTZ } from '../../helper/';
+import { formatDataNumber, formatDate } from '../../helper/';
 import { getConsultants } from '../../slices/financialConsultant';
 
 export default function History(props) {
@@ -17,7 +17,7 @@ export default function History(props) {
       title: 'Ngày tháng',
       key: 'stt',
       render: (record) => {
-        return <span>{getTimeByTZ(record.createdAt)}</span>;
+        return <span>{formatDate(record.createdAt)}</span>;
       },
     },
     {

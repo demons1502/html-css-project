@@ -1,7 +1,7 @@
 import { Button, Col, Layout, List, Row, Typography, Spin } from "antd";
 import React, { Fragment, useEffect, useState } from "react";
 import SearchInputBox from "./SearchInputBox";
-import ListDetails from "./ListDetails";
+// import ListDetails from "./ListDetails";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import TabMenu from "./Tabs/TabMenu";
@@ -12,7 +12,7 @@ import { isEmpty } from "lodash";
 import calender from "../../assets/images/icons/calendar.svg";
 import left_arrow from "../../assets/images/icons/left-arrow.svg";
 import { HistoryPopup } from "./Modals/HistoryPopup";
-import { getTimeByTZ } from "../../helper/index";
+import { formatDate } from "../../helper/index";
 import { getSppechScriptInfo, clearSurvey } from "../../slices/surveys";
 import { getAppointments } from "../../slices/appointmentManagement";
 import moment from "moment";
@@ -23,7 +23,7 @@ const Survey = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [customerList, setCustomerList] = useState([]);
-  const [payload, setPayload] = useState("");
+  const [payload, setPayload] = useState('');
   const { customers, surveys } = useSelector((state) => state);
   const appointments = useSelector((state) => state.appointment);
 
@@ -66,19 +66,19 @@ const Survey = () => {
     dispatch(getCustomerHistoryById(selectedCustomer?.customerId));
   };
   const solutionHandler = () => {
-    navigate("/advise/financial-solutions");
+    navigate('/advise/financial-solutions');
   };
   const counselHandler = () => {
-    navigate("/advise/finance-consultant");
+    navigate('/advise/finance-consultant');
   };
   const appointmentHandler = () => {
-    navigate("/appointment-management");
+    navigate('/appointment-management');
   };
 
   return (
     <Fragment>
       <div className="survey">
-        <h3 className="title">{t("survey.title")}</h3>
+        <h3 className="title">{t('survey.title')}</h3>
 
         <div className="survey-container">
           <Row gutter={[16, 10]} justify="start" align="stretch">
@@ -97,7 +97,7 @@ const Survey = () => {
                         renderItem={(customer, index) => (
                           <List.Item
                             onClick={() => handleSelectCustomer(customer?.customerId)}
-                            className={`${customer?.customerId === selectedCustomer?.customerId ? "active" : ""}`}
+                            className={`${customer?.customerId === selectedCustomer?.customerId ? 'active' : ''}`}
                           >
                             <Typography.Text ellipsis>{customer?.name}</Typography.Text>
                           </List.Item>
@@ -114,24 +114,24 @@ const Survey = () => {
                         </div>
                         <div className="right">
                           <Button type="primary" className="btn-primary" onClick={solutionHandler}>
-                            {t("common.solution")}
+                            {t('common.solution')}
                           </Button>
                           <Button type="primary" className="btn-primary" onClick={counselHandler}>
-                            {t("common.consultant")}
+                            {t('common.consultant')}
                           </Button>
                           <Button type="primary" className="btn-primary" onClick={appointmentHandler}>
-                            {t("common.booking")}
+                            {t('common.booking')}
                           </Button>
                         </div>
                       </div>
                     ) : (
-                      <div className="container-right-header" style={{ padding: "20px" }}>
+                      <div className="container-right-header" style={{ padding: '20px' }}>
                         <div onClick={backToSurvey} className="back-to-survey">
-                          <img src={left_arrow} alt="back" height={12} style={{ marginRight: "5px" }} />
+                          <img src={left_arrow} alt="back" height={12} style={{ marginRight: '5px' }} />
                         </div>
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: "5px" }} />
-                          <span>Ngày: {surveys?.survey?.createdAt ? getTimeByTZ(surveys?.survey?.createdAt) : ""}</span>
+                          <span>Ngày: {surveys?.survey?.createdAt ? formatDate(surveys?.survey?.createdAt) : ""}</span>
                         </div>
                       </div>
                     )}

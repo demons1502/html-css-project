@@ -1,5 +1,4 @@
 import React from 'react';
-import { Form } from 'antd';
 import Input from '../../../components/common/Input';
 import { Button } from '../../../components/styles';
 

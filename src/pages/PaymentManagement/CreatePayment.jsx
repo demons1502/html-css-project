@@ -10,7 +10,7 @@ import { createPayment } from '../../slices/paymentManagement';
 import { LOADING_STATUS } from '../../ultis/constant';
 
 import styled from 'styled-components';
-import { formatDataNumber, getTimeByTZ } from '../../helper';
+import { formatDataNumber, formatDate } from '../../helper';
 import { useState } from 'react';
 
 const Textarea = styled(Input.TextArea)`
@@ -103,7 +103,7 @@ const CreatePayment = (props) => {
         >
           <DatePicker
             size="large"
-            format={getTimeByTZ}
+            format={formatDate}
             placeholder={moment.localeData().longDateFormat('L')}
             disabledDate={disabledDateStart}
           />
@@ -120,7 +120,7 @@ const CreatePayment = (props) => {
         >
           <DatePicker
             size="large"
-            format={getTimeByTZ}
+            format={formatDate}
             placeholder={moment.localeData().longDateFormat('L')}
             disabledDate={disabledDateEnd}
           />

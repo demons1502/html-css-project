@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import calender from '../../assets/images/icons/calendar.svg';
 import Dialogue from '../../components/common/Dialogue';
 import * as S from '../../components/styles';
-import { getTimeByTZ } from '../../helper';
 import { getConsult } from '../../slices/consult';
 import SearchInputBox from '../Survey/SearchInputBox';
 import HistoryDetail from './components/historyDetail';
@@ -98,7 +97,7 @@ export default function FinanceConsultant() {
                         </div>
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: '5px' }} />
-                          <span>Ngày: {getTimeByTZ(history?.createdAt)}</span>
+                          <span>Ngày: {formatDate(history?.createdAt)}</span>
                         </div>
                       </div>
                     )}

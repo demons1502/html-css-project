@@ -57,7 +57,7 @@ export const routes = () => [
         element: <GuestGuard element={<Dashboard />} />,
       },
       { 
-        path: 'call-details',
+        path: 'call-details/:customerCallId',
         element: <GuestGuard element={<CallDetails />} />
       },
       {

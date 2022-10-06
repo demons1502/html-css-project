@@ -1,16 +1,16 @@
-import { Spin, Table } from 'antd';
-import { React, useCallback, useMemo, useEffect, useState } from 'react';
+import { Spin } from 'antd';
+import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import FilterCommon from '../../components/common/Filter';
 import Pagination from '../../components/common/Pagination';
 import TableCommon from '../../components/common/TableNormal';
 import { Button } from '../../components/styles';
+import { acquaintanceLevel, marriageStatus, typeCustomer } from '../../constants/common';
+import { formatDataNumber, formatDate } from '../../helper/index';
 import { getConsult } from '../../slices/consult';
 import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import { options } from './options';
-import { formatDataNumber, getTimeByTZ } from '../../helper/index';
-import { marriageStatus, acquaintanceLevel, typeCustomer } from '../../constants/common';
-import { useNavigate } from 'react-router-dom';
 
 export default function FinanceConsultant() {
   const [status, setStatus] = useState(_.map(options, 'value'));
@@ -81,7 +81,7 @@ export default function FinanceConsultant() {
     {
       title: 'Lịch hẹn sắp tới',
       render: (record) => {
-        return <span>{getTimeByTZ(record.nextAppointment)}</span>;
+        return <span>{formatDate(record.nextAppointment)}</span>;
       },
     },
     {

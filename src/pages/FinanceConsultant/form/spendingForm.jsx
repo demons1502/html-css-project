@@ -1,6 +1,6 @@
 import { Checkbox, Form, message, Popover } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import DotImg from '../../../assets/images/icons/dot.svg';
 import InputNumber from '../../../components/common/InputNumber';
 import { Button } from '../../../components/styles';

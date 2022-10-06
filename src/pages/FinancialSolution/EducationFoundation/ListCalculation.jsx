@@ -23,6 +23,7 @@ const ListCalculation = () => {
 
   // onchange founctions
   const onChange = (value) => {
+    console.log(value);
     setAnnualTuitionFee(value);
   };
   const onChange1 = (value) => {
@@ -98,20 +99,21 @@ const ListCalculation = () => {
     console.log("Failed:", errorInfo);
   };
 
-  const selectChange=(e)=>{
-    switch(e){
-      case "1":
-        setAnnualTuitionFee(80000000)
-        break
-      case "2":
-        setAnnualTuitionFee(600000000)
-        break;
-      case "3":
-        setAnnualTuitionFee(1000000000)
-        break
-      default:
-        setAnnualTuitionFee(80000000)
-    } 
+  const selectChange = (e) => {
+    // switch (e) {
+    //   case "1":
+    //     setAnnualTuitionFee(80000000)
+    //     break
+    //   case "2":
+    //     onChange(600000000)
+    //     break;
+    //   case "3":
+    //     
+    //     break
+    //   default:
+    //     setAnnualTuitionFee(80000000)
+    // }
+    setAnnualTuitionFee(1000000000)
   }
   const { Option } = Select;
   return (
@@ -119,15 +121,16 @@ const ListCalculation = () => {
       form={form}
       name="control-hooks"
       onFinish={onFinish}
+      initialValues={{name2: 10000000}}
       onFinishFailed={onFinishFailed}
       autoComplete="off">
       <div className="container-right-middle">
         <Form.Item name="name1" label="Nền giáo dục" className="input-item"
-          // initialvalues={"3"}
+        // initialvalues={"3"}
         >
           <Select placeholder="Công lập"
             style={{ width: 152 }}
-            defaultValue="1"
+            // defaultValue="1"
             onChange={selectChange}
           >
             <Option value="1">Công lập</Option>
@@ -141,12 +144,11 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-              message: "Học phí hằng năm",
             },
           ]}>
           <InputNumber
-            defaultValue={80000000}
-            step={5000000}
+            controls={false}
+            
             style={{ width: 152 }}
             value={annualTuitionFee}
             formatter={(value) =>
@@ -163,7 +165,6 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-              message: "Số con",
             },
           ]}>
           <Input
@@ -181,7 +182,6 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-              message: "Số tuổi vào đại học",
             },
           ]}>
           <Input
@@ -199,7 +199,6 @@ const ListCalculation = () => {
             rules={[
               {
                 required: true,
-                message: "Tuổi con thứ nhất",
               },
             ]}>
             <Input
@@ -218,7 +217,6 @@ const ListCalculation = () => {
             rules={[
               {
                 required: true,
-                message: "Tuổi con thứ 2",
               },
             ]}>
             <Input
@@ -237,7 +235,6 @@ const ListCalculation = () => {
             rules={[
               {
                 required: true,
-                message: "Tuổi con thứ 3",
               },
             ]}>
             <Input
@@ -256,7 +253,6 @@ const ListCalculation = () => {
             rules={[
               {
                 required: true,
-                message: "Tuổi con thứ 4",
               },
             ]}>
             <Input
@@ -274,7 +270,6 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-              message: "Số năm đại học",
             },
           ]}>
           <Input placeholder="0" type="number" min={0} style={{ width: 40 }} />
@@ -285,7 +280,6 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-              message: "Tổng tiền đã có",
             },
           ]}>
           <InputNumber
@@ -304,7 +298,6 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-              message: "Tỷ lệ lạm phát",
             },
           ]}>
           <div className="percentage-field">
@@ -325,7 +318,6 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-              message: "Tỷ suất sinh lời hằng năm",
             },
           ]}>
           <Input placeholder="0" type="text" style={{ width: 40 }} />
@@ -337,7 +329,6 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-              message: "Chi tiêu hàng tháng",
             },
           ]}>
           <Input placeholder="0" type="number" min={0} style={{ width: 152 }} />

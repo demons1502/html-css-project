@@ -10,6 +10,7 @@ import { getAppointment, getSpeechScriptType, getAppointmentByIds,updateSelectCu
 import moment from 'moment';
 import Dialogue from "../../../components/common/Dialogue/index"
 import { getFinanceDatas } from "../../../slices/financeSolutions";
+import { formatCountdown } from "antd/lib/statistic/utils";
 
 const ContingencyFund = ({ apptId = null }) => {
 
@@ -54,13 +55,13 @@ const ContingencyFund = ({ apptId = null }) => {
   useEffect(() => {
     let arr = []
     arr.push(customerAppRecords?.map(item => {
-      dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
-      return { title: item.customerApptRecords[0].name }
+      // dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
+      return { title: item.customerApptRecords[0].name, apptId: item.apptId, customerApptRecordId: item.customerApptRecords[0].customerApptRecordId}
     }))
     setLists(arr[0])
   }, [customerAppRecords])
 
-  useEffect(() => {
+  useEffect(() => {   //select item 1
     if (lists) {
       setItemContent(lists[0]);
     }
@@ -111,7 +112,7 @@ const ContingencyFund = ({ apptId = null }) => {
                       dataSource={lists}
                       renderItem={(item, index) => (
                         <List.Item
-                          onClick={() => setItemContent(item)}
+                          onClick={() =>{ setItemContent(item)}}
                           className={`${item === itemContent ? "active" : ""}`}>
                           <Typography.Text ellipsis>{item.title}</Typography.Text>
                         </List.Item>
@@ -125,7 +126,7 @@ const ContingencyFund = ({ apptId = null }) => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation />
+                  <ListCalculation typeFund= "contingency-fund" userSelected={itemContent}/>  
                 </div>
 
                 {/* container-right end */}

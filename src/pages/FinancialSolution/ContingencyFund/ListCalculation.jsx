@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { postFinanceDatas } from "../../../slices/financeSolutions";
 
-const ListCalculation = ({ finaceDatas }) => {
+const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
   const [Percent, setPercent] = useState(0);
   const [Amount, setAmount] = useState(0);
   const [isPotential, setIsPotential] = useState(false);
@@ -46,7 +46,7 @@ const ListCalculation = ({ finaceDatas }) => {
     console.log(values);
     // try {
     //   if (values?.amount !== undefined && isPotential !== undefined) {
-    //     await dispatch(
+    //     dispatch(
     //       postFinanceDatas({
     //         fundId: finaceDatas?.id,
     //         isPotential: isPotential,
@@ -75,13 +75,17 @@ const ListCalculation = ({ finaceDatas }) => {
     // } catch (e) {
     //   console.log(e);
     // }
-    navigate("/advise/financial-solutions/minh-hoa-gia", {state:{values: values,total:TotalAmount}});
+    navigate("/advise/financial-solutions/minh-hoa-gia", {state:{values: values,total:TotalAmount, typeFund:typeFund, userSelected:userSelected}});
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
+  useEffect(()=>{
+    setPercent(0)
+    form.resetFields()
+  },[userSelected?.apptId])
   return (
     <Form
       form={form}
@@ -118,10 +122,10 @@ const ListCalculation = ({ finaceDatas }) => {
               required: true,
             },
           ]}>
-          <InputNumber style={{width:'120px'}}
+          <InputNumber style={{ width: '120px' }}
             defaultValue={0}
             min={0}
-            placeholder="0" 
+            placeholder="0"
             formatter={(value) =>
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
@@ -144,11 +148,14 @@ const ListCalculation = ({ finaceDatas }) => {
       </div>
 
       <div className="container-right-submit">
-        <Form.Item name="remember">
+        <Form.Item name="remember"
+          valuePropName="checked"
+        >
           <Checkbox
-            onChange={(e) => setIsPotential(e.target.checked)}
-            defaultChecked={true}
-            type="checkbox">
+            // onChange={(e) => setIsPotential(e.target.checked)}
+            defaultChecked={false}
+            // type="checkbox"
+          >
             Không còn tiềm năng
           </Checkbox>
         </Form.Item>

@@ -13,7 +13,7 @@ import { HistoryModal } from "./HistoryModal";
 import { ClosingModal } from "./ClosingModal";
 import { SaveConfirmation } from "./SaveConfirmation";
 import { useSelector, useDispatch } from "react-redux";
-import { getCustomerContracts } from "../../../slices/financialSolutions";
+import { getCustomerContracts, postSaveFinances } from "../../../slices/financialSolutions";
 
 const IllustrateFiduciary = () => {
   const location = useLocation();
@@ -22,6 +22,8 @@ const IllustrateFiduciary = () => {
   const dispatch = useDispatch()
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const [contract, setContract] = useState([]) // contract of user
+  const [dataToSave, setDataToSave] = useState({...location?.state,investmentYear: '', additionalInvestmentYear:''} || {})
+  const [callSave, setCallSave] = useState(false)
   const [date, setDate] = useState(() => {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
@@ -30,26 +32,39 @@ const IllustrateFiduciary = () => {
 
     return mm + '/' + dd + '/' + yyyy;
   })
-  const customerId = useSelector((state) => state.financialSolution.customerSelect)
-  const customerContract = useSelector((state) => state.financialSolution.customerContract)
 
   useEffect(() => {
-    dispatch(getCustomerContracts())
-  }, [customerId])
-
-  useEffect(() => {
-    console.log(customerContract.customers);
-    if (customerContract?.customers?.length > 0 && customerId) {
-      const data = customerContract.customers.find(item => {
-        return item.customerId == customerId
-      })
-      setContract(data)
+    if (callSave) {
+      // dispatch(postSaveFinances())
+      //call api save
+      setCallSave(false)
     }
-  }, [customerContract])
+  }, [callSave])
+  // const customerId = useSelector((state) => state.financialSolution.customerSelect)
+  // const customerContract = useSelector((state) => state.financialSolution.customerContract)
+
+  // useEffect(() => {
+  //   dispatch(getCustomerContracts())
+  // }, [customerId])
+
+  // useEffect(() => {
+  //   console.log(customerContract.customers);
+  //   if (customerContract?.customers?.length > 0 && customerId) {
+  //     const data = customerContract.customers.find(item => {
+  //       return item.customerId == customerId
+  //     })
+  //     setContract(data)
+  //   }
+  // }, [customerContract])
 
   const toggleHistoryModal = () => {
     setIsHistoryModalOpen(!isHistoryModalOpen);
   }
+
+  useEffect(() => {
+    console.log(dataToSave);
+  }, [dataToSave])
+
   const sendEmail = () => {
     // window.location.href =
     //   "https://mail.google.com/mail/u/0/#inbox?compose=new";
@@ -70,7 +85,7 @@ const IllustrateFiduciary = () => {
           <div className="user">
             <User />
             <p>
-              Khách hàng: <span>{contract.fullname}</span>
+              Khách hàng: <span>{location.state.userSelected.title}</span>
             </p>
           </div>
         </div>
@@ -144,7 +159,7 @@ const IllustrateFiduciary = () => {
               >
                 Lưu
               </Button> */}
-              <ClosingModal />
+              <ClosingModal setCallSave={(e)=>setCallSave(e)}/>
             </div>
           </div>
         </div>
@@ -153,7 +168,7 @@ const IllustrateFiduciary = () => {
             {
               label: 'Minh họa giá trị ủy thác',
               key: '1',
-              children: <FiduciaryValue />,
+              children: <FiduciaryValue data={dataToSave} setDataToSave={(e)=>setDataToSave(e)}/>,
             },
             {
               label: 'Tóm tắt quyền lợi bằng bông hoa',

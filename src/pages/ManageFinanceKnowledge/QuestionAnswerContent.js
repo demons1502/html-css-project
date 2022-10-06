@@ -81,6 +81,7 @@ const QuestionAnswerContent = (props) => {
 
   useEffect(() => {
     content && setAnswers(content?.answers);
+    setCurrent(1);
   }, [content]);
 
   return (

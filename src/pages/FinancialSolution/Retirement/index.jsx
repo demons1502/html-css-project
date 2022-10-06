@@ -1,6 +1,6 @@
 import { Col, Layout, List, Row, Typography } from "antd";
 import _ from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PageBack from "../../../assets/images/financial/PageBack";
 import { sideBarMenuItems } from "../../../assets/fake-data/QuyDuPhongData";
@@ -12,14 +12,13 @@ import Dialogue from "../../../components/common/Dialogue/index"
 import { getAppointment, getSpeechScriptType, getAppointmentByIds } from "../../../slices/financialSolutions";
 import moment from 'moment';
 
-
 const Retirement = ({ apptId = null }) => {
   const [itemContent, setItemContent] = useState({});
   const [lists, setLists] = useState(null);
   const [payload, setPayload] = useState("");
 
   const dispatch = useDispatch();
-  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution)
+  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution);
 
   const getAppointmentNoId = () => {
     let endDate = new Date();
@@ -47,7 +46,7 @@ const Retirement = ({ apptId = null }) => {
     if (lists) {
       setItemContent(lists[0]);
     }
-  }, [lists])
+  }, [lists]);
   return (
     <div className="quyduphone">
       {/* quyduphone-nav start */}
@@ -63,7 +62,8 @@ const Retirement = ({ apptId = null }) => {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="feather feather-chevron-left">
+            className="feather feather-chevron-left"
+          >
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </Link>
@@ -81,9 +81,7 @@ const Retirement = ({ apptId = null }) => {
               <div className="content-div-1">
                 <div className="container-left">
                   <div className="container-search-box">
-                    <h1 className="container-search-box-header">
-                      Người tham gia
-                    </h1>
+                    <h1 className="container-search-box-header">Người tham gia</h1>
                     <SearchInputBox setPayload={setPayload}></SearchInputBox>
                   </div>
 

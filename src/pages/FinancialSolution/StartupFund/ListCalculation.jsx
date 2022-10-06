@@ -1,35 +1,45 @@
-import { Button, Checkbox, Form, Select, Input } from "antd";
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Checkbox, Form, Select, Input } from 'antd';
+import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { options } from './options';
+import { formatDataNumber } from '../../../helper';
+import { Button } from '../../../components/styles';
 
 const ListCalculation = () => {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
+
   const [Percent, setPercent] = useState(0);
   const [power, setPow] = useState(0);
   const [TotalAmount, setTotalAmount] = useState(0);
+  const [investment, setInvestment] = useState(0);
   const onFinish = (values) => {
-    console.log("Success:", values);
+    navigate('/advise/financial-solutions/minh-hoa-gia', { state: { values: TotalAmount } });
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.log('Failed:', errorInfo);
+  };
+  const onSelectOption = (value, option) => {
+    setInvestment(value);
   };
 
   useEffect(() => {
     let per = Percent / 100 + 1;
+    const total = investment * Math.pow(per, power);
+    setTotalAmount(total);
+  }, [Percent, power, investment]);
 
-    setTotalAmount(1000000000 * Math.pow(per, power));
-  }, [Percent, power]);
+  useEffect(() => {
+    form.setFieldValue('name1', options[0]);
+    setInvestment(form.getFieldValue('name1').value);
+  }, []);
+
   const { Option } = Select;
   return (
-    <Form
-      form={form}
-      name="control-hooks"
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off">
+    <Form form={form} name="control-hooks" onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">
       <div className="container-right-middle">
         <Form.Item
           name="name1"
@@ -39,15 +49,20 @@ const ListCalculation = () => {
             {
               required: true,
             },
-          ]}>
-          <Select placeholder="Ăn uống" style={{ width: 152 }}>
-            <Option value="value1">Tháng</Option>
-            <Option value="value2">Nửa năm</Option>
-            <Option value="value3">Năm</Option>
+          ]}
+        >
+          <Select placeholder="Ăn uống" style={{ width: 152 }} onSelect={onSelectOption}>
+            {options.map((option, index) => (
+              <Option value={option.value} key={index}>
+                {option.label}
+              </Option>
+            ))}
+            {/* <Option value="value2">Kinh doanh Online</Option>
+            <Option value="value3">Startup</Option> */}
           </Select>
         </Form.Item>
-        <Form.Item name="name2" label="Số vốn cần thiết">
-          <p className="form-input-text">1,000,000,000</p>
+        <Form.Item label="Số vốn cần thiết">
+          <p className="form-input-text">{formatDataNumber(investment)}</p>
         </Form.Item>
 
         <Form.Item
@@ -57,12 +72,14 @@ const ListCalculation = () => {
             {
               required: true,
             },
-          ]}>
+          ]}
+        >
           <Input
             placeholder="0"
             type="number"
             min={0}
             style={{ width: 40 }}
+            value={power}
             onChange={(e) => setPow(Number(e.target.value))}
           />
         </Form.Item>
@@ -73,7 +90,8 @@ const ListCalculation = () => {
             {
               required: true,
             },
-          ]}>
+          ]}
+        >
           <div className="percentage-field">
             <Input
               className="percentage-input"
@@ -89,13 +107,14 @@ const ListCalculation = () => {
       </div>
       <div className="container-right-bottom">
         <p>
-          Tổng số tiền cần cho khởi nghiệp:{" "}
+          Tổng số tiền cần cho khởi nghiệp:{' '}
           <span className="total-amount">
-            {TotalAmount > 0 &&
+            {formatDataNumber(TotalAmount)}
+            {/* {TotalAmount > 0 &&
               TotalAmount.toFixed(2)
                 .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            {(TotalAmount < 1 || isNaN(TotalAmount)) && "00.00"}
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */}
+            {/* {(TotalAmount < 1 || isNaN(TotalAmount)) && '00.00'} */}
           </span>
         </p>
       </div>
@@ -105,7 +124,7 @@ const ListCalculation = () => {
           <Checkbox>Không còn tiềm năng</Checkbox>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="btn-primary">
+          <Button type="primary" htmlType="submit">
             Bảng minh họa
           </Button>
         </Form.Item>

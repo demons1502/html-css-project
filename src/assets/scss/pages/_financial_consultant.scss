@@ -510,6 +510,13 @@
       }
       input {
         text-align: end;
+        &:disabled {
+          font-size: $font-size-base;
+          font-weight: $font-weight-bold;
+          color: $black-color;
+          background: $white-color;
+          cursor: default;
+        }
       }
     }
     &_total {

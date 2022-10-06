@@ -10,7 +10,7 @@ import { createPayment } from '../../slices/paymentManagement';
 import { LOADING_STATUS } from '../../ultis/constant';
 
 import styled from 'styled-components';
-import { formatDataNumber, formatDate } from '../../helper';
+import { formatDataNumber, formatDate, formatLocalDate } from '../../helper';
 import { useState } from 'react';
 
 const Textarea = styled(Input.TextArea)`
@@ -41,8 +41,8 @@ const CreatePayment = (props) => {
   const handleAddNew = (values) => {
     const newPayment = {
       ...values,
-      startDate: moment(values.startDate?._d).format(),
-      dueDate: moment(values.dueDate?._d).format(),
+      startDate: formatLocalDate(values.startDate?._d),
+      dueDate: formatLocalDate(values.dueDate?._d),
     };
     dispatch(createPayment(newPayment));
     if (loading === LOADING_STATUS.succeeded) {
@@ -101,12 +101,7 @@ const CreatePayment = (props) => {
             },
           ]}
         >
-          <DatePicker
-            size="large"
-            format={formatDate}
-            placeholder={moment.localeData().longDateFormat('L')}
-            disabledDate={disabledDateStart}
-          />
+          <DatePicker size="large" format={formatDate} placeholder="DD/MM/YYYY" disabledDate={disabledDateStart} />
         </Form.Item>
         <Form.Item
           name="dueDate"
@@ -118,12 +113,7 @@ const CreatePayment = (props) => {
             },
           ]}
         >
-          <DatePicker
-            size="large"
-            format={formatDate}
-            placeholder={moment.localeData().longDateFormat('L')}
-            disabledDate={disabledDateEnd}
-          />
+          <DatePicker size="large" format={formatDate} placeholder="DD/MM/YYYY" disabledDate={disabledDateEnd} />
         </Form.Item>
         <Form.Item name="amount" label="Số tiền" rules={[{ required: true }]}>
           <InputNumber size="large" controls={false} formatter={formatDataNumber} placeholder="Nhập" />

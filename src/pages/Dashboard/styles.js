@@ -404,6 +404,14 @@ export const Table = styled(AntDTable)`
     }
   }
 
+  .ant-table-content {
+    ${(props) =>
+      props.$height &&
+      css`
+        height: ${props.$height};
+      `};
+  }
+
   ${(props) =>
     props.$height &&
     css`
@@ -625,5 +633,15 @@ export const WrapDatePicker = styled(AntDDatePicker)`
 export const Popover = styled(AntDPopover)`
   &:hover {
     cursor: pointer;
+  }
+`;
+
+export const WrapPagination = styled(AntDCol)`
+  height: 54px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  .ant-pagination {
+    padding: 0px;
   }
 `;

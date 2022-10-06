@@ -16,6 +16,6 @@ export const updateAppointmentScheduleApi = (data) => sendPatch(`appointments/${
 export const getTopPotentialCustomerApi = (data) => sendGet('/customers', data);
 export const createCallTransferApi = (data) => sendPost('/customer-calls/bulk-create', data);
 // SignedContract
-export const getSignedContractApi = (data) => sendGet('/contracts/bar-chart', data);
+export const getSignedContractApi = (data) => sendGet('/contracts/barchart', data);
 // RatioContract
-export const getRatioContractApi = (data) => sendGet('/contracts/pie-chart', data);
+export const getRatioContractApi = (data) => sendGet('/contracts/piechart', data);

@@ -108,7 +108,7 @@ export default function CustomerCareDashBoard() {
   };
 
   return (
-    <S.WrapContainer $toggle={toggle} $height="473px">
+    <S.WrapContainer $toggle={toggle}>
       <S.WrapTitle $toggle={toggle} wrap={false} $padding="0px 23px 0px 0px">
         <S.IconDown onClick={() => setToggle(!toggle)} />
         <Col>
@@ -132,11 +132,13 @@ export default function CustomerCareDashBoard() {
           showHeader={false}
           $height="320px"
           $endLine
-          $borderBottom={dataTable.length < 3 ? (dataTable.length === 0 ? false : '') : false}
+          $borderBottom={dataTable.length === 0 ? false : ''}
           $heightRow={remind ? false : '63px'}
         />
-        <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />
       </S.WrapContent>
+      <S.WrapPagination span={24}>
+        <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />
+      </S.WrapPagination>
     </S.WrapContainer>
   );
 }

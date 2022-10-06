@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { getCallSchedules } from '../../slices/dashboard';
 import CallScheduleItemNote from './commons/CallSchedule/call-schedule-item-note';
 import CallScheduleItemNextCall from './commons/CallSchedule/call-schedule-item-next-call';
+import { Col, Tooltip } from 'antd';
 
 export default function CallSchedule() {
   const { t } = useTranslation();
@@ -63,45 +64,66 @@ export default function CallSchedule() {
       title: t('common.customer name'),
       dataIndex: 'customer',
       key: 'name',
-      render: ({ fullname }) => <S.TagVertical $color={randomColor[randomNotDuplicate()]}>{fullname}</S.TagVertical>,
+      ellipsis: {
+        showTitle: true,
+      },
+      render: ({ fullname }) => (
+        <S.TagVertical $color={randomColor[randomNotDuplicate()]}>
+          <Tooltip
+            title={fullname}
+            placement="topLeft"
+            overlayInnerStyle={{ borderRadius: '15px', padding: '10px 15px' }}
+          >
+            {fullname}
+          </Tooltip>
+        </S.TagVertical>
+      ),
     },
     {
       title: t('common.customer type'),
       dataIndex: 'customer',
       key: 'type',
+      width: 120,
       render: ({ typeId }) => (typeId === 1 ? t('call-schedule.user') : t('call-schedule.company')),
     },
     {
       title: t('common.phone'),
       dataIndex: 'customer',
       key: 'phone',
+      width: 130,
       render: ({ phone1, phone2, phone3 }) => phone1 || phone2 || phone3,
     },
     {
       title: t('common.last call'),
       dataIndex: 'lastCall',
       key: 'lastCall',
+      width: 140,
     },
     {
       title: t('common.after call'),
       dataIndex: 'nextCall',
       key: 'nextCall',
-      render: (_,record) => <CallScheduleItemNextCall record={record} />,
+      width: 140,
+      render: (_, record) => <CallScheduleItemNextCall record={record} />,
     },
     {
       title: t('common.note'),
       dataIndex: 'customer',
       key: 'note',
+      ellipsis: {
+        showTitle: false,
+      },
       render: (_, record) => <CallScheduleItemNote props={record} />,
     },
     {
       dataIndex: 'customer',
+      width: 50,
       render: ({ phone1, phone2, phone3 }) => <CallScheduleItemCall record={{ phone1, phone2, phone3 }} />,
     },
   ];
 
   return (
-    <S.WrapContainer $toggle={toggle} $height="432px">
+    <S.WrapContainer $toggle={toggle}>
       <S.WrapTitle $toggle={toggle}>
         <S.IconDown onClick={() => setToggle(!toggle)} />
         <S.Title>{t('dashboard-page.call-schedule')}</S.Title>
@@ -114,15 +136,14 @@ export default function CallSchedule() {
           rowKey={(record) => record.id}
           pagination={false}
           bordered={false}
-          scroll={{ x: dataTable.length > 0 && 910 }}
-          $borderBottom={dataTable.length < 4 ? (dataTable.length === 0 ? false : '') : false}
+          $borderBottom={dataTable.length === 0 ? false : ''}
           loading={loading}
-          $height="280px"
           $heightRow="46px"
-          $endLine
         />
-        <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />
       </S.WrapContent>
+      <S.WrapPagination span={24}>
+        <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />
+      </S.WrapPagination>
     </S.WrapContainer>
   );
 }

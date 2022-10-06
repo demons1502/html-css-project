@@ -25,7 +25,7 @@ export default function MissedAppointment() {
   const handleCSKH = () => {
     navigate('/customer-care');
   };
-  
+
   const columns = [
     {
       dataIndex: 'host',
@@ -86,11 +86,13 @@ export default function MissedAppointment() {
           loading={loading}
           $height="320px"
           $endLine
-          $borderBottom={dataTable.length < 5 ? (dataTable.length === 0 ? false : '') : false}
+          $borderBottom={dataTable.length === 0 ? false : ''}
           $heightRow="63px"
         />
-        <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />
       </S.WrapContent>
+      <S.WrapPagination span={24}>
+        <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />
+      </S.WrapPagination>
     </S.WrapContainer>
   );
 }

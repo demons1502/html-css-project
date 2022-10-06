@@ -7,8 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { getCustoms } from '../../slices/contractManagement';
 import useFormErrors from '../../hooks/useFormErrors'
 import { DEPOSIT_TERM as depositTermOptions, FORMAT_DATE } from '../../ultis/constant';
-import { getDepositTermLabel } from '../../ultis/despositTerm';
-import { formatDate, formatLocalDate } from '../../helper/index'
+import {  formatToUtcDate } from '../../helper/index'
 import moment from 'moment';
 
 function CreateContract(props) {
@@ -32,7 +31,7 @@ function CreateContract(props) {
       customerId: +values.customerId,
       beneficiary: values.beneficiary,
       value: + values.value,
-      startDate: formatLocalDate(values.date._d),
+      startDate: formatToUtcDate(values.date._d),
       duration: + values.duration,
       depositTerm: + values.depositTerm,
     };
@@ -57,9 +56,8 @@ function CreateContract(props) {
 
   useEffect(() => {
     if (Object.keys(contractEdit).length > 0 && Object.keys(dataEdit).length > 0) {
-      form.setFieldsValue({ ...contractEdit, ...{ 
-        date: moment.utc(contractEdit.startDate).local(), 
-        depositTermLabel: getDepositTermLabel(contractEdit.depositTerm),
+      form.setFieldsValue({ ...contractEdit, ...{
+        date: moment.utc(contractEdit.startDate).local()
       } })
     } else {
       form.resetFields();
@@ -171,6 +169,7 @@ function CreateContract(props) {
         <Form.Item
           label='Ngày hiệu lực'
           name="date"
+          disabledDate={(currentDate) => contractEdit.lastDepositDate && currentDate > moment.utc(contractEdit.lastDepositDate).local()}
           rules={[{ required: true }]}
         >
           <DatePicker className="input-item-outline"

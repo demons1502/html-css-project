@@ -22,7 +22,7 @@ const CustomerServeyTable = () => {
   console.log("formValues", formValues);
 
   //get data from redux
-  const { surveys, customers } = useSelector((state) => state);
+  const { surveys, customers, appointment } = useSelector((state) => state);
   const { selectedCustomer } = customers;
   const { survey, isClearSurvey } = surveys;
   const { finance, influence, priority, others, ...value } = survey;
@@ -64,17 +64,17 @@ const CustomerServeyTable = () => {
 
   //reset form after submit
   useEffect(() => {
-    if (!isEmpty(surveys?.data)) {
-      console.log("isClearSurvey", isClearSurvey);
-      const tableInfos = [...dataTables];
-      const formInfos = [...formValues];
-      const currentTableIndex = tableInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
-      const currentformIndex = formInfos?.findIndex((item) => item?.id === surveys?.data?.customerId);
-      tableInfos[currentTableIndex] = generateTableData(surveys?.data?.customerId);
-      formInfos[currentformIndex] = generateFormData(surveys?.data?.customerId);
-      setDataTables(tableInfos);
-      setFromValues(formInfos);
-    }
+    // if (!isEmpty(surveys?.data)) {
+    //   console.log("isClearSurvey", isClearSurvey);
+    //   const tableInfos = [...dataTables];
+    //   const formInfos = [...formValues];
+    //   const currentTableIndex = tableInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
+    //   const currentformIndex = formInfos?.findIndex((item) => item?.id === surveys?.data?.customerId);
+    //   tableInfos[currentTableIndex] = generateTableData(surveys?.data?.customerId);
+    //   formInfos[currentformIndex] = generateFormData(surveys?.data?.customerId);
+    //   setDataTables(tableInfos);
+    //   setFromValues(formInfos);
+    // }
   }, [surveys?.data]);
 
   //generate form data
@@ -475,7 +475,7 @@ const CustomerServeyTable = () => {
     const doubleAssetData = dataTable.find((data) => data.label === "doubleAsset");
 
     const submitFormData = {
-      apptId: 0,
+      apptId: +appointment.data[0].apptId,
       customerId: selectedCustomer?.customerId,
       influence: {
         family: +familyData?.infulence,
@@ -542,9 +542,12 @@ const CustomerServeyTable = () => {
           <div>
             <CheckboxControl control={control} name="isPotential" label="Không còn tiềm năng" />
           </div>
-          <div>
-            <ClosingModal onSubmit={onSubmit} />
-          </div>
+          {selectedCustomer?.customerId && (
+            <div>
+              <ClosingModal onSubmit={onSubmit} />
+            </div>
+          )}
+          
         </div>
       </form>
     </FormProvider>

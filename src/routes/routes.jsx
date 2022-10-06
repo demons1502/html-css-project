@@ -195,7 +195,7 @@ export const routes = () => [
       // no page yet
       {
         path: 'setting',
-        element: <CustomerCare />,
+        element: <ConfigUser />,
       },
     ],
   },

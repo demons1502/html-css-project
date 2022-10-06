@@ -12,6 +12,7 @@ import SearchInputBox from '../Survey/SearchInputBox';
 import HistoryDetail from './components/historyDetail';
 import SpendingForm from './form/spendingForm';
 import History from './history';
+import { formatDate } from '../../helper';
 
 export default function FinanceConsultant() {
   const { t } = useTranslation();

@@ -38,24 +38,30 @@ export const DetailAppointment = ({ info }) => {
   const openPopUpRemove = (item) => {
     ModalConfirm({
       title: 'Xác nhận',
-      content: `Bạn thực sự muốn xoá người tham gia này`,
+      content: `Bạn thực sự muốn xoá người tham gia ${item.name}`,
       callApi: () => handleRemoveItem(item),
     });
   };
 
   const handleRemoveItem = (item) => {
-    let data = info;
-    const subCustomerIds = data.customerApptRecords.filter((i) => i.customerId !== item.customerId);
-    dispatch(editAppointment({ id: data.apptId, data: { ...data, subCustomerIds: subCustomerIds } })).then(
-      ({ error }) => {
-        if (!error) {
-          handleCancel();
-          message.success('Lịch hẹn của bạn vừa được sửa thành công. Chọn lịch hẹn để xem chi tiết.');
-        } else {
-          message.error('Lịch hẹn của bạn vừa được sửa thất bại. Vui lòng thử lại');
-        }
+    const subCustomerIds = info.customerApptRecords
+      .filter((i) => i.customerId !== item.customerId)
+      .map((i) => i.customerId);
+
+    const data = {
+      ...info,
+      customerId: info.companyCustomerId,
+      subCustomerIds: subCustomerIds,
+    };
+
+    dispatch(editAppointment({ id: data.apptId, data: data })).then(({ error }) => {
+      if (!error) {
+        handleCancel();
+        message.success(`Bạn đã xoá thành công người tham gia ${item.name}`);
+      } else {
+        message.error(`Bạn đã xoá thất bại người tham gia ${item.name}`);
       }
-    );
+    });
   };
 
   return (
@@ -75,7 +81,7 @@ export const DetailAppointment = ({ info }) => {
           ) : (
             <S.BoxTitle>
               <UserCircle color={checkColor} />
-              <S.Title style={{ margin: '0 5px' }}>Cá nhân</S.Title>
+              <S.Title style={{ margin: '0 5px' }}>{info.host}</S.Title>
             </S.BoxTitle>
           )}
           <S.SubTitle>{getTitleAppointment(info.title)}</S.SubTitle>
@@ -125,7 +131,7 @@ export const DetailAppointment = ({ info }) => {
                   <S.Badge status="success" text={i.name} />
                   <S.ButtonDelete
                     icon={<Delete width={16} height={16} />}
-                    onClick={() => openPopUpRemove(i)}
+                    onClick={() => handleRemoveItem(i)}
                     type="text"
                   ></S.ButtonDelete>
                 </S.WrapParticipantItem>

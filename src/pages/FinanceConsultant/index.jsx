@@ -98,7 +98,7 @@ export default function FinanceConsultant() {
                         </div>
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: '5px' }} />
-                          <span>Ngày: {getTimeByTZ(history?.createdAt)}</span>
+                          <span>Ngày: {formatDate(history?.createdAt)}</span>
                         </div>
                       </div>
                     )}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { getAppointments } from '../../../../slices/appointmentManagement';
@@ -30,10 +30,10 @@ const Appointment = () => {
 
   useEffect(() => {
     if (!event) {
-      setEvent(checkAppointment(data));
+      setEvent(checkAppointment);
     } else {
       const dataEvent = data.find((i) => i.apptId === event.apptId);
-      dataEvent ? setEvent(dataEvent) : setEvent(checkAppointment(data));
+      dataEvent ? setEvent(dataEvent) : setEvent(checkAppointment);
     }
   }, [data]);
 
@@ -45,9 +45,9 @@ const Appointment = () => {
     }
   };
 
-  const checkAppointment = (values) => {
+  const checkAppointment = useCallback(() => {
     const appointmentCurrent = sort(
-      values.filter((i) => {
+      data.filter((i) => {
         if (new Date(i.start).getDate() === nowDate.getDate() && new Date(i.end).getTime() > nowDate.getTime()) {
           return i;
         } else if (
@@ -59,9 +59,9 @@ const Appointment = () => {
       })
     );
 
-    const appointmentFuture = sort(values.filter((i) => new Date(i.start).getDate() > nowDate.getDate()));
+    const appointmentFuture = sort(data.filter((i) => new Date(i.start).getDate() > nowDate.getDate()));
 
-    const appointmentCurrentPast = sort(values.filter((i) => new Date(i.end).getDate() < nowDate.getDate()));
+    const appointmentCurrentPast = sort(data.filter((i) => new Date(i.end).getDate() < nowDate.getDate()));
 
     if (appointmentCurrent.length > 0) {
       return appointmentCurrent[0];
@@ -70,7 +70,7 @@ const Appointment = () => {
     } else {
       return appointmentCurrentPast[appointmentCurrentPast?.length - 1];
     }
-  };
+  }, [data]);
 
   const handleEvent = (value) => {
     setEvent(value);

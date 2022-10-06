@@ -10,7 +10,7 @@ import Filter from "../../components/common/Filter";
 import AddInfoContent from ".//Modal/AddInfoContent";
 import Modal from "../../components/common/Modal";
 import {CUSTOMER_CARE_INFO, LOADING_STATUS, ARR_INFO_REDIRECT, INFO_PATH, GIFT} from '../../ultis/constant';
-import {calculateAge, getCustomerCareLabel, getTimeByTZ, capitalizeFirstLetter} from "../../helper";
+import {calculateAge, getCustomerCareLabel, formatDate, capitalizeFirstLetter} from "../../helper";
 import {Link} from "react-router-dom";
 import useScrollTableConfig from '../../hooks/useScrollTableConfig'
 import * as S from '../../components/styles'
@@ -35,7 +35,7 @@ export default function History() {
       width: '20%',
       render: (record) => {
         return (
-          <span>{getTimeByTZ(record.date)}</span>
+          <span>{formatDate(record.date)}</span>
         );
       }
     },
@@ -96,7 +96,7 @@ export default function History() {
         }
       })
       if (arrayGift.length > 0) {
-        setLastGift(`Quà tặng lần cuối ${capitalizeFirstLetter(_.last(arrayGift).content)} vào ngày ${getTimeByTZ(_.last(arrayGift).date)}`)
+        setLastGift(`Quà tặng lần cuối ${capitalizeFirstLetter(_.last(arrayGift).content)} vào ngày ${formatDate(_.last(arrayGift).date)}`)
       }
     }
   }, [data])

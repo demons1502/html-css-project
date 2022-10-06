@@ -9,9 +9,9 @@ import Modal from '../../components/common/Modal';
 import CreateContract from './CreateContract';
 import { retrieveData } from '../../slices/contractManagement';
 import { DEFAULT_SIZE } from '../../ultis/constant'
-import { formatDataNumber, formatDate } from "../../helper"
+// import { formatDataNumber, formatDate } from "../../helper"
 import { EditOutlined } from '@ant-design/icons';
-import { getDepositTermLabel } from '../../ultis/despositTerm';
+// import { getDepositTermLabel } from '../../ultis/despositTerm';
 
 export default function ContractManagement() {
   const dispatch = useDispatch()
@@ -44,51 +44,56 @@ export default function ContractManagement() {
       title: 'Giá trị',
       className: 'green-color text-right value',
       dataIndex: 'value',
-      render: (record) => {
-        return (
-          <span>{formatDataNumber(record)}</span>
-        );
-      }
+      // render: (record) => {
+      //   return (
+      //     <span>{formatDataNumber(record)}</span>
+      //   );
+      // }
     },
     {
       title: 'Ngày hiệu lực',
-      render: (record) => {
-        return (
-          <span>{formatDate(record.startDate)}</span>
-        );
-      }
+      dataIndex: 'startDate',
+      // render: (record) => {
+      //   return (
+      //     <span>{formatDate(record.startDate)}</span>
+      //   );
+      // }
     },
     {
       title: 'Số năm nộp phí',
-      render: (record) => {
-        return (
-          <span>{`${record.duration} Năm`}</span>
-        );
-      }
+      dataIndex: 'duration',
+      // render: (record) => {
+      //   return (
+      //     <span>{`${record.duration} Năm`}</span>
+      //   );
+      // }
     },
     {
       title: 'Chu kì nộp phí',
-      render: (record) => {
-        return (          
-          <span>{getDepositTermLabel(record.depositTerm)}</span>
-        );
-      }
+      dataIndex: 'depositTerm'
+      // render: (record) => {
+      //   return (          
+      //     <span>{getDepositTermLabel(record.depositTerm)}</span>
+      //   );
+      // }
     },
     {
       title: 'Lần cuối nộp phí',
-      render: (record) => {
-        return (
-          <span>{formatDate(record.lastDepositDate)}</span>
-        );
-      }
+      dataIndex: 'lastDepositDate',
+      // render: (record) => {
+      //   return (
+      //     <span>{formatDate(record.lastDepositDate)}</span>
+      //   );
+      // }
     },
     {
       title: 'Hạn nộp phí tiếp theo',
-      render: (record) => {
-        return (
-          <span>{formatDate(record.nextDepositDue)}</span>
-        );
-      }
+      // render: (record) => {
+      //   return (
+      //     <span>{formatDate(record.nextDepositDue)}</span>
+      //   );
+      // }
+      dataIndex: 'nextDepositDue'
     },
     {
       title: '',
@@ -123,7 +128,7 @@ export default function ContractManagement() {
     // console.log(record);
     setDataEdit({ id: record.id })
     setVisibleModal(true)
-    setTitleModal('Thay đổi nội dung hợp đồng')
+    setTitleModal('Thay đổi hợp đồng')
   }
 
   const handleCreateContract = (record) => {

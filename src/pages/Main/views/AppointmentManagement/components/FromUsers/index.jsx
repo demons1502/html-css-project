@@ -10,7 +10,7 @@ import SelectTableCustomers from '../SelectTableCustomers/index';
 //STYLES
 import * as S from './styles';
 
-const FormUsers = ({ form, companyId, customerApptRecords }) => {
+const FormUsers = ({ form, companyId, customerApptRecords, open }) => {
   const [customer, setCustomer] = useState([]);
   const initialValue = [{ fullName: '', phone: '', birthday: '' }];
 
@@ -32,7 +32,7 @@ const FormUsers = ({ form, companyId, customerApptRecords }) => {
       setCustomer(users);
       form.setFieldsValue({ users });
     }
-  }, [customerApptRecords, form]);
+  }, [customerApptRecords, form, open]);
 
   const handleChangeCustomer = (data, key) => {
     const fields = form.getFieldsValue();
@@ -110,12 +110,15 @@ const FormUsers = ({ form, companyId, customerApptRecords }) => {
                 </Form.Item>
               </Col>
               <Col span={1}>
-                <S.ButtonDelete icon={<Delete width={13} height={13} />} onClick={() => remove(name)}></S.ButtonDelete>
+                <S.ButtonDelete
+                  icon={<Delete width={13} height={13} />}
+                  onClick={() => fields.length > 1 && remove(name)}
+                ></S.ButtonDelete>
               </Col>
             </S.WrapRow>
           ))}
           <Form.Item>
-            <S.ButtonAdd icon={<Add />} onClick={() => add()}></S.ButtonAdd>
+            <S.ButtonAdd icon={<Add />} onClick={() => fields.length < 20 && add()}></S.ButtonAdd>
           </Form.Item>
         </>
       )}
@@ -129,6 +132,7 @@ FormUsers.defaultProps = {
 FormUsers.prototypes = {
   companyId: PropTypes.number,
   customerApptRecords: PropTypes.array,
+  open: PropTypes.bool,
 };
 
 export default FormUsers;

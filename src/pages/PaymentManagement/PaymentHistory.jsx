@@ -2,7 +2,7 @@ import { Empty, Spin } from 'antd';
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import calendarIcon from '../../assets/images/icons/calendar.svg';
-import { getTimeByTZ } from '../../helper/index';
+import { formatDate } from '../../helper/index';
 import { getHistoriesData } from '../../slices/paymentManagement';
 import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import TableCommon from '../../components/common/TableNormal';
@@ -16,7 +16,7 @@ const columns = [
     key: 'startDate',
     width: '130px',
     render: (record) => {
-      return <span>{getTimeByTZ(record)}</span>;
+      return <span>{formatDate(record)}</span>;
     },
   },
   {
@@ -63,7 +63,7 @@ const PaymentHistory = ({ customer }) => {
                     <span>Ngày thanh toán</span>
                   </div>
                   <div className="paymentHistory-time_date">
-                    <span>{getTimeByTZ(data?.startDate)}</span>
+                    <span>{formatDate(data?.startDate)}</span>
                   </div>
                 </div>
 
@@ -73,7 +73,7 @@ const PaymentHistory = ({ customer }) => {
                     <span>Ngày hiệu lực</span>
                   </div>
                   <div className="paymentHistory-time_date">
-                    <span>{getTimeByTZ(data?.startDate)}</span>
+                    <span>{formatDate(data?.startDate)}</span>
                   </div>
                 </div>
 
@@ -83,7 +83,7 @@ const PaymentHistory = ({ customer }) => {
                     <span>Ngày kết thúc</span>
                   </div>
                   <div className="paymentHistory-time_date">
-                    <span>{getTimeByTZ(data?.dueDate)}</span>
+                    <span>{formatDate(data?.dueDate)}</span>
                   </div>
                 </div>
               </div>

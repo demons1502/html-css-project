@@ -7,7 +7,7 @@ import { useRef } from 'react';
 import Delete from '../../assets/images/icons/components/Delete';
 import ModalConfirm from '../../components/ModalConfirm';
 import * as S from '../../components/styles';
-import { formatDataNumber, getTimeByTZ } from '../../helper/index';
+import { formatDataNumber, formatDate } from '../../helper/index';
 import { deletePayment, retrieveData, uploadFile } from '../../slices/paymentManagement';
 import CreatePayment from './CreatePayment';
 import PaymentHistory from './PaymentHistory';
@@ -87,7 +87,7 @@ const PaymentManagement = () => {
       key: 'startDate',
       // width: '145px',
       render: (record) => {
-        return <span>{getTimeByTZ(record.startDate)}</span>;
+        return <span>{formatDate(record.startDate)}</span>;
       },
     },
     {
@@ -95,7 +95,7 @@ const PaymentManagement = () => {
       key: 'startDate',
       // width: '115px',
       render: (record) => {
-        return <span>{getTimeByTZ(record.startDate)}</span>;
+        return <span>{formatDate(record.startDate)}</span>;
       },
     },
     {
@@ -103,7 +103,7 @@ const PaymentManagement = () => {
       key: 'dueDate',
       // width: '125px',
       render: (record) => {
-        return <span>{getTimeByTZ(record.dueDate)}</span>;
+        return <span>{formatDate(record.dueDate)}</span>;
       },
     },
     {

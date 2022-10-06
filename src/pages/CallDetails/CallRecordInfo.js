@@ -1,30 +1,32 @@
 import { message, Space } from 'antd';
 import { FileDoneOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import * as S from './styles';
 import { updateCustomerCallRecord } from '../../services/customerCalls';
+import { creactAppointmentApi } from '../../services/appointment';
 import { useNavigate } from 'react-router-dom';
 import CreateAppointment from '../Main/views/AppointmentManagement/components/CreateAppointment';
 import { COMPANY_CUSTOMER_TYPE_ID, EMPLOYEE_CUSTOMER_TYPE_ID, PERSONAL_CUSTOMER_TYPE_ID } from './constants';
+import { updateCallRecord } from '../../slices/customerCall';
+import { createAppointment } from '../../slices/appointmentManagement';
+import moment from 'moment';
 
 export default function CallRecordInfo(props) {
-  const [currentCheck, setCurrentCheck] = useState('1');
+  const [currentCheck, setCurrentCheck] = useState('');
   const [loadingBtn, setLoadingBtn] = useState({
     complete: false,
     cancel: false
   });
   const [openAppointment, setOpenAppointment] = useState(false);
   const navigate = useNavigate();
-  const { t } = useTranslation()
-  const { callrecordData, customerData, customerCallData } = props;
-  const isCompleted = callrecordData?.completedAt;
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { callRecord: callRecordData, customerInfo: customerData, customerCall: customerCallData } = useSelector(state => state.customerCall);
+  // const { callRecordData, customerData, customerCallData } = props;
+  const isCompleted = callRecordData?.completedAt;
 
-  useEffect(() => {
-    if (isCompleted) {
-      setCurrentCheck(customerData?.isPotential ? '1' : '2');
-    }
-  }, [isCompleted]);
 
   const renderNoteStatus = (sttEnum) => {
     switch (sttEnum) {
@@ -60,19 +62,23 @@ export default function CallRecordInfo(props) {
     if (action === 'cancel') { isCompleted = false }
 
     setLoadingBtn({ ...loadingBtn, [action]: true });
-    try {
-      await updateCustomerCallRecord({
-        customerCallId: customerCallData.id,
-        customerCallRecordId: callrecordData.id,
-        isCompleted,
-        isPotential: currentCheck === '1' ? true : false
-      })
-      setLoadingBtn({ ...loadingBtn, [action]: false });
-      navigate('/dashboard')
-    } catch (error) {
-      message.error('Hoàn thành hoặc hủy cuộc gọi xảy ra lỗi')
-      setLoadingBtn({ ...loadingBtn, [action]: false });
+    const prePayload = {
+      customerCallId: customerCallData.id,
+      customerCallRecordId: callRecordData.id,
+      isCompleted
     }
+    if (currentCheck) {
+      prePayload.isPotential = currentCheck === '1' ? true : false
+    }
+
+    dispatch(updateCallRecord(prePayload)).then(({ error }) => {
+      setLoadingBtn({ ...loadingBtn, [action]: false });
+      if (error) {
+        message.error('Hoàn thành hoặc hủy cuộc gọi xảy ra lỗi')
+      } else {
+        navigate('/dashboard')
+      }
+    })
   };
 
   const toggleAppointment = (status) => {
@@ -81,21 +87,51 @@ export default function CallRecordInfo(props) {
     return setOpenAppointment(!openAppointment)
   };
 
-  const handleClickFuncBtn = (action) => {
-    setLoadingBtn({ ...loadingBtn, [action]: true })
-    switch (action) {
-      case 'appointment':
-        toggleAppointment(true)
-        break;
-      // case 'survey':
-      //   break;
-      // case 'consult':
-      //   break;
-      // case 'solution':
-      //   break;
-      default:
-        window.open('/advise/financial-solutions', '_blank')
-        break;
+  const handleClickFuncBtn = async (action) => {
+    setLoadingBtn({ ...loadingBtn, [action]: true });
+
+    if (action === 'appointment') {
+      toggleAppointment(true)
+    } else {
+      const prePayload = {
+        customerCallId: customerCallData.id,
+        customerCallRecordId: callRecordData.id,
+        isCompleted: true
+      }
+      if (currentCheck) {
+        prePayload.isPotential = currentCheck === '1' ? true : false
+      }
+      // complete call
+      dispatch(updateCallRecord(prePayload)).then(({ error }) => {
+        setLoadingBtn({ ...loadingBtn, [action]: false });
+        if (error) {
+          message.error('Hoàn thành hoặc hủy cuộc gọi xảy ra lỗi')
+        } else {
+          const title = {
+            'survey': 'Khảo sát',
+            'consult': 'Tư vấn',
+            'solution': 'Giải pháp'
+          };
+          const startTime = moment(new Date());;
+          const appointmentPayload = {
+            typeId: customerData.typeId,
+            customerId: customerData.customerId,
+            title: title[action],
+            startTime: startTime.toDate(),
+            endTime: startTime.add(10, 'm').toDate(),
+            isAuto: true
+          };
+          // console.log('appointmentPayload', appointmentPayload)
+          creactAppointmentApi(appointmentPayload).then(data => {
+            const redirectPage = {
+              'survey': `/advise/survey?appointment_id=${data.apptId}`,
+              'consult': '/advise',
+              'solution': '/advise/financial-solutions'
+            }
+            navigate(redirectPage[action])
+          })
+        }
+      })
     }
     setLoadingBtn({ ...loadingBtn, [action]: false })
   }
@@ -178,21 +214,26 @@ export default function CallRecordInfo(props) {
             <S.WrapCheckbox
               checked={currentCheck === '1'}
               disabled={isCompleted}
-              onChange={() => setCurrentCheck('1')}
+              onChange={({ target }) => setCurrentCheck(target.checked ? '1' : '')}
             >
               {t('call-schedule.call-more')}
             </S.WrapCheckbox>
             <S.WrapCheckbox 
               checked={currentCheck === '2'} 
               disabled={isCompleted} 
-              onChange={() => setCurrentCheck('2')}
+              onChange={({ target }) => setCurrentCheck(target.checked ? '2' : '')}
             >
               {t('call-schedule.no-more-potential')}
             </S.WrapCheckbox>
           </Space>
         </Space>
       </S.WrapContent>
-      <CreateAppointment open={openAppointment} handleCancel={toggleAppointment}/>
+      <CreateAppointment 
+        open={openAppointment} 
+        handleCancel={toggleAppointment}
+        customerInfo={customerData}
+        outsideLink={true}
+      />
     </div>
   );
 }

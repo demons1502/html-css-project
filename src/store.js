@@ -18,6 +18,7 @@ import surveyReducer from './slices/surveys';
 import customerReducer from './slices/customers';
 import consultReducer from './slices/consult';
 import configUser from './slices/configUser';
+import customerCallReducer from './slices/customerCall';
 
 const persistConfig = {
   key: 'root',
@@ -43,6 +44,7 @@ const rootReducer = combineReducers({
   consultReducer: consultReducer,
   configUser: configUser,
   potentialCustomersReducer: potentialCustomersReducer,
+  customerCall: customerCallReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -1,33 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { message, Space } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import * as S from './styles';
 
-import { getSpeechScript } from '../../services/customerCalls';
+import { getSpeechScriptData } from '../../slices/customerCall';
 
 
 export default function CustomerVoiceCall() {
-  const [scriptData, setScriptData] = useState({});
   const [page, setPage] = useState(0);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { customerInfo, speechScript: scriptData } = useSelector(state => state.customerCall);
   const speechScriptsList = scriptData?.dialogues || [];
 
   const fetchSpeechScriptData = async () => {
-    try {
-      const speechScriptData = await getSpeechScript('call');
-      setScriptData({
-        ...speechScriptData
-      })
-    } catch (error) {
-      console.log('speechScript api err', error);
-      message.error(t('call-schedule.fetch-script-error'))
-    }
+    dispatch(getSpeechScriptData({ type: 'call', customerId: customerInfo?.customerId || 0 })).then(({ error }) => {
+      if (error) {
+        message.error(t('call-schedule.fetch-script-error'))
+      }
+    });
   }
 
   useEffect(() => {
-    fetchSpeechScriptData();
-  }, []);
+    if (customerInfo)
+      fetchSpeechScriptData();
+  }, [customerInfo]);
 
   const handleChangePage = (dir) => {
     if (!dir || speechScriptsList?.length === 0) return;

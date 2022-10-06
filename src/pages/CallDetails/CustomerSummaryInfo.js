@@ -1,6 +1,7 @@
 import React from 'react';
 import { Space, } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 // import { CopyOutlined } from '@ant-design/icons';
 import * as S from './styles';
 
@@ -8,15 +9,16 @@ import IconFiles from '../../assets/images/icons/files.svg';
 import { calculateAge } from '../../helper';
 
 
-export default function CustomerSumaryInfo({ customerData }) {
+export default function CustomerSumaryInfo() {
   const { t } = useTranslation();
+  const { customerInfo } = useSelector(state => state.customerCall)
 
   const makeCustomerSummaryInfo = () => {
     const arrayData = [];
 
-    if (!customerData) return arrayData;
+    if (!customerInfo) return arrayData;
     
-    const { dob, maritalStatus, income, job, concerns, note } = customerData;
+    const { dob, maritalStatus, income, job, concerns, note } = customerInfo;
     const collectData = {
       age: calculateAge(dob),
       maritalStatus,
@@ -59,7 +61,7 @@ export default function CustomerSumaryInfo({ customerData }) {
     return arrayData
   }
 
-  if (!customerData) return null;
+  if (!customerInfo) return null;
 
   return (
     <div>

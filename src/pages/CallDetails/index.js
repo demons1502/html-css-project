@@ -2,37 +2,28 @@ import { Row, Col, Space, message } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import * as S from './styles';
 import { Link, useParams } from 'react-router-dom';
 
-import { getCustomerCallById } from '../../services/customerCalls';
 import CallRecordInfo from './CallRecordInfo';
 import CustomerSummaryInfo from './CustomerSummaryInfo';
 import CustomerVoiceCall from './CustomerVoiceCall';
+import { getCustomerCallsData } from '../../slices/customerCall';
 
 
 export default function CallDetails() {
-  const [callData, setCallData] = useState({ callRecord: {}, customerInfo: {}, customerCall: {} })
   const params = useParams();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { callRecord } = useSelector(state => state.customerCall);
 
   const fetchCustomerCallData = async () => {
-    try {
-      const customerCall = await getCustomerCallById(params.customerCallId || 0);
-      setCallData({
-        ...callData,
-        callRecord: customerCall?.latestCall,
-        customerInfo: customerCall?.customerCall?.customer,
-        customerCall: {
-          noteCount: customerCall?.customerCall?.noteCount,
-          id: customerCall?.customerCall?.id,
-          isPotential: customerCall?.customerCall?.isPotential,
-        }
-      })
-    } catch (error) {
-      console.log('customerCall api err', error);
-      message.error(t('common.call-data-error'))
-    }
+    dispatch(getCustomerCallsData(params.customerCallId || 0)).then(({ error }) => {
+      if (error) {
+        message.error(t('common.call-data-error'))
+      }
+    });
   }
 
   useEffect(() => {
@@ -40,7 +31,7 @@ export default function CallDetails() {
   }, []);
 
 
-  if (!callData.callRecord) 
+  if (!callRecord)
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: 300 }}>
         <S.WrapText $color={S.gray200}>{t('call-schedule.no-call')}</S.WrapText>
@@ -64,12 +55,12 @@ export default function CallDetails() {
           <Row gutter={[15, 15]} style={{ height: '100%' }}>
             <Col span={24}>
               <S.WrapContainer>
-                <CallRecordInfo callrecordData={callData.callRecord} customerData={callData.customerInfo} customerCallData={callData.customerCall}/>
+                <CallRecordInfo />
               </S.WrapContainer>
             </Col>
             <Col span={24}>
               <S.WrapContainer>
-                <CustomerSummaryInfo customerData={callData.customerInfo} />
+                <CustomerSummaryInfo />
               </S.WrapContainer>
             </Col>
           </Row>

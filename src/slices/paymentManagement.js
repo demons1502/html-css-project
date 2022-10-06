@@ -66,6 +66,7 @@ const paymentManagementSlice = createSlice({
       state.data = action.payload.data;
       state.total = action.payload.total;
       state.isReload = false;
+      console.log(action.payload);
     },
 
     [getHistoriesData.fulfilled]: (state, action) => {

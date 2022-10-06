@@ -38,7 +38,7 @@ const ListCalculation = ({typeFund, userSelected}) => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    message.error(errorInfo, 3);
+    // message.error(errorInfo, 3);
     // console.log('Failed:', errorInfo);
   };
   useEffect(() => {

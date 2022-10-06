@@ -107,7 +107,7 @@ const IllustrateFiduciary = () => {
           <div className="user">
             <User />
             <p>
-              Khách hàng: <span>{location.state.userSelected.title}</span>
+              Khách hàng: <span>{location?.state?.userSelected?.title}</span>
             </p>
           </div>
         </div>

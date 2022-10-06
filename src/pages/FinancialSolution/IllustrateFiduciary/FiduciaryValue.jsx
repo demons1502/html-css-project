@@ -20,15 +20,15 @@ export const FiduciaryValue = ({ nameCustomer, data,setDataToSave }) => {
   };
 
   useEffect(()=>{
-    setDataToSave((prev)=>{
-      prev.additionalInvestmentYear=additionalInvestmentYear;
-      prev.investmentYear=investmentYear;
-      prev.values.percantage=percentage;
-      prev.total=totalOfMoney;
-      return({
-        ...prev
-      })
-    })
+    // setDataToSave((prev)=>{
+    //   prev.additionalInvestmentYear=additionalInvestmentYear;
+    //   prev.investmentYear=investmentYear;
+    //   prev.values.percantage=percentage;
+    //   prev.total=totalOfMoney;
+    //   return({
+    //     ...prev
+    //   })
+    // })
   },[investmentYear,percentage,totalOfMoney,additionalInvestmentYear])
   return (
     <Form

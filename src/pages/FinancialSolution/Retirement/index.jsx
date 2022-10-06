@@ -1,47 +1,45 @@
-import { Col, Layout, List, Row, Typography } from "antd";
-import _ from "lodash";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import PageBack from "../../../assets/images/financial/PageBack";
-import { sideBarMenuItems } from "../../../assets/fake-data/QuyDuPhongData";
-import SearchInputBox from "./SearchInputBox";
-import ListCalculation from "./ListCalculation";
-import ListDetails from "./ListDetails";
-import { useDispatch, useSelector } from "react-redux";
-import { getAppointment, getSpeechScriptType } from "../../../slices/financialSolutions";
+import { Col, Layout, List, Row, Typography } from 'antd';
 import moment from 'moment';
-
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { sideBarMenuItems } from '../../../assets/fake-data/QuyDuPhongData';
+import Dialogue from '../../../components/common/Dialogue';
+import { getAppointment } from '../../../slices/financialSolutions';
+import ListCalculation from './ListCalculation';
+import SearchInputBox from './SearchInputBox';
 
 const Retirement = () => {
   const [itemContent, setItemContent] = useState({});
   const [lists, setLists] = useState(sideBarMenuItems);
-  const [payload, setPayload] = useState("");
+  const [payload, setPayload] = useState('');
 
   const dispatch = useDispatch();
-  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution)
+  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution);
 
   useEffect(() => {
     let endDate = new Date();
     // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
     endDate = endDate.setHours(23, 59, 59, 999);
     let startDate = new Date();
-    dispatch(getAppointment({titles: "finance", startDate: moment(startDate), endDate: moment(endDate)})) //main code
-    dispatch(getSpeechScriptType('preventionFund'))
+    dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
   }, []);
-  
+
   useEffect(() => {
-    let arr = []
-    arr.push(customerAppRecords?.map(item => {
-      return { title: item.customerApptRecords[0].name }
-    }))
-    setLists(arr[0])
-  }, [customerAppRecords])
+    let arr = [];
+    arr.push(
+      customerAppRecords?.map((item) => {
+        return { title: item.customerApptRecords[0].name };
+      })
+    );
+    setLists(arr[0]);
+  }, [customerAppRecords]);
 
   useEffect(() => {
     if (lists) {
       setItemContent(lists[0]);
     }
-  }, [lists])
+  }, [lists]);
   return (
     <div className="quyduphone">
       {/* quyduphone-nav start */}
@@ -57,7 +55,8 @@ const Retirement = () => {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="feather feather-chevron-left">
+            className="feather feather-chevron-left"
+          >
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </Link>
@@ -75,9 +74,7 @@ const Retirement = () => {
               <div className="content-div-1">
                 <div className="container-left">
                   <div className="container-search-box">
-                    <h1 className="container-search-box-header">
-                      Người tham gia
-                    </h1>
+                    <h1 className="container-search-box-header">Người tham gia</h1>
                     <SearchInputBox setPayload={setPayload}></SearchInputBox>
                   </div>
 
@@ -86,7 +83,8 @@ const Retirement = () => {
                     renderItem={(item, index) => (
                       <List.Item
                         onClick={() => setItemContent(item)}
-                        className={`${item === itemContent ? "active" : ""}`}>
+                        className={`${item === itemContent ? 'active' : ''}`}
+                      >
                         <Typography.Text ellipsis>{item.title}</Typography.Text>
                       </List.Item>
                     )}
@@ -112,7 +110,7 @@ const Retirement = () => {
           <Col lg={12} md={24} sm={24} xs={24}>
             <Layout.Content className="manageContent">
               <div className="content-div-2">
-                <ListDetails />
+                <Dialogue title="Lời thoại" type="preventionFund" />
               </div>
             </Layout.Content>
           </Col>

@@ -1,13 +1,14 @@
-import { Col, Layout, List, Row, Typography } from "antd";
-import React, { useEffect, useState } from "react";
-import { sideBarMenuItems } from "../../../assets/fake-data/QuyDuPhongData";
-import SearchInputBox from "./SearchInputBox";
-import ListCalculation from "./ListCalculation";
-import ListDetails from "./ListDetails";
-import { Link, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux"
-import { getAppointment, getSpeechScriptType } from "../../../slices/financialSolutions";
+import { Col, Layout, List, Row, Typography } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { sideBarMenuItems } from '../../../assets/fake-data/QuyDuPhongData';
+import SearchInputBox from './SearchInputBox';
+import ListCalculation from './ListCalculation';
+import ListDetails from './ListDetails';
+import { Link, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAppointment, getSpeechScriptType } from '../../../slices/financialSolutions';
 import moment from 'moment';
+import Dialogue from '../../../components/common/Dialogue';
 
 const StartupFund = () => {
   const location = useLocation();
@@ -15,33 +16,35 @@ const StartupFund = () => {
 
   const [itemContent, setItemContent] = useState({});
   const [lists, setLists] = useState(sideBarMenuItems);
-  const [payload, setPayload] = useState("");
+  const [payload, setPayload] = useState('');
 
   const dispatch = useDispatch();
-  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution)
+  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution);
 
   useEffect(() => {
     let endDate = new Date();
     // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
     endDate = endDate.setHours(23, 59, 59, 999);
     let startDate = new Date();
-    dispatch(getAppointment({titles: "finance", startDate: moment(startDate), endDate: moment(endDate)})) //main code
-    dispatch(getSpeechScriptType('preventionFund'))
+    dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
+    dispatch(getSpeechScriptType('preventionFund'));
   }, []);
-  
+
   useEffect(() => {
-    let arr = []
-    arr.push(customerAppRecords?.map(item => {
-      return { title: item.customerApptRecords[0].name }
-    }))
-    setLists(arr[0])
-  }, [customerAppRecords])
+    let arr = [];
+    arr.push(
+      customerAppRecords?.map((item) => {
+        return { title: item.customerApptRecords[0].name };
+      })
+    );
+    setLists(arr[0]);
+  }, [customerAppRecords]);
 
   useEffect(() => {
     if (lists) {
       setItemContent(lists[0]);
     }
-  }, [lists])
+  }, [lists]);
 
   return (
     <div className="quyduphone">
@@ -58,11 +61,12 @@ const StartupFund = () => {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="feather feather-chevron-left">
+            className="feather feather-chevron-left"
+          >
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </Link>
-        <h3>{`${title ? title : "Quỹ khởi nghiệp"}`}</h3>
+        <h3>{`${title ? title : 'Quỹ khởi nghiệp'}`}</h3>
       </div>
 
       {/* quyduphone-nav end  */}
@@ -76,9 +80,7 @@ const StartupFund = () => {
               <div className="content-div-1">
                 <div className="container-left">
                   <div className="container-search-box">
-                    <h1 className="container-search-box-header">
-                      Người tham gia
-                    </h1>
+                    <h1 className="container-search-box-header">Người tham gia</h1>
                     <SearchInputBox setPayload={setPayload}></SearchInputBox>
                   </div>
 
@@ -87,7 +89,8 @@ const StartupFund = () => {
                     renderItem={(item, index) => (
                       <List.Item
                         onClick={() => setItemContent(item)}
-                        className={`${item === itemContent ? "active" : ""}`}>
+                        className={`${item === itemContent ? 'active' : ''}`}
+                      >
                         <Typography.Text ellipsis>{item.title}</Typography.Text>
                       </List.Item>
                     )}
@@ -113,7 +116,7 @@ const StartupFund = () => {
           <Col lg={12} md={24} sm={24} xs={24}>
             <Layout.Content className="manageContent">
               <div className="content-div-2">
-                <ListDetails />
+                <Dialogue title="Lời thoại" type="preventionFund" />
               </div>
             </Layout.Content>
           </Col>

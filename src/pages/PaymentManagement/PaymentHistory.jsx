@@ -15,9 +15,9 @@ const columns = [
     dataIndex: 'startDate',
     key: 'startDate',
     width: '130px',
-    render: (record) => {
-      return <span>{formatDate(record)}</span>;
-    },
+    // render: (record) => {
+    //   return <span>{formatDate(record)}</span>;
+    // },
   },
   {
     title: 'Nội dung',
@@ -54,7 +54,7 @@ const PaymentHistory = ({ customer }) => {
               <div className="paymentHistory-title">
                 <h4>{customer?.userFullname} </h4>
                 <p>
-                  Số tiền: <span>{formatDataNumber(data?.amount)}</span>
+                  Số tiền: <span>{data?.amount}</span>
                 </p>
               </div>
               <div className="paymentHistory-time">
@@ -64,7 +64,7 @@ const PaymentHistory = ({ customer }) => {
                     <span>Ngày thanh toán</span>
                   </div>
                   <div className="paymentHistory-time_date">
-                    <span>{formatDate(data?.startDate)}</span>
+                    <span>{data?.startDate}</span>
                   </div>
                 </div>
 
@@ -74,7 +74,7 @@ const PaymentHistory = ({ customer }) => {
                     <span>Ngày hiệu lực</span>
                   </div>
                   <div className="paymentHistory-time_date">
-                    <span>{formatDate(data?.startDate)}</span>
+                    <span>{data?.startDate}</span>
                   </div>
                 </div>
 
@@ -84,7 +84,7 @@ const PaymentHistory = ({ customer }) => {
                     <span>Ngày kết thúc</span>
                   </div>
                   <div className="paymentHistory-time_date">
-                    <span>{formatDate(data?.dueDate)}</span>
+                    <span>{data?.dueDate}</span>
                   </div>
                 </div>
               </div>

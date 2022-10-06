@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { formatDataNumber, formatDate } from '../helper';
 import { create, getAll, remove, importFile, getHistories } from '../services/paymentManagement';
 
 const initialState = { isReload: false, data: [], histories: { data: [], count: 0 }, total: 0 };
@@ -63,14 +64,29 @@ const paymentManagementSlice = createSlice({
       state.isReload = true;
     },
     [retrieveData.fulfilled]: (state, action) => {
-      state.data = action.payload.data;
+      const data = action.payload.data.map((item) => {
+        return {
+          ...item,
+          amount: formatDataNumber(item.amount),
+          dueDate: formatDate(item.dueDate),
+          startDate: formatDate(item.startDate),
+        };
+      });
+      state.data = data;
       state.total = action.payload.total;
       state.isReload = false;
-      console.log(action.payload);
     },
 
     [getHistoriesData.fulfilled]: (state, action) => {
-      state.histories.data = action.payload.data;
+      const data = action.payload.data.map((item) => {
+        return {
+          ...item,
+          amount: formatDataNumber(item.amount),
+          dueDate: formatDate(item.dueDate),
+          startDate: formatDate(item.startDate),
+        };
+      });
+      state.histories.data = data;
       state.histories.count = action.payload.total;
       state.isReload = false;
     },

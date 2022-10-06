@@ -10,8 +10,7 @@ import { createPayment } from '../../slices/paymentManagement';
 import { LOADING_STATUS } from '../../ultis/constant';
 
 import styled from 'styled-components';
-import { formatDataNumber, formatDate, formatLocalDate } from '../../helper';
-import { useState } from 'react';
+import { formatDataNumber, formatDate, formatToUtcDate } from '../../helper';
 
 const Textarea = styled(Input.TextArea)`
   background: #f8f8f8;
@@ -41,8 +40,8 @@ const CreatePayment = (props) => {
   const handleAddNew = (values) => {
     const newPayment = {
       ...values,
-      startDate: formatLocalDate(values.startDate?._d),
-      dueDate: formatLocalDate(values.dueDate?._d),
+      startDate: formatToUtcDate(values.startDate?._d),
+      dueDate: formatToUtcDate(values.dueDate?._d),
     };
     dispatch(createPayment(newPayment));
     if (loading === LOADING_STATUS.succeeded) {
@@ -116,7 +115,12 @@ const CreatePayment = (props) => {
           <DatePicker size="large" format={formatDate} placeholder="DD/MM/YYYY" disabledDate={disabledDateEnd} />
         </Form.Item>
         <Form.Item name="amount" label="Số tiền" rules={[{ required: true }]}>
-          <InputNumber size="large" controls={false} formatter={formatDataNumber} placeholder="Nhập" />
+          <InputNumber
+            size="large"
+            // controls={false}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            placeholder="Nhập"
+          />
         </Form.Item>
         <Form.Item name="description" label="Nội dung">
           <Textarea autoSize placeholder="Nội dung" />

@@ -65,32 +65,24 @@ const PaymentManagement = () => {
     },
     {
       title: 'Ngày thanh toán',
+      dataIndex: 'startDate',
       key: 'startDate',
-      render: (record) => {
-        return <span>{formatDate(record.startDate)}</span>;
-      },
     },
     {
       title: 'Ngày hiệu lực',
+      dataIndex: 'startDate',
       key: 'startDate',
-      render: (record) => {
-        return <span>{formatDate(record.startDate)}</span>;
-      },
     },
     {
       title: 'Ngày kết thúc',
+      dataIndex: 'dueDate',
       key: 'dueDate',
-      render: (record) => {
-        return <span>{formatDate(record.dueDate)}</span>;
-      },
     },
     {
       title: 'Số tiền',
+      dataIndex: 'amount',
       key: 'amount',
       className: 'green-color',
-      render: (record) => {
-        return <span>{formatDataNumber(record.amount)}</span>;
-      },
     },
     {
       title: '',

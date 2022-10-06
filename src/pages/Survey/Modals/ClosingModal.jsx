@@ -12,6 +12,9 @@ export const ClosingModal = ({ onSubmit }) => {
   const { control } = useFormContext();
   const { data } = useSelector((state) => state?.surveys);
 
+  const { customers } = useSelector((state) => state);
+  const selectedCustomer = customers?.selectedCustomer || {};
+
   console.log("survey data", data);
 
   useEffect(() => {
@@ -61,7 +64,7 @@ export const ClosingModal = ({ onSubmit }) => {
       overlayClassName="closing-popover"
       visible={open}
     >
-      <Button type="primary" htmlType="button" className="btn-primary finance-btn-small" block>
+      <Button type="primary" htmlType="button" className="btn-primary finance-btn-small" block disabled={!selectedCustomer?.customerId}>
         {t("survey.save")}
       </Button>
     </Popover>

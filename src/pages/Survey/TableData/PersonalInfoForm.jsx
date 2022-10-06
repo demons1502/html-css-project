@@ -132,7 +132,7 @@ export const PersonalInfoForm = () => {
         </div>
         <div className="info-footer">
           <div className="info-btn">
-            <Button type="primary" htmlType="submit" className="btn-primary" block>
+            <Button type="primary" htmlType="submit" className="btn-primary" block disabled={!selectedCustomer?.customerId}>
               Lưu thông tin
             </Button>
           </div>

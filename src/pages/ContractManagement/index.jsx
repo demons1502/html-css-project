@@ -9,9 +9,7 @@ import Modal from '../../components/common/Modal';
 import CreateContract from './CreateContract';
 import { retrieveData } from '../../slices/contractManagement';
 import { DEFAULT_SIZE } from '../../ultis/constant'
-// import { formatDataNumber, formatDate } from "../../helper"
 import { EditOutlined } from '@ant-design/icons';
-// import { getDepositTermLabel } from '../../ultis/despositTerm';
 
 export default function ContractManagement() {
   const dispatch = useDispatch()
@@ -44,55 +42,25 @@ export default function ContractManagement() {
       title: 'Giá trị',
       className: 'green-color text-right value',
       dataIndex: 'value',
-      // render: (record) => {
-      //   return (
-      //     <span>{formatDataNumber(record)}</span>
-      //   );
-      // }
     },
     {
       title: 'Ngày hiệu lực',
       dataIndex: 'startDate',
-      // render: (record) => {
-      //   return (
-      //     <span>{formatDate(record.startDate)}</span>
-      //   );
-      // }
     },
     {
       title: 'Số năm nộp phí',
       dataIndex: 'duration',
-      // render: (record) => {
-      //   return (
-      //     <span>{`${record.duration} Năm`}</span>
-      //   );
-      // }
     },
     {
       title: 'Chu kì nộp phí',
       dataIndex: 'depositTerm'
-      // render: (record) => {
-      //   return (          
-      //     <span>{getDepositTermLabel(record.depositTerm)}</span>
-      //   );
-      // }
     },
     {
       title: 'Lần cuối nộp phí',
       dataIndex: 'lastDepositDate',
-      // render: (record) => {
-      //   return (
-      //     <span>{formatDate(record.lastDepositDate)}</span>
-      //   );
-      // }
     },
     {
       title: 'Hạn nộp phí tiếp theo',
-      // render: (record) => {
-      //   return (
-      //     <span>{formatDate(record.nextDepositDue)}</span>
-      //   );
-      // }
       dataIndex: 'nextDepositDue'
     },
     {
@@ -103,9 +71,7 @@ export default function ContractManagement() {
     },
     {
       title: '',
-      // render: (record) => <img className='edit_icon' src={IconEdit} onClick={() => handleEditContract(record)} />,
       render: (record) => <Button onClick={() => handleEditContract(record)} icon={<EditOutlined style={{ fontSize: '14px' }} />}></Button>,
-
     }
   ];
 
@@ -125,7 +91,6 @@ export default function ContractManagement() {
   }, [inputText, paginate,])
 
   const handleEditContract = (record) => {
-    // console.log(record);
     setDataEdit({ id: record.id })
     setVisibleModal(true)
     setTitleModal('Thay đổi hợp đồng')

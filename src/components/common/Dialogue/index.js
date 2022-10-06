@@ -59,14 +59,14 @@ const Dialogue = (props) => {
     let dialogItems = [];
     if (dialogData) {
       if (dialogData?.objective) {
-        dialogItems.push(<DialogItem title="Mục tiêu" content={dialogData?.objective}/>);
+        dialogItems.push(<DialogItem key="0" title="Mục tiêu" content={dialogData?.objective}/>);
       }
       if (dialogData?.procedure) {
-        dialogItems.push(<DialogItem title="Quy trình" content={dialogData?.procedure}/>);
+        dialogItems.push(<DialogItem key="1" title="Quy trình" content={dialogData?.procedure}/>);
       }
       if (dialogData?.dialogues) {
-        dialogData.dialogues.map((item) => {
-          dialogItems.push(<DialogItem title={item.label} content={item.text}/>);
+        dialogData.dialogues.map((item, index) => {
+          dialogItems.push(<DialogItem key={`${index + 2}`} title={item.label} content={item.text}/>);
         });
       }
       

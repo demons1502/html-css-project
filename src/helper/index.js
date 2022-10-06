@@ -3,9 +3,15 @@ import { CUSTOMER_CARE_INFO } from '../ultis/constant';
 import _ from 'lodash';
 
 export const formatDataNumber = (number) => {
+  const formatter = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+
   if (number) {
-    return new Intl.NumberFormat().format(number);
-  } else return 0;
+    return formatter.format(number);
+  } 
+  return formatter.format('0');
 };
 
 export const pad = (num, size) => {
@@ -18,9 +24,7 @@ export const formatDate = (date, format = 'DD/MM/YYYY') => {
   // format = moment.localeData().longDateFormat('L')
   return date?moment.utc(date).local().format(format) : '';
 };
-export const formatLocalDate = (date) => {
-  // format = moment.localeData().longDateFormat('L')
-  // return date?moment(date).utc().format(format) : '';
+export const formatToUtcDate = (date) => {
   return moment(date).utc().format('YYYY-MM-DD');
 };
 

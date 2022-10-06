@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const ListCalculation = () => {
   const [form] = Form.useForm();
-  const [annualTuitionFee, setAnnualTuitionFee] = useState(0);
+  const [annualTuitionFee, setAnnualTuitionFee] = useState(80000000);
   const [numberOfChildren, setNumberOfChildren] = useState(0);
   const [collegeAge, setCollegeAge] = useState(0);
   const [firstChildAge, setFirstChildAge] = useState(0);
@@ -20,15 +20,8 @@ const ListCalculation = () => {
   const [inflationRate, setInflationRate] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
   const [grandTotalAmount, setGrandTotalAmount] = useState(0);
+  const [payPerMonth, setPayPerMonth] = useState(0)
 
-  // onchange founctions
-  const onChange = (value) => {
-    console.log(value);
-    setAnnualTuitionFee(value);
-  };
-  const onChange1 = (value) => {
-    setMinusAmount(value);
-  };
 
   // annualTuitionFee
   useEffect(() => { }, []);
@@ -98,22 +91,30 @@ const ListCalculation = () => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+  // onchange founctions
+  const onChange1 = (value) => {
+    setMinusAmount(value);
+  };
+  const onChange = (value) => {
+    setAnnualTuitionFee(value);
+  };
+  const onChange3 = (value) => {
+    setPayPerMonth(value)
+  }
 
   const selectChange = (e) => {
-    // switch (e) {
-    //   case "1":
-    //     setAnnualTuitionFee(80000000)
-    //     break
-    //   case "2":
-    //     onChange(600000000)
-    //     break;
-    //   case "3":
-    //     
-    //     break
-    //   default:
-    //     setAnnualTuitionFee(80000000)
-    // }
-    setAnnualTuitionFee(1000000000)
+    switch (e) {
+      case "1":
+        form.setFieldValue('tuitionPerYear', 80000000)
+        break
+      case "2":
+        form.setFieldValue('tuitionPerYear', 600000000)
+        break;
+      case "3":
+        break
+      default:
+        form.setFieldValue('tuitionPerYear', 1000000000)
+    }
   }
   const { Option } = Select;
   return (
@@ -121,16 +122,25 @@ const ListCalculation = () => {
       form={form}
       name="control-hooks"
       onFinish={onFinish}
-      initialValues={{name2: 10000000}}
+      initialValues={{education:1, tuitionPerYear: 80000000, moneyAvailable: 0 }}
       onFinishFailed={onFinishFailed}
       autoComplete="off">
       <div className="container-right-middle">
-        <Form.Item name="name1" label="Nền giáo dục" className="input-item"
-        // initialvalues={"3"}
+        <Form.Item name="education" label="Nền giáo dục" className="input-item" hidden={true}
         >
           <Select placeholder="Công lập"
             style={{ width: 152 }}
-            // defaultValue="1"
+            onChange={selectChange}
+          >
+            <Option value="1">Công lập</Option>
+            <Option value="2">Dân lập</Option>
+            <Option value="3">Du học</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="educationLabel" label="Nền giáo dục" className="input-item"
+        >
+          <Select placeholder="Công lập"
+            style={{ width: 152 }}
             onChange={selectChange}
           >
             <Option value="1">Công lập</Option>
@@ -139,7 +149,7 @@ const ListCalculation = () => {
           </Select>
         </Form.Item>
         <Form.Item
-          name="name2"
+          name="tuitionPerYear"
           label="Học phí hằng năm"
           rules={[
             {
@@ -148,9 +158,8 @@ const ListCalculation = () => {
           ]}>
           <InputNumber
             controls={false}
-            
             style={{ width: 152 }}
-            value={annualTuitionFee}
+            placeholder="0"
             formatter={(value) =>
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
@@ -160,7 +169,7 @@ const ListCalculation = () => {
         </Form.Item>
 
         <Form.Item
-          name="name3"
+          name="children"
           label="Số con"
           rules={[
             {
@@ -177,7 +186,7 @@ const ListCalculation = () => {
           />
         </Form.Item>
         <Form.Item
-          name="name4"
+          name="collegeAge"
           label="Số tuổi vào đại học"
           rules={[
             {
@@ -194,7 +203,7 @@ const ListCalculation = () => {
         </Form.Item>
         {numberOfChildren > 0 && numberOfChildren < 5 && (
           <Form.Item
-            name="name5"
+            name="ageOfFirstChill"
             label="Tuổi con thứ nhất"
             rules={[
               {
@@ -212,7 +221,7 @@ const ListCalculation = () => {
         )}
         {numberOfChildren > 1 && numberOfChildren < 5 && (
           <Form.Item
-            name="name6"
+            name="ageOfSecondChill"
             label="Tuổi con thứ 2"
             rules={[
               {
@@ -230,7 +239,7 @@ const ListCalculation = () => {
         )}
         {numberOfChildren > 2 && numberOfChildren < 5 && (
           <Form.Item
-            name="name7"
+            name="ageOfThirdChill"
             label="Tuổi con thứ 3"
             rules={[
               {
@@ -248,7 +257,7 @@ const ListCalculation = () => {
         )}
         {numberOfChildren > 3 && numberOfChildren < 5 && (
           <Form.Item
-            name="name8"
+            name="ageOfFourthChill"
             label="Tuổi con thứ 4"
             rules={[
               {
@@ -265,7 +274,7 @@ const ListCalculation = () => {
           </Form.Item>
         )}
         <Form.Item
-          name="name9"
+          name="yearsInCollege"
           label="Số năm đại học"
           rules={[
             {
@@ -275,7 +284,7 @@ const ListCalculation = () => {
           <Input placeholder="0" type="number" min={0} style={{ width: 40 }} />
         </Form.Item>
         <Form.Item
-          name="name10"
+          name="moneyAvailable"
           label="Tổng tiền đã có"
           rules={[
             {
@@ -293,7 +302,7 @@ const ListCalculation = () => {
           />
         </Form.Item>
         <Form.Item
-          name="name11"
+          name="inflationaryRate"
           label="Tỷ lệ lạm phát"
           rules={[
             {
@@ -313,7 +322,7 @@ const ListCalculation = () => {
           </div>
         </Form.Item>
         <Form.Item
-          name="name12"
+          name="profitableRate"
           label="Tỷ suất sinh lời hằng năm"
           rules={[
             {
@@ -324,14 +333,22 @@ const ListCalculation = () => {
         </Form.Item>
 
         <Form.Item
-          name="name13"
+          name="payPerMonth"
           label="Chi tiêu hàng tháng"
           rules={[
             {
               required: true,
             },
           ]}>
-          <Input placeholder="0" type="number" min={0} style={{ width: 152 }} />
+          <InputNumber controls={false}
+            placeholder="0"
+            min={0}
+            style={{ width: 152 }}
+            formatter={(e) =>
+              `${e}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            parser={(e) => e.replace(/\$\s?|(,*)/g, "")}
+          />
         </Form.Item>
       </div>
       <div className="container-right-bottom">

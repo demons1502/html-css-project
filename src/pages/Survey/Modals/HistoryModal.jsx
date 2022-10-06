@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { getSurveyDetails } from "../../../slices/surveys";
-import { getTimeByTZ } from "../../../helper/index";
+import { formatDate } from "../../../helper/index";
 import { isEmpty } from "lodash";
 
 export const HistoryModal = ({ isModalOpen, toggleModal }) => {
@@ -20,7 +20,7 @@ export const HistoryModal = ({ isModalOpen, toggleModal }) => {
         apptId: history?.apptId,
         customerId: history?.customerId,
         surveyId: history?.surveyId,
-        date: getTimeByTZ(history?.createdAt),
+        date: formatDate(history?.createdAt),
         info: history?.hintName,
       };
     });

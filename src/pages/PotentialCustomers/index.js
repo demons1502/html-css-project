@@ -38,8 +38,8 @@ import { generateAgeOptions, generateIncomeOptions } from '../../ultis/generateL
 import Modal from '../../components/common/ModalSelect';
 import { convertToCurrency } from '../../ultis/convertToCurrency';
 import EditCustomer from './EditCustomer';
-import Filter from '../../components/common/Filter';
 import store from '../../store';
+import FilterStatus from '../../components/common/FilterStatus';
 
 export default function PotentialCustomers() {
   const potentialCustomers = useSelector((state) => state.potentialCustomersReducer.potentialCustomers);
@@ -184,7 +184,7 @@ export default function PotentialCustomers() {
       dispatch(getPotentialCustomers({ name: search, status: optionsFilter, ...filterValue }));
     }
     if (!optionsFilter.length) {
-      dispatch(setEmptyPotentialCustomers())
+      dispatch(setEmptyPotentialCustomers());
     }
   }, [dispatch, search, optionsFilter, filterValue]);
 
@@ -206,7 +206,7 @@ export default function PotentialCustomers() {
           </S.WrapIcon>
           <S.WrapButton>
             <Upload action={URL_IMPORT_CUSTOMERS} showUploadList={false} accept=".xlsx, .xls" {...importProps}>
-              <S.Button onClick={() => { }}>
+              <S.Button onClick={() => {}}>
                 <img src={Import} alt="Import customer icon" />
                 Import
               </S.Button>
@@ -215,7 +215,7 @@ export default function PotentialCustomers() {
               <img src={Import} alt="Add customer icon" />
               Tạo mới
             </S.Button>
-            <Filter options={filterListOption} defaultValue={optionsFilter} setPayload={setOptionsFilter} />
+            <FilterStatus options={filterListOption} defaultValue={optionsFilter} setPayload={setOptionsFilter} />
           </S.WrapButton>
         </S.WrapAction>
       </S.WrapHeader>

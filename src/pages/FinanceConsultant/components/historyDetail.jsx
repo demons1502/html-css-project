@@ -4,7 +4,6 @@ import DotImg from '../../../assets/images/icons/dot.svg';
 import { formatDataNumber } from '../../../helper';
 
 const HistoryDetail = (props) => {
-  const { setHistory } = props;
   return (
     <div className="financialConsultant-content history">
       <div className="financialConsultant-form_header">

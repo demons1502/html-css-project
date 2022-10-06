@@ -8,7 +8,7 @@ import { Button } from '../../components/styles';
 import { getConsult } from '../../slices/consult';
 import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import { options } from './options';
-import { formatDataNumber, getTimeByTZ } from '../../helper/index';
+import { formatDataNumber, formatDate, pad } from '../../helper/index';
 import { marriageStatus, acquaintanceLevel, typeCustomer } from '../../constants/common';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,10 +24,10 @@ export default function FinanceConsultant() {
   const columns = [
     {
       title: 'STT',
-      dataIndex: 'customerId',
-      // render: (_, record, index) => {
-      //   return <span>{index + 1}</span>;
-      // },
+      // dataIndex: 'customerId',
+      render: (_, record, index) => {
+        return pad(index + 1, 2);
+      },
     },
     {
       title: 'Họ và tên',
@@ -90,14 +90,14 @@ export default function FinanceConsultant() {
     {
       title: 'Lịch hẹn sắp tới',
       render: (record) => {
-        return <span>{getTimeByTZ(record.nextAppointment)}</span>;
+        return <span>{formatDate(record.nextAppointment)}</span>;
       },
     },
     {
       title: '',
       dataIndex: '',
       render: (record) =>
-        record.appointment_schedule ? (
+        record.nextAppointment ? (
           <Button size="small">Nhắc lịch</Button>
         ) : (
           <Button size="small" type="primary" onClick={() => navigate('/appointment-management')}>

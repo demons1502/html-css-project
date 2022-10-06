@@ -42,6 +42,7 @@ const PaymentHistory = ({ customer }) => {
 
   useEffect(() => {
     setData(customer);
+    setRowActive(null);
   }, [customer]);
 
   return (
@@ -107,7 +108,6 @@ const PaymentHistory = ({ customer }) => {
               />
             </Spin>
             <PaginationCommon total={histories.count} setPaginate={setPaginate} />
-            {/* <Pagination total={payments.total} setPaginate={onChangePage} /> */}
           </div>
         </>
       ) : (

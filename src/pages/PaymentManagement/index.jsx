@@ -14,7 +14,6 @@ import PaymentHistory from './PaymentHistory';
 import PaymentManagementHeader from './PaymentManagementHeader';
 
 const PaymentManagement = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [rowActive, setRowActive] = useState({});
   const [searchPayload, setSearchPayload] = useState('');
   const [historyItem, setHistoryItem] = useState(null);
@@ -27,10 +26,6 @@ const PaymentManagement = () => {
 
   const payments = useSelector((state) => state.paymentManagementReducer);
 
-  const onSelectChange = (newSelectedRowKeys) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-
   const handleDeleteOne = (item) => {
     ModalConfirm({
       content: `Bạn chắc chắn muốn xóa thanh toán này không`,
@@ -38,23 +33,6 @@ const PaymentManagement = () => {
         dispatch(deletePayment({ transactionIds: [item.id] })), setHistoryItem(null);
       },
     });
-  };
-
-  const handleDelete = () => {
-    if (selectedRowKeys.length > 0) {
-      ModalConfirm({
-        content: 'Bạn chắc chắn muốn xóa thanh toán đã chọn!',
-        callApi: () => {
-          dispatch(deletePayment({ transactionIds: selectedRowKeys })), setHistoryItem(null);
-          setSelectedRowKeys([]);
-        },
-      });
-    } else {
-      message.warning({
-        content: 'Vui lòng chọn bản ghi bạn cần xóa',
-        duration: 3,
-      });
-    }
   };
 
   const handleImport = () => {
@@ -76,6 +54,11 @@ const PaymentManagement = () => {
 
   const columns = [
     {
+      title: 'ID login',
+      dataIndex: 'loginId',
+      key: 'loginId',
+    },
+    {
       title: 'Họ và tên',
       dataIndex: 'userFullname',
       key: 'userFullname',
@@ -83,7 +66,6 @@ const PaymentManagement = () => {
     {
       title: 'Ngày thanh toán',
       key: 'startDate',
-      // width: '145px',
       render: (record) => {
         return <span>{formatDate(record.startDate)}</span>;
       },
@@ -91,7 +73,6 @@ const PaymentManagement = () => {
     {
       title: 'Ngày hiệu lực',
       key: 'startDate',
-      // width: '115px',
       render: (record) => {
         return <span>{formatDate(record.startDate)}</span>;
       },
@@ -99,7 +80,6 @@ const PaymentManagement = () => {
     {
       title: 'Ngày kết thúc',
       key: 'dueDate',
-      // width: '125px',
       render: (record) => {
         return <span>{formatDate(record.dueDate)}</span>;
       },
@@ -145,9 +125,6 @@ const PaymentManagement = () => {
         onBack={() => window.history.back()}
         title="Quản lý thanh toán khách hàng Manulife"
         extra={[
-          <S.Button key="1" onClick={handleDelete}>
-            Xóa
-          </S.Button>,
           <S.Button
             key="3"
             type="primary"
@@ -173,10 +150,6 @@ const PaymentManagement = () => {
                 dataSource={payments.data}
                 columns={columns}
                 pagination={false}
-                rowSelection={{
-                  selectedRowKeys,
-                  onChange: onSelectChange,
-                }}
                 rowClassName={(record) => (rowActive === record.id ? 'active' : '')}
                 onRow={(record) => {
                   return {

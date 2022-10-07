@@ -83,27 +83,27 @@ export default function CallSchedule() {
       title: t('common.customer type'),
       dataIndex: 'customer',
       key: 'type',
-      width: 120,
+      ellipsis: true,
       render: ({ typeId }) => (typeId === 1 ? t('call-schedule.user') : t('call-schedule.company')),
     },
     {
       title: t('common.phone'),
       dataIndex: 'customer',
       key: 'phone',
-      width: 130,
+      ellipsis: true,
       render: ({ phone1, phone2, phone3 }) => phone1 || phone2 || phone3,
     },
     {
       title: t('common.last call'),
       dataIndex: 'lastCall',
       key: 'lastCall',
-      width: 140,
+      ellipsis: true,
     },
     {
       title: t('common.after call'),
       dataIndex: 'nextCall',
       key: 'nextCall',
-      width: 140,
+      ellipsis: true,
       render: (_, record) => <CallScheduleItemNextCall record={record} />,
     },
     {
@@ -120,8 +120,18 @@ export default function CallSchedule() {
     //   render: ({ phone1, phone2, phone3 }) => <CallScheduleItemCall record={{ phone1, phone2, phone3 }} />,
     // },
     {
+      width: 50,
       key: 'action',
-      render: (_, record) => <CallScheduleItemCall record={{ customerCallId: record.id, phone1: record?.customer?.phone1, phone2: record?.customer?.phone2, phone3: record?.customer?.phone3 }} />,
+      render: (_, record) => (
+        <CallScheduleItemCall
+          record={{
+            customerCallId: record.id,
+            phone1: record?.customer?.phone1,
+            phone2: record?.customer?.phone2,
+            phone3: record?.customer?.phone3,
+          }}
+        />
+      ),
     },
   ];
 

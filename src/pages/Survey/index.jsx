@@ -2,7 +2,7 @@ import { Button, Col, Layout, List, Row, Typography, Spin } from "antd";
 import React, { Fragment, useEffect, useState } from "react";
 import SearchInputBox from "./SearchInputBox";
 // import ListDetails from "./ListDetails";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams  } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import TabMenu from "./Tabs/TabMenu";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,12 +25,12 @@ const Survey = () => {
   const [payload, setPayload] = useState('');
   const { customers, surveys } = useSelector((state) => state);
   const appointments = useSelector((state) => state.appointment);
+  const [searchParams, setSearchParams] = useSearchParams();
   // const [customerList, setCustomerList] = useState([]);
   // const [selectedCustomer, setSelectedCustomer] = useState(null);
   const { data, selectedCustomer } = customers;
-
   const { me } = useSelector((state) => state.auth);
-  // console.log(me);
+  const apptId = searchParams.get('appointment_id');
 
   useEffect(() => {
     if (!isEmpty(surveys?.survey)) {
@@ -45,11 +45,17 @@ const Survey = () => {
     const params = {
       titles: ['survey'],
       startDate: moment().format('YYYY-MM-DD HH:mm'),
-      endDate: moment().add(30, 'm').format('YYYY-MM-DD HH:mm')
+      endDate: '2022-10-07 23:59:59'//moment().add(30, 'm').format('YYYY-MM-DD HH:mm')
     }
     // dispatch(getCustomerList());
-    dispatch(getAppointments(params));
-    dispatch(getSppechScriptInfo());
+    if (apptId) {
+      dispatch(getAppointments(params));
+    }
+    else {
+      dispatch(getAppointments(params));
+    }
+    
+    // dispatch(getSppechScriptInfo());
   }, [dispatch]);
 
   useEffect(() => {
@@ -117,7 +123,7 @@ const Survey = () => {
                   </div>
 
                   <div className="container-right">
-                    {selectedCustomer?.customerId ? (
+                    {selectedCustomer?.customerId? (
                       <div className="container-right-header">
                         <div>
                           <HistoryPopup historyHandler={historyHandler} />
@@ -165,7 +171,11 @@ const Survey = () => {
               <Col lg={9} md={24} sm={24} xs={24}>
                 <Layout.Content className="manageContent">
                   <div className="content-div-2">
-                    <Dialogue title="Quy trình khảo sát" type="survey"/>
+                    <Dialogue 
+                      title="Quy trình khảo sát" 
+                      type="survey" 
+                      customerId={selectedCustomer?.customerId} 
+                      keywords={{interestRate: 5}}/>
                   </div>
                 </Layout.Content>
               </Col>

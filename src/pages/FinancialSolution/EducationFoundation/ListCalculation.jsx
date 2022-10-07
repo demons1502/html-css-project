@@ -1,9 +1,10 @@
 import { Button, Select, Checkbox, Form, Input, InputNumber } from "antd";
 import React from "react";
 import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const ListCalculation = () => {
+const ListCalculation = ({ typeFund, userSelected }) => {
   const [form] = Form.useForm();
   const [annualTuitionFee, setAnnualTuitionFee] = useState(80000000);
   const [numberOfChildren, setNumberOfChildren] = useState(0);
@@ -22,6 +23,7 @@ const ListCalculation = () => {
   const [grandTotalAmount, setGrandTotalAmount] = useState(0);
   const [payPerMonth, setPayPerMonth] = useState(0)
 
+  const navigate = useNavigate();
 
   // annualTuitionFee
   useEffect(() => { }, []);
@@ -86,6 +88,16 @@ const ListCalculation = () => {
 
   const onFinish = (values) => {
     console.log("Success:", values);
+    navigate("/advise/financial-solutions/minh-hoa-gia",
+      {
+        state:
+        {
+          values: values,
+          total: totalAmount,
+          typeFund: typeFund,
+          userSelected: userSelected
+        }
+      });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -106,14 +118,17 @@ const ListCalculation = () => {
     switch (e) {
       case "1":
         form.setFieldValue('tuitionPerYear', 80000000)
+        setAnnualTuitionFee(80000000)
         break
       case "2":
         form.setFieldValue('tuitionPerYear', 600000000)
+        setAnnualTuitionFee(600000000)
         break;
       case "3":
+        form.setFieldValue('tuitionPerYear', 1000000000)
+        setAnnualTuitionFee(1000000000)
         break
       default:
-        form.setFieldValue('tuitionPerYear', 1000000000)
     }
   }
   const { Option } = Select;
@@ -122,7 +137,7 @@ const ListCalculation = () => {
       form={form}
       name="control-hooks"
       onFinish={onFinish}
-      initialValues={{education:1, tuitionPerYear: 80000000, moneyAvailable: 0 }}
+      initialValues={{ education: 1, tuitionPerYear: 80000000, moneyAvailable: 0 }}
       onFinishFailed={onFinishFailed}
       autoComplete="off">
       <div className="container-right-middle">

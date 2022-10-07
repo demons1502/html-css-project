@@ -34,7 +34,6 @@ const ListCalculation = ({typeFund, userSelected}) => {
           userSelected: userSelected
         }
       });
-
   };
 
   const onFinishFailed = (errorInfo) => {

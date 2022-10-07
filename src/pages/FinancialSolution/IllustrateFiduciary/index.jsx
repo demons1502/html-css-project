@@ -37,11 +37,11 @@ const IllustrateFiduciary = () => {
     if (callSave) {
       let data={
         customerApptRecordId: dataToSave.userSelected.customerApptRecordId,
-        fundType: dataToSave.typeFund,
+        fundType:'education', //dataToSave.typeFund,
         isPotential: (dataToSave.values.isPotential == undefined) ? "false" : 'true',
         result: "string",
         hintName: dataToSave.hideName,
-        version:"string",
+        // version:"string",
         sumInsured: dataToSave.total,
         baseYear: dataToSave.additionalInvestmentYear,
         basePremium: 20000, //???
@@ -62,6 +62,7 @@ const IllustrateFiduciary = () => {
       setCallSave(false)
     }
   }, [callSave])
+  
   // const customerId = useSelector((state) => state.financialSolution.customerSelect)
   // const customerContract = useSelector((state) => state.financialSolution.customerContract)
 

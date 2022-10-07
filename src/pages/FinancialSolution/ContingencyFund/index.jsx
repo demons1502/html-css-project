@@ -6,7 +6,7 @@ import ListCalculation from "./ListCalculation";
 // import ListDetails from "./ListDetails";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAppointment, getSpeechScriptType, getAppointmentByIds,updateSelectCustomer } from "../../../slices/financialSolutions";
+import { getAppointment, getSpeechScriptType, getAppointmentByIds, updateSelectCustomer } from "../../../slices/financialSolutions";
 import moment from 'moment';
 import Dialogue from "../../../components/common/Dialogue/index"
 import { getFinanceDatas } from "../../../slices/financeSolutions";
@@ -31,12 +31,12 @@ const ContingencyFund = ({ apptId = null }) => {
   const [itemContent, setItemContent] = useState({});
   const [lists, setLists] = useState(null);
   const [payload, setPayload] = useState("");
-  
+
   const location = useLocation();  //thomas code get title from quan ly lich hen
   // title
   const [title] = useState(location?.state?.title);
   const dispatch = useDispatch();
-  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution)
+  var { customerAppRecords } = useSelector((state) => state.financialSolution)
 
   const getAppointmentNoId = () => {
     let endDate = new Date();
@@ -55,7 +55,7 @@ const ContingencyFund = ({ apptId = null }) => {
     let arr = []
     arr.push(customerAppRecords?.map(item => {
       // dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
-      return { title: item.customerApptRecords[0].name, apptId: item.apptId, customerApptRecordId: item.customerApptRecords[0].customerApptRecordId}
+      return { title: item.customerApptRecords[0].name, apptId: item.apptId, customerApptRecordId: item.customerApptRecords[0].customerApptRecordId }
     }))
     setLists(arr[0])
   }, [customerAppRecords])
@@ -65,7 +65,7 @@ const ContingencyFund = ({ apptId = null }) => {
       setItemContent(lists[0]);
     }
   }, [lists])
-
+  console.log(lists);
   return (
     <div className="quyduphone">
       {/* quyduphone-nav start */}
@@ -111,7 +111,7 @@ const ContingencyFund = ({ apptId = null }) => {
                       dataSource={lists}
                       renderItem={(item, index) => (
                         <List.Item
-                          onClick={() =>{ setItemContent(item)}}
+                          onClick={() => { setItemContent(item) }}
                           className={`${item === itemContent ? "active" : ""}`}>
                           <Typography.Text ellipsis>{item.title}</Typography.Text>
                         </List.Item>
@@ -125,7 +125,7 @@ const ContingencyFund = ({ apptId = null }) => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation typeFund= "prevention" userSelected={itemContent}/>  
+                  <ListCalculation typeFund="prevention" userSelected={itemContent} />
                 </div>
 
                 {/* container-right end */}

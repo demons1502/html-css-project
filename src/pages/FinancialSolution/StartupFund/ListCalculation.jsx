@@ -7,7 +7,7 @@ import { options } from './options';
 import { formatDataNumber } from '../../../helper';
 import { Button } from '../../../components/styles';
 
-const ListCalculation = () => {
+const ListCalculation = ({typeFund, userSelected}) => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
@@ -16,7 +16,9 @@ const ListCalculation = () => {
   const [TotalAmount, setTotalAmount] = useState(0);
   const [investment, setInvestment] = useState(0);
   const onFinish = (values) => {
-    navigate('/advise/financial-solutions/minh-hoa-gia', { state: { values: TotalAmount } });
+    console.log(values);
+    navigate("/advise/financial-solutions/minh-hoa-gia", {state:{values: values,total:TotalAmount, typeFund:typeFund, userSelected:userSelected}});
+
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -33,8 +35,8 @@ const ListCalculation = () => {
   }, [Percent, power, investment]);
 
   useEffect(() => {
-    form.setFieldValue('name1', options[0]);
-    setInvestment(form.getFieldValue('name1').value);
+    form.setFieldValue('jobStartUp', options[0]);
+    setInvestment(form.getFieldValue('jobStartUp').value);
   }, []);
 
   const { Option } = Select;
@@ -42,7 +44,7 @@ const ListCalculation = () => {
     <Form form={form} name="control-hooks" onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">
       <div className="container-right-middle">
         <Form.Item
-          name="name1"
+          name="jobStartUp"
           label="Ngành nghề khởi nghiệp"
           className="input-item"
           rules={[
@@ -66,7 +68,7 @@ const ListCalculation = () => {
         </Form.Item>
 
         <Form.Item
-          name="name3"
+          name="yearPreparation"
           label="Số năm chuẩn bị"
           rules={[
             {
@@ -84,7 +86,7 @@ const ListCalculation = () => {
           />
         </Form.Item>
         <Form.Item
-          name="name4"
+          name="inflationRate"
           label="Tỷ lệ lạm phát"
           rules={[
             {

@@ -3,8 +3,8 @@ import { Form, Input, InputNumber } from "antd";
 
 export const FiduciaryValue = ({ nameCustomer, data,setDataToSave }) => {
   const [investmentYear, setInvestmentYear] = useState(20);
-  const [percentage, setPercentage] = useState(data?.values?.percantage || 0);
-  const [totalOfMoney, setTotalOfMoney] = useState(data?.total || 0);
+  const [percentage, setPercentage] = useState(data?.values?.percantage || 6);
+  const [totalOfMoney, setTotalOfMoney] = useState(Math. round(data?.total) || 0);
   const [additionalInvestmentYear, setAdditionalInvestmentYear] = useState(10);
 
   // console.log("investmentYear", investmentYear);
@@ -20,15 +20,15 @@ export const FiduciaryValue = ({ nameCustomer, data,setDataToSave }) => {
   };
 
   useEffect(()=>{
-    // setDataToSave((prev)=>{
-    //   prev.additionalInvestmentYear=additionalInvestmentYear;
-    //   prev.investmentYear=investmentYear;
-    //   prev.values.percantage=percentage;
-    //   prev.total=totalOfMoney;
-    //   return({
-    //     ...prev
-    //   })
-    // })
+    setDataToSave((prev)=>{
+      prev.additionalInvestmentYear=additionalInvestmentYear;
+      prev.investmentYear=investmentYear;
+      prev.percantage=percentage;
+      prev.total=totalOfMoney;
+      return({
+        ...prev
+      })
+    })
   },[investmentYear,percentage,totalOfMoney,additionalInvestmentYear])
   return (
     <Form

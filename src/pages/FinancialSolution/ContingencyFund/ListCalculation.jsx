@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { postFinanceDatas } from "../../../slices/financeSolutions";
 
-const ListCalculation = ({ finaceDatas }) => {
+const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
   const [Percent, setPercent] = useState(0);
   const [Amount, setAmount] = useState(0);
   const [isPotential, setIsPotential] = useState(false);
@@ -43,45 +43,49 @@ const ListCalculation = ({ finaceDatas }) => {
 
   // submit data
   const onFinish = async (values) => {
-    // console.log(values);
-    try {
-      if (values?.amount !== undefined && isPotential !== undefined) {
-        await dispatch(
-          postFinanceDatas({
-            fundId: finaceDatas?.id,
-            isPotential: isPotential,
-            result: {
-              key: "",
-              value: String(TotalAmount),
-            },
-            sumInsured: 1000000,
-            baseYears: 5,
-            basePremium: 20000,
-            investmentRate: 6,
-            riderPremium: 20000,
-            topUpPremium: 20000,
-            topUpYears: 10,
-            interestRate: {
-              key: "",
-              value: String(Percent),
-            },
-            expensePerMonth: {
-              key: "",
-              value: String(Amount),
-            },
-          })
-        );
-        navigate("/advise/financial-solutions/minh-hoa-gia");
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    console.log(values);
+    // try {
+    //   if (values?.amount !== undefined && isPotential !== undefined) {
+    //     dispatch(
+    //       postFinanceDatas({
+    //         fundId: finaceDatas?.id,
+    //         isPotential: isPotential,
+    //         result: {
+    //           key: "",
+    //           value: String(TotalAmount),
+    //         },
+    //         sumInsured: 1000000,
+    //         baseYears: 5,
+    //         basePremium: 20000,
+    //         investmentRate: 6,
+    //         riderPremium: 20000,
+    //         topUpPremium: 20000,
+    //         topUpYears: 10,
+    //         interestRate: {
+    //           key: "",
+    //           value: String(Percent),
+    //         },
+    //         expensePerMonth: {
+    //           key: "",
+    //           value: String(Amount),
+    //         },
+    //       })
+    //     );
+    //   }
+    // } catch (e) {
+    //   console.log(e);
+    // }
+    navigate("/advise/financial-solutions/minh-hoa-gia", {state:{values: values,total:TotalAmount, typeFund:typeFund, userSelected:userSelected}});
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
+  useEffect(()=>{
+    setPercent(0)
+    form.resetFields()
+  },[userSelected?.apptId])
   return (
     <Form
       form={form}
@@ -90,23 +94,12 @@ const ListCalculation = ({ finaceDatas }) => {
       onFinishFailed={onFinishFailed}
       autoComplete="off">
       <div className="container-right-middle">
-        <div className="form-text">
-          <p className="title">Thời gian đến tuổi nghỉ hưu còn</p>
-          <p className="value">
-            {` ${
-              finaceDatas !== "" && finaceDatas !== undefined
-                ? finaceDatas?.illustration?.investmentRate
-                : 0
-            } %`}
-          </p>
-        </div>
-        {/* </Form.Item> */}
-        {/* <Form.Item
+        <Form.Item
           name="percantage"
           label="Lãi suất ngân hàng"
           rules={[
             {
-              required: false,
+              required: true,
             },
           ]}>
           <div className="percentage-field">
@@ -115,22 +108,24 @@ const ListCalculation = ({ finaceDatas }) => {
               onChange={(e) => setPercent(Number(e.target.value))}
               placeholder="0"
               type="text"
-              style={{ width: 45, paddingRight: 0 }}
+              style={{ width: 65, paddingRight: 0 }}
               value={Percent}
             />
             <span className="pIcon">%</span>
           </div>
-        </Form.Item> */}
+        </Form.Item>
         <Form.Item
           name="amount"
           label="Tổng tiền chi tiêu thiết yếu/tháng"
           rules={[
             {
-              required: false,
+              required: true,
             },
           ]}>
-          <InputNumber
+          <InputNumber style={{ width: '120px' }}
             defaultValue={0}
+            min={0}
+            placeholder="0"
             formatter={(value) =>
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
@@ -153,11 +148,14 @@ const ListCalculation = ({ finaceDatas }) => {
       </div>
 
       <div className="container-right-submit">
-        <Form.Item name="remember">
+        <Form.Item name="isPotential"
+          valuePropName="checked"
+        >
           <Checkbox
-            onChange={(e) => setIsPotential(e.target.checked)}
-            defaultChecked={true}
-            type="checkbox">
+            defaultChecked={false}
+            // onChange={(e) => setIsPotential(e.target.checked)}
+            // type="checkbox"
+          >
             Không còn tiềm năng
           </Checkbox>
         </Form.Item>

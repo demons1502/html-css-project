@@ -13,7 +13,7 @@ import AddEventContent from "./Modal/AddEventContent";
 import SendSmsContent from "./Modal/SendSmsContent";
 import SendEmailContent from "./Modal/SendEmailContent";
 import {LOADING_STATUS} from '../../ultis/constant';
-import {getTimeByTZ, pad} from '../../helper'
+import {formatDate, pad} from '../../helper'
 import useScrollTableConfig from '../../hooks/useScrollTableConfig'
 import * as S from '../../components/styles'
 
@@ -46,7 +46,7 @@ export default function ListEvent() {
       width: '24%',
       render: (record) => {
         return (
-          <span>{getTimeByTZ(record.date)}</span>
+          <span>{formatDate(record.date)}</span>
         )
       }
     },

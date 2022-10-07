@@ -502,9 +502,20 @@
   &-form {
     .ant-form-item {
       padding: 0 20px;
+      margin-bottom: 10px;
       label {
         &::after {
           display: none;
+        }
+      }
+      input {
+        text-align: end;
+        &:disabled {
+          font-size: $font-size-base;
+          font-weight: $font-weight-bold;
+          color: $black-color;
+          background: $white-color;
+          cursor: default;
         }
       }
     }
@@ -514,7 +525,6 @@
       justify-content: flex-end;
       align-items: center;
       font-size: $font-size-base;
-      // border-bottom: 1px solid #000;
       p {
         font-size: $font-size-base;
         font-weight: $font-weight-bold;

@@ -1,23 +1,18 @@
-import React, { Fragment, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Button, Col, Layout, List, Popover, Row, Typography } from 'antd';
 import { ClockCircleOutlined, LeftOutlined } from '@ant-design/icons';
-import Participant from './components/participant';
-import ConsultantProcess from './components/consultantProcess';
-import HistorySelect from './components/historySelect';
-import SpendingForm from './form/spendingForm';
-import SearchInputBox from '../Survey/SearchInputBox';
-import left_arrow from '../../assets/images/icons/left-arrow.svg';
-import calender from '../../assets/images/icons/calendar.svg';
-import { isEmpty } from 'lodash';
-import * as S from '../../components/styles';
-import { data } from './fakeData/customer';
-import History from './history';
-import HistoryDetail from './components/historyDetail';
-import { useNavigate } from 'react-router-dom';
+import { Col, Layout, List, Popover, Row, Typography } from 'antd';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { getConsultants, getConsultScript } from '../../slices/financialConsultant';
-import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import calender from '../../assets/images/icons/calendar.svg';
+import Dialogue from '../../components/common/Dialogue';
+import * as S from '../../components/styles';
+import { getConsult } from '../../slices/consult';
+import SearchInputBox from '../Survey/SearchInputBox';
+import HistoryDetail from './components/historyDetail';
+import SpendingForm from './form/spendingForm';
+import History from './history';
+import { formatDate } from '../../helper';
 
 export default function FinanceConsultant() {
   const { t } = useTranslation();
@@ -26,17 +21,16 @@ export default function FinanceConsultant() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { data } = useSelector((state) => state.financialConsultant);
   const customers = useSelector((state) => state.consultReducer);
-  console.log(data);
+
   const handleSelect = (id) => {
     setSelectId(id);
+    setHistory(null);
   };
 
   useEffect(() => {
-    const payload = { limit: 10, offset: 0, customerId: 160 };
-    dispatch(getConsultants(payload));
-    dispatch(getConsultScript());
+    const payload = { limit: 10, offset: 0 };
+    dispatch(getConsult(payload));
   }, []);
 
   return (
@@ -54,15 +48,15 @@ export default function FinanceConsultant() {
                       <SearchInputBox />
                     </div>
 
-                    {data?.length > 0 && (
+                    {customers.data?.length > 0 && (
                       <List
-                        dataSource={data}
+                        dataSource={customers?.data}
                         renderItem={(customer, index) => (
                           <List.Item
                             onClick={() => handleSelect(customer?.customerId)}
                             className={`${customer?.customerId === selectId ? 'active' : ''}`}
                           >
-                            <Typography.Text ellipsis>{customer?.title}</Typography.Text>
+                            <Typography.Text ellipsis>{customer?.fullname}</Typography.Text>
                           </List.Item>
                         )}
                       />
@@ -70,12 +64,12 @@ export default function FinanceConsultant() {
                   </div>
 
                   <div className="container-right">
-                    {history === null ? (
+                    {!history ? (
                       <div className="container-right-header">
                         <div className="financialConsultant-popover">
                           <Popover
                             placement="bottomLeft"
-                            content={<History setHistory={setHistory} />}
+                            content={<History setHistory={setHistory} id={selectId} />}
                             title={
                               <div className="financialConsultant-popover_title">
                                 <h5>{t('financial consultant.history title')}</h5>
@@ -104,11 +98,11 @@ export default function FinanceConsultant() {
                         </div>
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: '5px' }} />
-                          <span>Ngày: 12/08/2022</span>
+                          <span>Ngày: {formatDate(history?.createdAt)}</span>
                         </div>
                       </div>
                     )}
-                    {history !== null ? <HistoryDetail setHistory={setHistory} /> : <SpendingForm />}
+                    {history ? <HistoryDetail history={history} /> : <SpendingForm id={selectId} />}
                   </div>
                 </div>
               </Layout.Content>
@@ -117,7 +111,7 @@ export default function FinanceConsultant() {
             <Col lg={9} md={24} sm={24} xs={24}>
               <Layout.Content className="manageContent">
                 <div className="content-div-2">
-                  <ConsultantProcess title={t('financial consultant.process title')} />
+                  <Dialogue type="consult" title={t('financial consultant.process title')} />
                 </div>
               </Layout.Content>
             </Col>

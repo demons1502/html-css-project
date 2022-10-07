@@ -1,21 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+
 // COMPONENTS
 import Edit from '../../../../../../assets/images/icons/components/Edit';
 import Delete from '../../../../../../assets/images/icons/components/Delete';
+
 // STYLES
 import * as S from './styles';
-import { useNavigate } from 'react-router-dom';
 
-export const GroupButton = ({ handleOpenEdit, handleDelete }) => {
+export const GroupButton = ({ handleOpenEdit, handleDelete, info }) => {
   const navigate = useNavigate();
+
+  const handleFinacial = () => {
+    navigate(`/advise/survey?appointment_id=${info.apptId}`);
+  };
+
   return (
     <S.WrapContainer>
       <S.WrapLeft>
         <S.Button onClick={() => navigate('/advise')} type="primary">
           Tư vấn
         </S.Button>
-        <S.Button onClick={() => navigate('/advise/survey')} type="primary">
+        <S.Button onClick={handleFinacial} type="primary">
           Khảo sát
         </S.Button>
         <S.Button onClick={() => navigate('/advise/financial-solutions')} type="primary">
@@ -33,6 +40,7 @@ export const GroupButton = ({ handleOpenEdit, handleDelete }) => {
 GroupButton.prototype = {
   handleOpenEdit: PropTypes.func,
   handleDelete: PropTypes.func,
+  info: PropTypes.object,
 };
 
 export default GroupButton;

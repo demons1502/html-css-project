@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import eyeIcon from '../../assets/images/icons/eyeIcon.svg';
 import timeIcon from '../../assets/images/icons/timeIcon.svg';
-import { getTimeByTZ } from '../../helper/index';
+import { formatDate } from '../../helper/index';
 import { getView } from '../../slices/financeKnowledge';
 
 const FinanceSupportCard = (props) => {
@@ -85,8 +85,8 @@ const FinanceSupportCard = (props) => {
                     )}
                     {wrap && <span className="line">|</span>}
                     <Typography.Text className="card-item">
-                      <img src={timeIcon} alt={getTimeByTZ(content?.date)} />
-                      <span>{getTimeByTZ(content?.date)}</span>
+                      <img src={timeIcon} alt={formatDate(content?.date)} />
+                      <span>{formatDate(content?.date)}</span>
                     </Typography.Text>
                   </div>
                 </Col>

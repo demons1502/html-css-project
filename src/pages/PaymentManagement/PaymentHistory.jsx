@@ -2,7 +2,7 @@ import { Empty, Spin } from 'antd';
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import calendarIcon from '../../assets/images/icons/calendar.svg';
-import { getTimeByTZ } from '../../helper/index';
+import { formatDate } from '../../helper/index';
 import { getHistoriesData } from '../../slices/paymentManagement';
 import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import TableCommon from '../../components/common/TableNormal';
@@ -15,9 +15,9 @@ const columns = [
     dataIndex: 'startDate',
     key: 'startDate',
     width: '130px',
-    render: (record) => {
-      return <span>{getTimeByTZ(record)}</span>;
-    },
+    // render: (record) => {
+    //   return <span>{formatDate(record)}</span>;
+    // },
   },
   {
     title: 'Nội dung',
@@ -42,6 +42,7 @@ const PaymentHistory = ({ customer }) => {
 
   useEffect(() => {
     setData(customer);
+    setRowActive(null);
   }, [customer]);
 
   return (
@@ -53,7 +54,7 @@ const PaymentHistory = ({ customer }) => {
               <div className="paymentHistory-title">
                 <h4>{customer?.userFullname} </h4>
                 <p>
-                  Số tiền: <span>{formatDataNumber(data?.amount)}</span>
+                  Số tiền: <span>{data?.amount}</span>
                 </p>
               </div>
               <div className="paymentHistory-time">
@@ -63,7 +64,7 @@ const PaymentHistory = ({ customer }) => {
                     <span>Ngày thanh toán</span>
                   </div>
                   <div className="paymentHistory-time_date">
-                    <span>{getTimeByTZ(data?.startDate)}</span>
+                    <span>{data?.startDate}</span>
                   </div>
                 </div>
 
@@ -73,7 +74,7 @@ const PaymentHistory = ({ customer }) => {
                     <span>Ngày hiệu lực</span>
                   </div>
                   <div className="paymentHistory-time_date">
-                    <span>{getTimeByTZ(data?.startDate)}</span>
+                    <span>{data?.startDate}</span>
                   </div>
                 </div>
 
@@ -83,7 +84,7 @@ const PaymentHistory = ({ customer }) => {
                     <span>Ngày kết thúc</span>
                   </div>
                   <div className="paymentHistory-time_date">
-                    <span>{getTimeByTZ(data?.dueDate)}</span>
+                    <span>{data?.dueDate}</span>
                   </div>
                 </div>
               </div>
@@ -107,7 +108,6 @@ const PaymentHistory = ({ customer }) => {
               />
             </Spin>
             <PaginationCommon total={histories.count} setPaginate={setPaginate} />
-            {/* <Pagination total={payments.total} setPaginate={onChangePage} /> */}
           </div>
         </>
       ) : (

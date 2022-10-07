@@ -43,7 +43,7 @@ export default function Filter(props) {
       <Popover content={checkboxRender} trigger="click" placement="bottomLeft" onOpenChange={handleOpenChange}>
         <S.ButtonFilter active={open ? 1 : 0}>
           <S.Div>
-            <S.Span>{optionsFilter.length}</S.Span>
+            <S.Span>{optionsFilter?.length}</S.Span>
             {t('common.filter')}
           </S.Div>
           <img src={FilterIcon} alt="" />

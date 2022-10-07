@@ -1,16 +1,16 @@
-import { Spin, Table } from 'antd';
-import { React, useCallback, useMemo, useEffect, useState } from 'react';
+import { Spin } from 'antd';
+import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import FilterCommon from '../../components/common/Filter';
 import Pagination from '../../components/common/Pagination';
 import TableCommon from '../../components/common/TableNormal';
 import { Button } from '../../components/styles';
+import { acquaintanceLevel, marriageStatus, typeCustomer } from '../../constants/common';
+import { formatDataNumber, formatDate } from '../../helper/index';
 import { getConsult } from '../../slices/consult';
 import { DEFAULT_SIZE, LOADING_STATUS } from '../../ultis/constant';
 import { options } from './options';
-import { formatDataNumber, getTimeByTZ } from '../../helper/index';
-import { marriageStatus, acquaintanceLevel, typeCustomer } from '../../constants/common';
-import { useNavigate } from 'react-router-dom';
 
 export default function FinanceConsultant() {
   const [status, setStatus] = useState(_.map(options, 'value'));
@@ -25,9 +25,6 @@ export default function FinanceConsultant() {
     {
       title: 'STT',
       dataIndex: 'customerId',
-      // render: (_, record, index) => {
-      //   return <span>{index + 1}</span>;
-      // },
     },
     {
       title: 'Họ và tên',
@@ -35,7 +32,6 @@ export default function FinanceConsultant() {
     },
     {
       title: 'Số điện thoại',
-      // dataIndex: 'phone1',
       render: (record) => {
         return <span>{record.phone1 || record.phone2}</span>;
       },
@@ -46,25 +42,22 @@ export default function FinanceConsultant() {
     },
     {
       title: 'Thân quen',
-      // dataIndex: 'acquaintanceLevel',
       render: (record) => {
         const index = acquaintanceLevel.findIndex((item) => item.value === +record.acquaintanceLevel);
-        return <span>{acquaintanceLevel[index].label}</span>;
+        return <span>{acquaintanceLevel[index]?.label}</span>;
       },
     },
     {
       title: 'Thu nhập',
-      // dataIndex: 'income',
       render: (record) => {
         return <span>{formatDataNumber(record.income)}</span>;
       },
     },
     {
       title: 'Hôn nhân',
-      // dataIndex: 'maritalStatus',
       render: (record) => {
         const index = marriageStatus.findIndex((item) => item.value === +record.maritalStatus);
-        return <span>{marriageStatus[index].label}</span>;
+        return <span>{marriageStatus[index]?.label}</span>;
       },
     },
     {
@@ -73,31 +66,29 @@ export default function FinanceConsultant() {
     },
     {
       title: 'Loại',
-      // dataIndex: 'typeId',
       render: (record) => {
         const index = typeCustomer.findIndex((item) => item.value === +record.typeId);
-        return <span>{typeCustomer[index]?.label || 'Cá nhân'}</span>;
+        return <span>{typeCustomer[index]?.label}</span>;
       },
     },
     {
       title: 'Trạng thái',
-      // dataIndex: 'status',
       render: (record) => {
         const index = options.findIndex((item) => item.value === record.status);
-        return <span>{options[index].label}</span>;
+        return <span>{options[index]?.label}</span>;
       },
     },
     {
       title: 'Lịch hẹn sắp tới',
       render: (record) => {
-        return <span>{getTimeByTZ(record.nextAppointment)}</span>;
+        return <span>{formatDate(record.nextAppointment)}</span>;
       },
     },
     {
       title: '',
       dataIndex: '',
       render: (record) =>
-        record.appointment_schedule ? (
+        record.nextAppointment ? (
           <Button size="small">Nhắc lịch</Button>
         ) : (
           <Button size="small" type="primary" onClick={() => navigate('/appointment-management')}>

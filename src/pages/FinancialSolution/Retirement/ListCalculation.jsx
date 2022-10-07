@@ -1,16 +1,21 @@
-import { Button, Card, Checkbox, Col, Form, Input, InputNumber } from "antd";
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import { Button, Checkbox, Form, Input, InputNumber, message } from 'antd';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import { formatDataNumber } from '../../../helper';
 
-const ListCalculation = () => {
+const ListCalculation = ({typeFund, userSelected}) => {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const [TotalAmount, setTotalAmount] = useState(0);
   const [TotalAmountAfterMinus, setTotalAmountAfterMinus] = useState(0);
   const [monthlyRetirementAmount, setMonthlyRetirementAmount] = useState(0);
   const [annualRetirementAmount, setAnnualRetirementAmount] = useState(0);
   const [inflationRate, setInflationRate] = useState(0);
   const [minusAmount, setMinusAmount] = useState(0);
+  const [currentAge, setCurrentAge] = useState(0);
+  const [expectedAge, setExpectedAge] = useState(0);
+  const [retiredAge, setRetiredAge] = useState(0);
+
   const onChange = (value) => {
     setMonthlyRetirementAmount(value);
   };
@@ -20,10 +25,21 @@ const ListCalculation = () => {
 
   const onFinish = (values) => {
     console.log("Success:", values);
+    navigate("/advise/financial-solutions/minh-hoa-gia",
+      {
+        state: {
+          values: values, 
+          total: TotalAmount,
+          typeFund: typeFund,
+          userSelected: userSelected
+        }
+      });
+
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    // message.error(errorInfo, 3);
+    // console.log('Failed:', errorInfo);
   };
   useEffect(() => {
     setAnnualRetirementAmount(monthlyRetirementAmount * 12);
@@ -31,7 +47,6 @@ const ListCalculation = () => {
   useEffect(() => {
     let per = inflationRate / 100 + 1;
     let per2 = 3 / 100;
-
     setTotalAmount((annualRetirementAmount * Math.pow(per, 28)) / per2);
   }, [monthlyRetirementAmount, inflationRate]);
 
@@ -39,104 +54,125 @@ const ListCalculation = () => {
     setTotalAmountAfterMinus(TotalAmount - minusAmount);
   }, [TotalAmount, minusAmount]);
 
+  useEffect(() => {
+    let age;
+    if (currentAge > 0 && expectedAge >= currentAge) {
+      age = expectedAge - currentAge;
+    }
+    setRetiredAge(age);
+  }, [currentAge, expectedAge]);
+
+  useEffect(() => {
+    setCurrentAge(0);
+    setExpectedAge(0);
+  }, []);
+
   return (
-    <Form
-      form={form}
-      name="control-hooks"
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off">
+    <Form form={form} name="control-hooks" onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">
       <div className="container-right-middle">
         <Form.Item
-          name="name1"
+          name="currentAge"
           label="Tuổi hiện tại"
           rules={[
             {
               required: true,
             },
-          ]}>
-          <Input placeholder="0" type="number" style={{ width: 50 }} />
+          ]}
+        >
+          <Input
+            placeholder="0"
+            type="number"
+            style={{ width: 50 }}
+            value={currentAge}
+            onChange={(e) => setCurrentAge(Number(e.target.value))}
+          />
         </Form.Item>
         <Form.Item
-          name="name2"
+          name="expectedAge"
           label="Tuổi nghỉ hưu dự kiến"
           rules={[
             {
               required: true,
             },
-          ]}>
-          <Input placeholder="0" type="number" style={{ width: 50 }} />
+          ]}
+        >
+          <Input
+            placeholder="0"
+            type="number"
+            style={{ width: 50 }}
+            value={expectedAge}
+            onChange={(e) => setExpectedAge(Number(e.target.value))}
+          />
         </Form.Item>
-        <Form.Item name="name3" label="Thời gian đến tuổi nghỉ hưu còn">
-          <p className="form-input-text">28 năm</p>
+        <Form.Item name="retirementTime" label="Thời gian đến tuổi nghỉ hưu còn">
+          <p className="form-input-text">{retiredAge > 0 && `${retiredAge} năm`}</p>
         </Form.Item>
         <Form.Item
-          name="name4"
+          name="monthlyMoney"
           label="Số tiền hằng tháng khi nghỉ hưu"
           rules={[
             {
               required: true,
             },
-          ]}>
+          ]}
+        >
           <InputNumber
             style={{ width: 152 }}
-            initialvalues={0}
+            placeholder="0"
             formatter={(value) =>
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
             parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
             onChange={onChange}
+            controls={false}
           />
         </Form.Item>
 
-        <Form.Item name="name5" label="Số tiền hằng năm khi nghỉ hưu">
-          <p className="form-input-text">
-            {annualRetirementAmount > 0 &&
-              annualRetirementAmount
-                .toFixed(2)
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            {(annualRetirementAmount < 1 || isNaN(annualRetirementAmount)) &&
-              "00.00"}
-          </p>
+        <Form.Item name="annualMoney" label="Số tiền hằng năm khi nghỉ hưu">
+          <p className="form-input-text">{annualRetirementAmount > 0 ? formatDataNumber(annualRetirementAmount) : 0}</p>
         </Form.Item>
 
         <Form.Item
-          name="name6"
+          name="desiredTime"
           label="Thời gian nghỉ hưu mong muốn"
           rules={[
             {
               required: true,
             },
-          ]}>
-          <Input placeholder="0" type="number" style={{ width: 152 }} />
+          ]}
+        >
+          <InputNumber placeholder="0" style={{ width: 152 }} controls={false} />
         </Form.Item>
         <Form.Item
-          name="name7"
+          name="available"
           label="Số tiền đã có"
           rules={[
             {
               required: true,
             },
-          ]}>
+          ]}
+        >
           <InputNumber
             style={{ width: 152 }}
             initialvalues={0}
+            placeholder="0"
             formatter={(value) =>
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
             parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
             onChange={onChange1}
+            controls={false}
           />
         </Form.Item>
         <Form.Item
-          name="name8"
+          name="inflationary"
           label="Tỷ lệ lạm phát"
           rules={[
             {
               required: true,
             },
-          ]}>
+          ]}
+        >
           <div className="percentage-field">
             <Input
               className="percentage-input"
@@ -150,13 +186,14 @@ const ListCalculation = () => {
           </div>
         </Form.Item>
         <Form.Item
-          name="name9"
+          name="profitYear"
           label="Tỷ suất sinh lời hằng năm"
           rules={[
             {
               required: true,
             },
-          ]}>
+          ]}
+        >
           <div className="percentage-field">
             <Input
               className="percentage-input"
@@ -164,7 +201,7 @@ const ListCalculation = () => {
               placeholder="0"
               type="text"
               style={{ width: 45, paddingRight: 0 }}
-              // value={Percent}
+            // value={Percent}
             />
             <span className="pIcon">%</span>
           </div>
@@ -173,25 +210,12 @@ const ListCalculation = () => {
       <div className="container-right-bottom">
         <p className="bottom-para">
           Tổng số tiền cần cho tương lai:
-          <span className="total-amount">
-            {TotalAmount > 0 &&
-              TotalAmount.toFixed(2)
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            {(TotalAmount < 1 || isNaN(TotalAmount)) && "00.00"}
-          </span>
+          <span className="total-amount">{TotalAmount > 0 ? formatDataNumber(TotalAmount) : 0}</span>
         </p>
 
         <p>
           Số tiền còn thiếu khi nghỉ hưu:
-          <span className="total-amount">
-            {TotalAmountAfterMinus > 0 &&
-              TotalAmountAfterMinus.toFixed(2)
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            {(TotalAmountAfterMinus < 1 || isNaN(TotalAmountAfterMinus)) &&
-              "00.00"}
-          </span>
+          <span className="total-amount">{TotalAmountAfterMinus > 0 ? formatDataNumber(TotalAmount) : 0}</span>
         </p>
       </div>
 

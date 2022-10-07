@@ -6,40 +6,65 @@ import { Card, Carousel } from './styles';
 const Dialogue = (props) => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(1);
+  const [content, setContent] = useState([]);
 
   const dialogItems = useRef();
   const [dialogData, setDialogData] = useState(null);
 
+  useEffect(() => { 
+    getDialogData(props.type, props.customerId);
+  }, [props.customerId]);
+
   useEffect(() => {
-    const getSpeedScript = async () => {
-      try {
-        const res = await getSpeechScript(props.type);
-        let count = 0;
-        setDialogData(res.data);
-        if (res.data) {
-          if (res.data?.objective) {
-            count = 1;
-          }
-          if (res.data?.procedure) {
-            count += 1;
-          }
-          if (res.data?.dialogues) {
-            res.data.dialogues.map((item) => {
-              count += 1;
-            });
-          }
-          setLimit(count);
+    const dialogues = replaceKeyword(props?.keywords? props.keywords: {});
+    const data = {
+      ...dialogData,
+      dialogues: dialogues
+    }
+    setDialogData(data)
+    setContent(getContent());
+  }, [props?.keywords?.interestRate, props?.keywords?.expensePerMonth, props?.keywords?.expensePerYear, props?.keywords?.fundValue, props?.keywords?.numOfYear]);
+
+  useEffect(() => { 
+    setContent(getContent());
+  }, [dialogData]);
+
+  const getDialogData = async (type, customerId) => {
+    try {
+      const res = await getSpeechScript(type, customerId);
+      let count = 0;
+      setDialogData(res.data);
+      if (res.data) {
+        if (res.data?.objective) {
+          count = 1;
         }
-      } catch (error) {
-        setDialogData(null);
+        if (res.data?.procedure) {
+          count += 1;
+        }
+        if (res.data?.dialogues) {
+          count += res.data.dialogues.length;
+        }
+        setLimit(count);
       }
-    };
-    getSpeedScript();
-  }, []);
+      setContent(getContent());
+    } catch (error) {
+      setDialogData(null);
+    }
+  };
+
+  const replaceKeyword = (keywords) => {
+    const keys = Object.keys(keywords);
+    const dialogues = dialogData && dialogData?.dialogues? dialogData.dialogues : []
+    keys.map((item) => {
+      dialogues.map((dialog) => {
+        return dialog.text.replace(item, keywords[item]);
+      });
+    });
+
+    return dialogues;
+  }
 
   const nextPage = () => {
-    console.log(page);
-    console.log(limit);
     if (page < limit - 1) {
       dialogItems.current.next();
     }
@@ -59,14 +84,14 @@ const Dialogue = (props) => {
     let dialogItems = [];
     if (dialogData) {
       if (dialogData?.objective) {
-        dialogItems.push(<DialogItem title="Mục tiêu" content={dialogData?.objective} />);
+        dialogItems.push(<DialogItem key="0" title="Mục tiêu" content={dialogData?.objective}/>);
       }
       if (dialogData?.procedure) {
-        dialogItems.push(<DialogItem title="Quy trình" content={dialogData?.procedure} />);
+        dialogItems.push(<DialogItem key="1" title="Quy trình" content={dialogData?.procedure}/>);
       }
       if (dialogData?.dialogues) {
-        dialogData.dialogues.map((item) => {
-          dialogItems.push(<DialogItem title={item.label} content={item.text} />);
+        dialogData.dialogues.map((item, index) => {
+          dialogItems.push(<DialogItem key={`${index + 2}`} title={item.label} content={item.text}/>);
         });
       }
 
@@ -80,7 +105,7 @@ const Dialogue = (props) => {
     <Card title={props.title}>
       <div className="content-body">
         <Carousel ref={dialogItems} afterChange={afterChangeDialogItem}>
-          {getContent().map((val, index) => {
+          {content.map((val, index) => {
             return val;
           })}
         </Carousel>

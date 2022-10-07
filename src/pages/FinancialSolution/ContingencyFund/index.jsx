@@ -3,38 +3,39 @@ import React, { useEffect, useState } from "react";
 import { sideBarMenuItems } from "../../../assets/fake-data/QuyDuPhongData";
 import SearchInputBox from "./SearchInputBox";
 import ListCalculation from "./ListCalculation";
-import ListDetails from "./ListDetails";
+// import ListDetails from "./ListDetails";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAppointment, getSpeechScriptType, getAppointmentByIds,updateSelectCustomer } from "../../../slices/financialSolutions";
 import moment from 'moment';
+import Dialogue from "../../../components/common/Dialogue/index"
 import { getFinanceDatas } from "../../../slices/financeSolutions";
+import { formatCountdown } from "antd/lib/statistic/utils";
 
+// id
+// const { id } = location.state;
+
+// // dispatch
+
+// // dispatch getFinanceDatas
+// useEffect(() => {
+//   dispatch(getFinanceDatas(id));
+// }, [getFinanceDatas]);
+
+// // useSelector
+// const finaceDatas = useSelector(
+//   (state) => state.financeReducer.getFinanceDatas
+// );
+// console.log("finaceDatas ==>", finaceDatas);
 const ContingencyFund = ({ apptId = null }) => {
-
-  const location = useLocation();
-  // title
-  const [title] = useState(location?.state?.title);
-  const dispatch = useDispatch();
-
-  // id
-  // const { id } = location.state;
-
-  // // dispatch
-
-  // // dispatch getFinanceDatas
-  // useEffect(() => {
-  //   dispatch(getFinanceDatas(id));
-  // }, [getFinanceDatas]);
-
-  // // useSelector
-  // const finaceDatas = useSelector(
-  //   (state) => state.financeReducer.getFinanceDatas
-  // );
-  // console.log("finaceDatas ==>", finaceDatas);
   const [itemContent, setItemContent] = useState({});
   const [lists, setLists] = useState(null);
   const [payload, setPayload] = useState("");
+  
+  const location = useLocation();  //thomas code get title from quan ly lich hen
+  // title
+  const [title] = useState(location?.state?.title);
+  const dispatch = useDispatch();
   var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution)
 
   const getAppointmentNoId = () => {
@@ -53,13 +54,13 @@ const ContingencyFund = ({ apptId = null }) => {
   useEffect(() => {
     let arr = []
     arr.push(customerAppRecords?.map(item => {
-      dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
-      return { title: item.customerApptRecords[0].name }
+      // dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
+      return { title: item.customerApptRecords[0].name, apptId: item.apptId, customerApptRecordId: item.customerApptRecords[0].customerApptRecordId}
     }))
     setLists(arr[0])
   }, [customerAppRecords])
 
-  useEffect(() => {
+  useEffect(() => {   //select item 1
     if (lists) {
       setItemContent(lists[0]);
     }
@@ -110,7 +111,7 @@ const ContingencyFund = ({ apptId = null }) => {
                       dataSource={lists}
                       renderItem={(item, index) => (
                         <List.Item
-                          onClick={() => setItemContent(item)}
+                          onClick={() =>{ setItemContent(item)}}
                           className={`${item === itemContent ? "active" : ""}`}>
                           <Typography.Text ellipsis>{item.title}</Typography.Text>
                         </List.Item>
@@ -124,7 +125,7 @@ const ContingencyFund = ({ apptId = null }) => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation />
+                  <ListCalculation typeFund= "prevention" userSelected={itemContent}/>  
                 </div>
 
                 {/* container-right end */}
@@ -138,7 +139,7 @@ const ContingencyFund = ({ apptId = null }) => {
           <Col lg={12} md={24} sm={24} xs={24}>
             <Layout.Content className="manageContent">
               <div className="content-div-2">
-                <ListDetails data={getSpeechScript} />
+                <Dialogue title={"Quy trình tư vấn"} type={'preventionFund'} />
               </div>
             </Layout.Content>
           </Col>

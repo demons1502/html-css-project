@@ -52,6 +52,15 @@ export const updateCallRecord = createAsyncThunk('customerCall/updateCallRecord'
   }
 });
 
+export const createCallRecord = createAsyncThunk('customerCall/createCallRecord', async (customerCallId) => {
+  try {
+    const response = await createCustomerCallRecord(customerCallId);
+    return response;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
+
 export const createAppointment = createAsyncThunk('customerCall/createAppointment', async (data) => {
   try {
     const res = await creactAppointmentApi(data);
@@ -113,6 +122,20 @@ const customerCallSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(updateCallRecord.rejected, (state) => {
+      state.status = 'rejected';
+      state.loading = false;
+    });
+
+    // CREATE CALL-RECORD
+    builder.addCase(createCallRecord.pending, (state) => {
+      state.status = 'pending';
+      state.loading = true;
+    });
+    builder.addCase(createCallRecord.fulfilled, (state, action) => {
+      state.status = 'success';
+      state.loading = false;
+    });
+    builder.addCase(createCallRecord.rejected, (state) => {
       state.status = 'rejected';
       state.loading = false;
     });

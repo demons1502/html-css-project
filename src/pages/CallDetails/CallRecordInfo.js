@@ -109,8 +109,8 @@ export default function CallRecordInfo(props) {
         } else {
           const title = {
             'survey': 'Khảo sát',
-            'consult': 'Tư vấn',
-            'solution': 'Giải pháp'
+            'consult': 'Tư vấn tài chính',
+            'solution': 'Tư vấn giải pháp'
           };
           const startTime = moment(new Date());;
           const appointmentPayload = {
@@ -189,7 +189,7 @@ export default function CallRecordInfo(props) {
                     <div style={{ fontSize: 16, color: S.gray200 }}>
                       <FileDoneOutlined />
                     </div>
-                    <S.WrapText>{`${'common.note'}:`}</S.WrapText>
+                    <S.WrapText>{`${t('common.note')}:`}</S.WrapText>
                     <S.WrapText $fontWeight="700">{renderNoteStatus(customerData?.status)}</S.WrapText>
                   </Space>
                 </Space>

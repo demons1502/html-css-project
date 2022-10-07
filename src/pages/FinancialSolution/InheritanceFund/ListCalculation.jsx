@@ -32,7 +32,13 @@ const ListCalculation = () => {
             },
           ]}
         >
-          <InputNumber placeholder="0" min={0} style={{ width: 152 }} controls={false} formatter={formatDataNumber} />
+          <InputNumber
+            placeholder="0"
+            min={0}
+            style={{ width: 152 }}
+            controls={false}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          />
         </Form.Item>
         <Form.Item
           name="name2"

@@ -1,7 +1,7 @@
 import { Col, Layout, List, Row, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { sideBarMenuItems } from '../../../assets/fake-data/QuyDuPhongData';
-import SearchInputBox from '../../../components/common/InputSearch';
+import SearchInputBox from './SearchInputBox';
 import ListCalculation from './ListCalculation';
 import { Link, useLocation } from 'react-router-dom';
 import Dialogue from '../../../components/common/Dialogue';
@@ -29,15 +29,33 @@ const InheritanceFund = () => {
     dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
   }, []);
 
+  // useEffect(() => {
+  //   let arr = [];
+  //   arr.push(
+  //     customerAppRecords?.map((item) => {
+  //       return { title: item.customerApptRecords[0].name };
+  //     })
+  //   );
+  //   setLists(arr[0]);
+  // }, [customerAppRecords]);
+
   useEffect(() => {
-    let arr = [];
-    arr.push(
-      customerAppRecords?.map((item) => {
-        return { title: item.customerApptRecords[0].name };
+    const data = [];
+    const dataFilter = customerAppRecords.filter((item) =>
+      item.customerApptRecords[0].name.toLowerCase().includes(payload.toLowerCase())
+    );
+    data.push(
+      ...dataFilter.map((item) => {
+        return {
+          title: item.customerApptRecords[0].name,
+          apptId: item.apptId,
+          customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
+          customerId: item.customerApptRecords[0].customerId,
+        };
       })
     );
-    setLists(arr[0]);
-  }, [customerAppRecords]);
+    setLists(data);
+  }, [customerAppRecords, payload]);
 
   useEffect(() => {
     if (lists) {
@@ -73,7 +91,7 @@ const InheritanceFund = () => {
       {/* quyduphone-container start */}
       <div className="quyduphone-container">
         <Row gutter={[16, 10]} justify="start" align="stretch">
-          <Col lg={12} md={24} sm={24} xs={24} xl={12} xxl={15}>
+          <Col lg={12} md={24} sm={24} xs={24} xl={12}>
             <Layout.Content>
               {/* content-div-1 start  */}
               <div className="content-div-1">
@@ -112,7 +130,7 @@ const InheritanceFund = () => {
           </Col>
 
           {/* manageContent start  */}
-          <Col lg={12} md={24} sm={24} xs={24} xl={12} xxl={9}>
+          <Col lg={12} md={24} sm={24} xs={24} xl={12}>
             <Layout.Content className="manageContent">
               <div className="content-div-2">
                 <Dialogue title="Lời thoại" type="preventionFund" />

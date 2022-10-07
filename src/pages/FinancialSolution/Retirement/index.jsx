@@ -1,41 +1,73 @@
 import { Col, Layout, List, Row, Typography } from 'antd';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import PageBack from '../../../assets/images/financial/PageBack';
 import { sideBarMenuItems } from '../../../assets/fake-data/QuyDuPhongData';
-import Dialogue from '../../../components/common/Dialogue';
-import { getAppointment } from '../../../slices/financialSolutions';
-import ListCalculation from './ListCalculation';
 import SearchInputBox from './SearchInputBox';
+import ListCalculation from './ListCalculation';
+import ListDetails from './ListDetails';
+import { useDispatch, useSelector } from 'react-redux';
+import Dialogue from '../../../components/common/Dialogue/index';
+import { getAppointment, getSpeechScriptType, getAppointmentByIds } from '../../../slices/financialSolutions';
+import moment from 'moment';
 
-const Retirement = () => {
+const Retirement = ({ apptId = null }) => {
   const [itemContent, setItemContent] = useState({});
-  const [lists, setLists] = useState(sideBarMenuItems);
+  const [lists, setLists] = useState(null);
   const [payload, setPayload] = useState('');
 
   const dispatch = useDispatch();
   var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution);
 
-  useEffect(() => {
+  const getAppointmentNoId = () => {
     let endDate = new Date();
     // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
     endDate = endDate.setHours(23, 59, 59, 999);
     let startDate = new Date();
     dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
+  };
+
+  useEffect(() => {
+    dispatch(getSpeechScriptType('preventionFund'));
+    apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId();
   }, []);
 
-  useEffect(() => {
-    let arr = [];
-    arr.push(
-      customerAppRecords?.map((item) => {
-        return { title: item.customerApptRecords[0].name };
-      })
-    );
-    setLists(arr[0]);
-  }, [customerAppRecords]);
+  // useEffect(() => {
+  //   let arr = [];
+  //   arr.push(
+  //     customerAppRecords?.map((item) => {
+  //       // dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
+  //       return {
+  //         title: item.customerApptRecords[0].name,
+  //         apptId: item.apptId,
+  //         customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
+  //       };
+  //     })
+  //   );
+  //   setLists(arr[0]);
+  // }, [customerAppRecords]);
 
   useEffect(() => {
+    const data = [];
+    const dataFilter = customerAppRecords.filter((item) =>
+      item.customerApptRecords[0].name.toLowerCase().includes(payload.toLowerCase())
+    );
+    data.push(
+      ...dataFilter.map((item) => {
+        return {
+          title: item.customerApptRecords[0].name,
+          apptId: item.apptId,
+          customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
+          customerId: item.customerApptRecords[0].customerId,
+        };
+      })
+    );
+    setLists(data);
+  }, [customerAppRecords, payload]);
+
+  useEffect(() => {
+    //select item 1
     if (lists) {
       setItemContent(lists[0]);
     }
@@ -78,17 +110,21 @@ const Retirement = () => {
                     <SearchInputBox setPayload={setPayload}></SearchInputBox>
                   </div>
 
-                  <List
-                    dataSource={lists}
-                    renderItem={(item, index) => (
-                      <List.Item
-                        onClick={() => setItemContent(item)}
-                        className={`${item === itemContent ? 'active' : ''}`}
-                      >
-                        <Typography.Text ellipsis>{item.title}</Typography.Text>
-                      </List.Item>
-                    )}
-                  />
+                  {lists?.length > 0 && (
+                    <List
+                      dataSource={lists}
+                      renderItem={(item, index) => (
+                        <List.Item
+                          onClick={() => {
+                            setItemContent(item);
+                          }}
+                          className={`${item === itemContent ? 'active' : ''}`}
+                        >
+                          <Typography.Text ellipsis>{item.title}</Typography.Text>
+                        </List.Item>
+                      )}
+                    />
+                  )}
                 </div>
 
                 {/* container-right start */}
@@ -96,7 +132,7 @@ const Retirement = () => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation />
+                  <ListCalculation typeFund="pension" userSelected={itemContent} />
                 </div>
 
                 {/* container-right end */}
@@ -110,7 +146,7 @@ const Retirement = () => {
           <Col lg={12} md={24} sm={24} xs={24}>
             <Layout.Content className="manageContent">
               <div className="content-div-2">
-                <Dialogue title="Lời thoại" type="preventionFund" />
+                <Dialogue title={'Lời thoại'} type={'preventionFund'} />
               </div>
             </Layout.Content>
           </Col>

@@ -2,7 +2,7 @@ import { Popover, Divider, Form } from "antd";
 import { Button, Input } from "../../../components/styles";
 import React, { useState } from "react";
 
-export const ClosingModal = () => {
+export const ClosingModal = ({setCallSave, setDataToSave}) => {
   const [open, setOpen] = useState(false);
 
   const handleOpenChange = (newOpen) => {
@@ -10,7 +10,14 @@ export const ClosingModal = () => {
   };
 
   const onFinish = (values) => {
-    console.log("Success:", values);
+    console.log(values);
+    setCallSave(true)
+    setDataToSave((prev)=>{
+      prev.hideName=values.reminiscent_name;
+      return({
+        ...prev
+      })
+    })
   };
 
   const onFinishFailed = (errorInfo) => {

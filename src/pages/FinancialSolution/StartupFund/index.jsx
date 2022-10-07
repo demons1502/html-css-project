@@ -30,15 +30,33 @@ const StartupFund = () => {
     dispatch(getSpeechScriptType('preventionFund'));
   }, []);
 
+  // useEffect(() => {
+  //   let arr = [];
+  //   arr.push(
+  //     customerAppRecords?.map((item) => {
+  //       return { title: item.customerApptRecords[0].name };
+  //     })
+  //   );
+  //   setLists(arr[0]);
+  // }, [customerAppRecords]);
+
   useEffect(() => {
-    let arr = [];
-    arr.push(
-      customerAppRecords?.map((item) => {
-        return { title: item.customerApptRecords[0].name };
+    const data = [];
+    const dataFilter = customerAppRecords.filter((item) =>
+      item.customerApptRecords[0].name.toLowerCase().includes(payload.toLowerCase())
+    );
+    data.push(
+      ...dataFilter.map((item) => {
+        return {
+          title: item.customerApptRecords[0].name,
+          apptId: item.apptId,
+          customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
+          customerId: item.customerApptRecords[0].customerId,
+        };
       })
     );
-    setLists(arr[0]);
-  }, [customerAppRecords]);
+    setLists(data);
+  }, [customerAppRecords, payload]);
 
   useEffect(() => {
     if (lists) {

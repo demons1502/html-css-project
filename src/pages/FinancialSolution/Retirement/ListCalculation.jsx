@@ -1,9 +1,9 @@
 import { Button, Checkbox, Form, Input, InputNumber, message } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDataNumber } from '../../../helper';
 
-const ListCalculation = () => {
+const ListCalculation = ({ typeFund, userSelected }) => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [TotalAmount, setTotalAmount] = useState(0);
@@ -29,8 +29,17 @@ const ListCalculation = () => {
       retirementTime: retiredAge,
       annualMoney: annualRetirementAmount,
     };
-    // navigate('/advise/financial-solutions/minh-hoa-gia', { state: { values: data } });
+    // navigate('/advise/financial-solutions/minh-hoa-gia', { state: { values: data, userSelected: userSelected } });
     console.log('Success:', data);
+    console.log('Success:', values);
+    navigate('/advise/financial-solutions/minh-hoa-gia', {
+      state: {
+        values: values,
+        total: TotalAmount,
+        typeFund: typeFund,
+        userSelected: userSelected,
+      },
+    });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -114,8 +123,9 @@ const ListCalculation = () => {
         >
           <InputNumber
             style={{ width: 152 }}
-            initialvalues={0}
-            formatter={formatDataNumber}
+            placeholder="0"
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
             onChange={onChange}
             controls={false}
           />
@@ -148,7 +158,9 @@ const ListCalculation = () => {
           <InputNumber
             style={{ width: 152 }}
             initialvalues={0}
-            formatter={formatDataNumber}
+            placeholder="0"
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
             onChange={onChange1}
             controls={false}
           />

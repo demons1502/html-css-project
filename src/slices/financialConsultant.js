@@ -59,6 +59,7 @@ const financeConsultantSlice = createSlice({
     [getConsultants.fulfilled]: (state, action) => {
       state.data = action.payload.data;
       state.count = action.payload.total;
+      state.isReload = false;
     },
     [getConsultScript.fulfilled]: (state, action) => {
       state.consultScrip = action.payload;

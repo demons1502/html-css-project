@@ -1,24 +1,27 @@
-import { Button, Select, Checkbox, Form, Input } from "antd";
-import React from "react";
+import { Checkbox, Form } from 'antd';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Input from '../../../components/common/Input';
+import InputNumber from '../../../components/common/InputNumber';
+import { Button } from '../../../components/styles';
+import { formatDataNumber } from '../../../helper';
 
 const ListCalculation = () => {
   const [form] = Form.useForm();
+
+  const navigate = useNavigate();
+
   const onFinish = (values) => {
-    console.log("Success:", values);
+    // console.log(values);
+    navigate('/advise/financial-solutions/minh-hoa-gia', { state: { values: values } });
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.log('Failed:', errorInfo);
   };
 
-  const { Option } = Select;
   return (
-    <Form
-      form={form}
-      name="control-hooks"
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off">
+    <Form form={form} name="control-hooks" onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">
       <div className="container-right-middle">
         <Form.Item
           name="name1"
@@ -26,10 +29,10 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-           
             },
-          ]}>
-          <Input placeholder="0" type="number" min={0} style={{ width: 152 }} />
+          ]}
+        >
+          <InputNumber placeholder="0" min={0} style={{ width: 152 }} controls={false} formatter={formatDataNumber} />
         </Form.Item>
         <Form.Item
           name="name2"
@@ -37,10 +40,10 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-            
             },
-          ]}>
-          <Input placeholder="0" type="text" style={{ width: 152 }} />
+          ]}
+        >
+          <Input placeholder="0" style={{ width: 152 }} />
         </Form.Item>
         <Form.Item
           name="name3"
@@ -48,10 +51,10 @@ const ListCalculation = () => {
           rules={[
             {
               required: true,
-           
             },
-          ]}>
-          <Input placeholder="0" type="number" min={0} style={{ width: 152 }} />
+          ]}
+        >
+          <Input placeholder="0" min={0} style={{ width: 152 }} />
         </Form.Item>
       </div>
 
@@ -61,7 +64,7 @@ const ListCalculation = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="btn-primary">
+          <Button type="primary" htmlType="submit">
             Bảng minh họa
           </Button>
         </Form.Item>

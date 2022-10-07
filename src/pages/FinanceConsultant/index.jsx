@@ -1,34 +1,26 @@
-import React, { Fragment, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Button, Col, Layout, List, Popover, Row, Typography } from 'antd';
 import { ClockCircleOutlined, LeftOutlined } from '@ant-design/icons';
-import Participant from './components/participant';
-import ConsultantProcess from './components/consultantProcess';
-import HistorySelect from './components/historySelect';
-import SpendingForm from './form/spendingForm';
-import SearchInputBox from '../Survey/SearchInputBox';
-import left_arrow from '../../assets/images/icons/left-arrow.svg';
-import calender from '../../assets/images/icons/calendar.svg';
-import { isEmpty } from 'lodash';
-import * as S from '../../components/styles';
-import { data } from './fakeData/customer';
-import History from './history';
-import HistoryDetail from './components/historyDetail';
-import { useNavigate } from 'react-router-dom';
+import { Col, Layout, List, Popover, Row, Typography } from 'antd';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { getConsultants, getConsultScript } from '../../slices/financialConsultant';
-import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import calender from '../../assets/images/icons/calendar.svg';
+import Dialogue from '../../components/common/Dialogue';
+import * as S from '../../components/styles';
 import { getConsult } from '../../slices/consult';
+import SearchInputBox from '../Survey/SearchInputBox';
+import HistoryDetail from './components/historyDetail';
+import SpendingForm from './form/spendingForm';
+import History from './history';
 import { formatDate } from '../../helper';
 
 export default function FinanceConsultant() {
   const { t } = useTranslation();
   const [selectId, setSelectId] = useState(null);
   const [history, setHistory] = useState(null);
-  console.log(history);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const { data } = useSelector((state) => state.financialConsultant);
   const customers = useSelector((state) => state.consultReducer);
 
   const handleSelect = (id) => {
@@ -37,15 +29,8 @@ export default function FinanceConsultant() {
   };
 
   useEffect(() => {
-    // const payload = { limit: 10, offset: 0, customerId: 160 };
-    // dispatch(getConsultants(payload));
-    dispatch(getConsultScript());
-  }, []);
-
-  useEffect(() => {
     const payload = { limit: 10, offset: 0 };
     dispatch(getConsult(payload));
-    // dispatch(getConsultScript());
   }, []);
 
   return (
@@ -117,7 +102,7 @@ export default function FinanceConsultant() {
                         </div>
                       </div>
                     )}
-                    {history ? <HistoryDetail setHistory={setHistory} /> : <SpendingForm id={selectId} />}
+                    {history ? <HistoryDetail history={history} /> : <SpendingForm id={selectId} />}
                   </div>
                 </div>
               </Layout.Content>
@@ -126,7 +111,7 @@ export default function FinanceConsultant() {
             <Col lg={9} md={24} sm={24} xs={24}>
               <Layout.Content className="manageContent">
                 <div className="content-div-2">
-                  <ConsultantProcess title={t('financial consultant.process title')} />
+                  <Dialogue type="consult" title={t('financial consultant.process title')} />
                 </div>
               </Layout.Content>
             </Col>

@@ -35,7 +35,7 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
       note: info.note,
     };
     form.setFieldsValue({ ...data });
-  }, []);
+  }, [info]);
 
   useEffect(() => {
     setCustomer({
@@ -58,7 +58,8 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
 
     const startTime = moment(values.date).format('YYYY-MM-DD ') + moment(values.startTime).format('HH:mm:ss');
 
-    const endTime = moment(values.date).format('YYYY-MM-DD ') + moment(values.endTime).format('HH:mm:ss');
+    const endTime =
+      moment(values.date).format('YYYY-MM-DD ') + moment(values.endTime).subtract(1, 'seconds').format('HH:mm:ss');
 
     const data = {
       typeId: info.typeId,

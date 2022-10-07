@@ -30,12 +30,19 @@ export const Name = styled.span`
   font-weight: 600;
   font-size: 11px;
   line-height: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: #333333;
 `;
 
 export const Text = styled.span`
   font-weight: 700;
   font-size: 13px;
+  line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: ${(props) => props.color};
 `;
 
@@ -43,5 +50,9 @@ export const Description = styled.span`
   margin-top: 10px;
   font-weight: 600;
   font-size: 12px;
+  line-height: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: ${(props) => (props.check ? '#fff' : '#333')};
 `;

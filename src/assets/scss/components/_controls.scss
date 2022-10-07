@@ -1,18 +1,21 @@
-// .form-group{
-
-// }
-
 .form-control {
   margin-top: 5px;
   height: 40px;
   width: 100%;
   @extend %input;
   border-radius: 5px !important;
-  background: #f8f8f8;
+  background: #f8f8f8 !important;
+  border: 1px solid #f8f8f8 !important;
   font-size: 12px;
-  &:focus {
-    border: 1px solid $green-table-bg;
+  &:focus,
+  &:focus-within,
+  &:active,
+  &:visited,
+  &:hover {
+    border: 1px solid $green-table-bg !important;
+    background: #f8f8f8 !important;
   }
+
   .ant-input {
     background: #f8f8f8 !important;
   }
@@ -49,4 +52,107 @@
   &:focus-within {
     border: 1px solid $green-table-bg !important;
   }
+}
+
+.radio-item {
+  color: $black-color;
+  font-weight: $font-weight-semibold;
+
+  input[type='radio'] {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .ant-radio-input:focus + .ant-radio-inner {
+    border-color: $grey-bg-color;
+  }
+
+  .ant-radio-inner {
+    background: $white-color;
+    border: 1.5px solid $grey-bg-color;
+    border-radius: 5px;
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .ant-radio-inner:after {
+    border: none;
+    background-image: url('../../images/icons/vector-grey.svg');
+    top: 5px;
+    display: table;
+    width: 100%;
+    height: 100%;
+    background-size: 10px 7px;
+    background-repeat: no-repeat;
+    transform: none;
+    opacity: 1;
+  }
+
+  .ant-radio-checked .ant-radio-inner {
+    background: $green-color;
+    border: 1.5px solid $green-color;
+    border-color: $green-color !important;
+
+    &:after {
+      background-image: url('../../images/icons/vector-white.svg');
+    }
+  }
+
+  .ant-radio-checked:after {
+    border: none;
+  }
+
+  .ant-radio {
+    top: 0.35em;
+  }
+}
+
+.ant-radio {
+  width: 20px !important;
+  height: 20px !important;
+
+  input[type='radio'] {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .ant-radio-inner {
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 5px;
+  }
+}
+
+.radio-primary {
+  .ant-radio-checked .ant-radio-inner {
+    background-color: $green-color !important;
+    border-color: $green-color !important;
+  }
+
+  .ant-radio-indeterminate .ant-radio-inner::after {
+    background-color: $green-color !important;
+  }
+
+  .ant-radio:hover .ant-radio-inner {
+    border-color: $green-color !important;
+  }
+
+  .ant-radio-checked:after {
+    border-color: $green-color !important;
+  }
+
+  .ant-radio-input:focus + .ant-radio-inner {
+    border-color: $green-color !important;
+  }
+
+  .ant-radio-checked:after {
+    border: none !important;
+    border-color: none !important;
+  }
+}
+
+.ant-radio-input:focus + .ant-radio-inner,
+.ant-radio-wrapper:hover .ant-radio,
+.ant-radio:hover .ant-radio-inner {
+  border-color: $green-color !important;
 }

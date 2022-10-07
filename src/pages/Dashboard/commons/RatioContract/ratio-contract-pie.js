@@ -1,13 +1,13 @@
-import { measureTextWidth, Pie } from '@ant-design/plots';
+import { Pie } from '@ant-design/plots';
 import React, { useEffect, useState } from 'react';
 
 const template = [
   {
-    type: 'Cuộc hẹn có hợp đồng',
+    type: 'Hợp đồng',
     value: 0,
   },
   {
-    type: 'Cuộc hẹn không có hợp đồng',
+    type: 'Cuộc hẹn',
     value: 0,
   },
 ];
@@ -24,20 +24,6 @@ export default function RatioContractPie(props) {
     }
   }, [props.data]);
 
-  function renderStatistic(containerWidth, text, style) {
-    const { width: textWidth, height: textHeight } = measureTextWidth(text, style);
-    const R = containerWidth / 2; // r^2 = (w / 2)^2 + (h - offsetY)^2
-
-    let scale = 1;
-
-    if (containerWidth < textWidth) {
-      scale = Math.min(Math.sqrt(Math.abs(Math.pow(R, 2) / (Math.pow(textWidth / 2, 2) + Math.pow(textHeight, 2)))), 1);
-    }
-
-    const textStyleStr = `width:${containerWidth}px;`;
-    return `<div style="font-size:14px;height:20px;line-height:${scale < 1 ? 1 : 'inherit'};">${text}</div>`;
-  }
-
   const config = {
     appendPadding: 10,
     data,
@@ -53,16 +39,20 @@ export default function RatioContractPie(props) {
     },
     height: 350,
     label: {
-      type: 'inner',
-      offset: '-50%',
-      style: {
-        textAlign: 'center',
-      },
-      autoRotate: false,
-      content: '{value}',
+      content: '',
     },
     legend: {
       position: 'bottom',
+      itemName: {
+        style: {
+          fontSize: 14,
+          lineHeight: 18,
+          fontFamily: 'Quicksand',
+          fontStyle: 'normal',
+          fontWeight: 600,
+          letterSpacing: 1,
+        },
+      },
     },
     tooltip: {
       customContent: (title, items) => {
@@ -73,7 +63,7 @@ export default function RatioContractPie(props) {
                 const { value } = item;
                 return (
                   <span key={idx} className="g2-tooltip-list-item-value">
-                    {value} hợp đồng
+                    {value} {title}
                   </span>
                 );
               })}
@@ -83,41 +73,10 @@ export default function RatioContractPie(props) {
       },
     },
     statistic: {
-      title: {
-        offsetY: -4,
-        customHtml: (container, view, datum) => {
-          const { width, height } = container.getBoundingClientRect();
-          const d = Math.sqrt(Math.pow(width / 2, 2) + Math.pow(height / 2, 2));
-          const text = datum ? 'Hợp đồng/cuộc hẹn' : 'Tổng';
-          return renderStatistic(d, text, {
-            fontSize: 28,
-          });
-        },
-      },
-      content: {
-        offsetY: 4,
-        style: {
-          fontSize: '32px',
-        },
-        customHtml: (container, view, datum, data) => {
-          const { width } = container.getBoundingClientRect();
-          const text = datum
-            ? `${Math.floor((datum.value / data.reduce((r, d) => r + d.value, 0) || 0) * 100)}%`
-            : data.reduce((r, d) => r + d.value, 0);
-          return renderStatistic(width, text, {
-            fontSize: 32,
-          });
-        },
-      },
+      title: false,
+      content: false,
     },
-    // 添加 中心统计文本 交互
     interactions: [
-      {
-        type: 'element-active',
-      },
-      {
-        type: 'pie-statistic-active',
-      },
       {
         type: 'tooltip',
         cfg: { start: [{ trigger: 'element:mouseenter', action: 'tooltip:show' }] },

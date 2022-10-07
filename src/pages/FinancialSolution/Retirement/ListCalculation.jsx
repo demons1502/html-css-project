@@ -29,13 +29,13 @@ const ListCalculation = () => {
       retirementTime: retiredAge,
       annualMoney: annualRetirementAmount,
     };
-    navigate('/advise/financial-solutions/minh-hoa-gia', { state: { values: data } });
+    // navigate('/advise/financial-solutions/minh-hoa-gia', { state: { values: data } });
     console.log('Success:', data);
   };
 
   const onFinishFailed = (errorInfo) => {
-    message.error(errorInfo, 3);
-    // console.log('Failed:', errorInfo);
+    // message.error(errorInfo, 3);
+    console.log('Failed:', errorInfo);
   };
   useEffect(() => {
     setAnnualRetirementAmount(monthlyRetirementAmount * 12);

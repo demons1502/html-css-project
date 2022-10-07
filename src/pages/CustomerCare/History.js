@@ -10,7 +10,7 @@ import Filter from "../../components/common/Filter";
 import AddInfoContent from ".//Modal/AddInfoContent";
 import Modal from "../../components/common/Modal";
 import {CUSTOMER_CARE_INFO, LOADING_STATUS, ARR_INFO_REDIRECT, INFO_PATH, GIFT} from '../../ultis/constant';
-import {calculateAge, getCustomerCareLabel, getTimeByTZ, capitalizeFirstLetter} from "../../helper";
+import {calculateAge, getCustomerCareLabel, formatDate, capitalizeFirstLetter} from "../../helper";
 import {Link} from "react-router-dom";
 import useScrollTableConfig from '../../hooks/useScrollTableConfig'
 import * as S from '../../components/styles'
@@ -24,7 +24,7 @@ export default function History() {
   const scrollConfig = useScrollTableConfig(ref, data);
   const [visibleModalAddInfo, setVisibleModalAddInfo] = useState(false)
   const [detailData, setDetailData] = useState({})
-  const [optionsFilter, setOptionsFilter] = useState('')
+  const [optionsFilter, setOptionsFilter] = useState(_.map(CUSTOMER_CARE_INFO, 'value'));
   const [lastGift, setLastGift] = useState('')
   const dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ export default function History() {
       width: '20%',
       render: (record) => {
         return (
-          <span>{getTimeByTZ(record.date)}</span>
+          <span>{formatDate(record.date)}</span>
         );
       }
     },
@@ -96,7 +96,7 @@ export default function History() {
         }
       })
       if (arrayGift.length > 0) {
-        setLastGift(`Quà tặng lần cuối ${capitalizeFirstLetter(_.last(arrayGift).content)} vào ngày ${getTimeByTZ(_.last(arrayGift).date)}`)
+        setLastGift(`Quà tặng lần cuối ${capitalizeFirstLetter(_.last(arrayGift).content)} vào ngày ${formatDate(_.last(arrayGift).date)}`)
       }
     }
   }, [data])
@@ -117,7 +117,7 @@ export default function History() {
       <div className="customer-care__right--event">
         <div className="customer-care__right--event--left">
           <h5>{t('customer care.history title')}</h5>
-          <Filter options={CUSTOMER_CARE_INFO} setPayload={setOptionsFilter} />
+          <Filter options={CUSTOMER_CARE_INFO} optionsFilter={optionsFilter} setPayload={setOptionsFilter} />
         </div>
       </div>
       <div className="customer-care__right--list" ref={ref}>

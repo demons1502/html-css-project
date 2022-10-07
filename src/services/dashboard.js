@@ -1,6 +1,7 @@
 import { sendGet, sendPatch, sendPost } from './axios';
 // CallSchedule
 export const getCallScheduleApi = (data) => sendGet('/customer-calls', data);
+export const setNextCallApi = (data) => sendPatch(`/customer-calls/${data.id}`, data);
 // CustomerCareDashboard
 export const getCustomerCareApi = (data) => sendGet('/customers/event', data);
 export const getRemindFeeApi = (data) => sendGet('/contracts', data);

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { Form, Input } from "antd";
+import React, { useState, useEffect } from "react";
+import { Form, Input, InputNumber } from "antd";
 
-export const FiduciaryValue = () => {
-  const [investmentYear, setInvestmentYear] = useState("");
-  const [percentage, setPercentage] = useState("");
-  const [amountOfMoney, setAmountOfMoney] = useState("");
-  const [additionalInvestmentYear, setAdditionalInvestmentYear] = useState("");
+export const FiduciaryValue = ({ nameCustomer, data,setDataToSave }) => {
+  const [investmentYear, setInvestmentYear] = useState(20);
+  const [percentage, setPercentage] = useState(data?.values?.percantage || 0);
+  const [totalOfMoney, setTotalOfMoney] = useState(data?.total || 0);
+  const [additionalInvestmentYear, setAdditionalInvestmentYear] = useState(10);
 
   // console.log("investmentYear", investmentYear);
   // console.log("percentage", percentage);
-  // console.log("amountOfMoney", amountOfMoney);
+  // console.log("totalOfMoney", totalOfMoney);
   // console.log("additionalInvestmentYear", additionalInvestmentYear);
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -18,6 +18,18 @@ export const FiduciaryValue = () => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  useEffect(()=>{
+    // setDataToSave((prev)=>{
+    //   prev.additionalInvestmentYear=additionalInvestmentYear;
+    //   prev.investmentYear=investmentYear;
+    //   prev.values.percantage=percentage;
+    //   prev.total=totalOfMoney;
+    //   return({
+    //     ...prev
+    //   })
+    // })
+  },[investmentYear,percentage,totalOfMoney,additionalInvestmentYear])
   return (
     <Form
       name="basic"
@@ -41,8 +53,11 @@ export const FiduciaryValue = () => {
             <th>
               <Form.Item name="investment_year">
                 <Input
+                  style={{ textAlign: 'center', width: 152 }}
                   className="form-input-text"
                   type="number"
+                  addonAfter="năm"
+                  defaultValue={investmentYear}
                   placeholder="0"
                   onChange={(e) => setInvestmentYear(e.target.value)}
                 />
@@ -59,8 +74,11 @@ export const FiduciaryValue = () => {
             <th>
               <Form.Item name="percent">
                 <Input
+                  style={{ textAlign: 'center', width: 152 }}
                   className="form-input-text"
                   type="number"
+                  addonAfter="%"
+                  defaultValue={percentage}
                   placeholder="0"
                   onChange={(e) => setPercentage(e.target.value)}
                 />
@@ -68,19 +86,28 @@ export const FiduciaryValue = () => {
             </th>
             <th>
               <Form.Item name="amount_of_money">
-                <Input
+                <InputNumber
+                  style={{width: 152, height: 37 }}
                   className="form-input-text"
+                  defaultValue={totalOfMoney}
                   placeholder="0"
-                  type="number"
-                  onChange={(e) => setAmountOfMoney(e.target.value)}
+                  step={5000000}
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  onChange={(value)=>setTotalOfMoney(value)}
                 />
               </Form.Item>
             </th>
             <th>
               <Form.Item name="additional_investment_year">
                 <Input
+                  style={{ textAlign: 'center', width: 152 }}
                   className="form-input-text"
                   placeholder="0"
+                  addonAfter="năm"
+                  defaultValue={additionalInvestmentYear}
                   type="number"
                   onChange={(e) => setAdditionalInvestmentYear(e.target.value)}
                 />

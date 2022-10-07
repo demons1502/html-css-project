@@ -10,7 +10,7 @@ import SelectTableCustomers from '../SelectTableCustomers/index';
 //STYLES
 import * as S from './styles';
 
-const FormUsers = ({ form, companyId, customerApptRecords }) => {
+const FormUsers = ({ form, companyId, customerApptRecords, open }) => {
   const [customer, setCustomer] = useState([]);
   const initialValue = [{ fullName: '', phone: '', birthday: '' }];
 
@@ -32,7 +32,7 @@ const FormUsers = ({ form, companyId, customerApptRecords }) => {
       setCustomer(users);
       form.setFieldsValue({ users });
     }
-  }, [customerApptRecords, form]);
+  }, [customerApptRecords, form, open]);
 
   const handleChangeCustomer = (data, key) => {
     const fields = form.getFieldsValue();
@@ -54,7 +54,7 @@ const FormUsers = ({ form, companyId, customerApptRecords }) => {
   };
 
   return (
-    <Form.List initialValue={initialValue} name='users'>
+    <Form.List initialValue={initialValue} name="users">
       {(fields, { add, remove }) => (
         <>
           {fields.map(({ key, name, ...restField }) => (
@@ -63,9 +63,7 @@ const FormUsers = ({ form, companyId, customerApptRecords }) => {
                 <Form.Item
                   {...restField}
                   name={[name, 'fullName']}
-                  rules={[
-                    { required: true, message: 'Vui lòng nhập họ và tên' },
-                  ]}
+                  rules={[{ required: true, message: 'Vui lòng nhập họ và tên' }]}
                 >
                   <SelectTableCustomers
                     handleChangeValue={handleChangeCustomer}
@@ -81,18 +79,16 @@ const FormUsers = ({ form, companyId, customerApptRecords }) => {
                   name={[name, 'phone']}
                   rules={[{ required: true, message: 'Vui lòng nhập số điện' }]}
                 >
-                  <S.WrapInput placeholder='SĐT' />
+                  <S.WrapInput placeholder="SĐT" />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item
                   {...restField}
                   name={[name, 'gender']}
-                  rules={[
-                    { required: true, message: 'Vui lòng nhập giới tính' },
-                  ]}
+                  rules={[{ required: true, message: 'Vui lòng nhập giới tính' }]}
                 >
-                  <S.WrapSelect placeholder='Giới tính'>
+                  <S.WrapSelect placeholder="Giới tính">
                     <S.WrapSelect.Option value={1}>Nam</S.WrapSelect.Option>
                     <S.WrapSelect.Option value={2}>Nữ</S.WrapSelect.Option>
                     <S.WrapSelect.Option value={3}>Khác</S.WrapSelect.Option>
@@ -103,28 +99,26 @@ const FormUsers = ({ form, companyId, customerApptRecords }) => {
                 <Form.Item
                   {...restField}
                   name={[name, 'birthday']}
-                  rules={[
-                    { required: true, message: 'Vui lòng nhập ngày sinh' },
-                  ]}
+                  rules={[{ required: true, message: 'Vui lòng nhập ngày sinh' }]}
                 >
                   <S.WrapDatePicker
                     suffixIcon={null}
                     style={{ width: '100%', height: '40px' }}
-                    placeholder='DD/MM/YYYY'
-                    format='DD/MM/YYYY'
+                    placeholder="DD/MM/YYYY"
+                    format="DD/MM/YYYY"
                   />
                 </Form.Item>
               </Col>
               <Col span={1}>
                 <S.ButtonDelete
                   icon={<Delete width={13} height={13} />}
-                  onClick={() => remove(name)}
+                  onClick={() => fields.length > 1 && remove(name)}
                 ></S.ButtonDelete>
               </Col>
             </S.WrapRow>
           ))}
           <Form.Item>
-            <S.ButtonAdd icon={<Add />} onClick={() => add()}></S.ButtonAdd>
+            <S.ButtonAdd icon={<Add />} onClick={() => fields.length < 20 && add()}></S.ButtonAdd>
           </Form.Item>
         </>
       )}
@@ -138,6 +132,7 @@ FormUsers.defaultProps = {
 FormUsers.prototypes = {
   companyId: PropTypes.number,
   customerApptRecords: PropTypes.array,
+  open: PropTypes.bool,
 };
 
 export default FormUsers;

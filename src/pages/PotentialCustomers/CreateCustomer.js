@@ -345,12 +345,6 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                 <Form.Item
                   label="Nguồn gốc"
                   name="connectFrom"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Vui lòng chọn nguồn gốc!',
-                    },
-                  ]}
                 >
                   <Select
                     value={connectFromValue}
@@ -365,12 +359,6 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                 <Form.Item
                   label="Quan hệ"
                   name="relationship"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Vui lòng chọn quan hệ!',
-                    },
-                  ]}
                 >
                   <Select
                     value={relationshipValue}

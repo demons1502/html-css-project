@@ -24,6 +24,7 @@ import {
   deletePotentialCustomers,
   getPotentialCustomer,
   getPotentialCustomers,
+  setEmptyPotentialCustomers,
 } from '../../slices/potentialCustomersSlice';
 import {
   acquaintanceLevel,
@@ -37,8 +38,8 @@ import { generateAgeOptions, generateIncomeOptions } from '../../ultis/generateL
 import Modal from '../../components/common/ModalSelect';
 import { convertToCurrency } from '../../ultis/convertToCurrency';
 import EditCustomer from './EditCustomer';
-import Filter from '../../components/common/Filter';
 import store from '../../store';
+import FilterStatus from '../../components/common/FilterStatus';
 
 export default function PotentialCustomers() {
   const potentialCustomers = useSelector((state) => state.potentialCustomersReducer.potentialCustomers);
@@ -51,7 +52,7 @@ export default function PotentialCustomers() {
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [search, setSearch] = useState('');
-  const [optionsFilter, setOptionsFilter] = useState('');
+  const [optionsFilter, setOptionsFilter] = useState(filterListOption.map((item) => item.value));
   const [filterValue, setFilterValue] = useState();
 
   const { Option } = Select;
@@ -179,7 +180,12 @@ export default function PotentialCustomers() {
   };
 
   useEffect(() => {
-    dispatch(getPotentialCustomers({ name: search, status: optionsFilter, ...filterValue }));
+    if (optionsFilter.length) {
+      dispatch(getPotentialCustomers({ name: search, status: optionsFilter, ...filterValue }));
+    }
+    if (!optionsFilter.length) {
+      dispatch(setEmptyPotentialCustomers());
+    }
   }, [dispatch, search, optionsFilter, filterValue]);
 
   return (
@@ -209,7 +215,7 @@ export default function PotentialCustomers() {
               <img src={Import} alt="Add customer icon" />
               Tạo mới
             </S.Button>
-            <Filter options={filterListOption} setPayload={setOptionsFilter} />
+            <FilterStatus options={filterListOption} defaultValue={optionsFilter} setPayload={setOptionsFilter} />
           </S.WrapButton>
         </S.WrapAction>
       </S.WrapHeader>

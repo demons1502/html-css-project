@@ -83,7 +83,7 @@ export const routes = () => [
           // no page yet
           {
             path: 'finance-consultant',
-            element: <GuestGuard element={<CustomerCare />} />,
+            element: <GuestGuard element={<FinanceConsultant />} />,
           },
           {
             path: 'finance-support',
@@ -180,7 +180,6 @@ export const routes = () => [
         path: 'operation-history',
         element: <ManagerGuard element={<CustomerCare />} />,
       },
-
       {
         path: 'q&a',
         element: <ManagerGuard element={<ManageFinanceKnowledge />} />,

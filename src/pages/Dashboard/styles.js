@@ -12,6 +12,7 @@ import {
   Tabs as AntDTabs,
   DatePicker as AntDDatePicker,
   Modal as AntDModal,
+  Popover as AntDPopover,
 } from 'antd';
 import styled, { css } from 'styled-components';
 
@@ -607,5 +608,22 @@ export const Modal = styled(AntDModal)`
   }
   .ant-modal-content {
     border-radius: 20px;
+  }
+`;
+
+export const WrapIconNextCall = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+`;
+
+export const WrapDatePicker = styled(AntDDatePicker)`
+  margin-right: 20px;
+`;
+
+export const Popover = styled(AntDPopover)`
+  &:hover {
+    cursor: pointer;
   }
 `;

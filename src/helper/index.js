@@ -3,9 +3,15 @@ import { CUSTOMER_CARE_INFO } from '../ultis/constant';
 import _ from 'lodash';
 
 export const formatDataNumber = (number) => {
+  const formatter = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
+
   if (number) {
-    return new Intl.NumberFormat().format(number);
-  } else return 0;
+    return formatter.format(number);
+  }
+  return formatter.format('0');
 };
 
 export const pad = (num, size) => {
@@ -14,8 +20,12 @@ export const pad = (num, size) => {
   return num;
 };
 
-export const getTimeByTZ = (date, format = moment.localeData().longDateFormat('L')) => {
-  return moment(date).local().format(format);
+export const formatDate = (date, format = 'DD/MM/YYYY') => {
+  // format = moment.localeData().longDateFormat('L')
+  return date ? moment.utc(date).local().format(format) : '';
+};
+export const formatToUtcDate = (date) => {
+  return moment(date).utc().format('YYYY-MM-DD');
 };
 
 export const getCustomerCareLabel = (customerValue) => {

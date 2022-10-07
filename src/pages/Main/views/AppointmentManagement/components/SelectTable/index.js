@@ -41,7 +41,7 @@ const fetch = (value, typeId, callback) => {
   timeout = setTimeout(getData, 300);
 };
 
-const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
+const SelectTable = ({ typeId, customer, handleChangeValue, keyForm, disabled }) => {
   const [data, setData] = useState([]);
   const [valueSeach, setvalueSeach] = useState();
   const [openDropDown, setOpenDropDown] = useState(false);
@@ -76,7 +76,7 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
       dataIndex: 'typeId',
       key: 'typeId',
       render: (text) => {
-        return <Typography>{classifyCustomer(text)}</Typography>;
+        return <Typography>{ classifyCustomer(text) }</Typography>;
       },
     },
     {
@@ -88,7 +88,7 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
       title: 'Ngày sinh',
       dataIndex: 'dob',
       key: 'dob',
-      render: (text) => <Typography>{moment(text).format('DD/MM/YYYY')}</Typography>,
+      render: (text) => <Typography>{ moment(text).format('DD/MM/YYYY') }</Typography>,
     },
     {
       title: 'Số điện thoại',
@@ -99,14 +99,14 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      render: (text) => <Typography style={{ color: '#2CB3A5' }}>{getCustomerStatus(text)}</Typography>,
+      render: (text) => <Typography style={ { color: '#2CB3A5' } }>{ getCustomerStatus(text) }</Typography>,
     },
   ];
 
   const TableDropDown = () => {
     return (
       <Table
-        onRow={(record) => {
+        onRow={ (record) => {
           return {
             onClick: () => {
               setOpenDropDown(false);
@@ -114,11 +114,10 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
               handleChangeValue(record, keyForm);
             },
           };
-        }}
-        dataSource={data}
-        columns={columns}
-        onClick={useOutsideClick(() => setOpenDropDown(false))}
-        onBul
+        } }
+        dataSource={ data }
+        columns={ columns }
+        onClick={ useOutsideClick(() => setOpenDropDown(false)) }
       />
     );
   };
@@ -127,27 +126,33 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
     <S.Select
       placeholder="Tên khách hàng"
       showSearch
-      value={typeId === 3 ? valueSeach?.name : valueSeach?.fullname}
-      defaultActiveFirstOption={false}
-      showArrow={false}
-      filterOption={false}
-      onSearch={handleSearch}
-      onChange={handleChange}
-      notFoundContent={null}
-      open={openDropDown}
-      dropdownRender={TableDropDown}
-      dropdownStyle={{ minWidth: 800 }}
+      value={ typeId === 3 ? valueSeach?.name : valueSeach?.fullname }
+      defaultActiveFirstOption={ false }
+      showArrow={ false }
+      filterOption={ false }
+      onSearch={ handleSearch }
+      onChange={ handleChange }
+      notFoundContent={ null }
+      open={ openDropDown }
+      dropdownRender={ TableDropDown }
+      dropdownStyle={ { minWidth: 800 } }
+      disabled={ disabled }
     >
       <TableDropDown />
     </S.Select>
   );
 };
 
+SelectTable.defaultProps = {
+  disabled: false
+}
+
 SelectTable.prototype = {
   typeId: PropTypes.number,
   handleChangeValue: PropTypes.func,
   customer: PropTypes.object,
   keyForm: PropTypes.number,
+  disabled: PropTypes.bool
 };
 
 export default SelectTable;

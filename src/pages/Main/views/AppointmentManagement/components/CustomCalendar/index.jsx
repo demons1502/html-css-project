@@ -47,24 +47,13 @@ const CalendarCustom = ({ handleEvent, eventActive }) => {
 
   //FORMAT
   const formats = {
-    timeGutterFormat: (date, culture, localizer) =>
-      localizer.format(date, 'HH:mm', culture),
+    timeGutterFormat: (date, culture, localizer) => localizer.format(date, 'HH:mm', culture),
   };
 
   const today = new Date();
-  const minimum = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate(),
-    6
-  );
+  const minimum = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 7);
 
-  const maximum = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate(),
-    20
-  );
+  const maximum = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 22);
 
   return (
     <S.WrapContainer
@@ -74,8 +63,8 @@ const CalendarCustom = ({ handleEvent, eventActive }) => {
       getNow={getNow}
       localizer={localizer}
       scrollToTime={scrollToTime}
-      startAccessor='start'
-      endAccessor='end'
+      startAccessor="start"
+      endAccessor="end"
       min={minimum}
       max={maximum}
       timeslots={1}
@@ -87,7 +76,7 @@ const CalendarCustom = ({ handleEvent, eventActive }) => {
         event: (event) => DayEvent(event, eventActive),
         header: CustomHeader,
       }}
-      style={{ height: 600 }}
+      style={{ height: '80vh' }}
     />
   );
 };

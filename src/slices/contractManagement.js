@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { formatDate, formatDataNumber } from '../helper/index';
 import { createContracts, getAll, update, getCustom, getById } from '../services/contractManagement';
+import { getDepositTermLabel } from '../ultis/despositTerm';
 
 const initialState = {
   data: [],
@@ -43,6 +45,7 @@ export const updateContract = createAsyncThunk(
   async ({ id, data }, { rejectWithValue }) => {
     try {
       const res = await update({ id, data });
+      console.log(data);
       return { data: res.data, message: res.statusText };
     } catch (error) {
       return rejectWithValue(error.response.data)
@@ -67,8 +70,21 @@ const contractManagement = createSlice({
       state.refreshData = true;
     },
     [retrieveData.fulfilled]: (state, action) => {
-      state.data = [...action.payload.contracts];
-      state.totalItem = action.payload.count;
+      // state.data = [...action.payload.contracts];
+      const data = action.payload.contracts.map((i) => {
+        return {
+          ...i,
+          value: formatDataNumber(i.value),
+          startDate: formatDate(i.startDate),
+          lastDepositDate: formatDate(i.lastDepositDate),
+          nextDepositDue: formatDate(i.nextDepositDue),
+          depositTerm: getDepositTermLabel(i.depositTerm),
+          duration: i.duration + ' Năm'
+        };
+      });
+
+      state.data = data;
+      state.totalItem = action.payload.total;
       state.refreshData = true;
       state.refreshData = false
     },
@@ -79,8 +95,14 @@ const contractManagement = createSlice({
       state.refreshData = true;
     },
     [getByIdApi.fulfilled]: (state, action) => {
-      (action.payload.depositTerm == 30) ? action.payload.depositTerm = "Tháng" : (action.payload.depositTerm == 180) ? action.payload.depositTerm = "Nửa năm" : (action.payload.depositTerm == 360) ? action.payload.depositTerm = "Năm" : action.payload.depositTerm
-      state.dataEdit = action.payload
+      // (action.payload.depositTerm == 30) ? action.payload.depositTerm = "Tháng" : (action.payload.depositTerm == 180) ? action.payload.depositTerm = "Nửa năm" : (action.payload.depositTerm == 360) ? action.payload.depositTerm = "Năm" : action.payload.depositTerm
+      // state.dataEdit = action.payload
+      const data = action.payload;
+      const contract = {
+        ...data,
+        depositTermLabel: getDepositTermLabel(data.depositTerm)
+      }
+      state.dataEdit = contract;
     },
   },
 });

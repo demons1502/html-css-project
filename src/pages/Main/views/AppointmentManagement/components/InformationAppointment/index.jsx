@@ -37,29 +37,19 @@ export const InformationAppointment = ({ info }) => {
 
   return (
     <S.WrapContainer>
-      {Object.keys(info).length > 0 ? (
+      {info ? (
         <>
-          <GroupButton
-            handleOpenEdit={handleOpenEdit}
-            handleDelete={handleDelete}
-          />
+          <GroupButton info={info} handleOpenEdit={handleOpenEdit} handleDelete={handleDelete} />
           <DetailAppointment info={info} />
-          <EditAppointment
-            open={openEdit}
-            handleCancel={handleCancelEdit}
-            info={info}
-          />
+          <EditAppointment open={openEdit} handleCancel={handleCancelEdit} info={info} />
         </>
       ) : (
         <>
           {!loading ? (
-            <S.Empty>
-              Không có cuộc hẹn nào gần đây. Thêm cuộc hẹn để kết nối đến khách
-              hàng tốt hơn.
-            </S.Empty>
+            <S.Empty>Không có cuộc hẹn nào gần đây. Thêm cuộc hẹn để kết nối đến khách hàng tốt hơn.</S.Empty>
           ) : (
             <S.WrapLoading>
-              <Loading size='large' />
+              <Loading size="large" />
             </S.WrapLoading>
           )}
         </>

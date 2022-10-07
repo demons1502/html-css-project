@@ -1,8 +1,6 @@
 @use "../abstracts/" as *;
 
-.card {
-    &-img-top{
-        width: 100%;
-        object-fit: cover;
-    }
+.recent-blog-card {
+    border-radius: 35px;
+    background: $background-color-blogCard   ;
 }

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, InputNumber } from "antd";
 
-export const FiduciaryValue = ({ nameCustomer, data,setDataToSave }) => {
+export const FiduciaryValue = ({ nameCustomer, data, setDataToSave }) => {
   const [investmentYear, setInvestmentYear] = useState(20);
   const [percentage, setPercentage] = useState(data?.values?.percantage || 6);
-  const [totalOfMoney, setTotalOfMoney] = useState(Math. round(data?.total) || 0);
+  const [totalOfMoney, setTotalOfMoney] = useState(Math.round(data?.total) || 0);
   const [additionalInvestmentYear, setAdditionalInvestmentYear] = useState(10);
 
   // console.log("investmentYear", investmentYear);
@@ -19,17 +19,17 @@ export const FiduciaryValue = ({ nameCustomer, data,setDataToSave }) => {
     console.log("Failed:", errorInfo);
   };
 
-  useEffect(()=>{
-    setDataToSave((prev)=>{
-      prev.additionalInvestmentYear=additionalInvestmentYear;
-      prev.investmentYear=investmentYear;
-      prev.percantage=percentage;
-      prev.total=totalOfMoney;
-      return({
+  useEffect(() => {
+    setDataToSave((prev) => {
+      prev.additionalInvestmentYear = additionalInvestmentYear;
+      prev.investmentYear = investmentYear;
+      prev.percantage = percentage;
+      prev.total = totalOfMoney;
+      return ({
         ...prev
       })
     })
-  },[investmentYear,percentage,totalOfMoney,additionalInvestmentYear])
+  }, [investmentYear, percentage, totalOfMoney, additionalInvestmentYear])
   return (
     <Form
       name="basic"
@@ -40,7 +40,10 @@ export const FiduciaryValue = ({ nameCustomer, data,setDataToSave }) => {
         span: 16,
       }}
       initialValues={{
-        remember: true,
+        investment_year: investmentYear,
+        percent: percentage,
+        amount_of_money: totalOfMoney,
+        additional_investment_year: additionalInvestmentYear
       }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
@@ -57,7 +60,7 @@ export const FiduciaryValue = ({ nameCustomer, data,setDataToSave }) => {
                   className="form-input-text"
                   type="number"
                   addonAfter="năm"
-                  defaultValue={investmentYear}
+                  // defaultValue={investmentYear}
                   placeholder="0"
                   onChange={(e) => setInvestmentYear(e.target.value)}
                 />
@@ -78,7 +81,7 @@ export const FiduciaryValue = ({ nameCustomer, data,setDataToSave }) => {
                   className="form-input-text"
                   type="number"
                   addonAfter="%"
-                  defaultValue={percentage}
+                  // defaultValue={percentage}
                   placeholder="0"
                   onChange={(e) => setPercentage(e.target.value)}
                 />
@@ -87,16 +90,16 @@ export const FiduciaryValue = ({ nameCustomer, data,setDataToSave }) => {
             <th>
               <Form.Item name="amount_of_money">
                 <InputNumber
-                  style={{width: 152, height: 37 }}
+                  style={{ width: 152, height: 37 }}
                   className="form-input-text"
-                  defaultValue={totalOfMoney}
+                  // defaultValue={totalOfMoney}
                   placeholder="0"
                   step={5000000}
                   formatter={(value) =>
                     `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
                   parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                  onChange={(value)=>setTotalOfMoney(value)}
+                  onChange={(value) => setTotalOfMoney(value)}
                 />
               </Form.Item>
             </th>
@@ -107,7 +110,7 @@ export const FiduciaryValue = ({ nameCustomer, data,setDataToSave }) => {
                   className="form-input-text"
                   placeholder="0"
                   addonAfter="năm"
-                  defaultValue={additionalInvestmentYear}
+                  // defaultValue={additionalInvestmentYear}
                   type="number"
                   onChange={(e) => setAdditionalInvestmentYear(e.target.value)}
                 />
@@ -155,151 +158,152 @@ export const FiduciaryValue = ({ nameCustomer, data,setDataToSave }) => {
             <th>6.0%</th>
           </tr>
         </thead>
-
-        <tr>
-          <td>31</td>
-          <td>1</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-        </tr>
-        <tr>
-          <td>31</td>
-          <td>1</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-        </tr>
-        <tr>
-          <td>31</td>
-          <td>1</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-        </tr>
-        <tr>
-          <td>31</td>
-          <td>1</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-        </tr>
-        <tr>
-          <td>31</td>
-          <td>1</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-        </tr>
-        <tr>
-          <td>31</td>
-          <td>1</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-        </tr>
-        <tr>
-          <td>31</td>
-          <td>1</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-        </tr>
-        <tr>
-          <td>31</td>
-          <td>1</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-        </tr>
-        <tr>
-          <td>31</td>
-          <td>1</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-        </tr>
-        <tr>
-          <td>31</td>
-          <td>1</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-        </tr>
-        <tr>
-          <td>31</td>
-          <td>1</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-        </tr>
-        <tr>
-          <td>31</td>
-          <td>1</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-          <td>22.711.000</td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>31</td>
+            <td>1</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>1</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>1</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>1</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>1</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>1</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>1</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>1</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>1</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>1</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>1</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>1</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+            <td>22.711.000</td>
+          </tr>
+        </tbody>
       </table>
     </Form>
   );

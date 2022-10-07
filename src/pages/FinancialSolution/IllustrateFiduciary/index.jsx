@@ -13,7 +13,7 @@ import { HistoryModal } from "./HistoryModal";
 import { ClosingModal } from "./ClosingModal";
 import { SaveConfirmation } from "./SaveConfirmation";
 import { useSelector, useDispatch } from "react-redux";
-import { getCustomerContracts, postSaveFinances } from "../../../slices/financialSolutions";
+import { getCustomerContracts, postSaveFinances, getFinanceSolution } from "../../../slices/financialSolutions";
 
 const IllustrateFiduciary = () => {
   const location = useLocation();
@@ -22,7 +22,7 @@ const IllustrateFiduciary = () => {
   const dispatch = useDispatch()
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const [contract, setContract] = useState([]) // contract of user
-  const [dataToSave, setDataToSave] = useState({...location?.state,investmentYear: '', additionalInvestmentYear:'', hideName: ''} || {})
+  const [dataToSave, setDataToSave] = useState({ ...location?.state, investmentYear: '', additionalInvestmentYear: '', hideName: '' } || {})
   const [callSave, setCallSave] = useState(false)
   const [date, setDate] = useState(() => {
     var today = new Date();
@@ -33,11 +33,16 @@ const IllustrateFiduciary = () => {
     return mm + '/' + dd + '/' + yyyy;
   })
 
+  const {historyList}= useSelector((state)=>state.financialSolution)      //call api history
+  useEffect(()=>{
+    // dispatch(getFinanceSolution(id))
+  },[])
+  
   useEffect(() => {
     if (callSave) {
-      let data={
+      let data = {
         customerApptRecordId: dataToSave.userSelected.customerApptRecordId,
-        fundType:'education', //dataToSave.typeFund,
+        fundType: 'education', //dataToSave.typeFund,
         isPotential: (dataToSave.values.isPotential == undefined) ? "false" : 'true',
         result: "string",
         hintName: dataToSave.hideName,
@@ -45,14 +50,14 @@ const IllustrateFiduciary = () => {
         sumInsured: dataToSave.total,
         baseYear: dataToSave.additionalInvestmentYear,
         basePremium: 20000, //???
-        annualBasePremiums: [ 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000 ], //???
+        annualBasePremiums: [20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000], //???
         CISupport: 10000, //???
         inpatient: "SILVER", //???
         outpatient: "TITAN",//???
         premiumSupport: "no", //???
         topUpPremium: 10000, //???
         topUpYears: 10, //???
-        annualTopUpPremiums: [ 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000 ],//???
+        annualTopUpPremiums: [20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000],//???
         rate: dataToSave.investmentYear,
         interestRate: dataToSave.investmentYear.toString(),
         expensePerMonth: dataToSave.values.amount,
@@ -62,7 +67,7 @@ const IllustrateFiduciary = () => {
       setCallSave(false)
     }
   }, [callSave])
-  
+
   // const customerId = useSelector((state) => state.financialSolution.customerSelect)
   // const customerContract = useSelector((state) => state.financialSolution.customerContract)
 
@@ -129,7 +134,7 @@ const IllustrateFiduciary = () => {
                 open={isHistoryModalOpen}
                 placement="bottomRight"
                 onOpenChange={(e) => setIsHistoryModalOpen(e)}
-                content={<HistoryModal />}
+                content={<HistoryModal historyList={historyList}/>}
                 trigger="click"
               >
                 <Button
@@ -174,15 +179,7 @@ const IllustrateFiduciary = () => {
             </div>
 
             <div className="finance-btn-wrapper-sm">
-              {/* <Button
-                type="primary"
-                htmlType="submit"
-                className="btn-primary finance-btn-small"
-                block
-              >
-                Lưu
-              </Button> */}
-              <ClosingModal setCallSave={(e)=>setCallSave(e)} setDataToSave={(e)=>{setDataToSave(e)}}/>
+              <ClosingModal setCallSave={(e) => setCallSave(e)} setDataToSave={(e) => {setDataToSave(e)}}  />
             </div>
           </div>
         </div>
@@ -191,7 +188,7 @@ const IllustrateFiduciary = () => {
             {
               label: 'Minh họa giá trị ủy thác',
               key: '1',
-              children: <FiduciaryValue data={dataToSave} setDataToSave={(e)=>setDataToSave(e)}/>,
+              children: <FiduciaryValue data={dataToSave} setDataToSave={(e) => setDataToSave(e)} />,
             },
             {
               label: 'Tóm tắt quyền lợi bằng bông hoa',

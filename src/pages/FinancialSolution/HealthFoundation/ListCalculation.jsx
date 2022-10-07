@@ -153,7 +153,7 @@ const ListCalculation = () => {
       </div>
 
       <div className="container-right-submit">
-        <Form.Item name="remember" valuePropName="checked">
+        <Form.Item name="isPotential" valuePropName="checked">
           <Checkbox>Không còn tiềm năng</Checkbox>
         </Form.Item>
 

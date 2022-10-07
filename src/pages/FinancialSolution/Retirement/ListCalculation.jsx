@@ -25,15 +25,7 @@ const ListCalculation = ({typeFund, userSelected}) => {
 
   const onFinish = (values) => {
     console.log("Success:", values);
-    navigate("/advise/financial-solutions/minh-hoa-gia",
-      {
-        state: {
-          values: values, 
-          total: TotalAmount,
-          typeFund: typeFund,
-          userSelected: userSelected
-        }
-      });
+    userSelected ? navigate("/advise/financial-solutions/minh-hoa-gia", {state:{values: values,total:TotalAmount, typeFund:typeFund, userSelected:userSelected}}) : null
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -219,7 +211,7 @@ const ListCalculation = ({typeFund, userSelected}) => {
       </div>
 
       <div className="container-right-submit">
-        <Form.Item name="remember" valuePropName="checked">
+        <Form.Item name="isPotential" valuePropName="checked">
           <Checkbox>Không còn tiềm năng</Checkbox>
         </Form.Item>
 

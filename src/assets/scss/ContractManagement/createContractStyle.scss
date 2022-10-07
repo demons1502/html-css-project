@@ -68,7 +68,9 @@
             &:focus {
                 border-color: $green-color;
             }
-            .ant-select-selection-placeholder, .ant-select-selection-item{
+
+            .ant-select-selection-placeholder,
+            .ant-select-selection-item {
                 line-height: 40px !important;
 
             }
@@ -87,7 +89,8 @@
         .ant-form-item-explain-error {
             display: none; //error display validate
         }
-        #create_contract_form_startDate{
+
+        #create_contract_form_startDate {
             height: 30px !important;
         }
     }
@@ -116,18 +119,23 @@
         }
     }
 }
-.ant-form-item-control-input-content, .ant-picker{
-    input{
+
+.ant-form-item-control-input-content,
+.ant-picker {
+    input {
         height: 40px !important;
     }
 }
-.ant-select-selection-search{
+
+.ant-select-selection-search {
     display: flex;
     align-items: center;
 }
-#customerName{
+
+#customerName {
     height: 40px !important;
 }
+
 .ant-btn:active {
     background-color: $green-color;
 }
@@ -138,4 +146,13 @@
 
 input[type="date" i]::-webkit-calendar-picker-indicator {
     cursor: pointer;
+}
+
+.ant-select-selection-placeholder {
+    font-size: 13px !important;
+}
+.ant-select-selection-search{
+    input{
+        font-weight: bold;
+    }
 }

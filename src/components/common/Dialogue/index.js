@@ -11,21 +11,27 @@ const Dialogue = (props) => {
   const dialogItems = useRef();
   const [dialogData, setDialogData] = useState(null);
 
-  useEffect(() => { 
+  useEffect(() => {
     getDialogData(props.type, props.customerId);
   }, [props.customerId]);
 
   useEffect(() => {
-    const dialogues = replaceKeyword(props?.keywords? props.keywords: {});
+    const dialogues = replaceKeyword(props?.keywords ? props.keywords : {});
     const data = {
       ...dialogData,
-      dialogues: dialogues
-    }
-    setDialogData(data)
+      dialogues: dialogues,
+    };
+    setDialogData(data);
     setContent(getContent());
-  }, [props?.keywords?.interestRate, props?.keywords?.expensePerMonth, props?.keywords?.expensePerYear, props?.keywords?.fundValue, props?.keywords?.numOfYear]);
+  }, [
+    props?.keywords?.interestRate,
+    props?.keywords?.expensePerMonth,
+    props?.keywords?.expensePerYear,
+    props?.keywords?.fundValue,
+    props?.keywords?.numOfYear,
+  ]);
 
-  useEffect(() => { 
+  useEffect(() => {
     setContent(getContent());
   }, [dialogData]);
 
@@ -54,7 +60,7 @@ const Dialogue = (props) => {
 
   const replaceKeyword = (keywords) => {
     const keys = Object.keys(keywords);
-    const dialogues = dialogData && dialogData?.dialogues? dialogData.dialogues : []
+    const dialogues = dialogData && dialogData?.dialogues ? dialogData.dialogues : [];
     keys.map((item) => {
       dialogues.map((dialog) => {
         return dialog.text.replace(item, keywords[item]);
@@ -62,7 +68,7 @@ const Dialogue = (props) => {
     });
 
     return dialogues;
-  }
+  };
 
   const nextPage = () => {
     if (page < limit - 1) {
@@ -84,14 +90,14 @@ const Dialogue = (props) => {
     let dialogItems = [];
     if (dialogData) {
       if (dialogData?.objective) {
-        dialogItems.push(<DialogItem key="0" title="Mục tiêu" content={dialogData?.objective}/>);
+        dialogItems.push(<DialogItem key="0" title="Mục tiêu" content={dialogData?.objective} />);
       }
       if (dialogData?.procedure) {
-        dialogItems.push(<DialogItem key="1" title="Quy trình" content={dialogData?.procedure}/>);
+        dialogItems.push(<DialogItem key="1" title="Quy trình" content={dialogData?.procedure} />);
       }
       if (dialogData?.dialogues) {
         dialogData.dialogues.map((item, index) => {
-          dialogItems.push(<DialogItem key={`${index + 2}`} title={item.label} content={item.text}/>);
+          dialogItems.push(<DialogItem key={`${index + 2}`} title={item.label} content={item.text} />);
         });
       }
 

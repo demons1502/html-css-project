@@ -6,36 +6,64 @@ import ListCalculation from "./ListCalculation";
 import ListDetails from "./ListDetails";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { getAppointment, getSpeechScriptType, getAppointmentByIds,updateSelectCustomer } from "../../../slices/financialSolutions";
+import moment from 'moment';
 import { getFinanceDatas } from "../../../slices/financeSolutions";
-const ContingencyFund = () => {
-  const location = useLocation();
 
+const ContingencyFund = ({ apptId = null }) => {
+
+  const location = useLocation();
   // title
   const [title] = useState(location?.state?.title);
-
-  // id
-  const { id } = location.state;
-
-  // dispatch
   const dispatch = useDispatch();
 
-  // dispatch getFinanceDatas
-  useEffect(() => {
-    dispatch(getFinanceDatas(id));
-  }, [getFinanceDatas]);
+  // id
+  // const { id } = location.state;
 
-  // useSelector
-  const finaceDatas = useSelector(
-    (state) => state.financeReducer.getFinanceDatas
-  );
-  console.log("finaceDatas ==>", finaceDatas);
+  // // dispatch
+
+  // // dispatch getFinanceDatas
+  // useEffect(() => {
+  //   dispatch(getFinanceDatas(id));
+  // }, [getFinanceDatas]);
+
+  // // useSelector
+  // const finaceDatas = useSelector(
+  //   (state) => state.financeReducer.getFinanceDatas
+  // );
+  // console.log("finaceDatas ==>", finaceDatas);
   const [itemContent, setItemContent] = useState({});
-  const [lists, setLists] = useState(sideBarMenuItems);
+  const [lists, setLists] = useState(null);
   const [payload, setPayload] = useState("");
+  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution)
+
+  const getAppointmentNoId = () => {
+    let endDate = new Date();
+    // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
+    endDate = endDate.setHours(23, 59, 59, 999);
+    let startDate = new Date();
+    dispatch(getAppointment({ titles: "finance", startDate: moment(startDate), endDate: moment(endDate) })) //main code
+  }
 
   useEffect(() => {
-    setItemContent(lists[0]);
+    dispatch(getSpeechScriptType('preventionFund'))
+    apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId()
   }, []);
+
+  useEffect(() => {
+    let arr = []
+    arr.push(customerAppRecords?.map(item => {
+      dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
+      return { title: item.customerApptRecords[0].name }
+    }))
+    setLists(arr[0])
+  }, [customerAppRecords])
+
+  useEffect(() => {
+    if (lists) {
+      setItemContent(lists[0]);
+    }
+  }, [lists])
 
   return (
     <div className="quyduphone">
@@ -76,16 +104,19 @@ const ContingencyFund = () => {
                     <SearchInputBox setPayload={setPayload}></SearchInputBox>
                   </div>
 
-                  <List
-                    dataSource={lists}
-                    renderItem={(item, index) => (
-                      <List.Item
-                        onClick={() => setItemContent(item)}
-                        className={`${item === itemContent ? "active" : ""}`}>
-                        <Typography.Text ellipsis>{item.title}</Typography.Text>
-                      </List.Item>
-                    )}
-                  />
+                  {
+                    lists?.length > 0 &&
+                    <List
+                      dataSource={lists}
+                      renderItem={(item, index) => (
+                        <List.Item
+                          onClick={() => setItemContent(item)}
+                          className={`${item === itemContent ? "active" : ""}`}>
+                          <Typography.Text ellipsis>{item.title}</Typography.Text>
+                        </List.Item>
+                      )}
+                    />
+                  }
                 </div>
 
                 {/* container-right start */}
@@ -93,7 +124,7 @@ const ContingencyFund = () => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation finaceDatas={finaceDatas} />
+                  <ListCalculation />
                 </div>
 
                 {/* container-right end */}
@@ -107,7 +138,7 @@ const ContingencyFund = () => {
           <Col lg={12} md={24} sm={24} xs={24}>
             <Layout.Content className="manageContent">
               <div className="content-div-2">
-                <ListDetails />
+                <ListDetails data={getSpeechScript} />
               </div>
             </Layout.Content>
           </Col>

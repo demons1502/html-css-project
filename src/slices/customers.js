@@ -38,8 +38,11 @@ const customerSlice = createSlice({
   name: 'customers',
   initialState,
   reducers: {
+    setData: (state, action) => {
+      state.data = action.payload;
+    },
     setSelectedCustomer: (state, action) => {
-      state.selectedCustomer = state.data?.find((customaer) => customaer?.customerId === action.payload);
+      state.selectedCustomer = state.data?.find((customer) => customer?.customerId === action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -64,6 +67,6 @@ const customerSlice = createSlice({
       });
   },
 });
-export const { setSelectedCustomer } = customerSlice.actions;
+export const { setData, setSelectedCustomer } = customerSlice.actions;
 
 export default customerSlice.reducer;

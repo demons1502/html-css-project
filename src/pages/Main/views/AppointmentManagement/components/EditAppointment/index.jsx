@@ -59,10 +59,10 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
     const startTime = moment(values.date).format('YYYY-MM-DD ') + moment(values.startTime).format('HH:mm:ss');
 
     const endTime = moment(values.date).format('YYYY-MM-DD ') + moment(values.endTime).format('HH:mm:ss');
-    const customerId = info.typeId === 1 ? info.customerApptRecords[0].customerId : info.companyCustomerId;
+
     const data = {
       typeId: info.typeId,
-      customerId: customerId,
+      customerId: getCustomerId(),
       title: title,
       startTime: startTime,
       endTime: endTime,
@@ -80,6 +80,14 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
         message.error('Lịch hẹn của bạn vừa được sửa thất bại. Vui lòng thử lại');
       }
     });
+  };
+
+  const getCustomerId = () => {
+    if (customer.typeId === 1) {
+      return customer.customerId ? customer.customerId : customer.customerApptRecords[0].customerId;
+    } else {
+      return customer.companyCustomerId;
+    }
   };
 
   const onCancel = () => {
@@ -156,7 +164,7 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
           </Col>
 
           <Col span={16}>
-            <TimePicker start={moment(info.startTime)} end={moment(info.endTime)} form={form} />
+            <TimePicker start={moment(info.start)} end={moment(info.end)} form={form} />
           </Col>
         </S.WrapRow>
         <S.WrapRow gutter={12}>
@@ -178,7 +186,12 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
             <S.WrapRow>
               <S.WrapTitleUser>Thông tin người tham gia</S.WrapTitleUser>
             </S.WrapRow>
-            <FormUsers form={form} companyId={customer.companyId} customerApptRecords={info.customerApptRecords} />
+            <FormUsers
+              form={form}
+              companyId={customer.companyId}
+              customerApptRecords={info.customerApptRecords}
+              open={open}
+            />
           </>
         )}
       </Form>

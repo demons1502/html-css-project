@@ -6,7 +6,7 @@ export const TYPE_LIST_NORMAL = "NORMAL"
 export const TYPE_LIST_CUSTOMERS = "CUSTOMERS"
 export const DEFAULT_SIZE = 10
 export const PAGE_SIZE_OPTIONS = ['10', '20', '30']
-export const FORMAT_DATE = moment.localeData().longDateFormat('L')
+export const FORMAT_DATE = 'DD/MM/YYYY'// moment.localeData().longDateFormat('L')
 export const LOADING_STATUS = {
   idle: 'idle',
   pending: 'pending',
@@ -64,4 +64,11 @@ export const INFO_PATH = {
 export const MANAGEMENT_CONTENT = [
   { label: 'Kiến thức tư vấn', value: 'articles' },
   { label: 'Hỏi đáp', value: 'questions' },
+];
+
+export const DEPOSIT_TERM = [
+  { label: 'Tháng', value: '1' },
+  { label: 'Quý', value: '3' },
+  { label: 'Nửa năm', value: '6' },
+  { label: 'Năm', value: '12' },
 ];

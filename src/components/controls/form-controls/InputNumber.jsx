@@ -1,42 +1,42 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { DatePicker } from 'antd';
-import moment from 'moment';
+import { InputNumber } from 'antd';
 
-const DatePickerControl = ({
+const InputNumberControl = ({
   name,
   control,
   errors,
-  defaultValue,
-  disabled = false,
+  isDisabled = false,
+  placeholder = '',
+  max = 999999999,
+  min = 0,
   className = '',
-  allowClear = false,
 }) => {
   let errMsg = errors?.[name]?.message;
   return (
-    <div>
+    <>
       <Controller
         control={control}
         name={name}
         render={({ field }) => (
-          <DatePicker
-            allowClear={allowClear}
+          <InputNumber
             {...field}
             id={name}
-            // defaultValue={defaultValue}
             className={`form-control ${className}`}
             status={errMsg && 'error'}
             size="large"
-            disabled={disabled}
+            max={max}
+            min={min}
+            step={1}
+            disabled={isDisabled}
             placeholder={placeholder}
-            placement={'bottomLeft'}
-            format={format}
+            style={{ width: '100%' }}
           />
         )}
       />
       <p className="error-msg">{errMsg}</p>
-    </div>
+    </>
   );
 };
 
-export default DatePickerControl;
+export default InputNumberControl;

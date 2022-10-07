@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Form, Input } from "antd";
+import { Form, Input, InputNumber } from "antd";
 
-export const FiduciaryValue = () => {
+export const FiduciaryValue = ({ nameCustomer }) => {
   const [investmentYear, setInvestmentYear] = useState("");
   const [percentage, setPercentage] = useState("");
-  const [amountOfMoney, setAmountOfMoney] = useState("");
+  const [amountOfMoney, setAmountOfMoney] = useState(0);
   const [additionalInvestmentYear, setAdditionalInvestmentYear] = useState("");
 
   // console.log("investmentYear", investmentYear);
@@ -18,6 +18,7 @@ export const FiduciaryValue = () => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
   return (
     <Form
       name="basic"
@@ -41,8 +42,11 @@ export const FiduciaryValue = () => {
             <th>
               <Form.Item name="investment_year">
                 <Input
+                  style={{ textAlign: 'center', width: 152 }}
                   className="form-input-text"
                   type="number"
+                  addonAfter="năm"
+                  defaultValue={20}
                   placeholder="0"
                   onChange={(e) => setInvestmentYear(e.target.value)}
                 />
@@ -59,8 +63,11 @@ export const FiduciaryValue = () => {
             <th>
               <Form.Item name="percent">
                 <Input
+                  style={{ textAlign: 'center', width: 152 }}
                   className="form-input-text"
                   type="number"
+                  addonAfter="%"
+                  defaultValue={6}
                   placeholder="0"
                   onChange={(e) => setPercentage(e.target.value)}
                 />
@@ -68,19 +75,28 @@ export const FiduciaryValue = () => {
             </th>
             <th>
               <Form.Item name="amount_of_money">
-                <Input
+                <InputNumber
+                  style={{width: 152, height: 37 }}
                   className="form-input-text"
+                  initialValues={0}
                   placeholder="0"
-                  type="number"
-                  onChange={(e) => setAmountOfMoney(e.target.value)}
+                  step={5000000}
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                  onChange={()=>setAmountOfMoney(value)}
                 />
               </Form.Item>
             </th>
             <th>
               <Form.Item name="additional_investment_year">
                 <Input
+                  style={{ textAlign: 'center', width: 152 }}
                   className="form-input-text"
                   placeholder="0"
+                  addonAfter="năm"
+                  defaultValue={10}
                   type="number"
                   onChange={(e) => setAdditionalInvestmentYear(e.target.value)}
                 />

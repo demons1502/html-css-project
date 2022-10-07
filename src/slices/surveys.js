@@ -21,7 +21,7 @@ export const createSurvey = createAsyncThunk("surveys/create", async (data) => {
       message.success("Lưu khảo sát thành công");
       return res.data;
     } else {
-      message.error("Something went wrong");
+      message.error("Có lỗi xảy ra khi lưu thông tin khảo sát");
     }
   } catch (error) {
     return Promise.reject(error.data);
@@ -73,7 +73,7 @@ const surveySlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // add servey
+    // add survey
     builder.addCase(createSurvey.pending, (state) => {
       state.isLoading = true;
       state.isError = false;

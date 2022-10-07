@@ -1,4 +1,5 @@
-import { Button, Popover, Divider, Form, Input } from "antd";
+import { Popover, Divider, Form } from "antd";
+import { Button, Input } from "../../../components/styles";
 import React, { useState } from "react";
 
 export const ClosingModal = () => {
@@ -33,9 +34,12 @@ export const ClosingModal = () => {
               label="Tên gợi nhớ"
               name="reminiscent_name"
               labelCol={{ span: 24 }}
+              rules={[{
+                required:true,
+              }]}
             >
               <Input
-                placeholder="Enter your Number"
+                placeholder="Lưu bảng minh hoạ"
                 className="closing__input"
               />
             </Form.Item>
@@ -45,12 +49,12 @@ export const ClosingModal = () => {
         <div className="closing-footer">
           <div className="closing-btn">
             <Button
-              type="primary"
               htmlType="button"
               className="btn-danger"
+              onClick={()=>setOpen(false)}
               block
             >
-              Hủy+
+              Hủy
             </Button>
           </div>
 
@@ -73,6 +77,7 @@ export const ClosingModal = () => {
       placement="bottomRight"
       content={content}
       trigger="click"
+      open={open}
       onOpenChange={handleOpenChange}
       overlayClassName="closing-popover"
     >
@@ -82,7 +87,7 @@ export const ClosingModal = () => {
         className="btn-primary finance-btn-small"
         block
       >
-        Chốt hợp đồng
+        Lưu
       </Button>
     </Popover>
   );

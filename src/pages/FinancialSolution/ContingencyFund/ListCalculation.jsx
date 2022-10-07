@@ -43,7 +43,7 @@ const ListCalculation = ({ finaceDatas }) => {
 
   // submit data
   const onFinish = async (values) => {
-    // console.log(values);
+    console.log(values);
     try {
       if (values?.amount !== undefined && isPotential !== undefined) {
         await dispatch(
@@ -71,7 +71,7 @@ const ListCalculation = ({ finaceDatas }) => {
             },
           })
         );
-        navigate("/advise/financial-solutions/minh-hoa-gia");
+        navigate("/advise/financial-solutions/minh-hoa-gia", {values: values});
       }
     } catch (e) {
       console.log(e);
@@ -90,23 +90,12 @@ const ListCalculation = ({ finaceDatas }) => {
       onFinishFailed={onFinishFailed}
       autoComplete="off">
       <div className="container-right-middle">
-        <div className="form-text">
-          <p className="title">Thời gian đến tuổi nghỉ hưu còn</p>
-          <p className="value">
-            {` ${
-              finaceDatas !== "" && finaceDatas !== undefined
-                ? finaceDatas?.illustration?.investmentRate
-                : 0
-            } %`}
-          </p>
-        </div>
-        {/* </Form.Item> */}
-        {/* <Form.Item
+        <Form.Item
           name="percantage"
           label="Lãi suất ngân hàng"
           rules={[
             {
-              required: false,
+              required: true,
             },
           ]}>
           <div className="percentage-field">
@@ -115,22 +104,24 @@ const ListCalculation = ({ finaceDatas }) => {
               onChange={(e) => setPercent(Number(e.target.value))}
               placeholder="0"
               type="text"
-              style={{ width: 45, paddingRight: 0 }}
+              style={{ width: 65, paddingRight: 0 }}
               value={Percent}
             />
             <span className="pIcon">%</span>
           </div>
-        </Form.Item> */}
+        </Form.Item>
         <Form.Item
           name="amount"
           label="Tổng tiền chi tiêu thiết yếu/tháng"
           rules={[
             {
-              required: false,
+              required: true,
             },
           ]}>
-          <InputNumber
+          <InputNumber style={{width:'120px'}}
             defaultValue={0}
+            min={0}
+            placeholder="0" 
             formatter={(value) =>
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }

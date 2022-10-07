@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { postFinanceDatas } from "../../../slices/financeSolutions";
 
-const ListCalculation = ({ finaceDatas }) => {
+const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
   const [Percent, setPercent] = useState(0);
   const [Amount, setAmount] = useState(0);
   const [isPotential, setIsPotential] = useState(false);
@@ -44,44 +44,48 @@ const ListCalculation = ({ finaceDatas }) => {
   // submit data
   const onFinish = async (values) => {
     console.log(values);
-    try {
-      if (values?.amount !== undefined && isPotential !== undefined) {
-        await dispatch(
-          postFinanceDatas({
-            fundId: finaceDatas?.id,
-            isPotential: isPotential,
-            result: {
-              key: "",
-              value: String(TotalAmount),
-            },
-            sumInsured: 1000000,
-            baseYears: 5,
-            basePremium: 20000,
-            investmentRate: 6,
-            riderPremium: 20000,
-            topUpPremium: 20000,
-            topUpYears: 10,
-            interestRate: {
-              key: "",
-              value: String(Percent),
-            },
-            expensePerMonth: {
-              key: "",
-              value: String(Amount),
-            },
-          })
-        );
-        navigate("/advise/financial-solutions/minh-hoa-gia", {values: values});
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    // try {
+    //   if (values?.amount !== undefined && isPotential !== undefined) {
+    //     dispatch(
+    //       postFinanceDatas({
+    //         fundId: finaceDatas?.id,
+    //         isPotential: isPotential,
+    //         result: {
+    //           key: "",
+    //           value: String(TotalAmount),
+    //         },
+    //         sumInsured: 1000000,
+    //         baseYears: 5,
+    //         basePremium: 20000,
+    //         investmentRate: 6,
+    //         riderPremium: 20000,
+    //         topUpPremium: 20000,
+    //         topUpYears: 10,
+    //         interestRate: {
+    //           key: "",
+    //           value: String(Percent),
+    //         },
+    //         expensePerMonth: {
+    //           key: "",
+    //           value: String(Amount),
+    //         },
+    //       })
+    //     );
+    //   }
+    // } catch (e) {
+    //   console.log(e);
+    // }
+    navigate("/advise/financial-solutions/minh-hoa-gia", {state:{values: values,total:TotalAmount, typeFund:typeFund, userSelected:userSelected}});
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
+  useEffect(()=>{
+    setPercent(0)
+    form.resetFields()
+  },[userSelected?.apptId])
   return (
     <Form
       form={form}
@@ -118,10 +122,10 @@ const ListCalculation = ({ finaceDatas }) => {
               required: true,
             },
           ]}>
-          <InputNumber style={{width:'120px'}}
+          <InputNumber style={{ width: '120px' }}
             defaultValue={0}
             min={0}
-            placeholder="0" 
+            placeholder="0"
             formatter={(value) =>
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
@@ -144,11 +148,14 @@ const ListCalculation = ({ finaceDatas }) => {
       </div>
 
       <div className="container-right-submit">
-        <Form.Item name="remember">
+        <Form.Item name="isPotential"
+          valuePropName="checked"
+        >
           <Checkbox
-            onChange={(e) => setIsPotential(e.target.checked)}
-            defaultChecked={true}
-            type="checkbox">
+            defaultChecked={false}
+            // onChange={(e) => setIsPotential(e.target.checked)}
+            // type="checkbox"
+          >
             Không còn tiềm năng
           </Checkbox>
         </Form.Item>

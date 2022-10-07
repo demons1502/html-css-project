@@ -1,7 +1,7 @@
 import { Tabs, Popover } from "antd";
 import { Button } from "../../../components/styles";
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import PageBack from "../../../assets/images/financial/PageBack";
 import Calender from "../../../assets/images/icons/components/calender";
 import Clock from "../../../assets/images/icons/components/Clock";
@@ -13,15 +13,17 @@ import { HistoryModal } from "./HistoryModal";
 import { ClosingModal } from "./ClosingModal";
 import { SaveConfirmation } from "./SaveConfirmation";
 import { useSelector, useDispatch } from "react-redux";
-import { getCustomerContracts } from "../../../slices/financialSolutions";
+import { getCustomerContracts, postSaveFinances } from "../../../slices/financialSolutions";
 
-const IllustrateFiduciary = ({route}) => {
-  // const {values} = route.params
-  // console.log(values);
+const IllustrateFiduciary = () => {
+  const location = useLocation();
+  console.log(location.state);
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const [contract, setContract] = useState([]) // contract of user
+  const [dataToSave, setDataToSave] = useState({...location?.state,investmentYear: '', additionalInvestmentYear:'', hideName: ''} || {})
+  const [callSave, setCallSave] = useState(false)
   const [date, setDate] = useState(() => {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
@@ -30,30 +32,61 @@ const IllustrateFiduciary = ({route}) => {
 
     return mm + '/' + dd + '/' + yyyy;
   })
-  const customerId = useSelector((state) => state.financialSolution.customerSelect)
-  const customerContract = useSelector((state) => state.financialSolution.customerContract)
 
   useEffect(() => {
-    dispatch(getCustomerContracts())
-  }, [customerId])
-
-  useEffect(() => {
-    console.log(customerContract.customers);
-    if (customerContract?.customers?.length > 0 && customerId) {
-      const data = customerContract.customers.find(item => {
-        return item.customerId == customerId
-      })
-      setContract(data)
+    if (callSave) {
+      let data={
+        customerApptRecordId: dataToSave.userSelected.customerApptRecordId,
+        fundType: dataToSave.typeFund,
+        isPotential: (dataToSave.values.isPotential == undefined) ? "false" : 'true',
+        result: "string",
+        hintName: dataToSave.hideName,
+        version:"string",
+        sumInsured: dataToSave.total,
+        baseYear: dataToSave.additionalInvestmentYear,
+        basePremium: 20000, //???
+        annualBasePremiums: [ 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000 ], //???
+        CISupport: 10000, //???
+        inpatient: "SILVER", //???
+        outpatient: "TITAN",//???
+        premiumSupport: "no", //???
+        topUpPremium: 10000, //???
+        topUpYears: 10, //???
+        annualTopUpPremiums: [ 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000 ],//???
+        rate: dataToSave.investmentYear,
+        interestRate: dataToSave.investmentYear.toString(),
+        expensePerMonth: dataToSave.values.amount,
+      }
+      dispatch(postSaveFinances(data))
+      //call api save
+      setCallSave(false)
     }
-  }, [customerContract])
+  }, [callSave])
+  // const customerId = useSelector((state) => state.financialSolution.customerSelect)
+  // const customerContract = useSelector((state) => state.financialSolution.customerContract)
 
-  const closeHistoryModal = () => {
-    setIsHistoryModalOpen(false);
-  };
+  // useEffect(() => {
+  //   dispatch(getCustomerContracts())
+  // }, [customerId])
+
+  // useEffect(() => {
+  //   console.log(customerContract.customers);
+  //   if (customerContract?.customers?.length > 0 && customerId) {
+  //     const data = customerContract.customers.find(item => {
+  //       return item.customerId == customerId
+  //     })
+  //     setContract(data)
+  //   }
+  // }, [customerContract])
 
   const toggleHistoryModal = () => {
     setIsHistoryModalOpen(!isHistoryModalOpen);
   }
+
+  useEffect(() => {
+    console.log(dataToSave);
+  }, [dataToSave])
+
   const sendEmail = () => {
     // window.location.href =
     //   "https://mail.google.com/mail/u/0/#inbox?compose=new";
@@ -74,7 +107,7 @@ const IllustrateFiduciary = ({route}) => {
           <div className="user">
             <User />
             <p>
-              Khách hàng: <span>{contract.fullname}</span>
+              Khách hàng: <span>{location?.state?.userSelected?.title}</span>
             </p>
           </div>
         </div>
@@ -148,7 +181,7 @@ const IllustrateFiduciary = ({route}) => {
               >
                 Lưu
               </Button> */}
-              <ClosingModal />
+              <ClosingModal setCallSave={(e)=>setCallSave(e)} setDataToSave={(e)=>{setDataToSave(e)}}/>
             </div>
           </div>
         </div>
@@ -157,7 +190,7 @@ const IllustrateFiduciary = ({route}) => {
             {
               label: 'Minh họa giá trị ủy thác',
               key: '1',
-              children: <FiduciaryValue />,
+              children: <FiduciaryValue data={dataToSave} setDataToSave={(e)=>setDataToSave(e)}/>,
             },
             {
               label: 'Tóm tắt quyền lợi bằng bông hoa',

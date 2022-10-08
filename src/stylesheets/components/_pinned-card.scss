@@ -22,7 +22,7 @@
           0deg,
           $icon-color $percent,
           $text-color calc(100% - $percent));
-          -webkit-background-clip: text;
+          background-clip: text;
           -webkit-text-fill-color: transparent;
         }
       }

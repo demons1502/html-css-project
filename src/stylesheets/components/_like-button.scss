@@ -1,0 +1,14 @@
+@use "../abstracts/" as *;
+
+.like__button {
+    padding: 10px 15px;
+    background: #0080ff;
+    font-size: 18px;
+    font-family: $primary-font;
+    border: none;
+    outline: none;
+    color: #e8efff;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}

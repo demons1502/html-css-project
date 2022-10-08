@@ -1,30 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 // COMPONENTS
 import Edit from '../../../../../../assets/images/icons/components/Edit';
 import Delete from '../../../../../../assets/images/icons/components/Delete';
+
 // STYLES
 import * as S from './styles';
-import { setSelectedCustomer } from '../../../../../../slices/customers';
 
 export const GroupButton = ({ handleOpenEdit, handleDelete, info }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleFinacial = () => {
-    dispatch(setSelectedCustomer(getCustomerId()));
-    navigate('/advise/survey');
-  };
-
-  const getCustomerId = () => {
-    if (info.typeId === 1) {
-      return info.customerId ? info.customerId : info.customerApptRecords[0].customerId;
-    } else {
-      return info.companyCustomerId;
-    }
+    navigate(`/advise/survey?appointment_id=${info.apptId}`);
   };
 
   return (

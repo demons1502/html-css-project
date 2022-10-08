@@ -6,11 +6,11 @@ import ListCalculation from './ListCalculation';
 import ListDetails from './ListDetails';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAppointment, getSpeechScriptType } from '../../../slices/financialSolutions';
+import { getAppointment, getSpeechScriptType, getAppointmentByIds, updateSelectCustomer } from "../../../slices/financialSolutions";
 import moment from 'moment';
 import Dialogue from '../../../components/common/Dialogue';
 
-const StartupFund = () => {
+const StartupFund = ({ apptId = null }) => {
   const location = useLocation();
   const [title] = useState(location?.state?.title);
 
@@ -19,32 +19,35 @@ const StartupFund = () => {
   const [payload, setPayload] = useState('');
 
   const dispatch = useDispatch();
-  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution);
+  var { customerAppRecords} = useSelector((state) => state.financialSolution);
 
-  useEffect(() => {
+  const getAppointmentNoId = () => {
     let endDate = new Date();
     // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
     endDate = endDate.setHours(23, 59, 59, 999);
     let startDate = new Date();
-    dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
-    dispatch(getSpeechScriptType('preventionFund'));
+    dispatch(getAppointment({ titles: "finance", startDate: moment(startDate), endDate: moment(endDate) })) //main code
+  }
+
+  useEffect(() => {
+    dispatch(getSpeechScriptType('preventionFund'))
+    apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId()
   }, []);
 
   useEffect(() => {
-    let arr = [];
-    arr.push(
-      customerAppRecords?.map((item) => {
-        return { title: item.customerApptRecords[0].name };
-      })
-    );
-    setLists(arr[0]);
-  }, [customerAppRecords]);
+    let arr = []
+    arr.push(customerAppRecords?.map(item => {
+      // dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
+      return { title: item.customerApptRecords[0].name, apptId: item.apptId, customerApptRecordId: item.customerApptRecords[0].customerApptRecordId }
+    }))
+    setLists(arr[0])
+  }, [customerAppRecords])
 
-  useEffect(() => {
+  useEffect(() => {   //select item 1
     if (lists) {
       setItemContent(lists[0]);
     }
-  }, [lists]);
+  }, [lists])
 
   return (
     <div className="quyduphone">
@@ -102,7 +105,7 @@ const StartupFund = () => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation />
+                  <ListCalculation typeFund="startup" userSelected={itemContent}/>
                 </div>
 
                 {/* container-right end */}

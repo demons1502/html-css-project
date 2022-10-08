@@ -6,10 +6,11 @@ import ListCalculation from './ListCalculation';
 import { Link, useLocation } from 'react-router-dom';
 import Dialogue from '../../../components/common/Dialogue';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAppointment } from '../../../slices/financialSolutions';
+import { getAppointment, getSpeechScriptType, getAppointmentByIds, updateSelectCustomer } from "../../../slices/financialSolutions";
+
 import moment from 'moment';
 
-const InheritanceFund = () => {
+const InheritanceFund = ({ apptId = null }) => {
   const location = useLocation();
   const [title] = useState(location?.state?.title);
 
@@ -21,29 +22,33 @@ const InheritanceFund = () => {
   const dispatch = useDispatch();
   var { customerAppRecords } = useSelector((state) => state.financialSolution);
 
-  useEffect(() => {
+  const getAppointmentNoId = () => {
     let endDate = new Date();
     // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
     endDate = endDate.setHours(23, 59, 59, 999);
     let startDate = new Date();
-    dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
+    dispatch(getAppointment({ titles: "finance", startDate: moment(startDate), endDate: moment(endDate) })) //main code
+  }
+
+  useEffect(() => {
+    dispatch(getSpeechScriptType('preventionFund'))
+    apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId()
   }, []);
 
   useEffect(() => {
-    let arr = [];
-    arr.push(
-      customerAppRecords?.map((item) => {
-        return { title: item.customerApptRecords[0].name };
-      })
-    );
-    setLists(arr[0]);
-  }, [customerAppRecords]);
+    let arr = []
+    arr.push(customerAppRecords?.map(item => {
+      // dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
+      return { title: item.customerApptRecords[0].name, apptId: item.apptId, customerApptRecordId: item.customerApptRecords[0].customerApptRecordId }
+    }))
+    setLists(arr[0])
+  }, [customerAppRecords])
 
-  useEffect(() => {
+  useEffect(() => {   //select item 1
     if (lists) {
       setItemContent(lists[0]);
     }
-  }, [lists]);
+  }, [lists])
 
   return (
     <div className="quyduphone">
@@ -101,7 +106,7 @@ const InheritanceFund = () => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation />
+                  <ListCalculation typeFund="inheritance" userSelected={itemContent}/>
                 </div>
 
                 {/* container-right end */}

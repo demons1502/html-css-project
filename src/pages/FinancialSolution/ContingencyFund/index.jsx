@@ -36,6 +36,7 @@ const ContingencyFund = ({ apptId = null }) => {
   const [itemContent, setItemContent] = useState({});
   const [lists, setLists] = useState(null);
   const [payload, setPayload] = useState('');
+  const [keywords, setKeywords] = useState({});
 
   const location = useLocation(); //thomas code get title from quan ly lich hen
   // title
@@ -156,7 +157,7 @@ const ContingencyFund = ({ apptId = null }) => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation typeFund="prevention" userSelected={itemContent} />
+                  <ListCalculation typeFund="prevention" userSelected={itemContent} setKeywords={setKeywords} />
                 </div>
 
                 {/* container-right end */}
@@ -174,13 +175,7 @@ const ContingencyFund = ({ apptId = null }) => {
                   title={'Lời thoại'}
                   type={'preventionFund'}
                   customerId={itemContent?.customerId}
-                  keywords={{
-                    interestRate: 5,
-                    expensePerMonth: 10000000,
-                    expensePerYear: 120000000,
-                    fundValue: 500000000,
-                    numOfYear: 10,
-                  }}
+                  keywords={keywords}
                 />
               </div>
             </Layout.Content>

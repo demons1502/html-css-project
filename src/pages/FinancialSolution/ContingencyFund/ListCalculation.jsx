@@ -2,11 +2,12 @@ import { Button, Checkbox, Form, Input, InputNumber } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { formatDataNumber } from '../../../helper';
 import { postFinanceDatas } from '../../../slices/financeSolutions';
 
-const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
+const ListCalculation = ({ finaceDatas, typeFund, userSelected, setKeywords }) => {
   const [Percent, setPercent] = useState(0);
-  const [Amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [isPotential, setIsPotential] = useState(false);
   const [TotalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
@@ -39,8 +40,8 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
   }, [finaceDatas]);
   // setTotalAmount
   useEffect(() => {
-    setTotalAmount((Amount * 12) / (Percent / 100));
-  }, [Amount, Percent]);
+    setTotalAmount((amount * 12) / (Percent / 100));
+  }, [amount, Percent]);
 
   // submit data
   const onFinish = async (values) => {
@@ -77,9 +78,9 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
     //   console.log(e);
     // }
 
-    navigate('/advise/financial-solutions/minh-hoa-gia', {
-      state: { values: values, total: TotalAmount, typeFund: typeFund, userSelected: userSelected },
-    });
+    // navigate('/advise/financial-solutions/minh-hoa-gia', {
+    //   state: { values: values, total: TotalAmount, typeFund: typeFund, userSelected: userSelected },
+    // });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -87,9 +88,21 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
   };
 
   useEffect(() => {
+    setTotalAmount(0);
+    setAmount(0);
+    setPercent(0);
+  }, []);
+
+  useEffect(() => {
     setPercent(0);
     form.resetFields();
   }, [userSelected?.apptId]);
+
+  useEffect(() => {
+    const expensePerYear = amount * 12;
+    const fundValue = expensePerYear / Percent;
+  }, [amount, TotalAmount, Percent]);
+
   return (
     <Form form={form} name="control-hooks" onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">
       <div className="container-right-middle">
@@ -136,14 +149,7 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
       </div>
       <div className="container-right-bottom">
         <p>
-          Thông tin quỹ:{' '}
-          <span className="total-amount">
-            {TotalAmount > 0 &&
-              TotalAmount.toFixed(2)
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-            {(TotalAmount < 1 || isNaN(TotalAmount)) && '00.00'}
-          </span>
+          Thông tin quỹ: <span className="total-amount">{TotalAmount > 0 ? formatDataNumber(TotalAmount) : 0}</span>
         </p>
       </div>
 

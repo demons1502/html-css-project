@@ -12,7 +12,7 @@ import SearchInputBox from '../Survey/SearchInputBox';
 import HistoryDetail from './components/historyDetail';
 import SpendingForm from './form/spendingForm';
 import History from './history';
-import { formatDate } from '../../helper';
+import { formatDataNumber, formatDate } from '../../helper';
 import { getAppointment, getAppointmentByIds } from '../../slices/financialSolutions';
 import moment from 'moment';
 
@@ -22,7 +22,7 @@ export default function FinanceConsultant({ apptId }) {
   const [history, setHistory] = useState(null);
   const [searchPayload, setSearchPayload] = useState('');
   const [lists, setLists] = useState(null);
-  const [expensePerMonth, setExpensePerMonth] = useState(0);
+  const [keywords, setKeywords] = useState({});
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -140,11 +140,7 @@ export default function FinanceConsultant({ apptId }) {
                     {history ? (
                       <HistoryDetail history={history} />
                     ) : (
-                      <SpendingForm
-                        id={selectItem?.customerId}
-                        useSelected={selectItem}
-                        setExpensePerMonth={setExpensePerMonth}
-                      />
+                      <SpendingForm id={selectItem?.customerId} useSelected={selectItem} setKeywords={setKeywords} />
                     )}
                   </div>
                 </div>
@@ -158,6 +154,7 @@ export default function FinanceConsultant({ apptId }) {
                     type="consult"
                     title={t('financial consultant.process title')}
                     customerId={selectItem?.customerId}
+                    keywords={keywords}
                   />
                 </div>
               </Layout.Content>

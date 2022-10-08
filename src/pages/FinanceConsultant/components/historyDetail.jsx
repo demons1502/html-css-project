@@ -9,8 +9,11 @@ const HistoryDetail = (props) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    const histories = history?.consultAttrs.reduce((obj, item) => Object.assign(obj, { [item.label]: item.value }), {});
-    if (Object.keys(histories).length > 0) {
+    const histories = history?.consultAttrs?.reduce(
+      (obj, item) => Object.assign(obj, { [item.label]: item.value }),
+      {}
+    );
+    if (histories && Object.keys(histories).length > 0) {
       form.setFieldsValue({ ...histories });
     } else {
       form.resetFields();

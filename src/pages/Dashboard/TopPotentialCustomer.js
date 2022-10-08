@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTopPotentialCustomers } from '../../slices/dashboard';
 import PotentialItemCall from './commons/TopPotentialCustomer/potential-item-col-call';
 import PotentialItemTooltip from './commons/TopPotentialCustomer/potential-item-col-tooltip';
-import { limitItem, offsetItem } from './constants';
+import { limitTopPotentialItem, offsetItem } from './constants';
 import * as S from './styles';
 
 export default function TopPotentialCustomer() {
@@ -47,10 +47,11 @@ export default function TopPotentialCustomer() {
 
   useEffect(() => {
     const payload = {
-      limit: limitItem,
+      limit: limitTopPotentialItem,
       offset: offsetItem,
       orderField: 'successfulProb',
       orderType: 'desc',
+      isNotIncludeCustomerCall: true,
     };
     dispatch(getTopPotentialCustomers(payload));
   }, [dispatch]);
@@ -75,8 +76,9 @@ export default function TopPotentialCustomer() {
           scroll={{ scrollToFirstRowOnChange: false }}
           $borderBottom={dataTable.length === 0 ? false : ''}
           $paddingIcon
-          $height="495px"
+          $height="550px"
           loading={loading}
+          $heightRow="50px"
         />
       </S.WrapContent>
     </S.WrapContainer>

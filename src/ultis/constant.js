@@ -1,7 +1,6 @@
-
-import moment from "moment";
 export const HTTP_200 = 200
 export const HTTP_400 = 400
+export const HTTP_401 = 401
 export const TYPE_LIST_NORMAL = "NORMAL"
 export const TYPE_LIST_CUSTOMERS = "CUSTOMERS"
 export const DEFAULT_SIZE = 10

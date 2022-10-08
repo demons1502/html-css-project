@@ -16,7 +16,7 @@ export default function CustomerItemBirthday(props) {
           <S.TextP>{record.fullname}</S.TextP>
         </Row>
         <Row>
-          <S.TextTable>{record.customerEvents[0].name}</S.TextTable>
+          <S.TextTable>{record?.customerEvents[0]?.name} {record?.customerEvents[0]?.date && moment(record?.customerEvents[0]?.date).format(dateFormat)}</S.TextTable>
         </Row>
       </Col>
     </Row>

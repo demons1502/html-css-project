@@ -361,6 +361,12 @@ export const Table = styled(AntDTable)`
         }}
       }
     }
+
+    ${(props) =>
+      props.$heightRow &&
+      css`
+        height: ${props.$heightRow};
+      `};
   }
 
   .ant-table-tbody {
@@ -368,7 +374,7 @@ export const Table = styled(AntDTable)`
       td {
         font-size: 1.4rem;
         border-bottom: 1px dashed ${greyTableColor};
-        padding: 10px;
+        padding: 0px 10px;
         vertical-align: middle;
 
         ${(props) =>
@@ -644,8 +650,6 @@ export const Modal = styled(AntDModal)`
 `;
 
 export const WrapIconNextCall = styled.div`
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
 `;
@@ -689,4 +693,20 @@ export const TextP = styled.p`
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+`;
+
+export const TextP2Row = styled.p`
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 1.2;
+`;
+
+export const WrapItemCenter = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

@@ -7,3 +7,4 @@ export const getCustomersContracts = (payload) => sendGet(ENDPOINT.customersCont
 export const updateCustomer = (id, payload) => sendPatch(`${ENDPOINT.customers}/${id}`, payload);
 export const patchCustomer = (id, payload) => sendPatch(`${ENDPOINT.customers}/${id}`, payload);
 export const getCustomerByIdAndType = (id, typeId, payload) => sendGet(`${ENDPOINT.customers}/${id}/${typeId}`, payload);
+

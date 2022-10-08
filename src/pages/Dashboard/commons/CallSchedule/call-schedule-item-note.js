@@ -1,3 +1,4 @@
+import { Tooltip } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -50,5 +51,9 @@ export default function CallScheduleItemNote({ props }) {
     }
   }, [customer, noteCount]);
 
-  return <>{note}</>;
+  return (
+    <Tooltip title={note} placement="topLeft" overlayInnerStyle={{ borderRadius: '15px', padding: '10px 15px' }}>
+      {note}
+    </Tooltip>
+  );
 }

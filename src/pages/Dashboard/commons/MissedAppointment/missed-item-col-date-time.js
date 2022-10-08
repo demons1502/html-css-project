@@ -1,22 +1,20 @@
 import { Col, Row } from 'antd';
+import moment from 'moment';
 import React from 'react';
 import alarm from '../../../../assets/images/icons/alarm.svg';
+import { dateFormat, hhmmFormat } from '../../constants';
 import * as S from '../../styles';
-import moment from 'moment';
-import { dateFormat, timeFormat } from '../../constants';
 
 export default function MissedItemDateTime(props) {
   const { record } = props;
   const time = record?.startTime
-    ? `${moment(record?.startTime).format(timeFormat)} - ${moment(record?.endTime).format(timeFormat)}`
+    ? `${moment(record?.startTime).format(hhmmFormat)} - ${moment(record?.endTime).format(hhmmFormat)}`
     : '';
   const date = record?.endTime ? moment(record?.endTime).format(dateFormat) : '';
   return (
-    <Row gutter={[10, 0]}>
-      <Col>
-        <S.WrapIconTable src={alarm} alt="alarm" />
-      </Col>
-      <Col>
+    <Row wrap={false}>
+      <S.WrapIconTable src={alarm} alt="alarm" />
+      <Col span={24}>
         <Row>
           <p>{time}</p>
         </Row>

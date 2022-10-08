@@ -32,7 +32,6 @@ export default function CallScheduleItemCall(props) {
           <img src={call} alt="call" onClick={() => handleCall(record)} />
         </div>
       </Tooltip>
-      <Checkbox className="checkbox-item dashboard__checkbox" />
     </S.WrapTableAction>
   );
 }

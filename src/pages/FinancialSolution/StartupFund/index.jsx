@@ -1,19 +1,15 @@
 import { Col, Layout, List, Row, Typography } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { sideBarMenuItems } from '../../../assets/fake-data/QuyDuPhongData';
-import SearchInputBox from './SearchInputBox';
-import ListCalculation from './ListCalculation';
-import ListDetails from './ListDetails';
-import { Link, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  getAppointment,
-  getSpeechScriptType,
-  getAppointmentByIds,
-  updateSelectCustomer,
-} from '../../../slices/financialSolutions';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
+import { sideBarMenuItems } from '../../../assets/fake-data/QuyDuPhongData';
 import Dialogue from '../../../components/common/Dialogue';
+import {
+  getAppointment, getAppointmentByIds, getSpeechScriptType
+} from '../../../slices/financialSolutions';
+import ListCalculation from './ListCalculation';
+import SearchInputBox from './SearchInputBox';
 
 const StartupFund = ({ apptId = null }) => {
   const location = useLocation();
@@ -36,7 +32,7 @@ const StartupFund = ({ apptId = null }) => {
   };
 
   useEffect(() => {
-    dispatch(getSpeechScriptType('preventionFund'));
+    // dispatch(getSpeechScriptType('preventionFund'));
     apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId();
   }, []);
 

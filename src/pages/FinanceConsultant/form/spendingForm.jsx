@@ -21,9 +21,10 @@ const spendingForm = (props) => {
   const dispatch = useDispatch();
 
   const handleFinish = (values) => {
+    
     const consultAttrs = [];
     for (const key of Object.keys(values)) {
-      consultAttrs.push({ label: key, value: values[key] });
+      consultAttrs.push({ label: key, value: values[key] > 0 ? values[key] : 0 });
     }
     if (!id) {
       message.error('Vui lòng chọn khách hàng', 3);
@@ -41,7 +42,6 @@ const spendingForm = (props) => {
       isPotential: checked,
       consultAttrs: consultAttrs,
     };
-
     if (!reminiscent) {
       message.error('Vui lòng nhập tên gợi nhớ', 3);
       return;

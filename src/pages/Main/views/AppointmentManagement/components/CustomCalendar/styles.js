@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Calendar as CalendarBig } from 'react-big-calendar';
 export const WrapContainer = styled(CalendarBig)`
   border-radius: 20px;
-  padding: 30px;
+  padding: 20px;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.05);
   background-color: #fff;
   > .rbc-time-view {
@@ -99,7 +99,7 @@ export const WrapContainer = styled(CalendarBig)`
   > .rbc-time-view .rbc-events-container {
     margin-right: 0;
     & .rbc-event {
-      min-height: 1.9% !important;
+      min-height: 0.8% !important;
     }
   }
 `;

@@ -101,10 +101,10 @@ const Appointment = () => {
     <S.WrapContainer>
       <S.WrapTitle>Quản lý lịch hẹn</S.WrapTitle>
       <Row gutter={[8, 16]}>
-        <Col lg={14} md={24} sm={24}>
+        <Col lg={16} md={24} sm={24}>
           <CalendarCustom eventActive={event} handleEvent={handleEvent} />
         </Col>
-        <Col lg={10} md={24} sm={24}>
+        <Col lg={8} md={24} sm={24}>
           <InformationAppointment info={event} />
         </Col>
       </Row>

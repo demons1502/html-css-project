@@ -2,7 +2,8 @@
   @extend %input-grey;
   height: 4rem;
   border-radius: 5px;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
   width: 100%;
 
   .ant-picker-input > input {
@@ -21,6 +22,11 @@
     border: none !important;
     background-color: $secondary-color !important;
     font-size: 1.4rem;
+    .ant-select-selection-search {
+      .ant-select-selection-search-input {
+        font-weight: 700;
+      }
+    }
   }
   .ant-select-selection-item {
     font-weight: $font-weight-bold;

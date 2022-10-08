@@ -44,8 +44,8 @@ const Survey = () => {
   useEffect(() => {
     const params = {
       titles: ['survey'],
-      startDate: moment().format('YYYY-MM-DD HH:mm'),
-      endDate: '2022-10-07 23:59:59'//moment().add(30, 'm').format('YYYY-MM-DD HH:mm')
+      startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+      endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss')
     }
     // dispatch(getCustomerList());
     if (apptId) {

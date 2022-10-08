@@ -156,3 +156,12 @@
 .ant-radio:hover .ant-radio-inner {
   border-color: $green-color !important;
 }
+
+.ant-picker-dropdown,
+.ant-select-dropdown .ant-select-item, .ant-select-item-empty {
+  color: #333333 !important;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.4rem;
+  line-height: 1.5rem;
+}

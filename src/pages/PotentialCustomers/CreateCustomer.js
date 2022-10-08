@@ -7,7 +7,7 @@ import DatePicker from '../../components/common/DatePicker';
 import InputNumber from '../../components/common/InputNumber';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPotentialCustomers, getCompanies } from '../../slices/potentialCustomersSlice';
-import { acquaintanceLevel, connectFrom, marriageStatus, relationship } from '../../constants/common';
+import { acquaintanceLevel, connectFrom, gender, marriageStatus, relationship } from '../../constants/common';
 import { REGEX_PHONE } from './constants';
 import moment from 'moment';
 
@@ -18,6 +18,7 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
   const [typeId, setTypeId] = useState(1);
   const [maritalStatus, setMaritalStatus] = useState(1);
   const [acquaintanceLevelStatus, setAcquaintanceLevelStatus] = useState();
+  const [genderValue, setGenderValue] = useState();
   const [dob, setDob] = useState();
   const [connectFromValue, setConnectFromValue] = useState();
   const [relationshipValue, setRelationshipValue] = useState();
@@ -73,6 +74,16 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
         </Option>
       )),
     [connectFrom]
+  );
+
+  const genderOptions = useMemo(
+    () =>
+      gender.map(({ label, value }) => (
+        <Option key={value} value={value}>
+          {label}
+        </Option>
+      )),
+    [gender]
   );
 
   const onChangeDate = (date) => {
@@ -332,6 +343,13 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
             </Row>
             <Row gutter={12}>
               <Col span={6}>
+                <Form.Item label="Giới tính" name="gender">
+                  <Select value={genderValue} placeholder="Chọn" onChange={(selected) => setGenderValue(selected)}>
+                    {genderOptions}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={6}>
                 <Form.Item label="Nghề nghiệp" name="job">
                   <Input />
                 </Form.Item>
@@ -343,30 +361,15 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
               </Col>
               <Col span={6}>
                 <Form.Item
-                  label="Nguồn gốc"
-                  name="connectFrom"
+                  label="Email"
+                  name="email"
+                  rules={[
+                    {
+                      type: 'email',
+                    },
+                  ]}
                 >
-                  <Select
-                    value={connectFromValue}
-                    placeholder="Chọn"
-                    onChange={(selected) => setConnectFromValue(selected)}
-                  >
-                    {connectFromOptions}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col span={6}>
-                <Form.Item
-                  label="Quan hệ"
-                  name="relationship"
-                >
-                  <Select
-                    value={relationshipValue}
-                    placeholder="Chọn"
-                    onChange={(selected) => setRelationshipValue(selected)}
-                  >
-                    {relationshipOptions}
-                  </Select>
+                  <Input />
                 </Form.Item>
               </Col>
             </Row>
@@ -383,22 +386,29 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
               </Col>
             </Row>
             <Row gutter={12}>
-              <Col span={24}>
-                <Form.Item
-                  label="Email"
-                  name="email"
-                  rules={[
-                    {
-                      type: 'email',
-                    },
-                  ]}
-                >
-                  <Input />
+              <Col span={6}>
+                <Form.Item label="Nguồn gốc" name="connectFrom">
+                  <Select
+                    value={connectFromValue}
+                    placeholder="Chọn"
+                    onChange={(selected) => setConnectFromValue(selected)}
+                  >
+                    {connectFromOptions}
+                  </Select>
                 </Form.Item>
               </Col>
-            </Row>
-            <Row gutter={12}>
-              <Col span={24}>
+              <Col span={6}>
+                <Form.Item label="Quan hệ" name="relationship">
+                  <Select
+                    value={relationshipValue}
+                    placeholder="Chọn"
+                    onChange={(selected) => setRelationshipValue(selected)}
+                  >
+                    {relationshipOptions}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
                 <Form.Item label="Khác" name="other">
                   <Input />
                 </Form.Item>

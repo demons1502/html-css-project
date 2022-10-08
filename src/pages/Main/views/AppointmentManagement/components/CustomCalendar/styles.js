@@ -11,6 +11,7 @@ export const WrapContainer = styled(CalendarBig)`
       border: none;
       > .rbc-time-header-content {
         border: 1px solid #ddd;
+        border-bottom: unset;
         border-top-right-radius: 18px;
         border-top-left-radius: 18px;
 
@@ -19,7 +20,12 @@ export const WrapContainer = styled(CalendarBig)`
             padding: 25px 0;
           }
         }
+
+        > .rbc-allday-cell {
+        display: none;
       }
+      }
+      
     }
     & .rbc-allday-cell {
       height: 26px;
@@ -27,7 +33,9 @@ export const WrapContainer = styled(CalendarBig)`
 
     & .rbc-time-content {
       border: none;
-
+      ::-webkit-scrollbar-thumb {
+        height: 100px;
+      }
       & .rbc-time-column {
         &:last-child {
           border-right: 1px solid #ddd;
@@ -36,7 +44,7 @@ export const WrapContainer = styled(CalendarBig)`
 
         > .rbc-timeslot-group {
           flex: unset;
-          height: 97px;
+          height: 150px;
           border-left: 1px solid #ddd;
           margin-left: -0.2px;
           > .rbc-time-slot {
@@ -90,5 +98,8 @@ export const WrapContainer = styled(CalendarBig)`
   }
   > .rbc-time-view .rbc-events-container {
     margin-right: 0;
+    & .rbc-event {
+      min-height: 1.9% !important;
+    }
   }
 `;

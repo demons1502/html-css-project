@@ -11,47 +11,6 @@ const FinanceSupportCard = (props) => {
 
   const dispatch = useDispatch();
 
-  // console.log(file);
-  // useEffect(() => {
-  //   const fetchData = () => {
-  //     try {
-  //       fetch(
-  //         `http://118.71.224.167:8608/api/articles/image/${content.image}`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pbmhrQGdtYWlsLmNvbSIsImlkIjoiMDk4NGM1ZWYtMzM0NC00ZGM1LWE4NzMtYzMzZTRjZmY3N2YzIiwiaWF0IjoxNjYzODEwMTUzLCJleHAiOjE2NjM4OTY1NTN9.dgRazHe0osNgm_neSu2-TM-2j1NshFJ4c9m3gpBR48M`,
-  //           },
-  //         }
-  //       )
-  //         .then((res) =>{
-
-  //           console.log(res)
-  //           return res.blob()})
-  //         .then((blob) => {
-  //           const url = URL.createObjectURL(blob);
-  //           setFile(url);
-  //         });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   content && fetchData();
-  // }, [content]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const res = await getImage(content?.image);
-  //       const blob = new Blob([res.data], { type: 'image/jpeg' });
-  //       const test = URL.createObjectURL(blob);
-  //       setImgURL(test);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   content && fetchData();
-  // }, [content]);
-
   return (
     <Col className="gutter-row" sm={props.sm || 24} md={props.md || 24} lg={props.lg || 8}>
       <Layout.Content className="content">
@@ -85,8 +44,8 @@ const FinanceSupportCard = (props) => {
                     )}
                     {wrap && <span className="line">|</span>}
                     <Typography.Text className="card-item">
-                      <img src={timeIcon} alt={formatDate(content?.date)} />
-                      <span>{formatDate(content?.date)}</span>
+                      <img src={timeIcon} alt={formatDate(content?.createdAt)} />
+                      <span>{formatDate(content?.createdAt)}</span>
                     </Typography.Text>
                   </div>
                 </Col>

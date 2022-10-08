@@ -75,7 +75,8 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
     // } catch (e) {
     //   console.log(e);
     // }
-    navigate("/advise/financial-solutions/minh-hoa-gia", {state:{values: values,total:TotalAmount, typeFund:typeFund, userSelected:userSelected}});
+    userSelected ? navigate("/advise/financial-solutions/minh-hoa-gia", {state:{values: values,total:TotalAmount, typeFund:typeFund, userSelected:userSelected}}) : null
+    
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -91,6 +92,7 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
       form={form}
       name="control-hooks"
       onFinish={onFinish}
+      initialValues={{amount:0}}
       onFinishFailed={onFinishFailed}
       autoComplete="off">
       <div className="container-right-middle">
@@ -123,7 +125,6 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
             },
           ]}>
           <InputNumber style={{ width: '120px' }}
-            defaultValue={0}
             min={0}
             placeholder="0"
             formatter={(value) =>

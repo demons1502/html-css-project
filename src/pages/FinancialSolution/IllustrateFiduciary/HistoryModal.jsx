@@ -1,5 +1,6 @@
 import { Modal, Empty, Popover } from "antd";
 import React, { useState, useMemo } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Table from "../../../components/common/TableNormal";
 
@@ -48,9 +49,22 @@ const dataSource = [
   },
 ];
 
-export const HistoryModal = ({  }) => {
+export const HistoryModal = ({ historyList }) => {
   const { t } = useTranslation();
   const [dataTable, setDataTable] = useState(dataSource);
+
+  useEffect(()=>{
+    let arr=[]
+    historyList.map((item, index)=>{
+      arr.push({
+        key: index,
+        date: item.date,
+        info: item.info,
+        content: item.content
+      })
+    })
+    // setDataTable()
+  },[historyList])
   const columns = [
     {
       title: t("Date"),

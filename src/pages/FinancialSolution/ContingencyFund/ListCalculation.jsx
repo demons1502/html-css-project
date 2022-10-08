@@ -1,8 +1,10 @@
 import { Button, Checkbox, Form, Input, InputNumber } from "antd";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { postFinanceDatas } from "../../../slices/financeSolutions";
+import { updateSelectCustomer,getCustomerByIdAndType } from "../../../slices/financialSolutions";
+
 
 const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
   const [Percent, setPercent] = useState(0);
@@ -75,7 +77,11 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
     // } catch (e) {
     //   console.log(e);
     // }
-    userSelected ? navigate("/advise/financial-solutions/minh-hoa-gia", {state:{values: values,total:TotalAmount, typeFund:typeFund, userSelected:userSelected}}) : null
+    if (userSelected) {
+      dispatch(updateSelectCustomer({total: TotalAmount, typeFund: typeFund, userSelected: userSelected, values:values }))
+      dispatch(getCustomerByIdAndType({id:userSelected.customerId, typeId: userSelected.typeId}))
+      navigate("/advise/financial-solutions/minh-hoa-gia")
+    }
     
   };
 
@@ -83,16 +89,16 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
     console.log("Failed:", errorInfo);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setPercent(0)
     form.resetFields()
-  },[userSelected?.apptId])
+  }, [userSelected?.apptId])
   return (
     <Form
       form={form}
       name="control-hooks"
       onFinish={onFinish}
-      initialValues={{amount:0}}
+      initialValues={{ amount: 0 }}
       onFinishFailed={onFinishFailed}
       autoComplete="off">
       <div className="container-right-middle">
@@ -117,14 +123,15 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
           </div>
         </Form.Item>
         <Form.Item
-          name="amount"
+          name="total"
           label="Tổng tiền chi tiêu thiết yếu/tháng"
           rules={[
             {
               required: true,
             },
           ]}>
-          <InputNumber style={{ width: '120px' }}
+          <InputNumber style={{ width: '100px' }}
+            controls={false}
             min={0}
             placeholder="0"
             formatter={(value) =>
@@ -154,8 +161,8 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
         >
           <Checkbox
             defaultChecked={false}
-            // onChange={(e) => setIsPotential(e.target.checked)}
-            // type="checkbox"
+          // onChange={(e) => setIsPotential(e.target.checked)}
+          // type="checkbox"
           >
             Không còn tiềm năng
           </Checkbox>

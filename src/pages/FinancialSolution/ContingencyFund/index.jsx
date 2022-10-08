@@ -37,7 +37,7 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
   const [title] = useState(location?.state?.title);
   const dispatch = useDispatch();
   var { customerAppRecords } = useSelector((state) => state.financialSolution)
-
+  console.log(customerAppRecords);
   const getAppointmentNoId = () => {
     let endDate = new Date();
     // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
@@ -54,8 +54,7 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
   useEffect(() => {
     let arr = []
     arr.push(customerAppRecords?.map(item => {
-      // dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
-      return { title: item.customerApptRecords[0].name, apptId: item.apptId, customerApptRecordId: item.customerApptRecords[0].customerApptRecordId }
+      return { title: item.customerApptRecords[0].name, apptId: item.apptId, customerApptRecordId: item.customerApptRecords[0].customerApptRecordId, typeId: item.typeId, customerId: item.customerApptRecords[0].customerId }
     }))
     setLists(arr[0])
   }, [customerAppRecords])
@@ -65,7 +64,6 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
       setItemContent(lists[0]);
     }
   }, [lists])
-  console.log(lists);
   return (
     <div className="quyduphone">
       {/* quyduphone-nav start */}

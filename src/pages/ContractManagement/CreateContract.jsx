@@ -155,7 +155,7 @@ function CreateContract(props) {
           rules={[{ required: true },
             ({ getFieldValue }) => ({
               validator(_) {
-                if (!!getFieldValue('value') && getFieldValue('value').replace(/,/g, '') < 50000000) {
+                if (!!getFieldValue('value') && getFieldValue('value').replace(/,/g, '') < 10000000) {
                   return Promise.reject(new Error('Số tiền tối thiểu là 50.000.000'));
                 }
                 return Promise.resolve();

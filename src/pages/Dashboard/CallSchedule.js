@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import PaginationCommon from '../../components/common/Pagination';
 import CallScheduleItemCall from './commons/CallSchedule/call-schedule-item-call';
 import * as S from './styles';
-import { limitItem, menuItems, offsetItem } from './constants';
+import { dateFormat, limitItem, menuItems, offsetItem } from './constants';
 import { randomColor } from './constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -11,6 +11,8 @@ import { getCallSchedules } from '../../slices/dashboard';
 import CallScheduleItemNote from './commons/CallSchedule/call-schedule-item-note';
 import CallScheduleItemNextCall from './commons/CallSchedule/call-schedule-item-next-call';
 import { Col, Tooltip } from 'antd';
+import moment from 'moment/moment';
+import CallScheduleItemTitle from './commons/CallSchedule/call-schedule-item-title';
 
 export default function CallSchedule() {
   const { t } = useTranslation();
@@ -61,12 +63,9 @@ export default function CallSchedule() {
 
   const columns = [
     {
-      title: t('common.customer name'),
+      title: <CallScheduleItemTitle title={t('common.customer name')} />,
       dataIndex: 'customer',
       key: 'name',
-      ellipsis: {
-        showTitle: true,
-      },
       render: ({ fullname }) => (
         <S.TagVertical $color={randomColor[randomNotDuplicate()]}>
           <Tooltip
@@ -74,45 +73,41 @@ export default function CallSchedule() {
             placement="topLeft"
             overlayInnerStyle={{ borderRadius: '15px', padding: '10px 15px' }}
           >
-            {fullname}
+            <S.TextP2Row> {fullname}</S.TextP2Row>
           </Tooltip>
         </S.TagVertical>
       ),
     },
     {
-      title: t('common.customer type'),
+      title: <CallScheduleItemTitle title={t('common.customer type')} />,
       dataIndex: 'customer',
       key: 'type',
-      ellipsis: true,
       render: ({ typeId }) => (typeId === 1 ? t('call-schedule.user') : t('call-schedule.company')),
     },
     {
-      title: t('common.phone'),
+      title: <CallScheduleItemTitle title={t('common.phone')} />,
       dataIndex: 'customer',
       key: 'phone',
-      ellipsis: true,
       render: ({ phone1, phone2, phone3 }) => phone1 || phone2 || phone3,
     },
     {
-      title: t('common.last call'),
+      title: <CallScheduleItemTitle title={t('common.last call')} />,
       dataIndex: 'lastCall',
       key: 'lastCall',
       ellipsis: true,
+      render: (text) => text && moment(text).format(dateFormat),
     },
     {
-      title: t('common.after call'),
+      title: <CallScheduleItemTitle title={t('common.after call')} />,
       dataIndex: 'nextCall',
       key: 'nextCall',
       ellipsis: true,
       render: (_, record) => <CallScheduleItemNextCall record={record} />,
     },
     {
-      title: t('common.note'),
+      title: <CallScheduleItemTitle title={t('common.note')} />,
       dataIndex: 'customer',
       key: 'note',
-      ellipsis: {
-        showTitle: false,
-      },
       render: (_, record) => <CallScheduleItemNote props={record} />,
     },
     // {
@@ -120,12 +115,13 @@ export default function CallSchedule() {
     //   render: ({ phone1, phone2, phone3 }) => <CallScheduleItemCall record={{ phone1, phone2, phone3 }} />,
     // },
     {
-      width: 50,
+      width: 100,
       key: 'action',
       render: (_, record) => (
         <CallScheduleItemCall
           record={{
             customerCallId: record.id,
+            lastCall: record.lastCall,
             phone1: record?.customer?.phone1,
             phone2: record?.customer?.phone2,
             phone3: record?.customer?.phone3,
@@ -152,6 +148,7 @@ export default function CallSchedule() {
           $borderBottom={dataTable.length === 0 ? false : ''}
           loading={loading}
           $heightRow="46px"
+          $height="276px"
         />
       </S.WrapContent>
       <S.WrapPagination span={24}>

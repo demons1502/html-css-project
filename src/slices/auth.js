@@ -27,12 +27,14 @@ export const ResetPassword = createAsyncThunk('auth/resetPassword', async (data)
   }
 });
 
-export const getMe = createAsyncThunk('auth/user/Me', async (data) => {
+export const getMe = createAsyncThunk('auth/user/Me', async (data, {dispatch}) => {
   try {
     const res = await getMeApi(data);
     return res.data;
   } catch (error) {
-    console.log(error);
+    if (error.response.status === 401) {
+      dispatch(logout())
+    }
     return Promise.reject(error.data);
   }
 });

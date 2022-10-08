@@ -13,7 +13,6 @@ import * as S from './styles';
 const FormUsers = ({ form, companyId, customerApptRecords, open }) => {
   const [customer, setCustomer] = useState([]);
   const initialValue = [{ fullName: '', phone: '', birthday: '' }];
-
   useEffect(() => {
     if (customerApptRecords) {
       const fields = form.getFieldsValue();
@@ -31,7 +30,7 @@ const FormUsers = ({ form, companyId, customerApptRecords, open }) => {
       });
       setCustomer(users);
       form.setFieldsValue({ users });
-    }
+    } 
   }, [customerApptRecords, form, open]);
 
   const handleChangeCustomer = (data, key) => {
@@ -69,7 +68,7 @@ const FormUsers = ({ form, companyId, customerApptRecords, open }) => {
                     handleChangeValue={handleChangeCustomer}
                     keyForm={key}
                     companyId={companyId}
-                    customer={customer[key]}
+                    customer={customer[key] ? customer[key] : {}}
                   />
                 </Form.Item>
               </Col>

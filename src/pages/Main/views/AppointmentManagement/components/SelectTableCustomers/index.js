@@ -46,7 +46,7 @@ const SelectTableCustomers = ({ customer, handleChangeValue, keyForm, companyId 
   const [openDropDown, setOpenDropDown] = useState(false);
 
   useEffect(() => {
-    setvalueSeach(customer);
+    customer ? setvalueSeach(customer) : setvalueSeach({})
   }, [customer]);
 
   const handleSearch = (newValue) => {

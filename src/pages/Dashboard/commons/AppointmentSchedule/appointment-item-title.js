@@ -21,7 +21,12 @@ export default function AppointmentItemTitle(props) {
             Hoàn thành {done}/{total}
           </S.WrapTextCenter>
           <Col span={24}>
-            <Slider max={total} value={done} />
+            <Slider
+              max={total}
+              value={done}
+              trackStyle={{ backgroundColor: '#36b872' }}
+              handleStyle={{ borderColor: '#36b872' }}
+            />
           </Col>
         </Row>
       </Col>

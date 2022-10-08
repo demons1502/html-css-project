@@ -32,6 +32,7 @@ export const HistoryPopup = ({ historyHandler }) => {
   };
 
   const getSelectedSurvey = (id) => {
+    setOpen(false);
     dispatch(getSurveyDetails(id));
   };
 

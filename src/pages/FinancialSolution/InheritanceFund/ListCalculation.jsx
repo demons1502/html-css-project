@@ -6,14 +6,18 @@ import InputNumber from '../../../components/common/InputNumber';
 import { Button } from '../../../components/styles';
 import { formatDataNumber } from '../../../helper';
 
-const ListCalculation = ({typeFund, userSelected}) => {
+const ListCalculation = ({ typeFund, userSelected,setKeywords }) => {
   const [form] = Form.useForm();
 
   const navigate = useNavigate();
 
   const onFinish = (values) => {
     console.log(values);
-    userSelected ? navigate("/advise/financial-solutions/minh-hoa-gia", {state:{values: values,total:TotalAmount, typeFund:typeFund, userSelected:userSelected}}) : null
+    userSelected
+      ? navigate('/advise/financial-solutions/minh-hoa-gia', {
+        state: { values: values, total: TotalAmount, typeFund: typeFund, userSelected: userSelected },
+      })
+      : null;
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -32,11 +36,12 @@ const ListCalculation = ({typeFund, userSelected}) => {
             },
           ]}
         >
-          <InputNumber placeholder="0" min={0} style={{ width: 152 }} controls={false}
-            formatter={(e) =>
-              `${e}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-            parser={(e) => e.replace(/\$\s?|(,*)/g, "")}
+          <InputNumber
+            placeholder="0"
+            min={0}
+            style={{ width: 152 }}
+            controls={false}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           />
         </Form.Item>
         <Form.Item

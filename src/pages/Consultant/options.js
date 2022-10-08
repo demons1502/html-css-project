@@ -1,5 +1,4 @@
 export const options = [
-  { label: 'Không còn tiềm năng, dừng tư vấn', value: 'STOP_CONSULTING' },
   { label: 'Chưa gọi điện', value: 'NOT_CALL_YET' },
   { label: 'Đã gọi điện lần 1, cần gọi lần 2', value: 'CALL_1_CALL_2' },
   { label: 'Đã gọi điện lần n, cần gọi lần n+1', value: 'CALL_N_CALL_N_1' },

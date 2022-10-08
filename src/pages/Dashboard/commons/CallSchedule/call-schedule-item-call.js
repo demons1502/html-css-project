@@ -5,12 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import call from '../../../../assets/images/icons/callDashboard.svg';
 import * as S from '../../styles';
-
 import { createCallRecord } from '../../../../slices/customerCall';
+import moment from 'moment';
+import { dateContractFormat } from '../../constants';
 
 export default function CallScheduleItemCall(props) {
   const { t } = useTranslation();
-  const { record, onClickCall } = props;
+  const { record } = props;
   const navigate = useNavigate();
   const dispatch = useDispatch()
 
@@ -31,14 +32,9 @@ export default function CallScheduleItemCall(props) {
         placement="topLeft"
         overlayInnerStyle={{ borderRadius: '15px', padding: '10px 15px' }}
       >
-        {/* <Link to="/call-details" style={S.linkStyle}>
-          <img src={call} alt="call" onClick={() => handleCall(record)} />
-        </Link> */}
-        {/* <div> */}
         <img src={call} alt="call" onClick={() => handleCall(record)} />
-        {/* </div> */}
       </Tooltip>
-      <Checkbox className="checkbox-item dashboard__checkbox" />
+      <Checkbox className="checkbox-item dashboard__checkbox" checked={moment().format(dateContractFormat) === record.lastCall} />
     </S.WrapTableAction>
   );
 }

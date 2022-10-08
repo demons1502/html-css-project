@@ -121,6 +121,7 @@ export default function CallSchedule() {
         <CallScheduleItemCall
           record={{
             customerCallId: record.id,
+            lastCall: record.lastCall,
             phone1: record?.customer?.phone1,
             phone2: record?.customer?.phone2,
             phone3: record?.customer?.phone3,

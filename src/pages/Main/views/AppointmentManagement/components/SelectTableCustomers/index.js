@@ -46,7 +46,7 @@ const SelectTableCustomers = ({ customer, handleChangeValue, keyForm, companyId 
   const [openDropDown, setOpenDropDown] = useState(false);
 
   useEffect(() => {
-    setvalueSeach(customer);
+    customer ? setvalueSeach(customer) : setvalueSeach({})
   }, [customer]);
 
   const handleSearch = (newValue) => {
@@ -74,7 +74,7 @@ const SelectTableCustomers = ({ customer, handleChangeValue, keyForm, companyId 
       dataIndex: 'typeId',
       key: 'typeId',
       render: (text) => {
-        return <Typography>{classifyCustomer(text)}</Typography>;
+        return <Typography>{ classifyCustomer(text) }</Typography>;
       },
     },
     {
@@ -86,7 +86,7 @@ const SelectTableCustomers = ({ customer, handleChangeValue, keyForm, companyId 
       title: 'Ngày sinh',
       dataIndex: 'dob',
       key: 'dob',
-      render: (text) => <Typography>{moment(text).format('DD/MM/YYYY')}</Typography>,
+      render: (text) => <Typography>{ moment(text).format('DD/MM/YYYY') }</Typography>,
     },
     {
       title: 'Số điện thoại',
@@ -97,14 +97,14 @@ const SelectTableCustomers = ({ customer, handleChangeValue, keyForm, companyId 
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      render: (text) => <Typography style={{ color: '#2CB3A5' }}>{getCustomerStatus(text)}</Typography>,
+      render: (text) => <Typography style={ { color: '#2CB3A5' } }>{ getCustomerStatus(text) }</Typography>,
     },
   ];
 
   const TableDropDown = () => {
     return (
       <Table
-        onRow={(record) => {
+        onRow={ (record) => {
           return {
             onClick: () => {
               setOpenDropDown(false);
@@ -112,28 +112,29 @@ const SelectTableCustomers = ({ customer, handleChangeValue, keyForm, companyId 
               handleChangeValue(record, keyForm);
             },
           };
-        }}
-        dataSource={data}
-        columns={columns}
-        onClick={useOutsideClick(() => setOpenDropDown(false))}
+        } }
+        dataSource={ data }
+        columns={ columns }
+        onClick={ useOutsideClick(() => setOpenDropDown(false)) }
       />
     );
   };
 
   return (
     <S.Select
-      placeholder={'Họ và tên'}
+      placeholder={ 'Họ và tên' }
       showSearch
-      value={valueSeach?.fullName}
-      defaultActiveFirstOption={false}
-      showArrow={false}
-      filterOption={false}
-      onSearch={handleSearch}
-      onChange={handleChange}
-      notFoundContent={null}
-      open={openDropDown}
-      dropdownRender={TableDropDown}
-      dropdownStyle={{ minWidth: 800 }}
+      value={ valueSeach?.fullName }
+      defaultActiveFirstOption={ false }
+      showArrow={ false }
+      filterOption={ false }
+      onSearch={ handleSearch }
+      onChange={ handleChange }
+      notFoundContent={ null }
+      open={ openDropDown }
+      dropdownRender={ TableDropDown }
+      dropdownStyle={ { minWidth: 800 } }
+      allowClear={ true }
     >
       <TableDropDown />
     </S.Select>

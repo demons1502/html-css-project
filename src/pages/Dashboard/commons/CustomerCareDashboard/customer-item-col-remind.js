@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd';
+import { Badge, Col, Row } from 'antd';
 import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,13 +9,11 @@ export default function CustomerItemRemind(props) {
   const { t } = useTranslation();
   const { record } = props;
   return (
-    <Row gutter={[10, 0]}>
-      <Col>
-        <S.CircleTag />
-      </Col>
+    <Row wrap={false}>
+      <Badge color="#36b872" />
       <Col>
         <Row>
-          <p>{record.customerName}</p>
+          <S.TextP>{record.customerName}</S.TextP>
         </Row>
         <Row>
           <S.TextTable>

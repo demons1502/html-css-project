@@ -75,6 +75,7 @@ export const CreateAppointment = ({ open, handleCancel, customerInfo, outsideLin
   };
 
   const onCancel = () => {
+    setCustomer({})
     form.resetFields();
     handleCancel();
   };

@@ -2,7 +2,8 @@
   "common": {
     "login": "Login",
     "setting": "Setting",
-    "logout": "Logout"
+    "logout": "Logout",
+    "call-data-error": "Can not fetch data"
   },
   "validate": {
   }

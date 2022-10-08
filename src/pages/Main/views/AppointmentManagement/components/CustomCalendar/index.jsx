@@ -76,7 +76,7 @@ const CalendarCustom = ({ handleEvent, eventActive }) => {
         event: (event) => DayEvent(event, eventActive),
         header: CustomHeader,
       }}
-      style={{ height: 600 }}
+      style={{ height: '80vh' }}
     />
   );
 };

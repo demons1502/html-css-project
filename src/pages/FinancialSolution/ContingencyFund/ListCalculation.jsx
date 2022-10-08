@@ -77,10 +77,11 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected, setKeywords }) =
     // } catch (e) {
     //   console.log(e);
     // }
-
-    // navigate('/advise/financial-solutions/minh-hoa-gia', {
-    //   state: { values: values, total: TotalAmount, typeFund: typeFund, userSelected: userSelected },
-    // });
+    userSelected
+      ? navigate('/advise/financial-solutions/minh-hoa-gia', {
+        state: { values: values, total: TotalAmount, typeFund: typeFund, userSelected: userSelected },
+      })
+      : null;
   };
 
   const onFinishFailed = (errorInfo) => {

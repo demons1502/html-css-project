@@ -118,7 +118,7 @@ const EducationFoundation = () => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation />
+                  <ListCalculation typeFund= "education" userSelected={itemContent}/>
                 </div>
 
                 {/* container-right end */}

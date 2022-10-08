@@ -32,7 +32,7 @@ import { formatCountdown } from 'antd/lib/statistic/utils';
 //   (state) => state.financeReducer.getFinanceDatas
 // );
 // console.log("finaceDatas ==>", finaceDatas);
-const ContingencyFund = ({ apptId = null }) => {
+const ContingencyFund = ({ apptId = null, customerId = null }) => {
   const [itemContent, setItemContent] = useState({});
   const [lists, setLists] = useState(null);
   const [payload, setPayload] = useState('');

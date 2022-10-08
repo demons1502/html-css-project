@@ -9,6 +9,7 @@ import useFormErrors from '../../hooks/useFormErrors'
 import { DEPOSIT_TERM as depositTermOptions, FORMAT_DATE } from '../../ultis/constant';
 import {  formatToUtcDate } from '../../helper/index'
 import moment from 'moment';
+import "../../assets/scss/ContractManagement/createContractStyle.scss"
 
 function CreateContract(props) {
   const { t } = useTranslation();
@@ -30,10 +31,10 @@ function CreateContract(props) {
       contractNumber: values.contractNumber,
       customerId: +values.customerId,
       beneficiary: values.beneficiary,
-      value: + values.value,
+      value: Number(values.value.replaceAll(',','')),
       startDate: formatToUtcDate(values.date._d),
-      duration: + values.duration,
-      depositTerm: + values.depositTerm,
+      duration: +values.duration,
+      depositTerm: +values.depositTerm,
     };
 
     if (Object.keys(dataEdit).length > 0) {

@@ -6,10 +6,16 @@ import ListCalculation from './ListCalculation';
 import { Link, useLocation } from 'react-router-dom';
 import Dialogue from '../../../components/common/Dialogue';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAppointment } from '../../../slices/financialSolutions';
+import {
+  getAppointment,
+  getSpeechScriptType,
+  getAppointmentByIds,
+  updateSelectCustomer,
+} from '../../../slices/financialSolutions';
+
 import moment from 'moment';
 
-const InheritanceFund = () => {
+const InheritanceFund = ({ apptId = null }) => {
   const location = useLocation();
   const [title] = useState(location?.state?.title);
 
@@ -17,16 +23,22 @@ const InheritanceFund = () => {
   const [buttonState, setButtonState] = useState(true);
   const [lists, setLists] = useState(sideBarMenuItems);
   const [payload, setPayload] = useState('');
+  const [keywords, setKeywords] = useState({});
 
   const dispatch = useDispatch();
   var { customerAppRecords } = useSelector((state) => state.financialSolution);
 
-  useEffect(() => {
+  const getAppointmentNoId = () => {
     let endDate = new Date();
     // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
     endDate = endDate.setHours(23, 59, 59, 999);
     let startDate = new Date();
     dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
+  };
+
+  useEffect(() => {
+    dispatch(getSpeechScriptType('preventionFund'));
+    apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId();
   }, []);
 
   // useEffect(() => {
@@ -58,6 +70,7 @@ const InheritanceFund = () => {
   }, [customerAppRecords, payload]);
 
   useEffect(() => {
+    //select item 1
     if (lists) {
       setItemContent(lists[0]);
     }
@@ -119,7 +132,7 @@ const InheritanceFund = () => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation />
+                  <ListCalculation typeFund="inheritance" userSelected={itemContent} setKeywords={setKeywords} />
                 </div>
 
                 {/* container-right end */}
@@ -133,7 +146,12 @@ const InheritanceFund = () => {
           <Col lg={12} md={24} sm={24} xs={24} xl={12}>
             <Layout.Content className="manageContent">
               <div className="content-div-2">
-                <Dialogue title="Lời thoại" type="preventionFund" />
+                <Dialogue
+                  title="Lời thoại"
+                  type="preventionFund"
+                  customerId={itemContent?.customerId}
+                  keywords={keywords}
+                />
               </div>
             </Layout.Content>
           </Col>

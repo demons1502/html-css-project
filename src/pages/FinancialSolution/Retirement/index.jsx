@@ -16,6 +16,7 @@ const Retirement = ({ apptId = null }) => {
   const [itemContent, setItemContent] = useState({});
   const [lists, setLists] = useState(null);
   const [payload, setPayload] = useState('');
+  const [keywords, setKeywords] = useState({});
 
   const dispatch = useDispatch();
   var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution);
@@ -132,7 +133,7 @@ const Retirement = ({ apptId = null }) => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation typeFund="pension" userSelected={itemContent} />
+                  <ListCalculation typeFund="pension" userSelected={itemContent} setKeywords={setKeywords}/>
                 </div>
 
                 {/* container-right end */}
@@ -146,7 +147,12 @@ const Retirement = ({ apptId = null }) => {
           <Col lg={12} md={24} sm={24} xs={24}>
             <Layout.Content className="manageContent">
               <div className="content-div-2">
-                <Dialogue title={'Lời thoại'} type={'preventionFund'} />
+                <Dialogue
+                  title={'Lời thoại'}
+                  type={'preventionFund'}
+                  customerId={itemContent?.customerId}
+                  keywords={keywords}
+                />
               </div>
             </Layout.Content>
           </Col>

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDataNumber } from '../../../helper';
 
-const ListCalculation = ({ typeFund, userSelected }) => {
+const ListCalculation = ({ typeFund, userSelected,setKeywords }) => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [TotalAmount, setTotalAmount] = useState(0);
@@ -221,7 +221,7 @@ const ListCalculation = ({ typeFund, userSelected }) => {
       </div>
 
       <div className="container-right-submit">
-        <Form.Item name="remember" valuePropName="checked">
+        <Form.Item name="isPotential" valuePropName="checked">
           <Checkbox>Không còn tiềm năng</Checkbox>
         </Form.Item>
 

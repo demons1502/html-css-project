@@ -12,7 +12,7 @@ const Dialogue = (props) => {
   const [dialogData, setDialogData] = useState(null);
 
   useEffect(() => { 
-    getDialogData(props.type, props.customerId);
+    props.customerId && getDialogData(props.type, props.customerId);
   }, [props.customerId]);
 
   useEffect(() => {

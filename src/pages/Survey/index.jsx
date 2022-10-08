@@ -174,8 +174,7 @@ const Survey = () => {
                     <Dialogue 
                       title="Quy trình khảo sát" 
                       type="survey" 
-                      customerId={selectedCustomer?.customerId} 
-                      keywords={{interestRate: 5}}/>
+                      customerId={selectedCustomer?.customerId} />
                   </div>
                 </Layout.Content>
               </Col>

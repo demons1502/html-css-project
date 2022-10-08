@@ -22,6 +22,7 @@ export const getCustomerList = createAsyncThunk('customers/get', async () => {
 
 export const editCustomer = createAsyncThunk('customers/update', async ({ id, data }) => {
   try {
+    console.log(data);
     const res = await updateCustomer(id, data);
     if (res?.status === 201 || res?.status === 200) {
       message.success('Lưu thông tin cá nhân thành công');

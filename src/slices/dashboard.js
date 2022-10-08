@@ -214,6 +214,12 @@ const dashboardSlice = createSlice({
       state.loadingCustomerCare = false;
       state.error = action.error;
     },
+    [sendSMS.fulfilled]: (state, action) => {
+      state.error.sms = '';
+    },
+    [sendSMS.rejected]: (state, action) => {
+      state.error = { sms: action.error };
+    },
 
     // MissedAppointment
     [getMissedAppointments.fulfilled]: (state, action) => {

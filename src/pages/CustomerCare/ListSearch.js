@@ -36,7 +36,6 @@ export default function ListSearch() {
   };
 
   useEffect(() => {
-    console.log(selectId);
     if (selectId > 0) {
       const customerData = listCustomer.find((data) => data.customerId === selectId);
       dispatch(setCustomerData(customerData));

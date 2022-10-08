@@ -1,0 +1,26 @@
+@use "../abstracts/" as *;
+
+.comment-post-area {
+  &__input-item {
+    &-area {
+      padding: 10px 15px;
+      background: $bg-area-color;
+      border: 1px solid transparent;
+      transition: 0.3s;
+      font-size: 15px;
+      &:focus {
+        transition: 0.3s;
+        outline: 0px;
+        box-shadow: none;
+      }
+    }
+  }
+  &__btn {
+    border-radius: 15px;
+    background-color: $hover-color;
+    border: none;
+    &:hover {
+        background-color: $text-color;
+    }
+  }
+}

@@ -14,7 +14,7 @@ import {calculateAge, getCustomerCareLabel, formatDate, capitalizeFirstLetter} f
 import {Link} from "react-router-dom";
 import useScrollTableConfig from '../../hooks/useScrollTableConfig'
 import * as S from '../../components/styles'
-import { patchCustomer } from '../../services/customers';
+import { updateCustomer } from '../../services/customers';
 
 export default function History() {
   const {t} = useTranslation();
@@ -103,7 +103,7 @@ export default function History() {
 
   const setPotentialCustomer = async () => {
     if (customerData.isPotential) {
-      const {data} = await patchCustomer(customerData.customerId, {...customerData, ...{isPotential: false}})
+      await updateCustomer(customerData.customerId, {...customerData, ...{isPotential: false}})
       dispatch(setCustomerData({...customerData, ...{isPotential: false}}))
       message.success('Thay đổi thông tin thành công')
     }

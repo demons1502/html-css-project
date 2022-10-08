@@ -16,7 +16,7 @@ export default function AppointmentSchedule() {
   };
 
   return (
-    <S.WrapContainer $height="863px">
+    <S.WrapContainer $height="839px">
       <Row>
         <Col span={24}>
           <AppointmentItemTitle slider={slider} select={select} setSelect={setSelect} />

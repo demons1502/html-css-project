@@ -13,8 +13,8 @@ export default function CallScheduleItemCall(props) {
 
   const handleCall = async (value) => {
     console.log('value', value);
-    await createCustomerCallRecord(Number(value?.customerCallId || 0))
-    navigate('/call-details/' + value?.customerCallId || 0)
+    await createCustomerCallRecord(Number(value?.customerCallId || 0));
+    navigate('/call-details/' + value?.customerCallId || 0);
     // if (onClickCall) onClickCall(value);
   };
 
@@ -28,10 +28,11 @@ export default function CallScheduleItemCall(props) {
         {/* <Link to="/call-details" style={S.linkStyle}>
           <img src={call} alt="call" onClick={() => handleCall(record)} />
         </Link> */}
-        <div>
-          <img src={call} alt="call" onClick={() => handleCall(record)} />
-        </div>
+        {/* <div> */}
+        <img src={call} alt="call" onClick={() => handleCall(record)} />
+        {/* </div> */}
       </Tooltip>
+      <Checkbox className="checkbox-item dashboard__checkbox" />
     </S.WrapTableAction>
   );
 }

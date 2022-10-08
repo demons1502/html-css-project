@@ -1,8 +1,11 @@
+import { Row } from 'antd';
+import moment from 'moment';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import iconSetNextCall from '../../../../assets/images/icons/iconSetNextCall.svg';
 import { setNextCall } from '../../../../slices/dashboard';
+import { dateFormat } from '../../constants';
 import * as S from '../../styles';
 
 export default function CallScheduleItemNextCall(props) {
@@ -20,26 +23,30 @@ export default function CallScheduleItemNextCall(props) {
     dispatch(setNextCall(payload));
   };
 
+  const disabledDate = (current) => {
+    return current && current < moment().startOf('day');
+  };
+
   const handleOpenChange = (newOpen) => {
     setOpen(newOpen);
   };
 
   return (
-    <>
-      {nextCall ? (
-        nextCall
-      ) : (
-        <S.WrapIconNextCall>
-          <S.Popover
-            content={<S.WrapDatePicker open={open} onChange={handleChangeDate} format="DD/MM/YYYY" />}
-            trigger="click"
-            open={open}
-            onOpenChange={handleOpenChange}
-          >
-            <img src={iconSetNextCall} alt="call" />
-          </S.Popover>
-        </S.WrapIconNextCall>
-      )}
-    </>
+    <Row wrap={false}>
+      {nextCall && moment(nextCall).format(dateFormat)}
+      <S.WrapIconNextCall>
+        <S.Popover
+          content={
+            <S.WrapDatePicker disabledDate={disabledDate} open={open} onChange={handleChangeDate} format="DD/MM/YYYY" />
+          }
+          trigger="click"
+          open={open}
+          onOpenChange={handleOpenChange}
+          placement="right"
+        >
+          <img src={iconSetNextCall} alt="call" />
+        </S.Popover>
+      </S.WrapIconNextCall>
+    </Row>
   );
 }

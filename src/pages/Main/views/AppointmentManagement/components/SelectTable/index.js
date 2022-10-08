@@ -137,6 +137,7 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm, disabled })
       dropdownRender={ TableDropDown }
       dropdownStyle={ { minWidth: 800 } }
       disabled={ disabled }
+      allowClear={ true }
     >
       <TableDropDown />
     </S.Select>

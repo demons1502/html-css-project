@@ -7,10 +7,10 @@ const Dialogue = (props) => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(1);
   const [content, setContent] = useState([]);
-  console.log(props.keywords);
+
   const dialogItems = useRef();
   const [dialogData, setDialogData] = useState(null);
-
+  
   useEffect(() => {
     getDialogData(props.type, props.customerId);
   }, [props.customerId]);

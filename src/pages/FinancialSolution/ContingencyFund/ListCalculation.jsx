@@ -100,9 +100,20 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected, setKeywords }) =
   }, [userSelected?.apptId]);
 
   useEffect(() => {
+    const percent = Percent / 100
     const expensePerYear = amount * 12;
-    const fundValue = expensePerYear / Percent;
-  }, [amount, TotalAmount, Percent]);
+    const fundValue = expensePerYear && expensePerYear / percent;
+    const numOfYear = fundValue && fundValue / expensePerYear;
+    const increaseIncomePerYear = expensePerYear && expensePerYear / 0.55;
+    setKeywords({
+      interestRate: percent,
+      expensePerMonth: amount,
+      expensePerYear: expensePerYear,
+      fundValue: fundValue,
+      numOfYear: numOfYear,
+      increaseIncomePerYear: increaseIncomePerYear,
+    });
+  }, [amount, Percent]);
 
   return (
     <Form form={form} name="control-hooks" onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">

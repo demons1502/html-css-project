@@ -52,7 +52,6 @@ const spendingForm = (props) => {
       setReminiscent(null);
       setOpen(false);
     }
-    setKeywords({ expensePerMonth: total, increaseIncomePerMonth: total / 0.55 });
   };
 
   const onOk = () => {
@@ -62,6 +61,10 @@ const spendingForm = (props) => {
   const handleChange = (values) => {
     setData({ ...data, ...values });
   };
+
+  useEffect(() => {
+    setKeywords({ expensePerMonth: total > 0 ? total : 0, increaseIncomePerMonth: total / 0.55 });
+  }, [total]);
 
   useEffect(() => {
     const count = data && Object.values(data).reduce((curr, acc) => curr + acc, 0);

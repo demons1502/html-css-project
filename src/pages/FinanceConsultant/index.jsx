@@ -1,5 +1,6 @@
 import { ClockCircleOutlined, LeftOutlined } from '@ant-design/icons';
 import { Col, Layout, List, Popover, Row, Typography } from 'antd';
+import moment from 'moment';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,14 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import calender from '../../assets/images/icons/calendar.svg';
 import Dialogue from '../../components/common/Dialogue';
 import * as S from '../../components/styles';
-import { getConsult } from '../../slices/consult';
+import { formatDate } from '../../helper';
+import { getAppointment, getAppointmentByIds } from '../../slices/financialSolutions';
 import SearchInputBox from '../Survey/SearchInputBox';
 import HistoryDetail from './components/historyDetail';
 import SpendingForm from './form/spendingForm';
 import History from './history';
-import { formatDataNumber, formatDate } from '../../helper';
-import { getAppointment, getAppointmentByIds } from '../../slices/financialSolutions';
-import moment from 'moment';
 
 export default function FinanceConsultant({ apptId }) {
   const { t } = useTranslation();

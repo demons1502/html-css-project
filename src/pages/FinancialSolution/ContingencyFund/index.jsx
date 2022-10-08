@@ -37,6 +37,7 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
   const [lists, setLists] = useState(null);
   const [payload, setPayload] = useState('');
   const [keywords, setKeywords] = useState({});
+  
 
   const location = useLocation(); //thomas code get title from quan ly lich hen
   // title
@@ -96,7 +97,8 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
       setItemContent(lists[0]);
     }
   }, [lists]);
-  console.log(itemContent);
+
+
   return (
     <div className="quyduphone">
       {/* quyduphone-nav start */}

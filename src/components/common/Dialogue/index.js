@@ -10,7 +10,7 @@ const Dialogue = (props) => {
 
   const dialogItems = useRef();
   const [dialogData, setDialogData] = useState(null);
-
+  
   useEffect(() => {
     getDialogData(props.type, props.customerId);
   }, [props.customerId]);

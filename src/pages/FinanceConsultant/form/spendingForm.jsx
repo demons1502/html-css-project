@@ -9,7 +9,7 @@ import { AddNewConsultant } from '../../../slices/financialConsultant';
 import Reminiscent from './Reminiscent';
 
 const spendingForm = (props) => {
-  const { id } = props;
+  const { id, useSelected, setKeywords } = props;
 
   const [reminiscent, setReminiscent] = useState(null);
   const [checked, setChecked] = useState(true);
@@ -25,6 +25,10 @@ const spendingForm = (props) => {
     for (const key of Object.keys(values)) {
       consultAttrs.push({ label: key, value: values[key] });
     }
+    if (!id) {
+      message.error('Vui lòng chọn khách hàng', 3);
+      return;
+    }
     if (total <= 0) {
       message.error('Vui lòng nhập số tiền', 3);
       return;
@@ -37,10 +41,7 @@ const spendingForm = (props) => {
       isPotential: checked,
       consultAttrs: consultAttrs,
     };
-    if (!id) {
-      message.error('Vui lòng chọn khách hàng', 3);
-      return;
-    }
+
     if (!reminiscent) {
       message.error('Vui lòng nhập tên gợi nhớ', 3);
       return;
@@ -60,6 +61,10 @@ const spendingForm = (props) => {
   const handleChange = (values) => {
     setData({ ...data, ...values });
   };
+
+  useEffect(() => {
+    setKeywords({ expensePerMonth: total > 0 ? total : 0, increaseIncomePerMonth: total / 0.55 });
+  }, [total]);
 
   useEffect(() => {
     const count = data && Object.values(data).reduce((curr, acc) => curr + acc, 0);
@@ -93,7 +98,11 @@ const spendingForm = (props) => {
           labelAlign="left"
           name="marketMoney"
         >
-          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
+          <InputNumber
+            controls={false}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            placeholder="Nhập"
+          />
         </Form.Item>
         <Form.Item
           label={
@@ -104,7 +113,11 @@ const spendingForm = (props) => {
           labelAlign="left"
           name="studyMoney"
         >
-          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
+          <InputNumber
+            controls={false}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            placeholder="Nhập"
+          />
         </Form.Item>
         <Form.Item
           label={
@@ -115,7 +128,11 @@ const spendingForm = (props) => {
           labelAlign="left"
           name="giftMoney"
         >
-          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
+          <InputNumber
+            controls={false}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            placeholder="Nhập"
+          />
         </Form.Item>
         <Form.Item
           label={
@@ -126,7 +143,11 @@ const spendingForm = (props) => {
           labelAlign="left"
           name="gasMoney"
         >
-          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
+          <InputNumber
+            controls={false}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            placeholder="Nhập"
+          />
         </Form.Item>
         <Form.Item
           label={
@@ -137,7 +158,11 @@ const spendingForm = (props) => {
           labelAlign="left"
           name="cost"
         >
-          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
+          <InputNumber
+            controls={false}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            placeholder="Nhập"
+          />
         </Form.Item>
         <Form.Item
           label={
@@ -148,7 +173,11 @@ const spendingForm = (props) => {
           labelAlign="left"
           name="personalCosts"
         >
-          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
+          <InputNumber
+            controls={false}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            placeholder="Nhập"
+          />
         </Form.Item>
         <Form.Item
           label={
@@ -159,7 +188,11 @@ const spendingForm = (props) => {
           labelAlign="left"
           name="credit"
         >
-          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
+          <InputNumber
+            controls={false}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            placeholder="Nhập"
+          />
         </Form.Item>
         <Form.Item
           label={
@@ -170,7 +203,11 @@ const spendingForm = (props) => {
           labelAlign="left"
           name="nurturingFund"
         >
-          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
+          <InputNumber
+            controls={false}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            placeholder="Nhập"
+          />
         </Form.Item>
         <Form.Item
           label={
@@ -181,7 +218,11 @@ const spendingForm = (props) => {
           labelAlign="left"
           name="otherCosts"
         >
-          <InputNumber controls={false} formatter={formatDataNumber} placeholder="Nhập" />
+          <InputNumber
+            controls={false}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            placeholder="Nhập"
+          />
         </Form.Item>
         <div className="financialConsultant-form_total">
           <p>Tổng chi tiêu: </p>

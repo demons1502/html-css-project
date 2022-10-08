@@ -10,3 +10,7 @@ export const editAppointmentApi = (id, payload) =>
   sendPatch(`/appointments/${id}`, payload);
 
 export const deleteAppointmentApi = (id) => sendDelete(`/appointments/${id}`);
+
+export const getAppointmentApi = (id) => sendGet(`/appointments/${id}`);
+
+

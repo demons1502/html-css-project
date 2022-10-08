@@ -6,41 +6,70 @@ import ListCalculation from './ListCalculation';
 import ListDetails from './ListDetails';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAppointment, getSpeechScriptType } from '../../../slices/financialSolutions';
+import {
+  getAppointment,
+  getSpeechScriptType,
+  getAppointmentByIds,
+  updateSelectCustomer,
+} from '../../../slices/financialSolutions';
 import moment from 'moment';
 import Dialogue from '../../../components/common/Dialogue';
 
-const StartupFund = () => {
+const StartupFund = ({ apptId = null }) => {
   const location = useLocation();
   const [title] = useState(location?.state?.title);
 
   const [itemContent, setItemContent] = useState({});
   const [lists, setLists] = useState(sideBarMenuItems);
   const [payload, setPayload] = useState('');
+  const [keywords, setKeywords] = useState({});
 
   const dispatch = useDispatch();
-  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution);
+  var { customerAppRecords } = useSelector((state) => state.financialSolution);
 
-  useEffect(() => {
+  const getAppointmentNoId = () => {
     let endDate = new Date();
     // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
     endDate = endDate.setHours(23, 59, 59, 999);
     let startDate = new Date();
     dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
+  };
+
+  useEffect(() => {
     dispatch(getSpeechScriptType('preventionFund'));
+    apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId();
   }, []);
 
-  useEffect(() => {
-    let arr = [];
-    arr.push(
-      customerAppRecords?.map((item) => {
-        return { title: item.customerApptRecords[0].name };
-      })
-    );
-    setLists(arr[0]);
-  }, [customerAppRecords]);
+  // useEffect(() => {
+  //   let arr = [];
+  //   arr.push(
+  //     customerAppRecords?.map((item) => {
+  //       return { title: item.customerApptRecords[0].name };
+  //     })
+  //   );
+  //   setLists(arr[0]);
+  // }, [customerAppRecords]);
 
   useEffect(() => {
+    const data = [];
+    const dataFilter = customerAppRecords.filter((item) =>
+      item.customerApptRecords[0].name.toLowerCase().includes(payload.toLowerCase())
+    );
+    data.push(
+      ...dataFilter.map((item) => {
+        return {
+          title: item.customerApptRecords[0].name,
+          apptId: item.apptId,
+          customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
+          customerId: item.customerApptRecords[0].customerId,
+        };
+      })
+    );
+    setLists(data);
+  }, [customerAppRecords, payload]);
+
+  useEffect(() => {
+    //select item 1
     if (lists) {
       setItemContent(lists[0]);
     }
@@ -102,7 +131,7 @@ const StartupFund = () => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation />
+                  <ListCalculation typeFund="startup" userSelected={itemContent} setKeywords={setKeywords} />
                 </div>
 
                 {/* container-right end */}
@@ -116,7 +145,12 @@ const StartupFund = () => {
           <Col lg={12} md={24} sm={24} xs={24}>
             <Layout.Content className="manageContent">
               <div className="content-div-2">
-                <Dialogue title="Lời thoại" type="preventionFund" />
+                <Dialogue
+                  title="Lời thoại"
+                  type="preventionFund"
+                  customerId={itemContent?.customerId}
+                  keywords={keywords}
+                />
               </div>
             </Layout.Content>
           </Col>

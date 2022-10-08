@@ -1,9 +1,9 @@
 import { Button, Checkbox, Form, Input, InputNumber, message } from 'antd';
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDataNumber } from '../../../helper';
 
-const ListCalculation = ({typeFund, userSelected}) => {
+const ListCalculation = ({ typeFund, userSelected,setKeywords }) => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [TotalAmount, setTotalAmount] = useState(0);
@@ -24,22 +24,27 @@ const ListCalculation = ({typeFund, userSelected}) => {
   };
 
   const onFinish = (values) => {
-    console.log("Success:", values);
-    navigate("/advise/financial-solutions/minh-hoa-gia",
-      {
-        state: {
-          values: values, 
-          total: TotalAmount,
-          typeFund: typeFund,
-          userSelected: userSelected
-        }
-      });
-
+    const data = {
+      ...values,
+      retirementTime: retiredAge,
+      annualMoney: annualRetirementAmount,
+    };
+    // navigate('/advise/financial-solutions/minh-hoa-gia', { state: { values: data, userSelected: userSelected } });
+    console.log('Success:', data);
+    console.log('Success:', values);
+    navigate('/advise/financial-solutions/minh-hoa-gia', {
+      state: {
+        values: values,
+        total: TotalAmount,
+        typeFund: typeFund,
+        userSelected: userSelected,
+      },
+    });
   };
 
   const onFinishFailed = (errorInfo) => {
     // message.error(errorInfo, 3);
-    // console.log('Failed:', errorInfo);
+    console.log('Failed:', errorInfo);
   };
   useEffect(() => {
     setAnnualRetirementAmount(monthlyRetirementAmount * 12);
@@ -119,10 +124,8 @@ const ListCalculation = ({typeFund, userSelected}) => {
           <InputNumber
             style={{ width: 152 }}
             placeholder="0"
-            formatter={(value) =>
-              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
             onChange={onChange}
             controls={false}
           />
@@ -156,10 +159,8 @@ const ListCalculation = ({typeFund, userSelected}) => {
             style={{ width: 152 }}
             initialvalues={0}
             placeholder="0"
-            formatter={(value) =>
-              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
             onChange={onChange1}
             controls={false}
           />
@@ -201,7 +202,7 @@ const ListCalculation = ({typeFund, userSelected}) => {
               placeholder="0"
               type="text"
               style={{ width: 45, paddingRight: 0 }}
-            // value={Percent}
+              // value={Percent}
             />
             <span className="pIcon">%</span>
           </div>
@@ -220,7 +221,7 @@ const ListCalculation = ({typeFund, userSelected}) => {
       </div>
 
       <div className="container-right-submit">
-        <Form.Item name="remember" valuePropName="checked">
+        <Form.Item name="isPotential" valuePropName="checked">
           <Checkbox>Không còn tiềm năng</Checkbox>
         </Form.Item>
 

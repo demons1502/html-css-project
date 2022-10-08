@@ -84,9 +84,11 @@ export const PersonalInfoForm = () => {
     console.log(values)
     const data = {
       ...values,
+      childrenNum: +values.childrenNum,
+      dependentsNum: +values.dependentsNum,
       dob: formatToUtcDate(values.dob._d)
     }
-
+    console.log(data)
     dispatch(editCustomer({ id: selectedCustomer?.customerId, data: data }));
   }
 
@@ -173,7 +175,7 @@ export const PersonalInfoForm = () => {
             <Col span={7}>
               <Form.Item
                 label="Số con"
-                name="numOfChildren"
+                name="childrenNum"
               >
                 <Input type="number" placeholder="Nhập" className="input-item-outline"/>
               </Form.Item>

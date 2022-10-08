@@ -10,6 +10,8 @@
 @import 'consult';
 @import 'financial_consultant';
 @import 'dashboard';
+// @import 'createContractStyle';
+@import 'contract_management';
 
 .radius-5 {
   border-radius: 5px;
@@ -18,5 +20,3 @@
 .radius-10 {
   border-radius: 10px;
 }
-@import 'contract_management';
-// @import '../ContractManagement/createContractStyle.scss';

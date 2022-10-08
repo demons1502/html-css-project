@@ -59,6 +59,18 @@ const customerSlice = createSlice({
         state.isLoading = false;
         state.updateCustomer = action.payload;
         state.error = '';
+        const customer = {
+          ...state.selectedCustomer,
+          ...action.payload
+        }
+        state.selectedCustomer = customer
+        const data = state.data
+        if (data) {
+          data.map((i) => {
+            return customer.customerId == i.customerId?customer: i
+          })
+        }
+        state.data = data
       })
       .addCase(editCustomer.rejected, (state, action) => {
         state.isLoading = false;

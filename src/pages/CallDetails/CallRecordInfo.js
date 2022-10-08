@@ -112,13 +112,13 @@ export default function CallRecordInfo(props) {
             'consult': 'Tư vấn tài chính',
             'solution': 'Tư vấn giải pháp'
           };
-          const startTime = moment(new Date());;
+          const startTime = moment(new Date());
           const appointmentPayload = {
             typeId: customerData.typeId,
             customerId: customerData.customerId,
             title: title[action],
-            startTime: startTime.toDate(),
-            endTime: startTime.add(10, 'm').toDate(),
+            startTime: startTime.format('YYYY-MM-DD HH:mm:ss'),
+            endTime: startTime.add(10, 'm').format('YYYY-MM-DD HH:mm:ss'),
             isAuto: true
           };
           // console.log('appointmentPayload', appointmentPayload)

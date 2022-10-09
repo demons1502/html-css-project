@@ -1,0 +1,29 @@
+<main>
+    <include src="./components/line-blog.html"></include>
+    <include src="components/tittle-search.html"></include>
+    <include src="./components/about-content.html"></include>
+    <include src="./components/line-blog.html"></include>
+    <div class="row">
+        <div class="about-card__body col-md-6 d-flex">
+            <include src="components/about-card.html" locals='{
+                "cardtitle": "help",
+                "link" : "",
+                "cardcontent1": "Help Center",
+                "cardcontent2": "Help Forum",
+                "cardcontent3": "Video Tutorials",
+                "cardcontent4": "Help Center"
+              }'></include>
+        </div>
+        <div class="about-card__body col-md-6 d-flex">
+            <include src="components/about-card.html" locals='{
+                "cardtitle": "Developer",
+                "link" : "",
+                "cardcontent1": "Md. Majharul Islam",
+                "cardcontent2": "Tanjila Islam",
+                "cardcontent3": "Help Center",
+                "cardcontent4": ""
+              }'></include>
+        </div>  
+    </div>
+    <include src="./components/line-blog.html"></include>
+</main>

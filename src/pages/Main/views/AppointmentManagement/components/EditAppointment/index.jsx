@@ -21,6 +21,7 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [customer, setCustomer] = useState({});
+  const [fieldsValue, setFieldsValue] = useState({});
   const [title, setTitle] = useState(getTitleAppointment(info.title));
 
   useEffect(() => {
@@ -47,6 +48,7 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
       users: users
     };
     form.setFieldsValue({ ...data });
+    setFieldsValue(form.getFieldsValue())
   }, [info, open]);
 
   useEffect(() => {
@@ -178,7 +180,7 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
           </Col>
 
           <Col span={ 16 }>
-            <TimePicker form={ form } />
+            <TimePicker form={ form } fieldsValue={ fieldsValue } />
           </Col>
         </S.WrapRow>
         <S.WrapRow gutter={ 12 }>

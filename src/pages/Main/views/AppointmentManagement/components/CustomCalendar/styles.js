@@ -99,7 +99,9 @@ export const WrapContainer = styled(CalendarBig)`
   > .rbc-time-view .rbc-events-container {
     margin-right: 0;
     & .rbc-event {
-      min-height: 0.8% !important;
+      min-height: 0.55% !important;
+      width: 100% !important;
+      left: 0% !important;
     }
   }
 `;

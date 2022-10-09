@@ -1,7 +1,6 @@
 import React from 'react';
 import moment from 'moment';
 import { statusAppointment } from '../../../../../../ultis/statusAppointment';
-import { getTitleAppointment } from '../../../../../../ultis/appointment';
 
 //COMPONENT
 import { Company, UserCircle, Users } from '../../../../../../assets/images/icons/components';
@@ -24,24 +23,26 @@ export const DayEvent = ({ event }, eventActive) => {
     <S.WrapContainer backgroundColor={ stausColor.backgroundColor } color={ stausColor.color } startSchedular={ startSchedular }>
       <S.Content startSchedular={ startSchedular }>
         {/* COMPANY */ }
-        { event.typeId === 3 ? (
-          <S.BoxTitle startSchedular={ startSchedular }>
-            <Company width={ 15 } height={ 13 } color={ stausColor.color } />
-            <S.Name>DN - { event?.customerApptRecords && event?.customerApptRecords.length }</S.Name>
-            <Users color={ stausColor.color } />
-          </S.BoxTitle>
-        ) : (
-          <S.BoxTitle startSchedular={ startSchedular }>
-            <UserCircle color={ stausColor.color } />
-            <S.Name>Cá nhân</S.Name>
-          </S.BoxTitle>
-        ) }
-        { startSchedular > 10 &&
-          <S.Text color={ stausColor.color }>{ event.host }</S.Text>
+        { startSchedular > 5 &&
+          (
+            event.typeId === 3 ? (
+              <S.BoxTitle startSchedular={ startSchedular }>
+                <Company width={ 15 } height={ 13 } color={ stausColor.color } />
+                <S.Name>DN - { event?.customerApptRecords && event?.customerApptRecords.length }</S.Name>
+                <Users color={ stausColor.color } />
+              </S.BoxTitle>
+            ) : (
+              <S.BoxTitle startSchedular={ startSchedular }>
+                <UserCircle color={ stausColor.color } />
+                <S.Name>Cá nhân</S.Name>
+              </S.BoxTitle>
+            )
+          )
         }
+        <S.Text color={ stausColor.color }>{ event.host }</S.Text>
 
         { startSchedular > 15 &&
-          <S.Description check={ isEventActive }>{ getTitleAppointment(event.title) }</S.Description>
+          <S.Description check={ isEventActive }>{ event.title }</S.Description>
         }
 
       </S.Content>

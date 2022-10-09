@@ -9,34 +9,34 @@ import { Clock, ArrowDown } from '../../../../../../assets/images/icons/componen
 //STYLES
 import * as S from './styles';
 
-export const TimePicker = ({ form }) => {
-  const [formValue, setFormValue] = useState(form);
-  const fields = formValue.getFieldsValue();
-
+export const TimePicker = ({ form, fieldsValue }) => {
+  const [formValues, setFormValues] = useState(fieldsValue);
   const [showStart, setShowStart] = useState(false);
   const [showEnd, setShowEnd] = useState(false);
   const [startTime, setStartTime] = useState();
   const [endTime, setEndTime] = useState();
   const hoursDisables = [0, 1, 2, 3, 4, 5, 6, 23];
   const now = new Date();
-  const formDate = new Date(fields.date);
 
   useEffect(() => {
-    const formValues = form.getFieldsValue();
-    setStartTime(formValues.startTime)
-    setEndTime(formValues.endTime)
-  }, [form]);
+    setStartTime(fieldsValue.startTime)
+    setEndTime(fieldsValue.endTime)
+    setFormValues(fieldsValue)
+  }, [fieldsValue, form]);
+
 
   const handleOnChangeStart = (time) => {
+    const formDate = new Date(formValues.date);
     const selectTime = new Date(time);
     if (formDate.getDate() === now.getDate()) {
       if (now.getTime() > selectTime.getTime()) {
         setStartTime(time.add(5, 'minutes'));
-        formValue.setFieldsValue({ startTime: time.add(5, 'minutes'), endTime: undefined });
+        form.setFieldsValue({ startTime: time.add(5, 'minutes'), endTime: undefined });
       }
     }
     setStartTime(time);
-    formValue.setFieldsValue({ startTime: time, endTime: undefined });
+    form.setFieldsValue({ startTime: time, endTime: undefined });
+    setFormValues({ ...formValues, startTime: time })
     setShowStart(false);
   };
 
@@ -47,6 +47,7 @@ export const TimePicker = ({ form }) => {
   };
 
   const disabledHoursStart = () => {
+    const formDate = new Date(formValues.date);
     const hours = [];
     if (formDate.getDate() === now.getDate()) {
       const currentHour = moment(now).hour();
@@ -87,10 +88,9 @@ export const TimePicker = ({ form }) => {
     return minutes;
   };
 
-  const totalMinutes = () => {
+  const totalMinutes = (startTime, endTime) => {
     const start = startTime.hour() * 60 + startTime.minute();
     const end = endTime.hour() * 60 + endTime.minute();
-
     return end - start;
   };
 
@@ -153,7 +153,7 @@ export const TimePicker = ({ form }) => {
           <S.BoxClock>
             <Clock color="#999" />
           </S.BoxClock>
-          <span>{ fields.startTime && startTime && endTime && parseInt(totalMinutes()) > 0 ? totalMinutes() : '' }</span>
+          <span>{ formValues.startTime && startTime && endTime && parseInt(totalMinutes(startTime, endTime)) > 0 ? totalMinutes(startTime, endTime) : '' }</span>
         </S.WrapMinutesLeft>
         <S.WrapMinutesRight>Phút</S.WrapMinutesRight>
       </S.WrapMinutes>

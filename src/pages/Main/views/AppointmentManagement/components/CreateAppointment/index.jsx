@@ -45,12 +45,10 @@ export const CreateAppointment = ({ open, handleCancel, customerInfo, outsideLin
 
   const onFinish = (values) => {
     const subCustomerIds = values?.users && values?.users.length !== 0 ? values?.users.map((i) => i.customerId) : [];
-
-    const startTime = moment(values.date).format('YYYY-MM-DD ') + moment(values.startTime).format('HH:mm:ss');
-
+    const timeZone = moment().format('Z');
+    const startTime = moment(values.date).format('YYYY-MM-DDT') + moment(values.startTime).format('HH:mm:ss') + timeZone;
     const endTime =
-      moment(values.date).format('YYYY-MM-DD ') + moment(values.endTime).subtract(1, 'seconds').format('HH:mm:ss');
-
+      moment(values.date).format('YYYY-MM-DDT') + moment(values.endTime).subtract(1, 'seconds').format('HH:mm:ss') + timeZone;
     const data = {
       typeId: typeId,
       customerId: customer.customerId,
@@ -171,7 +169,7 @@ export const CreateAppointment = ({ open, handleCancel, customerInfo, outsideLin
           </Col>
 
           <Col span={ 16 }>
-            <TimePicker form={ form } />
+            <TimePicker form={ form } fieldsValue={ form.getFieldsValue() } />
           </Col>
         </S.WrapRow>
         <S.WrapRow gutter={ 12 }>

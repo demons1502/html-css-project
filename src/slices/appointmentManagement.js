@@ -6,6 +6,7 @@ import {
   deleteAppointmentApi,
   getAppointmentApi,
 } from '../services/appointment';
+import { getTitleAppointment } from '../ultis/appointment';
 import { formatLocalTime } from '../ultis/date';
 
 const initialState = {
@@ -74,6 +75,7 @@ const appointmentSlice = createSlice({
           ...i,
           start: formatLocalTime(i.startTime, 0),
           end: formatLocalTime(i.endTime, 1),
+          title: getTitleAppointment(i.title)
         };
       });
       state.data = appointments;
@@ -119,6 +121,7 @@ const appointmentSlice = createSlice({
         ...data,
         start: formatLocalTime(data.startTime, 0),
         end: formatLocalTime(data.endTime, 1),
+        title: getTitleAppointment(i.title)
       };
       let appointments = [...state.data];
       state.data = appointments.map((i) => (i.apptId === data.apptId ? appointment : i));
@@ -158,6 +161,7 @@ const appointmentSlice = createSlice({
         ...data,
         start: formatLocalTime(data.startTime),
         end: formatLocalTime(data.endTime),
+        title: getTitleAppointment(data.title)
       };
       const appointments = [{ ...appointment }, ...state.data];
       state.data = appointments;

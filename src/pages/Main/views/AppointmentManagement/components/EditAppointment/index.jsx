@@ -25,17 +25,29 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
 
   useEffect(() => {
     const fields = form.getFieldsValue();
+    const users = info.customerApptRecords.map((i) => {
+      return {
+        customerId: i.customerId,
+        fullName: i.name,
+        name: i.name,
+        phone: i.phone1,
+        birthday: moment(i.dob),
+        gender: !i.gender ? 3 : parseInt(i.gender),
+      };
+    });
+
     const data = {
       ...fields,
       title: getTitleAppointment(info.title),
-      date: moment(info.startTime).utc(),
-      startTime: moment(info.startTime).utc(),
-      endTime: moment(info.endTime).utc(),
+      date: moment(info.start),
+      startTime: moment(info.start),
+      endTime: moment(info.end),
       location: info.location,
       note: info.note,
+      users: users
     };
     form.setFieldsValue({ ...data });
-  }, [info]);
+  }, [info, open]);
 
   useEffect(() => {
     setCustomer({
@@ -93,108 +105,109 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
 
   const onCancel = () => {
     handleCancel();
+    form.resetFields();
   };
 
   return (
     <ModalSelect
       title="Sửa lịch hẹn"
       width="650px"
-      isModalOpen={open}
-      handleCancel={onCancel}
-      handleOk={form.submit}
+      isModalOpen={ open }
+      handleCancel={ onCancel }
+      handleOk={ form.submit }
       cancelText="Huỷ sửa"
       okText="Sửa lịch hẹn"
     >
-      <Form form={form} colon={false} layout="vertical" onFinish={onFinish}>
-        <S.WrapRow gutter={12}>
-          <Col span={12}>
+      <Form form={ form } colon={ false } layout="vertical" onFinish={ onFinish }>
+        <S.WrapRow gutter={ 12 }>
+          <Col span={ 12 }>
             <Form.Item
               label="Tên khách hàng"
               name="customerId"
-              rules={[
+              rules={ [
                 {
                   required: Object.keys(customer).length === 0 ? true : false,
                   message: 'Vui lòng nhập tên khách hàng',
                 },
-              ]}
+              ] }
             >
-              <SelectTable customer={customer} handleChangeValue={handleChangeCustomer} typeId={info.typeId} />
+              <SelectTable customer={ customer } handleChangeValue={ handleChangeCustomer } typeId={ info.typeId } />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={ 12 }>
             <Form.Item
               label="Nội dung lịch hẹn"
               name="title"
-              rules={[
+              rules={ [
                 {
                   required: title === '' ? true : false,
                   message: 'Vui lòng nhập nội dung lịch hẹn',
                 },
-              ]}
+              ] }
             >
-              <InputSelect handleChange={handleChangeTitle} value={title} />
+              <InputSelect handleChange={ handleChangeTitle } value={ title } />
             </Form.Item>
           </Col>
         </S.WrapRow>
         <S.WrapRow>
           <S.WrapTitle>Thời gian</S.WrapTitle>
         </S.WrapRow>
-        <S.WrapRow gutter={8}>
-          <Col span={8}>
+        <S.WrapRow gutter={ 8 }>
+          <Col span={ 8 }>
             <Form.Item
               name="date"
-              rules={[
+              rules={ [
                 {
                   required: true,
                   message: 'Vui lòng nhập thời gian',
                 },
-              ]}
+              ] }
             >
               <S.WrapDatePicker
-                format={'DD/MM/YYYY'}
-                suffixIcon={<Calender color="#999999" />}
-                style={{ width: '100%' }}
+                format={ 'DD/MM/YYYY' }
+                suffixIcon={ <Calender color="#999999" /> }
+                style={ { width: '100%' } }
                 placeholder="DD/MM/YYYY"
-                disabledDate={(current) => {
+                disabledDate={ (current) => {
                   let customDate = moment().format('YYYY-MM-DD');
                   return current && current < moment(customDate, 'YYYY-MM-DD');
-                }}
-                onOpenChange={() => form.setFieldsValue({ startTime: undefined, endTime: undefined })}
+                } }
+                onOpenChange={ () => form.setFieldsValue({ startTime: undefined, endTime: undefined }) }
               />
             </Form.Item>
           </Col>
 
-          <Col span={16}>
-            <TimePicker start={moment(info.start)} end={moment(info.end)} form={form} />
+          <Col span={ 16 }>
+            <TimePicker form={ form } />
           </Col>
         </S.WrapRow>
-        <S.WrapRow gutter={12}>
-          <Col span={24}>
+        <S.WrapRow gutter={ 12 }>
+          <Col span={ 24 }>
             <Form.Item label="Địa điểm" name="location">
               <S.WrapInput placeholder="Địa điểm" />
             </Form.Item>
           </Col>
         </S.WrapRow>
-        <S.WrapRow gutter={12}>
-          <Col span={24}>
+        <S.WrapRow gutter={ 12 }>
+          <Col span={ 24 }>
             <Form.Item label="Ghi Chú" name="note">
               <S.WrapInput placeholder="Ghi Chú" />
             </Form.Item>
           </Col>
         </S.WrapRow>
-        {info.typeId === 3 && (
+        { info.typeId === 3 && (
           <>
             <S.WrapRow>
               <S.WrapTitleUser>Thông tin người tham gia</S.WrapTitleUser>
             </S.WrapRow>
             <FormUsers
-              form={form}
-              companyId={customer.companyId}
-              customerApptRecords={info.customerApptRecords}
-              open={open}
+              form={ form }
+              companyId={ customer.companyId }
+              customerApptRecords={ info.customerApptRecords }
+              open={ open }
             />
           </>
-        )}
+        ) }
       </Form>
     </ModalSelect>
   );

@@ -21,25 +21,31 @@ export const DayEvent = ({ event }, eventActive) => {
 
   const stausColor = statusAppointment(startDate, endDate, nowDate, event.isCompleted, isEventActive);
   return (
-    <S.WrapContainer backgroundColor={stausColor.backgroundColor} color={stausColor.color}>
-      <S.Content>
-        {/* COMPANY */}
-        {event.typeId === 3 ? (
-          <S.BoxTitle>
-            <Company width={15} height={13} color={stausColor.color} />
-            <S.Name>DN - {event?.customerApptRecords && event?.customerApptRecords.length}</S.Name>
-            <Users color={stausColor.color} />
+    <S.WrapContainer backgroundColor={ stausColor.backgroundColor } color={ stausColor.color } startSchedular={ startSchedular }>
+      <S.Content startSchedular={ startSchedular }>
+        {/* COMPANY */ }
+        { event.typeId === 3 ? (
+          <S.BoxTitle startSchedular={ startSchedular }>
+            <Company width={ 15 } height={ 13 } color={ stausColor.color } />
+            <S.Name>DN - { event?.customerApptRecords && event?.customerApptRecords.length }</S.Name>
+            <Users color={ stausColor.color } />
           </S.BoxTitle>
         ) : (
-          <S.BoxTitle>
-            <UserCircle color={stausColor.color} />
+          <S.BoxTitle startSchedular={ startSchedular }>
+            <UserCircle color={ stausColor.color } />
             <S.Name>Cá nhân</S.Name>
           </S.BoxTitle>
-        )}
-        <S.Text color={stausColor.color}>{event.host}</S.Text>
-        <S.Description check={isEventActive}>{getTitleAppointment(event.title)}</S.Description>
+        ) }
+        { startSchedular > 10 &&
+          <S.Text color={ stausColor.color }>{ event.host }</S.Text>
+        }
+
+        { startSchedular > 15 &&
+          <S.Description check={ isEventActive }>{ getTitleAppointment(event.title) }</S.Description>
+        }
+
       </S.Content>
-      {startSchedular > 20 && <S.Text color={stausColor.color}>{`${start} (${startSchedular}p)`}</S.Text>}
+      { startSchedular > 20 && <S.Text color={ stausColor.color }>{ `${start} (${startSchedular}p)` }</S.Text> }
     </S.WrapContainer>
   );
 };

@@ -72,8 +72,8 @@ const appointmentSlice = createSlice({
       const appointments = action.payload.data.map((i) => {
         return {
           ...i,
-          start: formatLocalTime(i.startTime),
-          end: formatLocalTime(i.endTime),
+          start: formatLocalTime(i.startTime, 0),
+          end: formatLocalTime(i.endTime, 1),
         };
       });
       state.data = appointments;
@@ -95,8 +95,8 @@ const appointmentSlice = createSlice({
       const data = action.payload;
       const appointment = {
         ...data,
-        start: formatLocalTime(data.startTime),
-        end: formatLocalTime(data.endTime),
+        start: formatLocalTime(data.startTime, 0),
+        end: formatLocalTime(data.endTime, 1),
       };
       const appointments = [...state.data, { ...appointment }];
       state.data = appointments;
@@ -117,8 +117,8 @@ const appointmentSlice = createSlice({
       const data = action.payload;
       const appointment = {
         ...data,
-        start: formatLocalTime(data.startTime),
-        end: formatLocalTime(data.endTime),
+        start: formatLocalTime(data.startTime, 0),
+        end: formatLocalTime(data.endTime, 1),
       };
       let appointments = [...state.data];
       state.data = appointments.map((i) => (i.apptId === data.apptId ? appointment : i));

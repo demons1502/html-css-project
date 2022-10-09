@@ -9,20 +9,22 @@ import { Clock, ArrowDown } from '../../../../../../assets/images/icons/componen
 //STYLES
 import * as S from './styles';
 
-export const TimePicker = ({ start, end, form }) => {
+export const TimePicker = ({ form }) => {
   const [formValue, setFormValue] = useState(form);
   const fields = formValue.getFieldsValue();
 
   const [showStart, setShowStart] = useState(false);
   const [showEnd, setShowEnd] = useState(false);
-  const [startTime, setStartTime] = useState(start && start);
-  const [endTime, setEndTime] = useState(end && end);
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
   const hoursDisables = [0, 1, 2, 3, 4, 5, 6, 23];
   const now = new Date();
   const formDate = new Date(fields.date);
 
   useEffect(() => {
-    setFormValue(form);
+    const formValues = form.getFieldsValue();
+    setStartTime(formValues.startTime)
+    setEndTime(formValues.endTime)
   }, [form]);
 
   const handleOnChangeStart = (time) => {
@@ -66,17 +68,21 @@ export const TimePicker = ({ start, end, form }) => {
 
   const disabledHoursEnd = () => {
     const hours = [];
-    const currentHour = startTime.hour();
-    for (let i = 0; i <= 24; i++) {
-      i < currentHour && hours.push(i);
+    if (startTime) {
+      const currentHour = startTime.hour();
+      for (let i = 0; i <= 24; i++) {
+        i < currentHour && hours.push(i);
+      }
     }
     return [...hours, ...hoursDisables];
   };
 
   const disabledMinutesEnd = (selectedHour) => {
     const minutes = [];
-    if (selectedHour === startTime.hour()) {
-      for (let i = 0; i <= startTime.minute(); i += 1) minutes.push(i);
+    if (startTime) {
+      if (selectedHour === startTime.hour()) {
+        for (let i = 0; i <= startTime.minute(); i += 1) minutes.push(i);
+      }
     }
     return minutes;
   };
@@ -96,50 +102,50 @@ export const TimePicker = ({ start, end, form }) => {
         </S.BoxClock>
         <Form.Item
           name="startTime"
-          // rules={[{ required: true, message: 'Missing ' }]}
+        // rules={[{ required: true, message: 'Missing ' }]}
         >
           <S.TimePicker
-            name="start"
-            open={showStart}
-            placeholder="Giờ"
-            format={'HH:mm'}
-            hideDisabledOptions={true}
-            bordered={false}
-            allowClear={false}
-            suffixIcon={null}
-            showNow={false}
-            minuteStep={5}
-            onClick={() => setShowStart(!showStart)}
-            onChange={handleOnChangeStart}
-            disabledHours={disabledHoursStart}
-            disabledMinutes={disabledMinutesStart}
-            onBlur={() => setShowStart(false)}
+            value={ startTime }
+            open={ showStart }
+            placeholder="hh:mm"
+            format={ 'HH:mm' }
+            hideDisabledOptions={ true }
+            bordered={ false }
+            allowClear={ false }
+            suffixIcon={ null }
+            showNow={ false }
+            minuteStep={ 5 }
+            onClick={ () => setShowStart(!showStart) }
+            onChange={ handleOnChangeStart }
+            disabledHours={ disabledHoursStart }
+            disabledMinutes={ disabledMinutesStart }
+            onBlur={ () => setShowStart(false) }
           />
         </Form.Item>
         <S.Space>-</S.Space>
         <Form.Item
           name="endTime"
-          // rules={[{ required: true, message: 'Missing ' }]}
+        // rules={[{ required: true, message: 'Missing ' }]}
         >
           <S.TimePicker
-            open={showEnd}
-            placeholder="Giờ"
-            format={'HH:mm'}
-            hideDisabledOptions={true}
-            bordered={false}
-            allowClear={false}
-            suffixIcon={null}
-            showNow={false}
-            minuteStep={5}
-            onClick={() => setShowEnd(!showEnd)}
-            onChange={handleOnChangeEnd}
-            disabledHours={disabledHoursEnd}
-            disabledMinutes={disabledMinutesEnd}
-            onBlur={() => setShowEnd(false)}
+            open={ showEnd }
+            placeholder="hh:mm"
+            format={ 'HH:mm' }
+            hideDisabledOptions={ true }
+            bordered={ false }
+            allowClear={ false }
+            suffixIcon={ null }
+            showNow={ false }
+            minuteStep={ 5 }
+            onClick={ () => setShowEnd(!showEnd) }
+            onChange={ handleOnChangeEnd }
+            disabledHours={ disabledHoursEnd }
+            disabledMinutes={ disabledMinutesEnd }
+            onBlur={ () => setShowEnd(false) }
           />
         </Form.Item>
 
-        <S.DropDownBtn icon={<ArrowDown />} />
+        <S.DropDownBtn><ArrowDown /></S.DropDownBtn>
       </S.BoxTimePicker>
 
       <S.WrapMinutes>
@@ -147,7 +153,7 @@ export const TimePicker = ({ start, end, form }) => {
           <S.BoxClock>
             <Clock color="#999" />
           </S.BoxClock>
-          <span>{startTime && endTime && parseInt(totalMinutes()) > 0 ? totalMinutes() : ''}</span>
+          <span>{ fields.startTime && startTime && endTime && parseInt(totalMinutes()) > 0 ? totalMinutes() : '' }</span>
         </S.WrapMinutesLeft>
         <S.WrapMinutesRight>Phút</S.WrapMinutesRight>
       </S.WrapMinutes>

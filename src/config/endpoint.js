@@ -9,7 +9,7 @@ export const ENDPOINT = {
   customersByCompany: 'customers-by-company',
   customerCare: 'customer-care',
   customersContracts: 'customers/contracts',
-  customerCare: 'customer-care', 
+  customerCare: 'customer-care',
   customerCall: 'customer-calls',
   events: 'events',
   eventsSend: 'events/send',
@@ -19,4 +19,6 @@ export const ENDPOINT = {
   },
   userSearch: 'users/search',
   surveys: 'surveys',
+  contracts: 'contracts',
+  appointments: 'appointments'
 };

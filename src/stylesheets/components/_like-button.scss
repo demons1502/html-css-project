@@ -2,12 +2,12 @@
 
 .like__button {
     padding: 10px 15px;
-    background: #0080ff;
+    background: $bg-button-color;
     font-size: 18px;
     font-family: $primary-font;
     border: none;
     outline: none;
-    color: #e8efff;
+    color:$text-color;
     border-radius: 5px;
     cursor: pointer;
     margin-bottom: 20px;

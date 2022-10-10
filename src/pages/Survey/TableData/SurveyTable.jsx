@@ -64,17 +64,17 @@ const CustomerServeyTable = () => {
 
   //reset form after submit
   useEffect(() => {
-    // if (!isEmpty(surveys?.data)) {
-    //   console.log("isClearSurvey", isClearSurvey);
-    //   const tableInfos = [...dataTables];
-    //   const formInfos = [...formValues];
-    //   const currentTableIndex = tableInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
-    //   const currentformIndex = formInfos?.findIndex((item) => item?.id === surveys?.data?.customerId);
-    //   tableInfos[currentTableIndex] = generateTableData(surveys?.data?.customerId);
-    //   formInfos[currentformIndex] = generateFormData(surveys?.data?.customerId);
-    //   setDataTables(tableInfos);
-    //   setFromValues(formInfos);
-    // }
+    if (!isEmpty(surveys?.data)) {
+      console.log("isClearSurvey", isClearSurvey);
+      const tableInfos = [...dataTables];
+      const formInfos = [...formValues];
+      const currentTableIndex = tableInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
+      const currentformIndex = formInfos?.findIndex((item) => item?.id === surveys?.data?.customerId);
+      tableInfos[currentTableIndex] = generateTableData(surveys?.data?.customerId);
+      formInfos[currentformIndex] = generateFormData(surveys?.data?.customerId);
+      setDataTables(tableInfos);
+      setFromValues(formInfos);
+    }
   }, [surveys?.data]);
 
   //generate form data

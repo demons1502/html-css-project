@@ -64,7 +64,7 @@ export const ClosingModal = ({ onSubmit }) => {
       overlayClassName="closing-popover"
       visible={open}
     >
-      <Button type="primary" htmlType="button" className="btn-primary finance-btn-small" block disabled={!selectedCustomer?.customerId}>
+      <Button type="primary" htmlType="button" className="btn-primary finance-btn-small" block>
         {t("survey.save")}
       </Button>
     </Popover>

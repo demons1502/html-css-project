@@ -16,10 +16,6 @@ export default function RatioContractPie(props) {
   useEffect(() => {
     if (props?.data?.length > 0) {
       let loadData = props.data;
-      const countDataRemove = loadData.filter((item) => item.value === 0);
-      if (countDataRemove.length === 1) {
-        loadData = loadData.filter((item) => item.value > 0);
-      }
       setData(loadData);
     }
   }, [props.data]);

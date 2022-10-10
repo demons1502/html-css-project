@@ -16,10 +16,14 @@ export const GroupButton = ({ handleOpenEdit, handleDelete, info }) => {
     navigate(`/advise/survey?appointment_id=${info.apptId}`);
   };
 
+  const handleFinanceConsultant = () => {
+    navigate(`/advise/finance-consultant?appointment_id=${info.apptId}`);
+  };
+
   return (
     <S.WrapContainer>
       <S.WrapLeft>
-        <S.Button onClick={() => navigate('/advise')} type="primary">
+        <S.Button onClick={handleFinanceConsultant} type="primary">
           Tư vấn
         </S.Button>
         <S.Button onClick={handleFinacial} type="primary">

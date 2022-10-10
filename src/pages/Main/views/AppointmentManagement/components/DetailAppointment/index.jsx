@@ -69,29 +69,29 @@ export const DetailAppointment = ({ info }) => {
       <S.WrapTitle>Thông tin cuộc hẹn</S.WrapTitle>
       <S.WrapInfo>
         <S.WrapTop>
-          {info?.typeId === 3 ? (
+          { info?.typeId === 3 ? (
             <S.BoxTitle>
-              <Company color={checkColor} />
+              <Company color={ checkColor } />
               <S.Title
-                style={{ margin: '0 5px' }}
-              >{`${info.host} (Doanh nghiệp - ${info.customerApptRecords.length}`}</S.Title>
-              <Users color={checkColor} />
-              <S.Title>{`)`}</S.Title>
+                style={ { margin: '0 5px' } }
+              >{ `${info.host} (Doanh nghiệp - ${info.customerApptRecords.length}` }</S.Title>
+              <Users color={ checkColor } />
+              <S.Title>{ `)` }</S.Title>
             </S.BoxTitle>
           ) : (
             <S.BoxTitle>
-              <UserCircle color={checkColor} />
-              <S.Title style={{ margin: '0 5px' }}>{info.host}</S.Title>
+              <UserCircle color={ checkColor } />
+              <S.Title style={ { margin: '0 5px' } }>{ info.host }</S.Title>
             </S.BoxTitle>
-          )}
-          <S.SubTitle>{getTitleAppointment(info.title)}</S.SubTitle>
+          ) }
+          <S.SubTitle>{ getTitleAppointment(info.title) }</S.SubTitle>
         </S.WrapTop>
         <S.wrapMiddle>
           <S.ItemMiddle>
-            <Calender color="#999999" width={13} height={13} />
+            <Calender color="#999999" width={ 13 } height={ 13 } />
             <S.ItemMiddleContent>
               <S.ItemMiddleTitle>Ngày hẹn:</S.ItemMiddleTitle>
-              <S.ItemMiddleTextCalender>{moment(info.startTime).utc().format('DD/MM/YYYY')}</S.ItemMiddleTextCalender>
+              <S.ItemMiddleTextCalender>{ moment(info.startTime).format('DD/MM/YYYY') }</S.ItemMiddleTextCalender>
             </S.ItemMiddleContent>
           </S.ItemMiddle>
 
@@ -101,7 +101,7 @@ export const DetailAppointment = ({ info }) => {
             <S.ItemMiddleContent>
               <S.ItemMiddleTitle>Thời gian:</S.ItemMiddleTitle>
               <S.ItemMiddleText time>
-                {`${moment(info.startTime).utc().format('HH:ss')} (${minutes})p`}
+                { `${moment(info.startTime).format('HH:ss')} (${minutes})p` }
               </S.ItemMiddleText>
             </S.ItemMiddleContent>
           </S.ItemMiddle>
@@ -111,37 +111,37 @@ export const DetailAppointment = ({ info }) => {
             <Map color="#999999" />
             <S.ItemMiddleContent>
               <S.ItemMiddleTitle>Địa điểm:</S.ItemMiddleTitle>
-              <S.ItemMiddleText>{info.location}</S.ItemMiddleText>
+              <S.ItemMiddleText>{ info.location }</S.ItemMiddleText>
             </S.ItemMiddleContent>
           </S.ItemMiddle>
         </S.wrapMiddle>
         <S.WrapBottom>
           <Note />
           <S.WrapBottomTitle>Ghi chú:</S.WrapBottomTitle>
-          <S.WrapBottomText>{info.note}</S.WrapBottomText>
+          <S.WrapBottomText>{ info.note }</S.WrapBottomText>
         </S.WrapBottom>
       </S.WrapInfo>
-      {info?.typeId === 3 && (
+      { info?.typeId === 3 && (
         <>
           <S.WrapTitle>Thành phần tham gia</S.WrapTitle>
           <S.WrapParticipant>
-            {info?.customerApptRecords.map((i) => (
-              <S.WrapParticipantItem key={i.customerApptRecordId}>
+            { info?.customerApptRecords.map((i) => (
+              <S.WrapParticipantItem key={ i.customerApptRecordId }>
                 <S.WrapParticipantItem>
-                  <S.Badge status="success" text={i.name} />
+                  <S.Badge status="success" text={ i.name } />
                   <S.ButtonDelete
-                    icon={<Delete width={16} height={16} />}
-                    onClick={() => handleRemoveItem(i)}
+                    icon={ <Delete width={ 16 } height={ 16 } /> }
+                    onClick={ () => handleRemoveItem(i) }
                     type="text"
                   ></S.ButtonDelete>
                 </S.WrapParticipantItem>
               </S.WrapParticipantItem>
-            ))}
+            )) }
           </S.WrapParticipant>
         </>
-      )}
+      ) }
 
-      <S.Button onClick={() => navigate('/dashboard')}>Trang chủ</S.Button>
+      <S.Button onClick={ () => navigate('/dashboard') }>Trang chủ</S.Button>
     </S.WrapContainer>
   );
 };

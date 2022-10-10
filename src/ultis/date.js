@@ -6,7 +6,7 @@ export const getMonday = (d) => {
 };
 
 export const formatLocalTime = (d, second) => {
-  return new Date(moment(d).add(second, 'seconds').format('YYYY-MM-DDTHH:mm:ss'));
+  return new Date(moment(d).utc().add(second, 'seconds').format('YYYY-MM-DDTHH:mm:ss'));
 };
 
 export const convertDay = (day) => {

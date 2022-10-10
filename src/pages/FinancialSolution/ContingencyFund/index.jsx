@@ -1,21 +1,13 @@
 import { Col, Layout, List, Row, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { sideBarMenuItems } from '../../../assets/fake-data/QuyDuPhongData';
-import SearchInputBox from './SearchInputBox';
 import ListCalculation from './ListCalculation';
+import SearchInputBox from './SearchInputBox';
 // import ListDetails from "./ListDetails";
-import { Link, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  getAppointment,
-  getSpeechScriptType,
-  getAppointmentByIds,
-  updateSelectCustomer,
-} from '../../../slices/financialSolutions';
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import Dialogue from '../../../components/common/Dialogue/index';
-import { getFinanceDatas } from '../../../slices/financeSolutions';
-import { formatCountdown } from 'antd/lib/statistic/utils';
+import { getAppointment, getAppointments } from '../../../slices/appointmentManagement';
 
 // id
 // const { id } = location.state;
@@ -32,72 +24,52 @@ import { formatCountdown } from 'antd/lib/statistic/utils';
 //   (state) => state.financeReducer.getFinanceDatas
 // );
 // console.log("finaceDatas ==>", finaceDatas);
-const ContingencyFund = ({ apptId = null, customerId = null }) => {
-  const [itemContent, setItemContent] = useState({});
-  const [lists, setLists] = useState(null);
+const ContingencyFund = () => {
+  const [itemContent, setItemContent] = useState(null);
   const [payload, setPayload] = useState('');
   const [keywords, setKeywords] = useState({});
-  
+  const [data, setData] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [apptId, setApptId] = useState(null);
+  const [customerId, setCustomerId] = useState(null);
 
   const location = useLocation(); //thomas code get title from quan ly lich hen
   // title
   const [title] = useState(location?.state?.title);
   const dispatch = useDispatch();
-  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution);
-
-  const getAppointmentNoId = () => {
-    let endDate = new Date();
-    // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
-    endDate = endDate.setHours(23, 59, 59, 999);
-    let startDate = new Date();
-    dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
-  };
+  const appointments = useSelector((state) => state.appointment);
 
   useEffect(() => {
-    apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId();
-  }, []);
-
-  // useEffect(() => {
-  //   let arr = [];
-  //   arr.push(
-  //     customerAppRecords?.map((item) => {
-  //       // dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
-  //       return {
-  //         title: item.customerApptRecords[0].name,
-  //         apptId: item.apptId,
-  //         customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
-  //       };
-  //     })
-  //   );
-  //   setLists(arr[0]);
-  // }, [customerAppRecords]);
-  // console.log(customerAppRecords);
-
-  useEffect(() => {
-    const data = [];
-    const dataFilter = customerAppRecords.filter((item) =>
-      item.customerApptRecords[0].name.toLowerCase().includes(payload.toLowerCase())
-    );
-    data.push(
-      ...dataFilter.map((item) => {
-        return {
-          title: item.customerApptRecords[0].name,
-          apptId: item.apptId,
-          customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
-          customerId: item.customerApptRecords[0].customerId,
-        };
-      })
-    );
-    setLists(data);
-  }, [customerAppRecords, payload]);
-
-  useEffect(() => {
-    //select item 1
-    if (lists) {
-      setItemContent(lists[0]);
+    const apptId = searchParams.get('appointment_id');
+    const customerId = searchParams.get('customer_id');
+    if (apptId) {
+      setApptId(apptId);
+      dispatch(getAppointment(apptId));
+    } else {
+      const params = {
+        titles: ['finance'],
+        startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+        endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
+      };
+      dispatch(getAppointments(params));
     }
-  }, [lists]);
+    customerId && setCustomerId(customerId);
+  }, [searchParams]);
 
+  useEffect(() => {
+    const customerList = appointments?.data?.length > 0 ? appointments?.data[0]?.customerApptRecords : null;
+    const dataFilter = customerList?.filter((item) => item.name.toLowerCase().includes(payload.toLowerCase()));
+    setData(dataFilter);
+  }, [appointments?.data, payload]);
+
+  useEffect(() => {
+    if (customerId) {
+      const index = data?.findIndex((item) => item.customerId === +customerId);
+      setItemContent(data[index]);
+    } else {
+      setItemContent(data?.[0]);
+    }
+  }, [data]);
 
   return (
     <div className="quyduphone">
@@ -137,9 +109,9 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
                     <SearchInputBox setPayload={setPayload}></SearchInputBox>
                   </div>
 
-                  {lists?.length > 0 && (
+                  {data?.length > 0 && (
                     <List
-                      dataSource={lists}
+                      dataSource={data}
                       renderItem={(item, index) => (
                         <List.Item
                           onClick={() => {
@@ -147,7 +119,7 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
                           }}
                           className={`${item === itemContent ? 'active' : ''}`}
                         >
-                          <Typography.Text ellipsis>{item.title}</Typography.Text>
+                          <Typography.Text ellipsis>{item.name}</Typography.Text>
                         </List.Item>
                       )}
                     />
@@ -159,7 +131,11 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation typeFund="prevention" userSelected={itemContent} setKeywords={setKeywords} />
+                  <ListCalculation
+                    typeFund="prevention"
+                    userSelected={{ ...itemContent, apptId: apptId }}
+                    setKeywords={setKeywords}
+                  />
                 </div>
 
                 {/* container-right end */}
@@ -176,7 +152,7 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
                 <Dialogue
                   title={'Lời thoại'}
                   type={'preventionFund'}
-                  customerId={itemContent?.customerId}
+                  customerId={customerId || itemContent?.customerId}
                   keywords={keywords}
                 />
               </div>

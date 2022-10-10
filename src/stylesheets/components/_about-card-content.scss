@@ -1,0 +1,12 @@
+@use "../abstracts/" as *;
+
+.about-card-content {
+    a {
+        color: $text-color;
+        margin-right: 5px;
+        text-decoration: none;
+        &:hover {
+            color: $hover-color;
+          }
+    }
+}

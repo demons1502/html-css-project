@@ -4,68 +4,80 @@ import moment from 'moment';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import calender from '../../assets/images/icons/calendar.svg';
 import Dialogue from '../../components/common/Dialogue';
 import * as S from '../../components/styles';
 import { formatDate } from '../../helper';
-import { getAppointment, getAppointmentByIds } from '../../slices/financialSolutions';
+import { getAppointment, getAppointments } from '../../slices/appointmentManagement';
 import SearchInputBox from '../Survey/SearchInputBox';
 import HistoryDetail from './components/historyDetail';
 import SpendingForm from './form/spendingForm';
 import History from './history';
 
-export default function FinanceConsultant({ apptId }) {
+export default function FinanceConsultant() {
   const { t } = useTranslation();
   const [selectItem, setSelectItem] = useState(null);
   const [history, setHistory] = useState(null);
   const [searchPayload, setSearchPayload] = useState('');
-  const [lists, setLists] = useState(null);
   const [keywords, setKeywords] = useState({});
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [apptId, setApptId] = useState(null);
+  const [customerId, setCustomerId] = useState(null);
+  const [data, setData] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { customerAppRecords } = useSelector((state) => state.financialSolution);
-  // const customers = useSelector((state) => state.consultReducer);
+  const appointments = useSelector((state) => state.appointment);
+
+  // console.log(customerId);
 
   const handleSelect = (item) => {
     setSelectItem(item);
     setHistory(null);
   };
 
-  const getAppointmentNoId = () => {
-    let endDate = new Date();
-    // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
-    endDate = endDate.setHours(23, 59, 59, 999);
-    let startDate = new Date();
-    dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
-  };
+  useEffect(() => {
+    const apptId = searchParams.get('appointment_id');
+    const customerId = searchParams.get('customer_id');
+    if (apptId) {
+      setApptId(apptId);
+      dispatch(getAppointment(apptId));
+    } else {
+      const params = {
+        titles: ['survey'],
+        startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+        endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
+      };
+      dispatch(getAppointments(params));
+    }
+    customerId && setCustomerId(customerId);
+  }, [searchParams]);
 
   useEffect(() => {
-    apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId();
-  }, []);
+    const customerList = appointments?.data?.length > 0 ? appointments?.data[0]?.customerApptRecords : null;
+    const dataFilter = customerList?.filter((item) => item.name.toLowerCase().includes(searchPayload.toLowerCase()));
+    setData(dataFilter);
+    // data.push(
+    //   ...dataFilter.map((item) => {
+    //     return {
+    //       title: item.customerApptRecords[0].name,
+    //       apptId: item.apptId,
+    //       customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
+    //       customerId: item.customerApptRecords[0].customerId,
+    //     };
+    //   })
+    // );
+  }, [appointments?.data, searchPayload]);
 
   useEffect(() => {
-    const data = [];
-    const dataFilter = customerAppRecords.filter((item) =>
-      item.customerApptRecords[0].name.toLowerCase().includes(searchPayload.toLowerCase())
-    );
-    data.push(
-      ...dataFilter.map((item) => {
-        return {
-          title: item.customerApptRecords[0].name,
-          apptId: item.apptId,
-          customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
-          customerId: item.customerApptRecords[0].customerId,
-        };
-      })
-    );
-    setLists(data);
-  }, [customerAppRecords, searchPayload]);
-
-  useEffect(() => {
-    lists && setSelectItem(lists[0]);
-  }, [lists]);
+    if (customerId) {
+      const index = data?.findIndex((item) => item.customerId === +customerId);
+      setSelectItem(data[index]);
+    } else {
+      setSelectItem(data?.[0]);
+    }
+  }, [data]);
 
   return (
     <Fragment>
@@ -82,15 +94,15 @@ export default function FinanceConsultant({ apptId }) {
                       <SearchInputBox setPayload={setSearchPayload}></SearchInputBox>
                     </div>
 
-                    {lists?.length > 0 && (
+                    {data?.length > 0 && (
                       <List
-                        dataSource={lists}
-                        renderItem={(customer, index) => (
+                        dataSource={data}
+                        renderItem={(customer) => (
                           <List.Item
                             onClick={() => handleSelect(customer)}
                             className={`${customer === selectItem ? 'active' : ''}`}
                           >
-                            <Typography.Text ellipsis>{customer?.title}</Typography.Text>
+                            <Typography.Text ellipsis>{customer?.name}</Typography.Text>
                           </List.Item>
                         )}
                       />
@@ -139,7 +151,11 @@ export default function FinanceConsultant({ apptId }) {
                     {history ? (
                       <HistoryDetail history={history} />
                     ) : (
-                      <SpendingForm id={selectItem?.customerId} useSelected={selectItem} setKeywords={setKeywords} />
+                      <SpendingForm
+                        id={customerId || selectItem?.customerId}
+                        useSelected={{ ...selectItem, apptId: apptId }}
+                        setKeywords={setKeywords}
+                      />
                     )}
                   </div>
                 </div>
@@ -152,7 +168,7 @@ export default function FinanceConsultant({ apptId }) {
                   <Dialogue
                     type="consult"
                     title={t('financial consultant.process title')}
-                    customerId={selectItem?.customerId}
+                    customerId={customerId || selectItem?.customerId}
                     keywords={keywords}
                   />
                 </div>

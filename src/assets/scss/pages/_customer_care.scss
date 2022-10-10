@@ -82,7 +82,6 @@
       justify-content: flex-end;
       padding: 15px 20px 29px 0;
     }
-
   }
 
   &__right {
@@ -117,6 +116,7 @@
 
     &--list {
       background: $gray-1;
+      min-height: 28vh;
     }
     &--footer {
       display: flex;

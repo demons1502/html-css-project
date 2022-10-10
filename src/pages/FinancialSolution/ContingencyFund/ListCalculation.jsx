@@ -15,7 +15,7 @@ const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) 
   const [TotalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
   const [form] = Form.useForm();
-
+  console.log(userSelected);
   // dispatch
   const dispatch = useDispatch();
 

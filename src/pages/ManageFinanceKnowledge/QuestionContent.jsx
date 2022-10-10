@@ -16,7 +16,7 @@ const QuestionAnswerContent = (props) => {
   const [answers, setAnswers] = useState([]);
   const [current, setCurrent] = useState(0);
   const [answer, setAnswer] = useState({});
-  const [data, setData] = useState({});
+  const [data, setData] = useState(null);
   console.log(data);
 
   const dispatch = useDispatch();
@@ -52,14 +52,14 @@ const QuestionAnswerContent = (props) => {
     };
     if (!data?.id) {
       dispatch(createContent({ type: option, payload: info }));
-      setData([]);
+      setData(null);
       setAnswers([]);
       setAnswer({});
       setAddNew(false);
       setId(null);
     } else {
       dispatch(updateContent({ type: option, id: data.id, payload: info }));
-      setData([]);
+      setData(null);
       setAnswers([]);
       setAnswer({});
       setAddNew(false);
@@ -111,7 +111,7 @@ const QuestionAnswerContent = (props) => {
   }, [detail]);
 
   useEffect(() => {
-    setData([]);
+    setData(null);
     setAnswers([]);
     setId(null);
   }, [option, addNew]);
@@ -123,7 +123,7 @@ const QuestionAnswerContent = (props) => {
           <h3>Nội dung</h3>
         </div>
         <div className="questionContent-header_button">
-          {data?.length > 0 && (
+          {data && (
             <div className="questionContent-header_icon">
               {isEdit && (
                 <span onClick={() => setIsEdit(false)}>

@@ -24,7 +24,10 @@ export default function FinanceConsultant() {
   const columns = [
     {
       title: 'STT',
-      dataIndex: 'customerId',
+      render: (_, record, index) => {
+        const value = index + 1 + paginate.limit * (paginate.offset - 1);
+        return <span>{value < 10 ? `0${value}` : value}</span>;
+      },
     },
     {
       title: 'Họ và tên',

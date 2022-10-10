@@ -17,7 +17,6 @@ const QuestionAnswerContent = (props) => {
   const [current, setCurrent] = useState(0);
   const [answer, setAnswer] = useState({});
   const [data, setData] = useState(null);
-  console.log(data);
 
   const dispatch = useDispatch();
   const { detail, isReload } = useSelector((state) => state.managementContentReducer);
@@ -114,7 +113,15 @@ const QuestionAnswerContent = (props) => {
     setData(null);
     setAnswers([]);
     setId(null);
+    setAnswer({});
   }, [option, addNew]);
+
+  useEffect(() => {
+    setData(null);
+    setAnswers([]);
+    setId(null);
+    setAnswer({});
+  }, []);
 
   return (
     <div className="questionContent">

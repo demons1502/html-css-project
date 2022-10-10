@@ -106,6 +106,12 @@ const QuestionAnswerContent = (props) => {
     setId(null);
   }, [option, addNew]);
 
+  useEffect(() => {
+    setData(null);
+    setFileList(null);
+    setId(null);
+  }, []);
+
   return (
     <div className="finance">
       <div className="finance-header">

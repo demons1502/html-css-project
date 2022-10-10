@@ -10,6 +10,7 @@ import Title from '../../components/Title';
 import { uploadFile } from '../../services/manageContent';
 import { createContent, deleteContent, retrieveData, updateContent } from '../../slices/managementContent';
 import { DEFAULT_SIZE, LOADING_STATUS, MANAGEMENT_CONTENT } from '../../ultis/constant';
+import FinanceKnowledge from './FinanceKnowledge';
 import FinanceKnowledgeContent from './FinanceKnowledgeContent';
 import QuestionAnswerContent from './QuestionAnswerContent';
 import QuestionContent from './QuestionContent';
@@ -27,6 +28,9 @@ const ManageFinanceKnowledge = () => {
   const [paginate, setPaginate] = useState({ limit: DEFAULT_SIZE, offset: 0 });
   const [fileList, setFileList] = useState(null);
   const [editDisabled, setEditDisabled] = useState(true);
+  const [isEdit, setIsEdit] = useState(true);
+  const [addNew, setAddNew] = useState(false);
+  const [id, setId] = useState(null);
 
   const handleChange = (e) => {
     let values;
@@ -143,22 +147,30 @@ const ManageFinanceKnowledge = () => {
     }
   };
 
+  // const handleAddNew = () => {
+  //   setEditDisabled(false);
+  //   setItemContent(null);
+  //   setFileList(null);
+  // };
+
   const handleAddNew = () => {
     setEditDisabled(false);
     setItemContent(null);
-    setFileList(null);
+    setAddNew(true);
+    setIsEdit(false);
   };
 
   const handleChangeOption = (e) => {
-    setEditDisabled(true);
-    setItemContent(null);
+    // setEditDisabled(true);
+    // setItemContent(null);
     setFileList(null);
+    setId(null);
     setOption(e);
   };
 
   useEffect(() => {
     //fetch data
-    dispatch(retrieveData({ type: option, params: paginate }));
+    option && dispatch(retrieveData({ type: option, params: paginate }));
   }, [option, contents.isReload, paginate]);
 
   return (
@@ -207,8 +219,10 @@ const ManageFinanceKnowledge = () => {
                         setPrevItem(item);
                         setFileList([{ url: item.image }]);
                         setEditDisabled(true);
+                        setId(item?.id);
+                        setIsEdit(true);
                       }}
-                      className={`${item.id === itemContent?.id ? 'active' : ''}`}
+                      className={`${item.id === id ? 'active' : ''}`}
                     >
                       <Typography.Text ellipsis>{item.title || item.question}</Typography.Text>
                     </List.Item>
@@ -220,22 +234,31 @@ const ManageFinanceKnowledge = () => {
           </Col>
 
           <Col xs={16} lg={17} flex={1}>
-            <Layout.Content className="manageContent">
+            <Layout.Content /* className="manageContent" */>
               {option !== MANAGEMENT_CONTENT[1].value ? (
-                <FinanceKnowledgeContent
-                  content={itemContent}
-                  onChange={handleChange}
-                  onUpload={handleFileList}
-                  fileList={fileList}
-                  onSave={handleClick}
-                  onDelete={handleDelete}
-                  onCancel={handleCancel}
-                  isEdit={editDisabled}
-                  setEdit={setEditDisabled}
+                // <FinanceKnowledgeContent
+                //   content={itemContent}
+                //   onChange={handleChange}
+                //   onUpload={handleFileList}
+                //   fileList={fileList}
+                //   onSave={handleClick}
+                //   onDelete={handleDelete}
+                //   onCancel={handleCancel}
+                //   isEdit={editDisabled}
+                //   setEdit={setEditDisabled}
+                // />
+                <FinanceKnowledge
+                  id={id}
+                  option={option}
+                  setId={setId}
+                  addNew={addNew}
+                  setAddNew={setAddNew}
+                  isEdit={isEdit}
+                  setIsEdit={setIsEdit}
                 />
               ) : (
                 <>
-                  <QuestionAnswerContent
+                  {/* <QuestionAnswerContent
                     onChange={handleChange}
                     content={itemContent}
                     onDelete={handleDelete}
@@ -244,8 +267,16 @@ const ManageFinanceKnowledge = () => {
                     isEdit={editDisabled}
                     setEdit={setEditDisabled}
                     option={option}
+                  /> */}
+                  <QuestionContent
+                    id={id}
+                    option={option}
+                    setId={setId}
+                    addNew={addNew}
+                    setAddNew={setAddNew}
+                    isEdit={isEdit}
+                    setIsEdit={setIsEdit}
                   />
-                  {/* <QuestionContent id={itemContent?.id} option={option} /> */}
                 </>
               )}
             </Layout.Content>

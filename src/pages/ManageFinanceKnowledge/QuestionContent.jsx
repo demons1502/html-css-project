@@ -1,227 +1,192 @@
 import { DeleteOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { Carousel, List, Pagination, Form, message } from 'antd';
-import React from 'react';
-import { useRef } from 'react';
-import { useState } from 'react';
-import { memo } from 'react';
-import { useEffect } from 'react';
+import { Form } from 'antd';
+import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Edit from '../../assets/images/icons/components/Edit';
 import LikeIcon from '../../assets/images/icons/likeIcon.svg';
 import IconPlus from '../../assets/images/icons/plus.svg';
+import ModalConfirm from '../../components/ModalConfirm';
 import { Button, Input } from '../../components/styles';
-import Title from '../../components/Title';
-import { getOne } from '../../services/manageContent';
-import { getDetail, likeContent } from '../../slices/managementContent';
-import ManageContentInput from './ManageContentInput';
+import { createContent, deleteContent, getDetail, likeContent, updateContent } from '../../slices/managementContent';
 import './questionContent.scss';
 
 const QuestionAnswerContent = (props) => {
-  const { id, option } = props;
-  const [answers, setAnswers] = useState(null);
-  const [current, setCurrent] = useState(1);
-  const [question, setQuestion] = useState(null);
-  const [data, setData] = useState(null);
+  const { id, option, setId, addNew, setAddNew, isEdit, setIsEdit } = props;
 
-  const { detail, isReload } = useSelector((state) => state.managementContentReducer);
+  const [answers, setAnswers] = useState([]);
+  const [current, setCurrent] = useState(0);
+  const [answer, setAnswer] = useState({});
+  const [data, setData] = useState({});
+  console.log(data);
 
   const dispatch = useDispatch();
+  const { detail, isReload } = useSelector((state) => state.managementContentReducer);
 
-  const carouselRef = useRef();
   const [form] = Form.useForm();
-  const { Item } = Form;
-
-  const setting = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await getOne(option, id);
-        setData(res.data);
-      } catch (err) {
-        message.error({
-          content: err.response.data,
-          duration: 3,
-        });
-      }
-    };
-    id && fetchData();
-  }, [id]);
 
   const handleChange = (e) => {
     let values;
-    const id = e.target.id ? e.target.id : undefined;
     const name = e.target.name;
-    values = { ...data, [name]: e.target.value };
+    values = { ...answer, [name]: e.target.value };
+    setAnswer(values);
+  };
+
+  const handleChange1 = (e) => {
+    let values;
+    const name = e.target.name;
+    values = {
+      ...data,
+      answers: [...answers],
+      [name]: e.target.value,
+    };
     setData(values);
   };
 
-  const onFinish = (values) => {
-    console.log(values);
+  const handleSave = () => {
+    const info = {
+      question: {
+        question: data?.question,
+        category: data?.category,
+      },
+      answers: [...answers, { ...answer }],
+    };
+    if (!data?.id) {
+      dispatch(createContent({ type: option, payload: info }));
+      setData([]);
+      setAnswers([]);
+      setAnswer({});
+      setAddNew(false);
+      setId(null);
+    } else {
+      dispatch(updateContent({ type: option, id: data.id, payload: info }));
+      setData([]);
+      setAnswers([]);
+      setAnswer({});
+      setAddNew(false);
+      setId(null);
+    }
   };
 
   const handleAddAnswer = () => {
-    const newAnswer = {
-      answer: '',
-    };
-    carouselRef.current.goTo(answers.length);
-    setAnswers([...answers, newAnswer]);
-    setCurrent(answers.length - 1);
-    setEdit(false);
+    setCurrent(answers?.length + 1);
+    setIsEdit(false);
   };
 
-  // const onLike = (id) => {
-  //   const payload = { type: option, id: id };
-  //   dispatch(likeContent(payload));
-  // };
+  const onLike = (id) => {
+    const payload = { type: option, id: id };
+    dispatch(likeContent(payload));
+  };
 
-  // useEffect(() => {
-  //   detail && setQuestion(detail);
-  //   detail && setAnswers(detail.answers);
-  // }, [detail]);
-
-  // useEffect(() => {
-  //   const payload = { type: option, id: content?.id };
-  //   content && dispatch(getDetail(payload));
-  // }, [content, isReload]);
-
-  // const fields = [
-  //   {
-  //     name: 'question',
-  //     value: data?.question,
-  //     onChange: handleChange,
-  //   },
-  //   {
-  //     name: 'category',
-  //     value: data?.category,
-  //     onChange: handleChange,
-  //   },
-  // ];
+  const handleDelete = (id) => {
+    if (id) {
+      ModalConfirm({
+        content: `Xác nhận xóa nội dung`,
+        callApi: () => {
+          dispatch(deleteContent({ type: option, id: id })), setId(null), setAnswer({}), setData(null), setAnswers([]);
+        },
+      });
+    } else {
+      ModalConfirm({
+        content: `Chọn nội dung cần xóa`,
+        callApi: () => {
+          return;
+        },
+      });
+    }
+  };
 
   useEffect(() => {
-    if (data) {
-      if (Object.keys(data).length > 0) {
-        form.setFieldsValue({ ...data });
-      } else {
-        form.resetFields();
-      }
-    }
-  }, [data]);
+    answers && setAnswer(answers[current]);
+  }, [current, id, answers]);
+
+  useEffect(() => {
+    const payload = { type: option, id: id };
+    id && dispatch(getDetail(payload));
+  }, [id, isReload]);
+
+  useEffect(() => {
+    detail && setData(detail);
+    detail && setAnswers(detail?.answers);
+    detail && setCurrent(0);
+  }, [detail]);
+
+  useEffect(() => {
+    setData([]);
+    setAnswers([]);
+    setId(null);
+  }, [option, addNew]);
 
   return (
-    <>
-      {/* <div className="questionAnswerContent">
-        <List
-          size="small"
-          header={
-            <div className="manageContent-header">
-              <Title title="Nội dung" />
-              {content && (
-                <div className="manageContent-header_icon">
-                  {isEdit && (
-                    <span onClick={() => setEdit(false)}>
-                      <Edit color="#36b872" />
-                    </span>
-                  )}
-
-                  <span onClick={() => onDelete(content)}>
-                    <DeleteOutlined className="icon" />
-                  </span>
-                </div>
+    <div className="questionContent">
+      <div className="questionContent-header">
+        <div className="questionContent-header_title">
+          <h3>Nội dung</h3>
+        </div>
+        <div className="questionContent-header_button">
+          {data?.length > 0 && (
+            <div className="questionContent-header_icon">
+              {isEdit && (
+                <span onClick={() => setIsEdit(false)}>
+                  <Edit color="#36b872" className="icon" />
+                </span>
               )}
+              <span onClick={() => handleDelete(id)}>
+                <DeleteOutlined className="icon" />
+              </span>
             </div>
-          }
-          footer={
-            <div className="manageContent-footer">
-              <div className="manageContent-footer_button">
-                <Button className="btn-danger" onClick={() => onCancel()}>
-                  Hủy
-                </Button>
-                <Button type="primary" onClick={() => onSave(content)}>
-                  Lưu
-                </Button>
+          )}
+        </div>
+      </div>
+      <div className="questionContent-container">
+        <Form className="form" form={form} autoComplete="off">
+          <div className="form-item">
+            <Input
+              name="question"
+              className="green-color"
+              placeholder="Nhập nội dung câu hỏi"
+              prefix="Câu hỏi: "
+              value={data?.question}
+              onChange={handleChange1}
+              bordered={false}
+              disabled={isEdit}
+            />
+          </div>
+          <div className="form-item">
+            <Input
+              name="category"
+              placeholder="Nhập nội dung câu hỏi"
+              prefix="Công việc: "
+              value={data?.category}
+              onChange={handleChange1}
+              bordered={false}
+              disabled={isEdit}
+            />
+          </div>
+          <div className="questionContent-container_answer">
+            <div className="questionContent-card">
+              <div className="questionContent-card_header">
+                <div className="questionContent-card_auth">
+                  Tác giả: <span>{answer?.author?.fullname || ''}</span>
+                </div>
+                <div className="questionContent-card_like">
+                  <img src={LikeIcon} onClick={() => onLike(answer?.id)} className="like-icon" />
+                  <span>{answer?.like || 0}</span>
+                </div>
+              </div>
+              <div className="questionContent-card_text">
+                <Input.TextArea
+                  name="answer"
+                  autoSize
+                  bordered={false}
+                  value={answer?.answer}
+                  onChange={handleChange}
+                  disabled={isEdit}
+                />
               </div>
             </div>
-          }
-        >
-          <div className="manageContent-container">
-            <ManageContentInput
-              name="question"
-              onChange={onChange}
-              value={content?.title || content?.question}
-              title="Câu hỏi"
-              placeholder="Nhập nội dung câu hỏi"
-              color
-              isDisabled={isEdit}
-              autoFocus={isEdit}
-            />
-            <ManageContentInput
-              name="category"
-              title="Công việc"
-              placeholder="Nhập nội dung công việc"
-              onChange={onChange}
-              value={content?.category}
-              isDisabled={isEdit}
-            />
-            <div className="questionAnswerContent-answer">
-              {answers?.length > 0 ? (
-                <>
-                  <Carousel {...setting} ref={carouselRef} arrows>
-                    {answers?.map((answer, index) => (
-                      <div className="questionAnswerContent-answer_main" key={index}>
-                        <div className="questionAnswerContent-answer_auth">
-                          <p>
-                            Tác giả: <span>{answer?.author?.fullname}</span>
-                          </p>
-                          <p>
-                            <img src={LikeIcon} onClick={() => onLike(answer.id)} /> {answer?.like}
-                          </p>
-                        </div>
-                        <div className="questionAnswerContent-answer_content">
-                          <ManageContentInput
-                            name="answer"
-                            id={answer?.id}
-                            textarea
-                            onChange={onChange}
-                            value={answer?.answer}
-                            input={false}
-                            isDisabled={isEdit}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </Carousel>
-                </>
-              ) : (
-                <div className="questionAnswerContent-answer_main">
-                  <div className="questionAnswerContent-answer_auth">
-                    <p>
-                      Tác giả: <span>{content?.author?.fullname}</span>
-                    </p>
-                    <p>
-                      <img src={LikeIcon} /> 0
-                    </p>
-                  </div>
-                  <div className="questionAnswerContent-answer_content">
-                    <ManageContentInput
-                      name="answer"
-                      textarea
-                      onChange={onChange}
-                      value={content?.answer}
-                      input={false}
-                      isDisabled={isEdit}
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="questionAnswerContent-pagination">
+          </div>
+          <div className="questionContent-paginate">
+            <div className="questionContent-paginate_add">
               <Button
                 className="btn-add-new btn-no-border"
                 icon={<img src={IconPlus} alt="" />}
@@ -229,141 +194,37 @@ const QuestionAnswerContent = (props) => {
               >
                 Thêm câu trả lời khác
               </Button>
-              <Pagination
-                total={answers?.length}
-                pageSize={1}
-                itemRender={itemRender}
-                showLessItems
-                current={current}
-                onChange={(page) => setCurrent(page)}
-              />
+            </div>
+            <div className="questionContent-paginate_change">
+              <button
+                className="btn-change"
+                disabled={current <= 0 ? true : false}
+                onClick={() => setCurrent(current - 1)}
+              >
+                <span>Trước</span>
+                <LeftOutlined className="icon" />
+              </button>
+              <button
+                className="btn-change"
+                disabled={current >= answers?.length - 1 ? true : false}
+                onClick={() => setCurrent(current + 1)}
+              >
+                <RightOutlined className="icon" />
+                <span>Sau</span>
+              </button>
             </div>
           </div>
-        </List>
-      </div> */}
-      <div className="questionContent">
-        <div className="questionContent-header">
-          <div className="questionContent-header_title">
-            <h3>Nội dung</h3>
+          <div className="questionContent-submit">
+            <Button className="btn-danger" disabled={isEdit}>
+              Hủy
+            </Button>
+            <Button type="primary" onClick={handleSave} disabled={isEdit}>
+              Lưu
+            </Button>
           </div>
-          <div className="questionContent-header_button">
-            <div className="questionContent-header_icon">
-              <span>
-                <Edit color="#36b872" className="icon" />
-              </span>
-              <span>
-                <DeleteOutlined className="icon" />
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="questionContent-container">
-          <Form
-            className="form"
-            form={form}
-            onFinish={onFinish}
-            initialValues={{
-              remember: true,
-            }}
-            autoComplete="off"
-          >
-            {/* <Form.Item name="question">
-              <Input placeholder="Nhập nội dung câu hỏi" prefix="Câu hỏi: " bordered={false} />
-            </Form.Item>
-            <Form.Item name="category">
-              <Input placeholder="Nhập nội dung câu hỏi" prefix="Công việc: " bordered={false} />
-            </Form.Item> */}
-            <div className="form-item">
-              <Input
-                name="question"
-                className="green-color"
-                placeholder="Nhập nội dung câu hỏi"
-                prefix="Câu hỏi: "
-                value={data?.question}
-                onChange={handleChange}
-                bordered={false}
-              />
-            </div>
-            <div className="form-item">
-              <Input
-                name="category"
-                placeholder="Nhập nội dung câu hỏi"
-                prefix="Công việc: "
-                value={data?.category}
-                onChange={handleChange}
-                bordered={false}
-              />
-            </div>
-            <div className="questionContent-container_answer">
-              {data?.answers?.length > 0 ? (
-                <Carousel {...setting} autoplay>
-                  {data?.answers?.map((answer, index) => (
-                    <div key={index} className="questionContent-card">
-                      <div className="questionContent-card_header">
-                        <div className="questionContent-card_auth">
-                          Tác giả: <span>{answer?.author?.fullname}</span>{' '}
-                        </div>
-                        <div className="questionContent-card_like">
-                          <img src={LikeIcon} /> <span>{answer?.like}</span>
-                        </div>
-                      </div>
-                      <div className="questionContent-card_text">
-                        <Input.TextArea
-                          placeholder=""
-                          autoSize
-                          value={answer.answer}
-                          onChange={handleChange}
-                          bordered={false}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </Carousel>
-              ) : (
-                <div className="questionContent-card">
-                  <div className="questionContent-card_header">
-                    <div className="questionContent-card_auth">Tác giả: </div>
-                    <div className="questionContent-card_like">
-                      <img src={LikeIcon} /> <span>0</span>
-                    </div>
-                  </div>
-                  <div className="questionContent-card_text">
-                    <Input.TextArea placeholder="" autoSize bordered={false} />
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="questionContent-paginate">
-              <div className="questionContent-paginate_add">
-                <Button
-                  className="btn-add-new btn-no-border"
-                  icon={<img src={IconPlus} alt="" />}
-                  onClick={handleAddAnswer}
-                >
-                  Thêm câu trả lời khác
-                </Button>
-              </div>
-              <div className="questionContent-paginate_change">
-                <button className="btn-change">
-                  <span>Trước</span>
-                  <LeftOutlined className="icon" />
-                </button>
-                <button className="btn-change">
-                  <RightOutlined className="icon" />
-                  <span>Sau</span>
-                </button>
-              </div>
-            </div>
-            <div className="questionContent-submit">
-              <Button className="btn-danger">Hủy</Button>
-              <Button type="primary" htmlType="submit">
-                Lưu
-              </Button>
-            </div>
-          </Form>
-        </div>
+        </Form>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -8,7 +8,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave }) => {
   const [totalOfMoney, setTotalOfMoney] = useState(20000000);       //so tien dau tu them
   const [additionalInvestmentYear, setAdditionalInvestmentYear] = useState(10);   //so nam dau tu them
   const [bankRate, setBankRate] = useState(6)
-
+  // const [valueColum, setValueColum] = useState(0)
   // console.log("investmentYear", investmentYear);
   // console.log("percentage", percentage);
   // console.log("totalOfMoney", totalOfMoney);
@@ -35,48 +35,71 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave }) => {
 
   const columnC = 30000       //fix if API return Arr
   const columnD = 20000       //fix if API return Arr
-  const columnL = [85, 75, 20]
-  const columnN = [2, 2, 2, 2, 2]
+  const columnL = [85, 75, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  const columnN = [2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
   const columnJ7 = 8.70
-  const columnR = [90, 75, 60, 45, 30, 15]
-  const columnQ = (i) => {                    //fix if API return Arr
-    (columnC * columnR[i] - calculatorF(i) > 0) ? columnC * columnR[i] : columnC * columnR[i]
-  }
-  // columnL[i-1] ? columnC * (100 - columnL[i-1]) * (100 + percentage) / 10000 : columnC * 100 * (100 + percentage) / 10000
+  const columnR = [90, 75, 60, 45, 30, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  const columnT = [50] // all  1ty< column C < 1.5ty =>100% , lon hon 1.5ty => 10%, nho hon 1ty=>50%
+
+  // const setValueColumnT()=>{
+  //   columnC.map
+  // }
+
   const calculatorE = (i) => {
     return (columnC + columnD) * (i + 1)
   }
+
+  var totalColumnF;
   const calculatorF0 = (i) => {
-    let result = columnL[i] ? columnC * (100 - columnL[i]) * (100 + percentage) / 10000 : columnC * 100 * (100 + percentage) / 10000
-    return result.toFixed()
+    totalColumnF = columnL[i] ? columnC * (100 - columnL[i]) * (100 + percentage) / 10000 : columnC * 100 * (100 + percentage) / 10000
+    return totalColumnF.toFixed()
   }
   const calculatorF1 = (i) => {
-    const index = i - 1
-    let valueAll = document.querySelectorAll('.calculatorF')
-    if (valueAll[index] != undefined) {
-      let valueAfterI = valueAll[index].innerText
-      let valueAfterIFormat = Number(valueAfterI)
-      console.log(i, valueAfterIFormat);
-      // return columnL[i] ? (columnC * (100 - columnL[i]) + valueAfterIFormat) * (100 + percentage) / 10000 : (columnC * 100 + valueAfterIFormat) / 10000;
-
-
-      
-      let result = columnL[i] ? columnC * (100 - columnL[i]) * (100 + percentage) / 10000 : columnC * 100 * (100 + percentage) / 10000
-      return result.toFixed()
-    }
+    const formatL = (100 - columnL[i]) / 100
+    totalColumnF = (Number(formatL * columnC) + Number(totalColumnF)) * 1.0685
+    return totalColumnF.toFixed()
   }
-  const calculatorG = (i) => {
-    return columnN[i] ? columnD * (100 - columnN[i]) * (100 + columnJ7) / 10000 : columnC * 101 * (100 + columnJ7) / 10000
+
+  var totalColumnG;
+  const calculatorG0 = (i) => {
+    totalColumnG = columnD * (100 - columnN[i]) * (100 + columnJ7) / 10000
+    return totalColumnG.toFixed()
+  }
+  const calculatorG1 = (i) => {
+    let formatN = (100 - columnN[i]) / 100
+    let formatJ7 = (100 + columnJ7) / 100
+    totalColumnG = (Number(formatN * columnD) + Number(totalColumnG)) * formatJ7
+    return totalColumnG.toFixed()
   }
   const calculatorH = (i) => {
-    // const result = calculatorF(i) + calculatorG(i)
-    // return result.toFixed(2)
-    return 0
+    const result = Number(totalColumnG) + Number(totalColumnF)
+    return result.toFixed()
   }
-  const calculatorI = (i) => {
-    // return calculatorG(i) + ((calculatorF(i) - columnQ(i) > 0) ? calculatorF(i) - columnQ(i) : 0)
-    return 0
+  const calculatorI0 = (i) => {
+    let formatColumnR = columnR[i] / 100
+    let columnQ = (columnC * columnR[i] - totalColumnF > 0) ? (columnC * formatColumnR) : (columnC * formatColumnR)
+    const result = Number(totalColumnG) + ((Number(totalColumnF) - columnQ > 0) ? Number(totalColumnF) - columnQ : 0)
+    return result.toFixed()
   }
+  const calculatorI1 = (i) => {
+    let formatColumnR = columnR[i] / 100
+    let columnQ = (columnC * columnR[i] - totalColumnF > 0) ? (columnC * formatColumnR) : (columnC * formatColumnR)
+    console.log('g',totalColumnG);
+    console.log('f',totalColumnF);
+    console.log('q',columnQ);
+
+    const result = Number(totalColumnG) + ((Number(totalColumnF) - columnQ > 0) ? Number(totalColumnF) - columnQ : 0)
+
+
+
+    return result.toFixed()
+
+    // check column T to get % 
+    // let totalI= Number(result) + (columnC * columnT)/100
+    // return totalI.toFixed()
+  }
+
+
   const calculatorJ = (i) => {
     let ii = i + 1
     let total = columnC + columnD
@@ -91,10 +114,10 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave }) => {
     })
     return result.toFixed();
   }
+
   const renderTable = (age, length) => {
     let arr = []
     for (let i = 0; i < length; i++) {
-      // console.log(i);
       let index = i
       arr.push(
         <tr key={i}>
@@ -103,10 +126,10 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave }) => {
           <td>{columnC}</td>
           <td>{columnD}</td>
           <td>{calculatorE(i)}</td>
-          <td className="calculatorF">{(i == 0) ? calculatorF0(i) : calculatorF1(i)}</td>
-          <td className="calculatorG">{calculatorG(i)}</td>
+          <td>{(i == 0) ? calculatorF0(i) : calculatorF1(i)}</td>
+          <td>{(i == 0) ? calculatorG0(i) : calculatorG1(i)}</td>
           <td>{calculatorH(i)}</td>
-          <td>{calculatorI(i)}</td>
+          <td>{(i>1 && i<9) ? calculatorI1(i) : calculatorI0(i)}</td>
           <td>{calculatorJ(i)}</td>
         </tr>
       )

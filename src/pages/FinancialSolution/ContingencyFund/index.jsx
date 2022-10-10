@@ -50,7 +50,9 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
     // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
     endDate = endDate.setHours(23, 59, 59, 999);
     let startDate = new Date();
+    startDate = startDate.setHours(0, 0, 0, 0);   //fake dau` ngay`
     dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
+    // dispatch(getAppointment({ titles: 'finance', endDate: moment(endDate) })); //main code
   };
 
   useEffect(() => {

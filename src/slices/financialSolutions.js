@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
-  getAppointments, getSpeechScript, getAppointmentsById, getCustomerContract, postSaveFinance, getFinanceSolutions, getCustomer
+  getAppointments, getSpeechScript, getAppointmentsById, getCustomerContract, postSaveFinance, getFinanceSolutions, getCustomer, 
+  getPreparedIllustration
 } from '../services/financialSolutions';
 
 const initialState = {
@@ -11,6 +12,7 @@ const initialState = {
   customerSelect: {},
   customerContract: [],
   historyList: [],
+  preparedIllustration: null,
 };
 
 export const getAppointment = createAsyncThunk(
@@ -90,6 +92,17 @@ export const getFinanceSolution = createAsyncThunk(
     }
   }
 );
+export const getPreparedIllustrations = createAsyncThunk(
+  'financialSolutions/getPreparedIllustration',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await getPreparedIllustration(payload);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const financialSolutions = createSlice({
   name: 'financialSolutions',
@@ -129,6 +142,9 @@ const financialSolutions = createSlice({
     },
     [getCustomerByIdAndType.fulfilled]: (state, action) => {
       state.customerSelect.age = action.payload.age
+    },
+    [getPreparedIllustrations.fulfilled]: (state, action) => {
+      state.preparedIllustration = action.payload
     },
   },
 });

@@ -1,17 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { useEffect } from 'react';
 
 import {
-  getAppointments,getSpeechScript, getAppointmentsById, getCustomerContract, postSaveFinance,getFinanceSolutions
+  getAppointments, getSpeechScript, getAppointmentsById, getCustomerContract, postSaveFinance, getFinanceSolutions, getCustomer, 
+  getPreparedIllustration
 } from '../services/financialSolutions';
 
 const initialState = {
   data: [],
   customerAppRecords: [],
   getSpeechScript: null,
-  customerSelect: null,
+  customerSelect: {},
   customerContract: [],
   historyList: [],
+  preparedIllustration: null,
 };
 
 export const getAppointment = createAsyncThunk(
@@ -25,8 +26,6 @@ export const getAppointment = createAsyncThunk(
     }
   }
 );
-
-
 export const getSpeechScriptType = createAsyncThunk(
   'financialSolutions/getSpeechScriptType',
   async (payload, { rejectWithValue }) => {
@@ -38,12 +37,22 @@ export const getSpeechScriptType = createAsyncThunk(
     }
   }
 );
-
 export const getAppointmentByIds = createAsyncThunk(
   'financialSolutions/getAppointmentByIds',
   async (payload, { rejectWithValue }) => {
     try {
       const res = await getAppointmentsById(payload);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const getCustomerByIdAndType = createAsyncThunk(
+  'financialSolutions/getCustomer',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await getCustomer(payload);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -61,7 +70,6 @@ export const getCustomerContracts = createAsyncThunk(
     }
   }
 );
-
 export const postSaveFinances = createAsyncThunk(
   'financialSolutions/postSaveFinances',
   async (payload, { rejectWithValue }) => {
@@ -84,13 +92,24 @@ export const getFinanceSolution = createAsyncThunk(
     }
   }
 );
+export const getPreparedIllustrations = createAsyncThunk(
+  'financialSolutions/getPreparedIllustration',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await getPreparedIllustration(payload);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const financialSolutions = createSlice({
   name: 'financialSolutions',
   initialState,
-  reducers:{
-    updateSelectCustomer: (state, action)=>{
-      state.customerSelect= action.payload
+  reducers: {
+    updateSelectCustomer: (state, action) => {
+      state.customerSelect = action.payload
     }
   },
   extraReducers: {
@@ -121,10 +140,16 @@ const financialSolutions = createSlice({
     [getCustomerContracts.fulfilled]: (state, action) => {
       state.getFinanceSolution = action.payload
     },
+    [getCustomerByIdAndType.fulfilled]: (state, action) => {
+      state.customerSelect.age = action.payload.age
+    },
+    [getPreparedIllustrations.fulfilled]: (state, action) => {
+      state.preparedIllustration = action.payload
+    },
   },
 });
 
-export const {updateSelectCustomer} =financialSolutions.actions
+export const { updateSelectCustomer } = financialSolutions.actions
 const { reducer } = financialSolutions;
 
 export default reducer;

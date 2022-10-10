@@ -6,6 +6,7 @@ import { formatDataNumber } from '../../../helper';
 import { postFinanceDatas } from '../../../slices/financeSolutions';
 import InputNumber from '../../../components/common/InputNumber';
 import Input from '../../../components/common/Input';
+import { updateSelectCustomer, getCustomerByIdAndType} from '../../../slices/financialSolutions';
 
 const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) => {
   const [Percent, setPercent] = useState(0);
@@ -14,7 +15,7 @@ const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) 
   const [TotalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
   const [form] = Form.useForm();
-
+  console.log(userSelected);
   // dispatch
   const dispatch = useDispatch();
 
@@ -79,11 +80,12 @@ const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) 
     // } catch (e) {
     //   console.log(e);
     // }
-    userSelected
-      ? navigate('/advise/financial-solutions/minh-hoa-gia', {
-        state: { values: values, total: TotalAmount, typeFund: typeFund, userSelected: userSelected },
-      })
-      : null;
+    if (userSelected) {
+      dispatch(updateSelectCustomer({total: TotalAmount, typeFund: typeFund, userSelected: userSelected, values:values }))
+      dispatch(getCustomerByIdAndType({id:userSelected.customerId, typeId: userSelected.typeId}))
+      navigate("/advise/financial-solutions/minh-hoa-gia")
+    }
+    
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -143,7 +145,7 @@ const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) 
           </div>
         </Form.Item>
         <Form.Item
-          name="amount"
+          name="total"
           label="Tổng tiền chi tiêu thiết yếu/tháng"
           rules={[
             {
@@ -172,8 +174,8 @@ const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) 
         <Form.Item name="isPotential" valuePropName="checked">
           <Checkbox
             defaultChecked={false}
-            // onChange={(e) => setIsPotential(e.target.checked)}
-            // type="checkbox"
+          // onChange={(e) => setIsPotential(e.target.checked)}
+          // type="checkbox"
           >
             Không còn tiềm năng
           </Checkbox>

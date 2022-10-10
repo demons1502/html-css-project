@@ -7,7 +7,8 @@ import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import Dialogue from '../../../components/common/Dialogue/index';
-import { getAppointment, getAppointments } from '../../../slices/appointmentManagement';
+import { getAppointmentByIds } from '../../../slices/financialSolutions';
+import { getAppointments, getAppointment } from '../../../slices/appointmentManagement';
 
 // id
 // const { id } = location.state;
@@ -37,8 +38,64 @@ const ContingencyFund = () => {
   // title
   const [title] = useState(location?.state?.title);
   const dispatch = useDispatch();
-  const appointments = useSelector((state) => state.appointment);
+  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution);
 
+  const getAppointmentNoId = () => {
+    let endDate = new Date();
+    // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
+    endDate = endDate.setHours(23, 59, 59, 999);
+    let startDate = new Date();
+    startDate = startDate.setHours(0, 0, 0, 0);   //fake dau` ngay`
+    dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
+  };
+
+  useEffect(() => {
+    apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId();
+  }, []);
+
+  // useEffect(() => {
+  //   let arr = []
+  //   arr.push(customerAppRecords?.map(item => {
+  //     return { title: item.customerApptRecords[0].name, apptId: item.apptId, customerApptRecordId: item.customerApptRecords[0].customerApptRecordId, typeId: item.typeId, customerId: item.customerApptRecords[0].customerId }
+  //   }))
+  //   setLists(arr[0])
+  // }, [customerAppRecords])
+  // useEffect(() => {
+  //   let arr = [];
+  //   arr.push(
+  //     customerAppRecords?.map((item) => {
+  //       // dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
+  //       return {
+  //         title: item.customerApptRecords[0].name,
+  //         apptId: item.apptId,
+  //         customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
+  //       };
+  //     })
+  //   );
+  //   setLists(arr[0]);
+  // }, [customerAppRecords]);
+  // console.log(customerAppRecords);
+
+  // useEffect(() => {
+  //   const data = [];
+  //   const dataFilter = customerAppRecords.filter((item) =>
+  //     item.customerApptRecords[0].name.toLowerCase().includes(payload.toLowerCase())
+  //   );
+  //   data.push(
+  //     ...dataFilter.map((item) => {
+  //       return {
+  //         title: item.customerApptRecords[0].name,
+  //         apptId: item.apptId,
+  //         customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
+  //         customerId: item.customerApptRecords[0].customerId,
+  //       };
+  //     })
+  //   );
+  //   setLists(data);
+  // }, [customerAppRecords, payload]);
+
+  const appointments = useSelector((state) => state.appointment);
+  console.log(appointments.data);
   useEffect(() => {
     const apptId = searchParams.get('appointment_id');
     const customerId = searchParams.get('customer_id');
@@ -59,6 +116,7 @@ const ContingencyFund = () => {
   useEffect(() => {
     const customerList = appointments?.data?.length > 0 ? appointments?.data[0]?.customerApptRecords : null;
     const dataFilter = customerList?.filter((item) => item.name.toLowerCase().includes(payload.toLowerCase()));
+    console.log(customerList);
     setData(dataFilter);
   }, [appointments?.data, payload]);
 
@@ -133,7 +191,7 @@ const ContingencyFund = () => {
                   </div>
                   <ListCalculation
                     typeFund="prevention"
-                    userSelected={{ ...itemContent, apptId: apptId }}
+                    userSelected={appointments.data}
                     setKeywords={setKeywords}
                   />
                 </div>

@@ -6,6 +6,7 @@ import { formatDataNumber } from '../../../helper';
 import { postFinanceDatas } from '../../../slices/financeSolutions';
 import InputNumber from '../../../components/common/InputNumber';
 import Input from '../../../components/common/Input';
+import { updateSelectCustomer, getCustomerByIdAndType} from '../../../slices/financialSolutions';
 
 const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) => {
   const [Percent, setPercent] = useState(0);

@@ -1,0 +1,7 @@
+@use "../abstracts/" as *;
+
+.body-card {
+    border-radius: 35px;
+    background: $background-color-blogCard;
+    box-shadow: 0px 0px 6px $box-search-color;
+}

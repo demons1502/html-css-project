@@ -7,7 +7,7 @@ import { options } from './options';
 import { formatDataNumber } from '../../../helper';
 import { Button } from '../../../components/styles';
 
-const ListCalculation = ({typeFund, userSelected}) => {
+const ListCalculation = ({typeFund, userSelected,setKeywords}) => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 

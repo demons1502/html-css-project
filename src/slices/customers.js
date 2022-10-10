@@ -22,6 +22,7 @@ export const getCustomerList = createAsyncThunk('customers/get', async () => {
 
 export const editCustomer = createAsyncThunk('customers/update', async ({ id, data }) => {
   try {
+    console.log(data);
     const res = await updateCustomer(id, data);
     if (res?.status === 201 || res?.status === 200) {
       message.success('Lưu thông tin cá nhân thành công');
@@ -58,6 +59,18 @@ const customerSlice = createSlice({
         state.isLoading = false;
         state.updateCustomer = action.payload;
         state.error = '';
+        const customer = {
+          ...state.selectedCustomer,
+          ...action.payload
+        }
+        state.selectedCustomer = customer
+        const data = state.data
+        if (data) {
+          data.map((i) => {
+            return customer.customerId == i.customerId?customer: i
+          })
+        }
+        state.data = data
       })
       .addCase(editCustomer.rejected, (state, action) => {
         state.isLoading = false;

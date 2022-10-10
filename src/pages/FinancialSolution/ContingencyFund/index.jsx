@@ -1,16 +1,21 @@
-import { Col, Layout, List, Row, Typography } from "antd";
-import React, { useEffect, useState } from "react";
-import { sideBarMenuItems } from "../../../assets/fake-data/QuyDuPhongData";
-import SearchInputBox from "./SearchInputBox";
-import ListCalculation from "./ListCalculation";
+import { Col, Layout, List, Row, Typography } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { sideBarMenuItems } from '../../../assets/fake-data/QuyDuPhongData';
+import SearchInputBox from './SearchInputBox';
+import ListCalculation from './ListCalculation';
 // import ListDetails from "./ListDetails";
-import { Link, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { getAppointment, getSpeechScriptType, getAppointmentByIds, updateSelectCustomer } from "../../../slices/financialSolutions";
+import { Link, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getAppointment,
+  getSpeechScriptType,
+  getAppointmentByIds,
+  updateSelectCustomer,
+} from '../../../slices/financialSolutions';
 import moment from 'moment';
-import Dialogue from "../../../components/common/Dialogue/index"
-import { getFinanceDatas } from "../../../slices/financeSolutions";
-import { formatCountdown } from "antd/lib/statistic/utils";
+import Dialogue from '../../../components/common/Dialogue/index';
+import { getFinanceDatas } from '../../../slices/financeSolutions';
+import { formatCountdown } from 'antd/lib/statistic/utils';
 
 // id
 // const { id } = location.state;
@@ -30,25 +35,26 @@ import { formatCountdown } from "antd/lib/statistic/utils";
 const ContingencyFund = ({ apptId = null, customerId = null }) => {
   const [itemContent, setItemContent] = useState({});
   const [lists, setLists] = useState(null);
-  const [payload, setPayload] = useState("");
+  const [payload, setPayload] = useState('');
+  const [keywords, setKeywords] = useState({});
+  
 
-  const location = useLocation();  //thomas code get title from quan ly lich hen
+  const location = useLocation(); //thomas code get title from quan ly lich hen
   // title
   const [title] = useState(location?.state?.title);
   const dispatch = useDispatch();
-  var { customerAppRecords } = useSelector((state) => state.financialSolution)
-  console.log(customerAppRecords);
+  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution);
+
   const getAppointmentNoId = () => {
     let endDate = new Date();
     // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
     endDate = endDate.setHours(23, 59, 59, 999);
     let startDate = new Date();
-    dispatch(getAppointment({ titles: "finance", startDate: moment(startDate), endDate: moment(endDate) })) //main code
-  }
+    dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
+  };
 
   useEffect(() => {
-    dispatch(getSpeechScriptType('preventionFund'))
-    apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId()
+    apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId();
   }, []);
 
   useEffect(() => {
@@ -58,12 +64,48 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
     }))
     setLists(arr[0])
   }, [customerAppRecords])
+  // useEffect(() => {
+  //   let arr = [];
+  //   arr.push(
+  //     customerAppRecords?.map((item) => {
+  //       // dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
+  //       return {
+  //         title: item.customerApptRecords[0].name,
+  //         apptId: item.apptId,
+  //         customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
+  //       };
+  //     })
+  //   );
+  //   setLists(arr[0]);
+  // }, [customerAppRecords]);
+  // console.log(customerAppRecords);
 
-  useEffect(() => {   //select item 1
+  useEffect(() => {
+    const data = [];
+    const dataFilter = customerAppRecords.filter((item) =>
+      item.customerApptRecords[0].name.toLowerCase().includes(payload.toLowerCase())
+    );
+    data.push(
+      ...dataFilter.map((item) => {
+        return {
+          title: item.customerApptRecords[0].name,
+          apptId: item.apptId,
+          customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
+          customerId: item.customerApptRecords[0].customerId,
+        };
+      })
+    );
+    setLists(data);
+  }, [customerAppRecords, payload]);
+
+  useEffect(() => {
+    //select item 1
     if (lists) {
       setItemContent(lists[0]);
     }
-  }, [lists])
+  }, [lists]);
+
+
   return (
     <div className="quyduphone">
       {/* quyduphone-nav start */}
@@ -79,11 +121,12 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="feather feather-chevron-left">
+            className="feather feather-chevron-left"
+          >
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </Link>
-        <h3>{`${title ? title : "Quỹ dự phòng"}`}</h3>
+        <h3>{`${title ? title : 'Quỹ dự phòng'}`}</h3>
       </div>
 
       {/* quyduphone-nav end  */}
@@ -97,25 +140,25 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
               <div className="content-div-1">
                 <div className="container-left">
                   <div className="container-search-box">
-                    <h1 className="container-search-box-header">
-                      Người tham gia
-                    </h1>
+                    <h1 className="container-search-box-header">Người tham gia</h1>
                     <SearchInputBox setPayload={setPayload}></SearchInputBox>
                   </div>
 
-                  {
-                    lists?.length > 0 &&
+                  {lists?.length > 0 && (
                     <List
                       dataSource={lists}
                       renderItem={(item, index) => (
                         <List.Item
-                          onClick={() => { setItemContent(item) }}
-                          className={`${item === itemContent ? "active" : ""}`}>
+                          onClick={() => {
+                            setItemContent(item);
+                          }}
+                          className={`${item === itemContent ? 'active' : ''}`}
+                        >
                           <Typography.Text ellipsis>{item.title}</Typography.Text>
                         </List.Item>
                       )}
                     />
-                  }
+                  )}
                 </div>
 
                 {/* container-right start */}
@@ -123,7 +166,7 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation typeFund="prevention" userSelected={itemContent} />
+                  <ListCalculation typeFund="prevention" userSelected={itemContent} setKeywords={setKeywords} />
                 </div>
 
                 {/* container-right end */}
@@ -137,7 +180,12 @@ const ContingencyFund = ({ apptId = null, customerId = null }) => {
           <Col lg={12} md={24} sm={24} xs={24}>
             <Layout.Content className="manageContent">
               <div className="content-div-2">
-                <Dialogue title={"Quy trình tư vấn"} type={'preventionFund'} />
+                <Dialogue
+                  title={'Lời thoại'}
+                  type={'preventionFund'}
+                  customerId={itemContent?.customerId}
+                  keywords={keywords}
+                />
               </div>
             </Layout.Content>
           </Col>

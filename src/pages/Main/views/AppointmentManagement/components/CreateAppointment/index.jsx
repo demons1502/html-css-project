@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 
 //COMPONENTS
 import { Col, Form, message } from 'antd';
@@ -16,13 +17,19 @@ import InputSelect from '../InputSelect';
 import * as S from './styles';
 import { createAppointment } from '../../../../../../slices/appointmentManagement';
 
-export const CreateAppointment = ({ open, handleCancel }) => {
+export const CreateAppointment = ({ open, handleCancel, customerInfo, outsideLink }) => {
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  let udpatedSearchParams = new URLSearchParams(searchParams.toString());
   const { Option } = Select;
   const [form] = Form.useForm();
   const [typeId, setTypeId] = useState(1);
   const [customer, setCustomer] = useState({});
   const [title, setTitle] = useState('');
+
+  useEffect(() => {
+    customerInfo && setCustomer(customerInfo);
+  }, [customerInfo]);
 
   const handleChangeSelectCustomer = (value) => {
     setTypeId(value);
@@ -41,7 +48,8 @@ export const CreateAppointment = ({ open, handleCancel }) => {
 
     const startTime = moment(values.date).format('YYYY-MM-DD ') + moment(values.startTime).format('HH:mm:ss');
 
-    const endTime = moment(values.date).format('YYYY-MM-DD ') + moment(values.endTime).format('HH:mm:ss');
+    const endTime =
+      moment(values.date).format('YYYY-MM-DD ') + moment(values.endTime).subtract(1, 'seconds').format('HH:mm:ss');
 
     const data = {
       typeId: typeId,
@@ -53,8 +61,10 @@ export const CreateAppointment = ({ open, handleCancel }) => {
       note: values.note,
       subCustomerIds: subCustomerIds,
     };
+
     dispatch(createAppointment(data)).then(({ error }) => {
       if (!error) {
+        outsideLink && removeParam('CustomerId', 'TypeId');
         form.resetFields();
         handleCancel();
         message.success('Lịch hẹn của bạn vừa được tạo thành công. Chọn lịch hẹn để xem chi tiết.');
@@ -65,8 +75,14 @@ export const CreateAppointment = ({ open, handleCancel }) => {
   };
 
   const onCancel = () => {
+    setCustomer({})
     form.resetFields();
     handleCancel();
+  };
+
+  const removeParam = (key) => {
+    udpatedSearchParams.delete(key);
+    setSearchParams(udpatedSearchParams.toString());
   };
 
   return (
@@ -102,7 +118,12 @@ export const CreateAppointment = ({ open, handleCancel }) => {
                 },
               ]}
             >
-              <SelectTable customer={customer} handleChangeValue={handleChangeCustomer} typeId={typeId} />
+              <SelectTable
+                disabled={outsideLink}
+                customer={customer}
+                handleChangeValue={handleChangeCustomer}
+                typeId={typeId}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -179,9 +200,16 @@ export const CreateAppointment = ({ open, handleCancel }) => {
   );
 };
 
+CreateAppointment.defaultProps = {
+  outsideLink: false,
+  customerInfo: {},
+};
+
 CreateAppointment.prototype = {
   open: PropTypes.bool,
   handleCancel: PropTypes.func,
+  customerInfo: PropTypes.object,
+  outsideLink: PropTypes.bool,
 };
 
 export default CreateAppointment;

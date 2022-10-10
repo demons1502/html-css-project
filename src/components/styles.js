@@ -4,6 +4,8 @@ import {
   Upload as AntUpload,
   Select as AntSelect,
   Input as AntInput,
+  AutoComplete as AntAutoComplete,
+  DatePicker as AntDatePicker
 } from 'antd';
 import styled from 'styled-components';
 
@@ -157,7 +159,7 @@ export const Input = styled(AntInput)`
     border: unset;
     &.ant-input-lg {
       border-radius: 10px;
-      font-size: 14px;
+      font-size: 1.4rem;
     }
     &.ant-input-sm {
       border-radius: 3px;
@@ -165,4 +167,22 @@ export const Input = styled(AntInput)`
   }
 `;
 
+export const AutoComplete = styled(AntAutoComplete)`
+  input.ant-select-selection-search-input {
+    font-size: 1.4rem;
+    height: 4rem;
+  }
+`;
+
+export const DatePicker = styled(AntDatePicker)`
+  &.ant-picker { 
+    .ant-picker-input >input {
+      color: #333333 !important;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 1.4rem;
+      line-height: 1.5rem;
+    }
+  }
+`;
 

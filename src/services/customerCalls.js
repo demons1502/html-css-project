@@ -8,11 +8,12 @@ export const getCustomerCallById = async (cId) => {
 };
 
 export const updateCustomerCallRecord = async ({
+  customerCallId,
   customerCallRecordId,
   isPotential,
   isCompleted
 }) => {
-  const response = await sendPatch(ENDPOINT.customerCall + `/${customerCallRecordId}/records/current`, {
+  const response = await sendPatch(ENDPOINT.customerCall + `/${customerCallId}/records/current`, {
     customerCallRecordId,
     isPotential,
     isCompleted
@@ -21,8 +22,9 @@ export const updateCustomerCallRecord = async ({
   return response.data;
 };
 
-export const getSpeechScript = async (type) => {
-  const response = await sendGet('speech-scripts?type=' + type);
+export const getSpeechScript = async ({ type, customerId }) => {
+  const queryObj = new URLSearchParams({ type, customerId })
+  const response = await sendGet('speech-scripts?' + queryObj.toString());
 
   return response.data;
 };

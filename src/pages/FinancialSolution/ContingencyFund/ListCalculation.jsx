@@ -1,14 +1,15 @@
-import { Button, Checkbox, Form, Input, InputNumber } from "antd";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { postFinanceDatas } from "../../../slices/financeSolutions";
-import { updateSelectCustomer,getCustomerByIdAndType } from "../../../slices/financialSolutions";
+import { Button, Checkbox, Form } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { formatDataNumber } from '../../../helper';
+import { postFinanceDatas } from '../../../slices/financeSolutions';
+import InputNumber from '../../../components/common/InputNumber';
+import Input from '../../../components/common/Input';
 
-
-const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
+const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) => {
   const [Percent, setPercent] = useState(0);
-  const [Amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [isPotential, setIsPotential] = useState(false);
   const [TotalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
@@ -19,17 +20,18 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
 
   // setPercent
   useEffect(() => {
-    if (finaceDatas !== "" || finaceDatas !== undefined) {
-      setPercent(finaceDatas?.illustration?.investmentRate);
+    if (financeDatas !== '' || financeDatas !== undefined) {
+      setPercent(financeDatas?.illustration?.investmentRate);
     } else {
       setPercent(0);
     }
-  }, [finaceDatas]);
+  }, [financeDatas]);
 
   // setAmount
   const onChange = (value) => {
     setAmount(value);
   };
+
   // setAmount
   useEffect(() => {
     if (isPotential === undefined) {
@@ -37,11 +39,11 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
     } else {
       setIsPotential(true);
     }
-  }, [finaceDatas]);
+  }, [financeDatas]);
   // setTotalAmount
   useEffect(() => {
-    setTotalAmount((Amount * 12) / (Percent / 100));
-  }, [Amount, Percent]);
+    amount && Percent && setTotalAmount((amount * 12) / (Percent / 100));
+  }, [amount, Percent]);
 
   // submit data
   const onFinish = async (values) => {
@@ -86,21 +88,38 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.log('Failed:', errorInfo);
   };
 
   useEffect(() => {
-    setPercent(0)
-    form.resetFields()
-  }, [userSelected?.apptId])
+    setTotalAmount(0);
+    setAmount(0);
+    // setPercent(0);
+  }, []);
+
+  useEffect(() => {
+    setPercent(0);
+    form.resetFields();
+  }, [userSelected?.apptId]);
+
+  useEffect(() => {
+    const percent = Percent / 100;
+    const expensePerYear = amount * 12;
+    const fundValue = expensePerYear && expensePerYear / percent;
+    const numOfYear = fundValue && fundValue / expensePerYear;
+    const increaseIncomePerYear = expensePerYear && expensePerYear / 0.55;
+    setKeywords({
+      interestRate: percent,
+      expensePerMonth: amount,
+      expensePerYear: expensePerYear,
+      fundValue: fundValue,
+      numOfYear: numOfYear,
+      increaseIncomePerYear: increaseIncomePerYear,
+    });
+  }, [amount, Percent]);
+
   return (
-    <Form
-      form={form}
-      name="control-hooks"
-      onFinish={onFinish}
-      initialValues={{ amount: 0 }}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off">
+    <Form form={form} name="control-hooks" onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off">
       <div className="container-right-middle">
         <Form.Item
           name="percantage"
@@ -109,15 +128,17 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
             {
               required: true,
             },
-          ]}>
+          ]}
+        >
           <div className="percentage-field">
             <Input
               className="percentage-input"
               onChange={(e) => setPercent(Number(e.target.value))}
-              placeholder="0"
+              placeholder="Nhap"
               type="text"
-              style={{ width: 65, paddingRight: 0 }}
+              style={{ width: 65}}
               value={Percent}
+              size='large'
             />
             <span className="pIcon">%</span>
           </div>
@@ -129,36 +150,27 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected }) => {
             {
               required: true,
             },
-          ]}>
-          <InputNumber style={{ width: '100px' }}
-            controls={false}
+          ]}
+        >
+          <InputNumber
+            style={{ width: '120px' }}
             min={0}
             placeholder="0"
-            formatter={(value) =>
-              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
             onChange={onChange}
+            controls={false}
           />
         </Form.Item>
       </div>
       <div className="container-right-bottom">
         <p>
-          Thông tin quỹ:{" "}
-          <span className="total-amount">
-            {TotalAmount > 0 &&
-              TotalAmount.toFixed(2)
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            {(TotalAmount < 1 || isNaN(TotalAmount)) && "00.00"}
-          </span>
+          Thông tin quỹ: <span className="total-amount">{TotalAmount > 0 ? formatDataNumber(TotalAmount) : 0}</span>
         </p>
       </div>
 
       <div className="container-right-submit">
-        <Form.Item name="isPotential"
-          valuePropName="checked"
-        >
+        <Form.Item name="isPotential" valuePropName="checked">
           <Checkbox
             defaultChecked={false}
           // onChange={(e) => setIsPotential(e.target.checked)}

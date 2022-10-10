@@ -41,7 +41,7 @@ const fetch = (value, typeId, callback) => {
   timeout = setTimeout(getData, 300);
 };
 
-const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
+const SelectTable = ({ typeId, customer, handleChangeValue, keyForm, disabled }) => {
   const [data, setData] = useState([]);
   const [valueSeach, setvalueSeach] = useState();
   const [openDropDown, setOpenDropDown] = useState(false);
@@ -136,17 +136,24 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm }) => {
       open={ openDropDown }
       dropdownRender={ TableDropDown }
       dropdownStyle={ { minWidth: 800 } }
+      disabled={ disabled }
+      allowClear={ true }
     >
       <TableDropDown />
     </S.Select>
   );
 };
 
+SelectTable.defaultProps = {
+  disabled: false
+}
+
 SelectTable.prototype = {
   typeId: PropTypes.number,
   handleChangeValue: PropTypes.func,
   customer: PropTypes.object,
   keyForm: PropTypes.number,
+  disabled: PropTypes.bool
 };
 
 export default SelectTable;

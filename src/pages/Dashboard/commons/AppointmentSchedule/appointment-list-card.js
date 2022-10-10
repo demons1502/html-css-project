@@ -92,7 +92,7 @@ export default function AppointmentListCard(props) {
               {data.map((item, idx) => (
                 <AppointmentItemCard item={item} key={idx} handleUpdateItem={handleUpdateItem} update={update} />
               ))}
-              {data.length === 0 && <Empty />}
+              {data.length === 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
             </S.WrapTabs>
           </Spin>
         </S.Tabs.TabPane>

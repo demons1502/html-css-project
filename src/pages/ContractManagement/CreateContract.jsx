@@ -1,6 +1,6 @@
 import { React, useEffect } from 'react';
-import { Form, Row, Col, DatePicker, AutoComplete } from 'antd';
-import { Button, Select, Input } from "../../components/styles"
+import { Form, Row, Col } from 'antd';
+import { Button, Select, Input, AutoComplete, DatePicker } from "../../components/styles"
 import { useDispatch, useSelector } from 'react-redux';
 import { createContract, updateContract, getByIdApi } from '../../slices/contractManagement';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import useFormErrors from '../../hooks/useFormErrors'
 import { DEPOSIT_TERM as depositTermOptions, FORMAT_DATE } from '../../ultis/constant';
 import {  formatToUtcDate } from '../../helper/index'
 import moment from 'moment';
-import "../../assets/scss/ContractManagement/createContractStyle.scss"
+// import "../../assets/scss/ContractManagement/createContractStyle.scss"
 
 function CreateContract(props) {
   const { t } = useTranslation();
@@ -107,7 +107,7 @@ function CreateContract(props) {
           name='contractNumber'
           rules={[{ required: true }]}
         >
-          <Input placeholder='Nhập' type='number' className="input-item-outline" />
+          <Input placeholder='Nhập' type='text' className="input-item-outline" />
         </Form.Item>
       </Col>
       <Col span={6}>
@@ -156,7 +156,7 @@ function CreateContract(props) {
             ({ getFieldValue }) => ({
               validator(_) {
                 if (!!getFieldValue('value') && getFieldValue('value').replace(/,/g, '') < 10000000) {
-                  return Promise.reject(new Error('Số tiền tối thiểu là 50.000.000'));
+                  return Promise.reject(new Error('Số tiền tối thiểu là 10.000.000 đồng'));
                 }
                 return Promise.resolve();
               },
@@ -184,7 +184,7 @@ function CreateContract(props) {
           name='duration'
           rules={[{ required: true }]}
         >
-          <Input placeholder='Nhập' className="input-item-outline" />
+          <Input placeholder='Nhập' type="number" className="input-item-outline" />
         </Form.Item>
       </Col>
       <Col span={6}>

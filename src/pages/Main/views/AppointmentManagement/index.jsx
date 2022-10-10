@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useRouter from '../../../../hooks/useRouter';
 import moment from 'moment';
 import { getAppointments } from '../../../../slices/appointmentManagement';
+import { getCustomerByIdAndType } from '../../../../services/customers';
 
 // STYLES
 import * as S from './styles';
@@ -10,15 +12,21 @@ import * as S from './styles';
 import { Row, Col } from 'antd';
 import CalendarCustom from './components/CustomCalendar';
 import InformationAppointment from './components/InformationAppointment';
+import CreateAppointment from './components/CreateAppointment';
 
 const Appointment = () => {
   const dispatch = useDispatch();
+  const { query } = useRouter();
   const appointmentReducer = useSelector((state) => state.appointment);
+
   const { data } = appointmentReducer;
   const nowDate = new Date();
   const [event, setEvent] = useState();
+  const [openAppointment, setOpenAppointment] = useState(false);
+  const [customer, setCustomer] = useState({});
   const startDate = moment().clone().weekday(0).format('YYYY-MM-DD 00:00:00');
   const endDate = moment().clone().weekday(6).format('YYYY-MM-DD 23:59:59');
+
   useEffect(() => {
     dispatch(
       getAppointments({
@@ -36,6 +44,19 @@ const Appointment = () => {
       dataEvent ? setEvent(dataEvent) : setEvent(checkAppointment);
     }
   }, [data]);
+
+  useEffect(() => {
+    const { customerId, typeId } = query;
+    async function getCustomer() {
+      const { data } = await getCustomerByIdAndType(customerId, typeId);
+      if (data) {
+        setCustomer(data);
+        setOpenAppointment(true);
+      }
+    }
+
+    customerId && typeId && getCustomer();
+  }, [query]);
 
   const sort = (array) => {
     if (array) {
@@ -87,6 +108,14 @@ const Appointment = () => {
           <InformationAppointment info={event} />
         </Col>
       </Row>
+      <CreateAppointment
+        open={openAppointment}
+        handleCancel={() => {
+          setOpenAppointment(false);
+        }}
+        customerInfo={customer}
+        outsideLink={true}
+      />
     </S.WrapContainer>
   );
 };

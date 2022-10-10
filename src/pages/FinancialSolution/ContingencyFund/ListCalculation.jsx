@@ -1,11 +1,13 @@
-import { Button, Checkbox, Form, Input, InputNumber } from 'antd';
+import { Button, Checkbox, Form } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { formatDataNumber } from '../../../helper';
 import { postFinanceDatas } from '../../../slices/financeSolutions';
+import InputNumber from '../../../components/common/InputNumber';
+import Input from '../../../components/common/Input';
 
-const ListCalculation = ({ finaceDatas, typeFund, userSelected, setKeywords }) => {
+const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) => {
   const [Percent, setPercent] = useState(0);
   const [amount, setAmount] = useState(0);
   const [isPotential, setIsPotential] = useState(false);
@@ -18,12 +20,12 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected, setKeywords }) =
 
   // setPercent
   useEffect(() => {
-    if (finaceDatas !== '' || finaceDatas !== undefined) {
-      setPercent(finaceDatas?.illustration?.investmentRate);
+    if (financeDatas !== '' || financeDatas !== undefined) {
+      setPercent(financeDatas?.illustration?.investmentRate);
     } else {
       setPercent(0);
     }
-  }, [finaceDatas]);
+  }, [financeDatas]);
 
   // setAmount
   const onChange = (value) => {
@@ -37,10 +39,10 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected, setKeywords }) =
     } else {
       setIsPotential(true);
     }
-  }, [finaceDatas]);
+  }, [financeDatas]);
   // setTotalAmount
   useEffect(() => {
-    setTotalAmount((amount * 12) / (Percent / 100));
+    amount && Percent && setTotalAmount((amount * 12) / (Percent / 100));
   }, [amount, Percent]);
 
   // submit data
@@ -91,7 +93,7 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected, setKeywords }) =
   useEffect(() => {
     setTotalAmount(0);
     setAmount(0);
-    setPercent(0);
+    // setPercent(0);
   }, []);
 
   useEffect(() => {
@@ -100,7 +102,7 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected, setKeywords }) =
   }, [userSelected?.apptId]);
 
   useEffect(() => {
-    const percent = Percent / 100
+    const percent = Percent / 100;
     const expensePerYear = amount * 12;
     const fundValue = expensePerYear && expensePerYear / percent;
     const numOfYear = fundValue && fundValue / expensePerYear;
@@ -131,10 +133,11 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected, setKeywords }) =
             <Input
               className="percentage-input"
               onChange={(e) => setPercent(Number(e.target.value))}
-              placeholder="0"
+              placeholder="Nhap"
               type="text"
-              style={{ width: 65, paddingRight: 0 }}
+              style={{ width: 65}}
               value={Percent}
+              size='large'
             />
             <span className="pIcon">%</span>
           </div>
@@ -150,12 +153,12 @@ const ListCalculation = ({ finaceDatas, typeFund, userSelected, setKeywords }) =
         >
           <InputNumber
             style={{ width: '120px' }}
-            defaultValue={0}
             min={0}
             placeholder="0"
             formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
             parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
             onChange={onChange}
+            controls={false}
           />
         </Form.Item>
       </div>

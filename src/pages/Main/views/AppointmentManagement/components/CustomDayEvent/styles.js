@@ -7,13 +7,13 @@ export const WrapContainer = styled.div`
   border: ${(props) => `1px solid ${props.color}`};
   padding: 10px;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: ${(props) => props.startSchedular > 15 ? 'space-between' : 'center'};
   background-color: ${(props) => props.backgroundColor};
 `;
 
 export const Content = styled.span`
   display: flex;
-  height: 100%;
+  height: ${(props) => props.startSchedular > 15 ? '100%' : 'auto'};
   flex-direction: column;
   align-items: left;
 `;
@@ -22,7 +22,7 @@ export const BoxTitle = styled.span`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: ${(props) => props.startSchedular > 15 ? '10px' : '0px'};
 `;
 
 export const Name = styled.span`

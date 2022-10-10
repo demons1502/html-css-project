@@ -25,23 +25,26 @@ export default function MissedAppointment() {
   const handleCSKH = () => {
     navigate('/customer-care');
   };
-  
+
   const columns = [
     {
       dataIndex: 'host',
       key: 'host',
+      ellipsis: true,
       render: (_, record) => <MissedItemName record={record} />,
     },
     {
       dataIndex: 'time',
       key: 'time',
+      width: 140,
       render: (_, record) => <MissedItemDateTime record={record} />,
     },
     {
       key: 'action',
+      width: 120,
       render: () => (
-        <S.WrapButtonTable>
-          <S.Button $type="ghost" onClick={handleCSKH}>
+        <S.WrapButtonTable $center>
+          <S.Button $width="87px" $height="30px" $type="ghost" onClick={handleCSKH}>
             CSKH
           </S.Button>
         </S.WrapButtonTable>
@@ -81,16 +84,17 @@ export default function MissedAppointment() {
           rowKey={(record) => record.apptId}
           pagination={false}
           bordered={false}
-          scroll={{ x: dataTable.length > 0 && 460 }}
           showHeader={false}
           loading={loading}
           $height="320px"
-          $endLine
-          $borderBottom={dataTable.length < 5 ? (dataTable.length === 0 ? false : '') : false}
+          $borderBottom={dataTable.length === 0 ? false : ''}
           $heightRow="63px"
+          $paddingCel="5px"
         />
-        <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />
       </S.WrapContent>
+      <S.WrapPagination span={24}>
+        <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />
+      </S.WrapPagination>
     </S.WrapContainer>
   );
 }

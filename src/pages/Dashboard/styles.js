@@ -212,16 +212,39 @@ export const WrapButtonTitle = styled(AntDCol)`
 export const WrapButtonTable = styled.div`
   text-align: right;
   padding-right: 3px;
+
+  ${(props) =>
+    props.$paddingRight &&
+    css`
+      padding-right: ${props.$paddingRight || '0px'};
+    `};
+
+  ${(props) =>
+    props.$center &&
+    css`
+      text-align: center;
+    `};
 `;
 
 export const TextTable = styled.span`
   font-size: 12px;
   line-height: 15px;
   color: #999999;
+  max-width: 100%;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
   ${(props) =>
     props.$bold &&
     css`
       color: #333333;
+    `};
+  ${(props) =>
+    props.$paddingLeft &&
+    css`
+      padding-left: ${props.$paddingLeft};
     `};
 `;
 
@@ -230,8 +253,7 @@ export const CircleTag = styled.div`
   height: 6px;
   border-radius: 50%;
 
-  margin-left: 7px;
-  margin-top: 8px;
+  margin: 8px 6px 0px 7px;
   background-color: ${(props) => props?.$color || primaryColor};
 
   ${(props) =>
@@ -296,8 +318,7 @@ export const WrapIconTable = styled.img`
   width: 12px;
   height: 12px;
 
-  margin-left: 7px;
-  margin-top: 5px;
+  margin: 5px 6px 0px 0px;
 `;
 
 export const IconTooltip = styled(AntDIconTooltip)`
@@ -314,7 +335,7 @@ export const Table = styled(AntDTable)`
   .ant-table-thead tr {
     th {
       background: ${secondaryColor};
-      padding: 11.5px 20px;
+      padding: 11.5px;
       font-size: 1.4rem;
       border-bottom: none;
       font-weight: ${fontWeightSemiBold};
@@ -340,6 +361,12 @@ export const Table = styled(AntDTable)`
         }}
       }
     }
+
+    ${(props) =>
+      props.$heightRow &&
+      css`
+        height: ${props.$heightRow};
+      `};
   }
 
   .ant-table-tbody {
@@ -347,23 +374,22 @@ export const Table = styled(AntDTable)`
       td {
         font-size: 1.4rem;
         border-bottom: 1px dashed ${greyTableColor};
-        padding: 10px 20px;
+        padding: 0px 10px;
         vertical-align: middle;
+
+        ${(props) =>
+          props.$paddingCel &&
+          css`
+            padding: ${props.$paddingCel};
+          `};
 
         &:first-child {
           padding-left: 10px;
-          ${(props) => {
-            switch (props.$paddingIcon) {
-              case true:
-                return css`
-                  padding: 10px 20px;
-                `;
-              default:
-                return css`
-                  padding-left: 10px;
-                `;
-            }
-          }}
+          ${(props) =>
+            props.$paddingIcon &&
+            css`
+              padding-left: 20px;
+            `};
         }
       }
 
@@ -402,6 +428,14 @@ export const Table = styled(AntDTable)`
       border-bottom: 1px solid $white-color !important;
       color: $white-color;
     }
+  }
+
+  .ant-table-content {
+    ${(props) =>
+      props.$height &&
+      css`
+        height: ${props.$height};
+      `};
   }
 
   ${(props) =>
@@ -550,6 +584,10 @@ export const WrapTextItem = styled(AntDCol)`
   font-size: ${(props) => props.$fontSize || '12px'};
   font-weight: ${(props) => props.$fontWeight || '500'};
   line-height: ${(props) => props.$lineHeight || '15px'};
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 export const WrapTextAlign = styled(AntDCol)`
@@ -586,7 +624,7 @@ export const WrapRatio = styled(AntDRow)`
 
 export const WrapTabs = styled.div`
   width: 100%;
-  height: 620px;
+  height: 720px;
   overflow: auto;
 
   ${(props) =>
@@ -612,8 +650,6 @@ export const Modal = styled(AntDModal)`
 `;
 
 export const WrapIconNextCall = styled.div`
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
 `;
@@ -626,4 +662,51 @@ export const Popover = styled(AntDPopover)`
   &:hover {
     cursor: pointer;
   }
+`;
+
+export const WrapPagination = styled(AntDCol)`
+  height: 54px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  .ant-pagination {
+    padding: 0px;
+  }
+`;
+
+export const WrapTextPadding = styled(AntDCol)`
+  ${(props) =>
+    props.$paddingTop &&
+    css`
+      padding-top: ${props.$paddingTop};
+    `};
+
+  ${(props) =>
+    props.$marginBottom &&
+    css`
+      margin-bottom: ${props.$marginBottom};
+    `};
+`;
+
+export const TextP = styled.p`
+  max-width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
+export const TextP2Row = styled.p`
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 1.2;
+`;
+
+export const WrapItemCenter = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

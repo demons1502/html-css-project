@@ -1,18 +1,32 @@
-import { Space } from 'antd';
+import { message, Space } from 'antd';
 import { FileDoneOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import * as S from './styles';
+import { updateCustomerCallRecord } from '../../services/customerCalls';
+import { creactAppointmentApi } from '../../services/appointment';
+import { useNavigate } from 'react-router-dom';
+import CreateAppointment from '../Main/views/AppointmentManagement/components/CreateAppointment';
+import { COMPANY_CUSTOMER_TYPE_ID, EMPLOYEE_CUSTOMER_TYPE_ID, PERSONAL_CUSTOMER_TYPE_ID } from './constants';
+import { updateCallRecord } from '../../slices/customerCall';
+import { createAppointment } from '../../slices/appointmentManagement';
+import moment from 'moment';
 
 export default function CallRecordInfo(props) {
-  const [currentCheck, setCurrentCheck] = useState('1');
-  const { callrecordData, customerData, customerCallData } = props;
-  const isCompleted = callrecordData?.completedAt;
+  const [currentCheck, setCurrentCheck] = useState('');
+  const [loadingBtn, setLoadingBtn] = useState({
+    complete: false,
+    cancel: false
+  });
+  const [openAppointment, setOpenAppointment] = useState(false);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { callRecord: callRecordData, customerInfo: customerData, customerCall: customerCallData } = useSelector(state => state.customerCall);
+  // const { callRecordData, customerData, customerCallData } = props;
+  const isCompleted = callRecordData?.completedAt;
 
-  useEffect(() => {
-    if (isCompleted) {
-      setCurrentCheck(customerData?.isPotential ? '1' : '2');
-    }
-  }, [isCompleted]);
 
   const renderNoteStatus = (sttEnum) => {
     switch (sttEnum) {
@@ -27,16 +41,111 @@ export default function CallRecordInfo(props) {
     }
   };
 
+  const getCustomerType = (typeId) => {
+    switch (typeId) {
+      case PERSONAL_CUSTOMER_TYPE_ID:
+        return t('call-schedule.user');
+      case EMPLOYEE_CUSTOMER_TYPE_ID:
+        return t('call-schedule.user');
+      case COMPANY_CUSTOMER_TYPE_ID:
+        return t('call-schedule.company');
+      default:
+        return '';
+    }
+  }
+
+  const handleUpdateCallRecord = async (action) => {
+    if (!action) return;
+    let isCompleted = null;
+    // console.log({ callrecordData, customerData, customerCallData })
+    if (action === 'complete') { isCompleted = true }
+    if (action === 'cancel') { isCompleted = false }
+
+    setLoadingBtn({ ...loadingBtn, [action]: true });
+    const prePayload = {
+      customerCallId: customerCallData.id,
+      customerCallRecordId: callRecordData.id,
+      isCompleted
+    }
+    if (currentCheck) {
+      prePayload.isPotential = currentCheck === '1' ? true : false
+    }
+
+    dispatch(updateCallRecord(prePayload)).then(({ error }) => {
+      setLoadingBtn({ ...loadingBtn, [action]: false });
+      if (error) {
+        message.error('Hoàn thành hoặc hủy cuộc gọi xảy ra lỗi')
+      } else {
+        navigate('/dashboard')
+      }
+    })
+  };
+
+  const toggleAppointment = (status) => {
+    if ([true, false].includes(status))
+      return setOpenAppointment(status);
+    return setOpenAppointment(!openAppointment)
+  };
+
+  const handleClickFuncBtn = async (action) => {
+    setLoadingBtn({ ...loadingBtn, [action]: true });
+
+    if (action === 'appointment') {
+      toggleAppointment(true)
+    } else {
+      const prePayload = {
+        customerCallId: customerCallData.id,
+        customerCallRecordId: callRecordData.id,
+        isCompleted: true
+      }
+      if (currentCheck) {
+        prePayload.isPotential = currentCheck === '1' ? true : false
+      }
+      // complete call
+      dispatch(updateCallRecord(prePayload)).then(({ error }) => {
+        setLoadingBtn({ ...loadingBtn, [action]: false });
+        if (error) {
+          message.error('Hoàn thành hoặc hủy cuộc gọi xảy ra lỗi')
+        } else {
+          const title = {
+            'survey': 'Khảo sát',
+            'consult': 'Tư vấn tài chính',
+            'solution': 'Tư vấn giải pháp'
+          };
+          const startTime = moment(new Date());
+          const appointmentPayload = {
+            typeId: customerData.typeId,
+            customerId: customerData.customerId,
+            title: title[action],
+            startTime: startTime.format('YYYY-MM-DD HH:mm:ss'),
+            endTime: startTime.add(10, 'm').format('YYYY-MM-DD HH:mm:ss'),
+            isAuto: true
+          };
+          // console.log('appointmentPayload', appointmentPayload)
+          creactAppointmentApi(appointmentPayload).then(data => {
+            const redirectPage = {
+              'survey': `/advise/survey?appointment_id=${data.apptId}`,
+              'consult': '/advise',
+              'solution': '/advise/financial-solutions'
+            }
+            navigate(redirectPage[action])
+          })
+        }
+      })
+    }
+    setLoadingBtn({ ...loadingBtn, [action]: false })
+  }
+
   return (
     <div>
       <S.WrapContent $padding="30px">
         <Space direction="vertical" size={15} style={{ width: '100%' }}>
           <Space align="center">
             <S.WrapText $color={S.gray200} $fontSize="13px">
-              {`Trạng thái:`}
+              {`${t('call-schedule.call-status-label')}:`}
             </S.WrapText>
             <S.WrapText $color={isCompleted ? S.error : S.green100} $fontSize="18px">
-              {isCompleted ? 'Đã kết thúc' : 'Đang gọi'}
+              {isCompleted ? t('call-schedule.call-canceled-status') : t('call-schedule.call-pending-status')}
             </S.WrapText>
           </Space>
           <S.WrapContent $padding="15px" $borderColor={S.gray100} $borderRadius="15px" $wFull={true}>
@@ -46,11 +155,11 @@ export default function CallRecordInfo(props) {
                   {customerData?.fullname}
                 </S.WrapText>
                 <Space>
-                  <S.WrapBtn $variant="filled" disabled={isCompleted} onClick={() => console.log('complete')}>
-                    {'Hoàn thành'}
+                  <S.WrapBtn $variant="filled" disabled={isCompleted || loadingBtn['complete']} onClick={() => handleUpdateCallRecord('complete')}>
+                    {t('call-schedule.call-completed-status')}
                   </S.WrapBtn>
-                  <S.WrapBtn $variant="filled" $colorScheme="error" disabled={isCompleted}>
-                    {'Hủy gọi'}
+                  <S.WrapBtn $variant="filled" $colorScheme="error" disabled={isCompleted || loadingBtn['cancel']} onClick={() => handleUpdateCallRecord('cancel')}>
+                    {t('call-schedule.call-cancel')}
                   </S.WrapBtn>
                 </Space>
               </S.FlexContent>
@@ -69,10 +178,10 @@ export default function CallRecordInfo(props) {
                     <Space direction="vertical" size={4}>
                       <Space align="center">
                         <div style={{ width: 4, height: 4, borderRadius: '50%', background: S.green100 }}></div>
-                        <S.WrapText>{`Loại khách hàng:`}</S.WrapText>
+                        <S.WrapText>{`${t('call-schedule.customer-type-label')}:`}</S.WrapText>
                       </Space>
                       <S.WrapText $fontWeight="700" style={{ marginLeft: 12 }}>
-                        {[1, 2].includes(customerData?.typeId) ? 'Cá nhân' : 'Doanh nghiệp'}
+                        {getCustomerType(customerData?.typeId)}
                       </S.WrapText>
                     </Space>
                   </Space>
@@ -80,23 +189,23 @@ export default function CallRecordInfo(props) {
                     <div style={{ fontSize: 16, color: S.gray200 }}>
                       <FileDoneOutlined />
                     </div>
-                    <S.WrapText>{`Ghi chú:`}</S.WrapText>
+                    <S.WrapText>{`${t('common.note')}:`}</S.WrapText>
                     <S.WrapText $fontWeight="700">{renderNoteStatus(customerData?.status)}</S.WrapText>
                   </Space>
                 </Space>
               </S.WrapContent>
               <Space align="center">
-                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted}>
-                  {`Đặt hẹn`}
+                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted || loadingBtn['appointment']} onClick={() => handleClickFuncBtn('appointment')}>
+                  {t('call-schedule.make-appointment')}
                 </S.WrapBtn>
-                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted}>
-                  {`Khảo sát`}
+                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted || loadingBtn['survey']} onClick={() => handleClickFuncBtn('survey')}>
+                  {t('call-schedule.survey')}
                 </S.WrapBtn>
-                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted}>
-                  {`Tư vấn`}
+                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted || loadingBtn['consult']} onClick={() => handleClickFuncBtn('consult')}>
+                  {t('call-schedule.consult')}
                 </S.WrapBtn>
-                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted}>
-                  {`Giải pháp`}
+                <S.WrapBtn $variant="outlined" $borderRadius="5px" disabled={isCompleted || loadingBtn['solution']} onClick={() => handleClickFuncBtn('solution')}>
+                  {t('call-schedule.solution')}
                 </S.WrapBtn>
               </Space>
             </Space>
@@ -105,16 +214,26 @@ export default function CallRecordInfo(props) {
             <S.WrapCheckbox
               checked={currentCheck === '1'}
               disabled={isCompleted}
-              onChange={() => setCurrentCheck('1')}
+              onChange={({ target }) => setCurrentCheck(target.checked ? '1' : '')}
             >
-              {`Gọi thêm lần sau`}
+              {t('call-schedule.call-more')}
             </S.WrapCheckbox>
-            <S.WrapCheckbox checked={currentCheck === '2'} disabled={isCompleted} onChange={() => setCurrentCheck('2')}>
-              {`Không còn tiềm năng`}
+            <S.WrapCheckbox 
+              checked={currentCheck === '2'} 
+              disabled={isCompleted} 
+              onChange={({ target }) => setCurrentCheck(target.checked ? '2' : '')}
+            >
+              {t('call-schedule.no-more-potential')}
             </S.WrapCheckbox>
           </Space>
         </Space>
       </S.WrapContent>
+      <CreateAppointment 
+        open={openAppointment} 
+        handleCancel={toggleAppointment}
+        customerInfo={customerData}
+        outsideLink={true}
+      />
     </div>
   );
 }

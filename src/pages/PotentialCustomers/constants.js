@@ -78,66 +78,10 @@ export const columns = [
     ),
   },
   {
-    title: 'Tỉ lệ thành công',
-    dataIndex: 'successfulProb',
-    key: 'successfulProb',
-    align: 'center',
-    render: (record) => (
-      <Row align="middle" justify="center" style={{ gap: '10px' }}>
-        <p>
-          {(() => {
-            switch (true) {
-              case record < 5:
-                return <p style={{ color: '#FF5855' }}>{record}0%</p>;
-              case record >= 5 && record <= 6:
-                return <p style={{ color: '#F6CF47' }}>{record}0%</p>;
-              case record >= 7 && record <= 9:
-                return <p style={{ color: '#3DBD78' }}>{record}0%</p>;
-              case record >= 10:
-                return <p style={{ color: '#3DBD78' }}>{record}0%</p>;
-              default:
-                return null;
-            }
-          })()}
-        </p>
-        <Tooltip
-          title={(() => {
-            switch (true) {
-              case record < 5:
-                return null;
-              case record >= 5 && record <= 6:
-                return <p style={{ color: '#F6CF47' }}>Hơi tiềm năng</p>;
-              case record >= 7 && record <= 9:
-                return <p style={{ color: '#3DBD78' }}>Có tiềm năng</p>;
-              case record >= 10:
-                return <p style={{ color: '#3DBD78' }}>Rất tiềm năng</p>;
-              default:
-                return null;
-            }
-          })()}
-        >
-          <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-        </Tooltip>
-      </Row>
-    ),
-  },
-  {
-    title: 'Nguồn gốc',
-    dataIndex: 'connectFrom',
-    key: 'connectFrom',
-    align: 'center',
-  },
-  {
-    title: 'Quan hệ',
-    dataIndex: 'relationship',
-    key: 'relationship',
-    align: 'center',
-  },
-  {
     title: 'Khác',
     dataIndex: 'note',
     key: 'note',
-    width: '10%',
+    width: '12%',
     className: 'other',
     align: 'center',
   },

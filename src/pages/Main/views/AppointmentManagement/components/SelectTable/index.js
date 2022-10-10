@@ -2,19 +2,20 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { getCustomers } from '../../../../../../services/customers';
+import { CUSTOMER_STATUS } from '../../../../../../constants/customerStatus';
 
 // COMPONENTS
 import { Table, Typography } from 'antd';
 
 //ULTIS
 import { classifyCustomer } from '../../../../../../ultis/classifyCustomer';
-import { getCustomerStatus } from '../../../../../../ultis/statusCustomer';
 
 //HOOKS
 import useOutsideClick from '../../../../../../hooks/useOutsideClick';
 
 // STYLES
 import * as S from './styles';
+
 
 let timeout;
 
@@ -52,12 +53,8 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm, disabled })
   }, [customer]);
 
   const handleSearch = (newValue) => {
-    if (newValue) {
-      fetch(newValue, typeId, setData);
-      setOpenDropDown(true);
-    } else {
-      setData([]);
-    }
+    fetch(newValue, typeId, setData);
+    setOpenDropDown(true);
   };
 
   const handleChange = (newValue) => {
@@ -88,7 +85,7 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm, disabled })
       title: 'Ngày sinh',
       dataIndex: 'dob',
       key: 'dob',
-      render: (text) => <Typography>{ moment(text).format('DD/MM/YYYY') }</Typography>,
+      render: (text) => <Typography>{ text && moment(text).format('DD/MM/YYYY') }</Typography>,
     },
     {
       title: 'Số điện thoại',
@@ -99,11 +96,13 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm, disabled })
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      render: (text) => <Typography style={ { color: '#2CB3A5' } }>{ getCustomerStatus(text) }</Typography>,
+      render: (text) => <Typography style={ { color: '#2CB3A5' } }>{ CUSTOMER_STATUS[text] ? CUSTOMER_STATUS[text] : CUSTOMER_STATUS['DEFAULT'] }</Typography>,
     },
   ];
 
   const TableDropDown = () => {
+    const removeDobColumns = columns.filter(i => i.key !== 'dob')
+    const checkType = typeId === 1 ? columns : removeDobColumns
     return (
       <Table
         onRow={ (record) => {
@@ -116,8 +115,9 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm, disabled })
           };
         } }
         dataSource={ data }
-        columns={ columns }
+        columns={ checkType }
         onClick={ useOutsideClick(() => setOpenDropDown(false)) }
+        pagination={ false }
       />
     );
   };
@@ -137,6 +137,7 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm, disabled })
       dropdownRender={ TableDropDown }
       dropdownStyle={ { minWidth: 800 } }
       disabled={ disabled }
+      allowClear={ true }
     >
       <TableDropDown />
     </S.Select>

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { TimePicker as TimePickerAntd, Button as ButtonAntd } from 'antd';
+import { TimePicker as TimePickerAntd } from 'antd';
 
 export const WrapContainer = styled.div`
   display: flex;
@@ -50,20 +50,9 @@ export const Space = styled.span`
   font-size: 14px;
 `;
 
-export const DropDownBtn = styled(ButtonAntd)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-  background-color: #f8f8f8;
-  border: none;
-
-  &:hover,
-  &:focus {
-   
-    background-color: unset;
-  }
+export const DropDownBtn = styled.div`
+  width: 16px;
+  height: 16px;
 `;
 
 export const BoxClock = styled.span`

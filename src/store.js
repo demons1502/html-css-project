@@ -20,6 +20,7 @@ import consultReducer from './slices/consult';
 import configUser from './slices/configUser';
 import financialSolution from './slices/financialSolutions'
 import financialConsultant from './slices/financialConsultant';
+import customerCallReducer from './slices/customerCall';
 
 const persistConfig = {
   key: 'root',
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
   potentialCustomersReducer: potentialCustomersReducer,
   financialSolution: financialSolution,
   financialConsultant: financialConsultant,
+  customerCall: customerCallReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

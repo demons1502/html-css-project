@@ -1,8 +1,8 @@
-import { Col, Input, Modal, Row, Tooltip } from 'antd';
+import { Col, Input, message, Modal, Row, Tooltip } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { sendEmail, sendSMS } from '../../../../slices/dashboard';
 import * as S from '../../styles';
 
@@ -12,6 +12,7 @@ export default function CustomerButtonRemind(props) {
   const { customerId } = props?.record?.customer || {};
   const [content, setContent] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const sendError = useSelector((state) => state.dashboard.error);
   const dispatch = useDispatch();
 
   const showModal = () => {
@@ -29,6 +30,11 @@ export default function CustomerButtonRemind(props) {
       customerId,
     };
     dispatch(sendSMS(payload));
+    if (sendError?.sms?.message) {
+      message.error(`Send sms thất bại: ${sendError.sms.message}`);
+      return;
+    }
+    setContent('');
     setIsModalOpen(false);
   };
 
@@ -56,7 +62,7 @@ export default function CustomerButtonRemind(props) {
       >
         <>
           Nội dung SMS
-          <TextArea rows={4} placeholder="Nhập" onChange={onChangeContent} />
+          <TextArea rows={4} value={content} placeholder="Nhập" onChange={onChangeContent} />
         </>
       </S.Modal>
     </S.WrapButtonTable>

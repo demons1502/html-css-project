@@ -15,6 +15,7 @@ export const green300 = '#34B16D';
 export const error = '#E9726F';
 export const gray100 = '#F1F1F1';
 export const gray200 = '#999999';
+export const gray300 = '#C4CDD5';
 
 export const WrapHeader = styled.div`
   padding-top: 6px;
@@ -140,7 +141,9 @@ const btnColorScheme = {
   error: error
 }
 
-export const WrapBtn = styled(Button)`
+export const WrapBtn = styled.button`
+  border: none;
+  background-color: transparent;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -148,7 +151,8 @@ export const WrapBtn = styled(Button)`
 	border-radius: ${({ $borderRadius }) => $borderRadius ? $borderRadius : '8px'};
 	font-size: ${({ $fontSize }) => $fontSize ? $fontSize : '12px'};
 	width: ${({ $width }) => $width ? $width : 'initial'};
-	${({ $variant, $colorScheme }) => {
+	${({ $variant, $colorScheme, disabled }) => {
+    if (disabled) return css`background-color: ${gray300}`
     switch ($variant) {
       case 'outlined':
         return css`
@@ -184,6 +188,32 @@ export const WrapCheckbox = styled(Checkbox)`
     background-color: ${green100};
     border-color: ${green100};
   }
-`
+`;
 
+export const WrapHTMLString = styled.div`
+  font-weight: bold;
+  li {
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  p {
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+`;
 
+export const CustomerSummaryItem = styled.li`
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  .dot {
+    height: 4px;
+    width: 4px;
+    background: #333333; 
+    border-radius: 50%; 
+    margin-right: 12px;
+  }
+  p {
+    text-transform: capitalize;
+  }
+`;

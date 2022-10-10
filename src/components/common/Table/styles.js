@@ -3,6 +3,9 @@ import styled from 'styled-components';
 
 export const Table = styled(AntTable)`
   tr {
+    td {
+      vertical-align: middle;
+    }
     &:hover {
       background: #35b46f;
       td {
@@ -10,6 +13,7 @@ export const Table = styled(AntTable)`
       }
     }
     th {
+      vertical-align: middle;
       &::before {
         display: none;
       }
@@ -31,7 +35,7 @@ export const Table = styled(AntTable)`
     display: none;
   }
   .ant-table-row:hover .actions {
-    display: flex;
+    display: block;
     color: #000;
     border-bottom: 0px;
   }

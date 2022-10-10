@@ -57,7 +57,7 @@ export default function AppointmentItemCard(props) {
       <S.WrapFirstColAppointment span={24}>
         <Row>
           <Col span={20}>
-            <Row>
+            <Row wrap={false}>
               <S.WrapIconImage $width="15px" $height="15px" src={typeId === 1 ? userCircle : company} alt="iconType" />
               <Col span={22}>
                 <Row gutter={[0, 4]}>
@@ -79,12 +79,12 @@ export default function AppointmentItemCard(props) {
       <S.WrapHr />
       <S.WrapSecondColAppointment span={24}>
         <Row gutter={5}>
-          <Col span={6}>
-            <Row>
+          <Col span={8}>
+            <Row wrap={false}>
               <S.WrapIconImage $width="15px" $height="15px" src={calendar} alt="company" />
               <S.WrapBorderRight span={18}>
                 <Row gutter={[0, 4]}>
-                  <Col span={24}>Ngày hẹn:</Col>
+                  <S.TextP>Ngày hẹn:</S.TextP>
                   <S.WrapTextItem $fontWeight="600" $lineHeight="15px" span={24}>
                     {moment(endTime).format(dateFormat)}
                   </S.WrapTextItem>
@@ -92,12 +92,12 @@ export default function AppointmentItemCard(props) {
               </S.WrapBorderRight>
             </Row>
           </Col>
-          <Col span={6}>
-            <Row>
+          <Col span={7}>
+            <Row wrap={false}>
               <S.WrapIconImage $width="15px" $height="15px" src={alarmGray} alt="company" />
               <S.WrapBorderRight span={18}>
                 <Row gutter={[0, 4]}>
-                  <Col span={24}>Thời gian:</Col>
+                  <S.TextP span={24}>Thời gian:</S.TextP>
                   <S.WrapTextItem $fontWeight="600" $lineHeight="15px" span={24}>
                     {moment(startTime).format(hhmmFormat)} ({moment(endTime).diff(moment(startTime), 'minutes')}p)
                   </S.WrapTextItem>
@@ -105,18 +105,14 @@ export default function AppointmentItemCard(props) {
               </S.WrapBorderRight>
             </Row>
           </Col>
-          <Col span={12}>
-            <Row>
+          <Col span={9}>
+            <Row wrap={false}>
               <S.WrapIconImage $width="15px" $height="15px" src={locationIcon} alt="company" />
-              <Col span={20}>
-                <Row gutter={[0, 4]}>
-                  <Col span={24}>Địa điểm:</Col>
-                  <S.WrapTextItem $fontWeight="600" $lineHeight="15px" span={24}>
-                    {location}
-                  </S.WrapTextItem>
-                </Row>
-              </Col>
+              <S.TextP span={20}>Địa điểm:</S.TextP>
             </Row>
+            <S.WrapTextItem $fontWeight="600" $lineHeight="15px" span={24}>
+              {location}
+            </S.WrapTextItem>
           </Col>
         </Row>
       </S.WrapSecondColAppointment>

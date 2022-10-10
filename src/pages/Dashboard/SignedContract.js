@@ -33,7 +33,7 @@ export default function SignedContract() {
   }, [dispatch, startDate, endDate]);
 
   useEffect(() => {
-    setTotal(result.total || 0);
+    setTotal(result.contractsCount || 0);
     setData(result.histogram || []);
   }, [result]);
 

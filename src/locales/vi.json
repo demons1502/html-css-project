@@ -38,7 +38,8 @@
     "type": "Loại",
     "event": "Sự kiện",
     "select": "Chọn",
-    "no data": "Không có dữ liệu"
+    "no data": "Không có dữ liệu",
+    "call-data-error": "Không thể tải dữ liệu"
   },
   "validate": {},
   "message": {
@@ -78,9 +79,33 @@
     "ratio-contract": "Tỷ lệ hợp đồng/cuộc hẹn"
   },
   "call-schedule": {
+    "no-call": "Không có cuộc gọi nào",
     "call": "Gọi điện",
     "user": "Cá nhân",
-    "company": "Doanh nghiệp"
+    "company": "Doanh nghiệp",
+    "customer-type-label": "Loại khách hàng",
+    "call-status-label": "Trạng thái",
+    "call-pending-status": "Đang gọi",
+    "call-completed-status": "Hoàn thành",
+    "call-canceled-status": "Đã kết thúc",
+    "call-cancel": "Hủy gọi",
+    "make-appointment": "Đặt hẹn",
+    "survey": "Khảo sát",
+    "consult": "Tư vấn",
+    "solution": "Giải pháp",
+    "call-more": "Gọi thêm lần sau",
+    "no-more-potential": "Không còn tiềm năng",
+    "customer-summary-info": "Thông tin tổng hợp Khách hàng",
+    "age": "tuổi",
+    "married": "Đã có gia đình",
+    "single": "Độc thân",
+    "job": "Nghề nghiệp",
+    "concerns": "Sở thích",
+    "note": "Khác",
+    "fetch-script-error": "Không thể tải lời thoại",
+    "speech-script": "Lời thoại khi gọi điện",
+    "prev": "Trước",
+    "next": "Tiếp"
   },
   "customer-care-dashboard": {
     "remind": "Nhắc phí",

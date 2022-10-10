@@ -14,7 +14,7 @@ import left_arrow from "../../assets/images/icons/left-arrow.svg";
 import { HistoryPopup } from "./Modals/HistoryPopup";
 import { formatDate } from "../../helper/index";
 import { getSppechScriptInfo, clearSurvey } from "../../slices/surveys";
-import { getAppointments } from "../../slices/appointmentManagement";
+import { getAppointments, getAppointment } from "../../slices/appointmentManagement";
 import moment from "moment";
 import Dialogue from "../../components/common/Dialogue";
 
@@ -30,7 +30,7 @@ const Survey = () => {
   // const [selectedCustomer, setSelectedCustomer] = useState(null);
   const { data, selectedCustomer } = customers;
   const { me } = useSelector((state) => state.auth);
-  const apptId = searchParams.get('appointment_id');
+  const [apptId, setApptId] = useState(0);
 
   useEffect(() => {
     if (!isEmpty(surveys?.survey)) {
@@ -42,24 +42,28 @@ const Survey = () => {
   }, [customers, surveys?.survey]);
 
   useEffect(() => {
-    const params = {
-      titles: ['survey'],
-      startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
-      endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss')
-    }
-    // dispatch(getCustomerList());
+    const apptId = searchParams.get('appointment_id');
+
     if (apptId) {
-      dispatch(getAppointments(params));
+      setApptId(apptId)
+      dispatch(getAppointment(apptId));
     }
     else {
+      const params = {
+        titles: ['survey'],
+        startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+        endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss')
+      }
       dispatch(getAppointments(params));
     }
-    
-    // dispatch(getSppechScriptInfo());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
-    appointments?.data?.length > 0 && dispatch(setData(appointments.data[0].customerApptRecords))
+    const customerList = appointments?.data?.length > 0 ? appointments.data[0].customerApptRecords : []
+    dispatch(setData(customerList))
+
+    const apptId = appointments?.data?.length > 0? appointments.data[0].apptId : 0
+    setApptId(apptId)
   }, [appointments.data, dispatch]);
 
   // useEffect(() => {
@@ -75,7 +79,7 @@ const Survey = () => {
   };
 
   const backToSurvey = () => {
-    dispatch(clearSurvey());
+    // dispatch(clearSurvey());
   };
 
   const historyHandler = () => {
@@ -84,8 +88,8 @@ const Survey = () => {
   const solutionHandler = () => {
     navigate('/advise/financial-solutions');
   };
-  const counselHandler = () => {
-    navigate('/advise/finance-consultant');
+  const consultHandler = () => {
+    navigate(`/advise/finance-consultant?appointment_id=${apptId}&customer_id=${selectedCustomer.customerId}`);
   };
   const appointmentHandler = () => {
     navigate('/appointment-management');
@@ -132,7 +136,7 @@ const Survey = () => {
                           <Button type="primary" className="btn-primary" onClick={solutionHandler}>
                             {t('common.solution')}
                           </Button>
-                          <Button type="primary" className="btn-primary" onClick={counselHandler}>
+                          <Button type="primary" className="btn-primary" onClick={consultHandler}>
                             {t('common.consultant')}
                           </Button>
                           <Button type="primary" className="btn-primary" onClick={appointmentHandler}>
@@ -174,8 +178,7 @@ const Survey = () => {
                     <Dialogue 
                       title="Quy trình khảo sát" 
                       type="survey" 
-                      customerId={selectedCustomer?.customerId} 
-                      keywords={{interestRate: 5}}/>
+                      customerId={selectedCustomer?.customerId} />
                   </div>
                 </Layout.Content>
               </Col>

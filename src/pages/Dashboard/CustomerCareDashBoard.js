@@ -16,14 +16,15 @@ export default function CustomerCareDashBoard() {
     {
       dataIndex: 'fullname',
       key: 'fullname',
+      ellipsis: true,
       render: (text, record) => <CustomerItemBirthday record={record} />,
     },
     {
-      dataIndex: '',
-      key: '',
+      key: 'action',
+      width: 150,
       render: () => (
-        <S.WrapButtonTable>
-          <S.Button $type="ghost" onClick={handleCSKH}>
+        <S.WrapButtonTable $paddingRight="13px">
+          <S.Button $width="87px" $height="30px" $type="ghost" onClick={handleCSKH}>
             CSKH
           </S.Button>
         </S.WrapButtonTable>
@@ -34,12 +35,18 @@ export default function CustomerCareDashBoard() {
     {
       dataIndex: 'name',
       key: 'name',
+      ellipsis: true,
       render: (text, record) => <CustomerItemRemind record={record} />,
     },
     {
       dataIndex: 'value',
       key: 'value',
-      render: (_, record) => <CustomerButtonRemind record={record} />,
+      width: 150,
+      render: (_, record) => (
+        <S.WrapButtonTable $paddingRight="13px">
+          <CustomerButtonRemind record={record} />
+        </S.WrapButtonTable>
+      ),
     },
   ];
   const { t } = useTranslation();
@@ -89,7 +96,7 @@ export default function CustomerCareDashBoard() {
   }, [storeCustomerCare, storeRemindFee, remind]);
 
   useEffect(() => {
-    setDataTable(result.data || result.contracts || []);
+    setDataTable(result.customers || result.contracts || []);
     setColumns(remind ? columnsRemind : columnCustomerCare);
     setTotal(result.count || result.total || 0);
   }, [result]);
@@ -108,7 +115,7 @@ export default function CustomerCareDashBoard() {
   };
 
   return (
-    <S.WrapContainer $toggle={toggle} $height="473px">
+    <S.WrapContainer $toggle={toggle}>
       <S.WrapTitle $toggle={toggle} wrap={false} $padding="0px 23px 0px 0px">
         <S.IconDown onClick={() => setToggle(!toggle)} />
         <Col>
@@ -128,15 +135,15 @@ export default function CustomerCareDashBoard() {
           loading={loading}
           pagination={false}
           bordered={false}
-          scroll={{ x: dataTable.length > 0 && 460 }}
           showHeader={false}
           $height="320px"
-          $endLine
-          $borderBottom={dataTable.length < 3 ? (dataTable.length === 0 ? false : '') : false}
+          $borderBottom={dataTable.length === 0 ? false : ''}
           $heightRow={remind ? false : '63px'}
         />
-        <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />
       </S.WrapContent>
+      <S.WrapPagination span={24}>
+        <PaginationCommon total={total} showSizeChanger={false} setPaginate={setPaginate} pageSize={limit} />
+      </S.WrapPagination>
     </S.WrapContainer>
   );
 }

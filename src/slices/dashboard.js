@@ -11,6 +11,7 @@ import {
   getTopPotentialCustomerApi,
   sendEmailApi,
   sendSMSApi,
+  setDoneCallApi,
   setNextCallApi,
   updateAppointmentScheduleApi,
 } from '../services/dashboard';
@@ -27,6 +28,14 @@ export const getCallSchedules = createAsyncThunk('dashboard/GET_CALL_SCHEDULES',
 export const setNextCall = createAsyncThunk('dashboard/SET_NEXT_CALL', async (data) => {
   try {
     const response = await setNextCallApi(data);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
+export const setDoneCall = createAsyncThunk('dashboard/SET_DONE_CALL', async (data) => {
+  try {
+    const response = await setDoneCallApi(data);
     return response.data;
   } catch (error) {
     return Promise.reject(error.data);
@@ -190,6 +199,17 @@ const dashboardSlice = createSlice({
       state.loadingCallSchedule = false;
       state.error = action.error;
     },
+    [setDoneCall.fulfilled]: (state, action) => {
+      state.loadingCallSchedule = false;
+      state.callSchedule = action.payload;
+    },
+    [setDoneCall.pending]: (state) => {
+      state.loadingCallSchedule = true;
+    },
+    [setDoneCall.rejected]: (state, action) => {
+      state.loadingCallSchedule = false;
+      state.error = action.error;
+    },
 
     // CustomerCareDashboard
     [getCustomerCares.fulfilled]: (state, action) => {
@@ -213,6 +233,12 @@ const dashboardSlice = createSlice({
     [getRemindFees.rejected]: (state, action) => {
       state.loadingCustomerCare = false;
       state.error = action.error;
+    },
+    [sendSMS.fulfilled]: (state, action) => {
+      state.error.sms = '';
+    },
+    [sendSMS.rejected]: (state, action) => {
+      state.error = { sms: action.error };
     },
 
     // MissedAppointment
@@ -268,6 +294,7 @@ const dashboardSlice = createSlice({
     [createCallTransfer.fulfilled]: (state, action) => {
       state.loadingTopPotential = false;
       state.callTransfer = !state.callTransfer;
+      state.callSchedule = action.payload;
     },
     [createCallTransfer.pending]: (state) => {
       state.loadingTopPotential = true;

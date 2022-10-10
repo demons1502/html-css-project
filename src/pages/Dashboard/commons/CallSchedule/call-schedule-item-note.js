@@ -1,5 +1,7 @@
+import { Tooltip } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import * as S from '../../styles';
 
 export default function CallScheduleItemNote({ props }) {
   const { t } = useTranslation();
@@ -50,5 +52,9 @@ export default function CallScheduleItemNote({ props }) {
     }
   }, [customer, noteCount]);
 
-  return <>{note}</>;
+  return (
+    <Tooltip title={note} placement="topLeft" overlayInnerStyle={{ borderRadius: '15px', padding: '10px 15px' }}>
+      <S.TextP2Row>{note}</S.TextP2Row>
+    </Tooltip>
+  );
 }

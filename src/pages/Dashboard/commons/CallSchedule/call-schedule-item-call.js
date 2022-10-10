@@ -1,21 +1,40 @@
-import { Checkbox, Tooltip } from 'antd';
+import { Checkbox, message, Tooltip } from 'antd';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import call from '../../../../assets/images/icons/callDashboard.svg';
 import * as S from '../../styles';
-import { createCustomerCallRecord } from '../../../../services/customerCalls';
+import { createCallRecord } from '../../../../slices/customerCall';
+import moment from 'moment';
+import { dateContractFormat } from '../../constants';
+import { setDoneCall } from '../../../../slices/dashboard';
 
 export default function CallScheduleItemCall(props) {
   const { t } = useTranslation();
-  const { record, onClickCall } = props;
+  const { record } = props;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const checked = moment().format(dateContractFormat) === record.lastCall;
 
   const handleCall = async (value) => {
-    console.log('value', value);
-    await createCustomerCallRecord(Number(value?.customerCallId || 0))
-    navigate('/call-details/' + value?.customerCallId || 0)
-    // if (onClickCall) onClickCall(value);
+    dispatch(createCallRecord(Number(value?.customerCallId || 0))).then(({ error }) => {
+      if (error) {
+        message.error('Không thể tạo cuộc gọi');
+      } else {
+        navigate('/call-details/' + value?.customerCallId || 0);
+      }
+    });
+  };
+
+  const handleCheckCallDone = (e) => {
+    if (!checked && e.target.checked) {
+      const payload = {
+        customerCallId: record?.customerCallId,
+        isInstant: true,
+      };
+      dispatch(setDoneCall(payload));
+    }
   };
 
   return (
@@ -25,14 +44,9 @@ export default function CallScheduleItemCall(props) {
         placement="topLeft"
         overlayInnerStyle={{ borderRadius: '15px', padding: '10px 15px' }}
       >
-        {/* <Link to="/call-details" style={S.linkStyle}>
-          <img src={call} alt="call" onClick={() => handleCall(record)} />
-        </Link> */}
-        <div>
-          <img src={call} alt="call" onClick={() => handleCall(record)} />
-        </div>
+        <img src={call} alt="call" onClick={() => handleCall(record)} />
       </Tooltip>
-      <Checkbox className="checkbox-item dashboard__checkbox" />
+      <Checkbox className="checkbox-item dashboard__checkbox" checked={checked} onChange={handleCheckCallDone} />
     </S.WrapTableAction>
   );
 }

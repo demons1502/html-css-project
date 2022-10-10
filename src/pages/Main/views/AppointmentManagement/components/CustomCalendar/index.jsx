@@ -57,26 +57,27 @@ const CalendarCustom = ({ handleEvent, eventActive }) => {
 
   return (
     <S.WrapContainer
-      defaultDate={defaultDate}
-      defaultView={Views.WEEK}
-      events={data}
-      getNow={getNow}
-      localizer={localizer}
-      scrollToTime={scrollToTime}
+      defaultDate={ defaultDate }
+      defaultView={ Views.WEEK }
+      view={ Views.WEEK }
+      events={ data }
+      getNow={ getNow }
+      localizer={ localizer }
+      scrollToTime={ scrollToTime }
       startAccessor="start"
       endAccessor="end"
-      min={minimum}
-      max={maximum}
-      timeslots={1}
-      step={30}
-      onSelectEvent={handleSelectEvent}
-      formats={formats}
-      components={{
+      min={ minimum }
+      max={ maximum }
+      timeslots={ 1 }
+      step={ 30 }
+      onSelectEvent={ handleSelectEvent }
+      formats={ formats }
+      components={ {
         toolbar: CalendarToolbar,
         event: (event) => DayEvent(event, eventActive),
         header: CustomHeader,
-      }}
-      style={{ height: '80vh' }}
+      } }
+      style={ { height: '80vh' } }
     />
   );
 };

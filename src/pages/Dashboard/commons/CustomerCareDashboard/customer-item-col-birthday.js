@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd';
+import { Badge, Col, Row } from 'antd';
 import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,22 +8,15 @@ import * as S from '../../styles';
 export default function CustomerItemBirthday(props) {
   const { t } = useTranslation();
   const { record } = props;
-  console.log('record', record);
-  console.log('moment', moment(record.dob).format(dateFormat));
   return (
-    <Row gutter={[10, 0]}>
-      <Col>
-        <S.CircleTag />
-      </Col>
+    <Row wrap={false}>
+      <Badge color="#36b872" />
       <Col>
         <Row>
-          <p>{record.fullname}</p>
+          <S.TextP>{record.fullname}</S.TextP>
         </Row>
         <Row>
-          <S.TextTable>
-            {t('customer-care-dashboard.birthday')}
-            {` ${moment(record.dob).format(dateFormat)}`}
-          </S.TextTable>
+          <S.TextTable>{record?.customerEvents[0]?.name} {record?.customerEvents[0]?.date && moment(record?.customerEvents[0]?.date).format(dateFormat)}</S.TextTable>
         </Row>
       </Col>
     </Row>

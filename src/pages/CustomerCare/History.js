@@ -73,7 +73,6 @@ export default function History() {
     setVisibleModalAddInfo(true);
     setDetailData({});
   };
-  console.log(customerData);
 
   useEffect(() => {
     if (customerData.customerId > 0) {

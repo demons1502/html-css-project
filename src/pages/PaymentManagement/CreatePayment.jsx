@@ -10,7 +10,7 @@ import { createPayment } from '../../slices/paymentManagement';
 import { LOADING_STATUS } from '../../ultis/constant';
 
 import styled from 'styled-components';
-import { formatDataNumber, formatDate, formatToUtcDate } from '../../helper';
+import { formatDate, formatToUtcDate } from '../../helper';
 
 const Textarea = styled(Input.TextArea)`
   background: #f8f8f8;

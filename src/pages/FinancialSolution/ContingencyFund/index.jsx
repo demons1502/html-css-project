@@ -47,7 +47,7 @@ const ContingencyFund = () => {
       dispatch(getAppointment(apptId));
     } else {
       const params = {
-        titles: ['survey'],
+        titles: ['finance'],
         startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
         endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
       };

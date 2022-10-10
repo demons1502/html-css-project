@@ -152,7 +152,7 @@ export default function FinanceConsultant() {
                       <HistoryDetail history={history} />
                     ) : (
                       <SpendingForm
-                        id={selectItem?.customerId}
+                        id={customerId || selectItem?.customerId}
                         useSelected={{ ...selectItem, apptId: apptId }}
                         setKeywords={setKeywords}
                       />
@@ -168,7 +168,7 @@ export default function FinanceConsultant() {
                   <Dialogue
                     type="consult"
                     title={t('financial consultant.process title')}
-                    customerId={selectItem?.customerId}
+                    customerId={customerId || selectItem?.customerId}
                     keywords={keywords}
                   />
                 </div>

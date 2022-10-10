@@ -134,7 +134,12 @@ const Retirement = () => {
           <Col lg={12} md={24} sm={24} xs={24}>
             <Layout.Content className="manageContent">
               <div className="content-div-2">
-                <Dialogue title={'Lời thoại'} type={'preventionFund'} customerId={customerId} keywords={keywords} />
+                <Dialogue
+                  title={'Lời thoại'}
+                  type={'preventionFund'}
+                  customerId={customerId || itemContent?.customerId}
+                  keywords={keywords}
+                />
               </div>
             </Layout.Content>
           </Col>

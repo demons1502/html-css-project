@@ -10,17 +10,29 @@
       <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
         <!-- Content -->
         <figure class="footer-logo d-flex justify-content-center">
-          <img src="assets/images/logo.png" class="w-25" alt="logo">
+          <img src="assets/images/logo.png" alt="logo">
         </figure>
         <p>
           Here you can use rows and columns to organize your footer content. Lorem ipsum
           dolor sit amet, consectetur adipisicing elit.
         </p>
-        <figure class="footer-link d-flex justify-content-between">
-          <a href="javascript: void(0)"><img class="footer-link__img" src="assets/images/facebook logo.png" alt="logo facebook"></a>
-          <a href="javascript: void(0)"><img class="footer-link__img" src="assets/images/instagram logo.png" alt="logo facebook"></a>
-          <a href="javascript: void(0)"><img class="footer-link__img" src="assets/images/twitter logo.png" alt="logo facebook"></a>
-        </figure>
+        <div class="footer-link d-flex justify-content-between">
+          <include src="components/footer-link-img.html" locals='{
+            "link" : "javascript: void(0)",
+            "linkImg" : "assets/images/facebook logo.png",
+            "logo" : "logo facebook"
+          }'></include>
+          <include src="components/footer-link-img.html" locals='{
+            "link" : "javascript: void(0)",
+            "linkImg" : "assets/images/instagram logo.png",
+            "logo" : "logo instagram"
+          }'></include>
+          <include src="components/footer-link-img.html" locals='{
+            "link" : "javascript: void(0)",
+            "linkImg" : "assets/images/twitter logo.png",
+            "logo" : "logo twitter"
+          }'></include>
+        </div>
       </div>
       <!-- Grid column -->
 
@@ -30,18 +42,22 @@
         <h6 class="text-uppercase fw-bold mb-4">
           Locations
         </h6>
-        <p>
-          <a href="javascript: void(0)" class="text-reset">Angular</a>
-        </p>
-        <p>
-          <a href="javascript: void(0)" class="text-reset">VietNam</a>
-        </p>
-        <p>
-          <a href="javascript: void(0)" class="text-reset">Vue</a>
-        </p>
-        <p>
-          <a href="javascript: void(0)" class="text-reset">Laravel</a>
-        </p>
+        <include src="components/link-footer.html" locals='{
+          "link": "javascript: void(0)",
+          "testReset" : "Vue"
+        }'></include>
+        <include src="components/link-footer.html" locals='{
+          "link": "javascript: void(0)",
+          "testReset" : "Vue"
+        }'></include>
+        <include src="components/link-footer.html" locals='{
+          "link": "javascript: void(0)",
+          "testReset" : "Vue"
+        }'></include>
+        <include src="components/link-footer.html" locals='{
+          "link": "javascript: void(0)",
+          "testReset" : "Vue"
+        }'></include>
       </div>
       <!-- Grid column -->
 
@@ -51,18 +67,22 @@
         <h6 class="text-uppercase fw-bold mb-4">
           Links
         </h6>
-        <p>
-          <a href="javascript: void(0)" class="text-reset">Pricing</a>
-        </p>
-        <p>
-          <a href="javascript: void(0)" class="text-reset">Settings</a>
-        </p>
-        <p>
-          <a href="javascript: void(0)" class="text-reset">Orders</a>
-        </p>
-        <p>
-          <a href="javascript: void(0)" class="text-reset">Help</a>
-        </p>
+        <include src="components/link-footer.html" locals='{
+          "link": "javascript: void(0)",
+          "testReset" : "Vue"
+        }'></include>
+        <include src="components/link-footer.html" locals='{
+          "link": "javascript: void(0)",
+          "testReset" : "Vue"
+        }'></include>
+        <include src="components/link-footer.html" locals='{
+          "link": "javascript: void(0)",
+          "testReset" : "Vue"
+        }'></include>
+        <include src="components/link-footer.html" locals='{
+          "link": "javascript: void(0)",
+          "testReset" : "Vue"
+        }'></include>
       </div>
       <!-- Grid column -->
 

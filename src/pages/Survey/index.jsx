@@ -13,7 +13,7 @@ import calender from "../../assets/images/icons/calendar.svg";
 import left_arrow from "../../assets/images/icons/left-arrow.svg";
 import { HistoryPopup } from "./Modals/HistoryPopup";
 import { formatDate } from "../../helper/index";
-import { getSppechScriptInfo, clearSurvey } from "../../slices/surveys";
+// import { getSppechScriptInfo, clearSurvey } from "../../slices/surveys";
 import { getAppointments, getAppointment } from "../../slices/appointmentManagement";
 import moment from "moment";
 import Dialogue from "../../components/common/Dialogue";

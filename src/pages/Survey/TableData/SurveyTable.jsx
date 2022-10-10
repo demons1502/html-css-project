@@ -7,9 +7,10 @@ import { useForm, FormProvider } from "react-hook-form";
 import { SurveyForm } from "./SurveyForm";
 import { Checkbox as CheckboxControl } from "../../../components/controls";
 import { ClosingModal } from "../Modals/ClosingModal";
-import { createSurvey } from "../../../slices/surveys";
+import { createSurvey, getSurveyDetails } from "../../../slices/surveys";
 import { isEmpty } from "lodash";
 import { Input} from "../../../components/styles";
+import { useSearchParams  } from "react-router-dom";
 
 const CustomerServeyTable = () => {
   const { t } = useTranslation();
@@ -18,6 +19,8 @@ const CustomerServeyTable = () => {
   const [dataTables, setDataTables] = useState([]);
   const [formValue, setFromValue] = useState({});
   const [formValues, setFromValues] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [apptId, setApptId] = useState(0);
 
   console.log("formValues", formValues);
 
@@ -44,12 +47,44 @@ const CustomerServeyTable = () => {
   });
   const { watch, control, reset } = methods;
 
+  useEffect(() => {
+    const apptId = searchParams.get('appointment_id');
+
+    if (apptId) {
+      setApptId(apptId)
+    }
+    else {
+      setApptId(appointment && appointment.data.length > 0? appointment.data[0].apptId : 0)
+    }
+  }, []);
+
+  // Change customer
+  useEffect(() => {
+    if (isEmpty(surveys?.survey) && selectedCustomer?.customerId) {
+      const dataInfos = [...dataTables];
+
+      if (dataInfos.length === 0) {
+        dispatch(getSurveyDetails(208))
+        // Get survey
+        if (selectedCustomer?.surveyId) {
+          // dispatch(getSurveyDetails(selectedCustomer?.surveyId))
+        }
+      } else {
+        const isIdExist = dataInfos.some((item) => item.customerId === selectedCustomer?.customerId);
+        if (!isIdExist && selectedCustomer?.surveyId) {
+          dispatch(getSurveyDetails(selectedCustomer?.surveyId))
+        }
+      }
+    }
+    
+  }, [selectedCustomer]);
+
   //back to reset data
 
   useEffect(() => {
     if (isClearSurvey && formValues?.length > 0) {
       const formInfos = [...formValues];
-      const currentIndex = formInfos?.findIndex((item) => item?.id === selectedCustomer?.customerId);
+      const currentIndex = formInfos?.findIndex((item) => item?.customerId === selectedCustomer?.customerId);
       const selectedFormInfo = formInfos[currentIndex];
       selectedFormInfo["hintName"] = "";
       selectedFormInfo["isPotential"] = false;
@@ -69,7 +104,7 @@ const CustomerServeyTable = () => {
       const tableInfos = [...dataTables];
       const formInfos = [...formValues];
       const currentTableIndex = tableInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
-      const currentformIndex = formInfos?.findIndex((item) => item?.id === surveys?.data?.customerId);
+      const currentformIndex = formInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
       tableInfos[currentTableIndex] = generateTableData(surveys?.data?.customerId);
       formInfos[currentformIndex] = generateFormData(surveys?.data?.customerId);
       setDataTables(tableInfos);
@@ -84,7 +119,7 @@ const CustomerServeyTable = () => {
       if (formInfos?.length === 0) {
         formInfos.push(generateFormData(selectedCustomer?.customerId));
       } else {
-        const isIdExist = formInfos.some((item) => item?.id === selectedCustomer?.customerId);
+        const isIdExist = formInfos.some((item) => item?.customerId === selectedCustomer?.customerId);
         if (!isIdExist) {
           formInfos.push(generateFormData(selectedCustomer?.customerId));
         }
@@ -96,6 +131,7 @@ const CustomerServeyTable = () => {
   useEffect(() => {
     if (isEmpty(surveys?.survey) && selectedCustomer?.customerId) {
       const dataInfos = [...dataTables];
+
       if (dataInfos.length === 0) {
         dataInfos.push(generateTableData(selectedCustomer?.customerId));
       } else {
@@ -148,7 +184,7 @@ const CustomerServeyTable = () => {
   useEffect(() => {
     if (isEmpty(surveys?.survey) && formValues?.length > 0) {
       const formInfos = [...formValues];
-      const currentIndex = formInfos?.findIndex((item) => item?.id === selectedCustomer?.customerId);
+      const currentIndex = formInfos?.findIndex((item) => item?.customerId === selectedCustomer?.customerId);
       const selectedFormInfo = formInfos[currentIndex];
       selectedFormInfo["hintName"] = watchHintName;
       selectedFormInfo["isPotential"] = watchPotential;
@@ -475,8 +511,9 @@ const CustomerServeyTable = () => {
     const doubleAssetData = dataTable.find((data) => data.label === "doubleAsset");
 
     const submitFormData = {
-      apptId: +appointment.data[0].apptId,
+      apptId: +apptId,
       customerId: selectedCustomer?.customerId,
+      surveyId: 0,
       influence: {
         family: +familyData?.infulence,
         bachelor: +bachelorData?.infulence,
@@ -524,7 +561,13 @@ const CustomerServeyTable = () => {
     };
 
     if (formValue?.hintName) {
-      dispatch(createSurvey(submitFormData));
+      if (formValue.surveyId) {
+        dispatch(createSurvey(submitFormData));
+      }
+      else {
+        dispatch(updateSurvey(submitFormData));
+      }
+      
     } else {
       message.error("Bạn chưa nhập tên gợi nhớ");
     }
@@ -556,9 +599,10 @@ const CustomerServeyTable = () => {
 
 export default CustomerServeyTable;
 
-const generateTableData = (id) => {
+const generateTableData = (customerId, survey = null) => {
   return {
-    customerId: id,
+    id: survey?.surveyId,
+    customerId: customerId,
     data: [
       {
         key: 1,
@@ -634,9 +678,10 @@ const generateTableData = (id) => {
   };
 };
 
-const generateFormData = (id) => {
+const generateFormData = (customerId, survey = null) => {
   return {
-    id: id,
+    id: survey?.surveyId,
+    customerId: customerId,
     others: {
       other1: [],
       other2: [],

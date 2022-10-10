@@ -63,6 +63,21 @@ export const getCompanyHistoryById = createAsyncThunk("surveys/company-history",
 //     return Promise.reject(error.data);
 //   }
 // });
+
+export const updateSurvey = createAsyncThunk("surveys/update", async (id, data) => {
+  try {
+    const res = await patchSurvey(id, data);
+    if (res?.status === 201 || res?.status === 200) {
+      message.success("Cập nhật khảo sát thành công");
+      return res.data;
+    } else {
+      message.error("Có lỗi xảy ra khi lưu thông tin khảo sát");
+    }
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
+
 const surveySlice = createSlice({
   name: "surveys",
   initialState,
@@ -84,6 +99,23 @@ const surveySlice = createSlice({
       state.error = "";
     });
     builder.addCase(createSurvey.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.error = action.error?.message;
+      state.data = [];
+    });
+
+    // update survey
+    builder.addCase(updateSurvey.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+    });
+    builder.addCase(updateSurvey.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.data = action.payload;
+      state.error = "";
+    });
+    builder.addCase(updateSurvey.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.error = action.error?.message;

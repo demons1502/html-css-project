@@ -1,0 +1,14 @@
+@use "../abstracts/" as *;
+
+.about-card__title {
+    font-size: 20px;
+    font-family: $bold-font;
+    border: none;
+    outline: none;
+    border-radius: 35px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    &:hover {
+        background-color: $bg-about-hover;
+      }
+}

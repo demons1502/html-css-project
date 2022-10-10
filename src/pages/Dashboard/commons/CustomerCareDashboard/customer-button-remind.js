@@ -23,7 +23,6 @@ export default function CustomerButtonRemind(props) {
     setContent(e.target.value);
   };
 
-  console.log('sendError', sendError);
   const handleSend = () => {
     const payload = {
       type,

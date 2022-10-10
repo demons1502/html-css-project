@@ -11,6 +11,7 @@ export default function TopPotentialCustomer() {
   const { t } = useTranslation();
   const loading = useSelector((state) => state.dashboard.loadingTopPotential);
   const result = useSelector((state) => state.dashboard.topPotentialCustomers);
+  const callTransfer = useSelector((state) => state.dashboard.callTransfer);
   const [dataTable, setDataTable] = useState(result.data || []);
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState(false);
@@ -52,9 +53,10 @@ export default function TopPotentialCustomer() {
       orderField: 'successfulProb',
       orderType: 'desc',
       isNotIncludeCustomerCall: true,
+      isPotential: true,
     };
     dispatch(getTopPotentialCustomers(payload));
-  }, [dispatch]);
+  }, [dispatch, callTransfer]);
 
   useEffect(() => {
     setDataTable(result.data || []);

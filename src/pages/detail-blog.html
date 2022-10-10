@@ -1,0 +1,54 @@
+<main>
+    <include src="components/line-blog.html"></include>
+    <include src="components/tittle-search.html"></include>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 m-auto">
+                    <!-- details -->
+                    <include src="components/detail.html" locals='{
+                        "imgDetailBlog": "assets/images/img-detail-blog.jpg",
+                        "tittleDetailBlog": "Healthy Breakfast in 5 Minutes",
+                        "linkInfo" : "https://www.facebook.com/milo2109",
+                        "info" : "MaiLan",
+                        "day" : "20/10/2022",
+                        "numberComment" : "01 comment",
+                        "content" : "Tiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea. Liusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, qui s nostrud exercitation ullamLorem ipsum dolor sit amet, consectetur adipisicing elit.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliquaLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+                        "blogQuote" : "Technology is nothing. What is important is that you have a faith in people, that they are basically good and smart, and if you give them tools, they will do wonderful things with them",
+                        "content" : "Dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur"
+                    }'></include>
+                    <!-- social share -->
+                    <include src="components/social-share.html"></include>
+                    <!-- details comment -->
+                    <div class="blog-details-comment-area mb-n6">
+                        <h2 class="blog-desc-title mb-6 mt-8">Comment</h2>
+                        <!-- Blog Details Comments area Start -->
+                        <include src="components/blog-details-comment.html" locals='{
+                            "imgAvtComment": "assets/images/avt.png",
+                            "info" : "Mai Lan",
+                            "day" : "07 10 2022",
+                            "comment" : "Thank you so much for delivering a quality piece. Will be using it with one of my outfits. Just not sure which one!!!!"
+                          }'></include>
+                        <include src="components/blog-details-comment.html" locals='{
+                            "imgAvtComment": "assets/images/avt.png",
+                            "info" : "Mai Lan",
+                            "day" : "07 10 2022",
+                            "comment" : "Thank you so much for delivering a quality piece. Will be using it with one of my outfits. Just not sure which one!!!!"
+                          }'></include>
+                        <include src="components/blog-details-comment.html" locals='{
+                            "imgAvtComment": "assets/images/avt.png",
+                            "info" : "Mai Lan",
+                            "day" : "07 10 2022",
+                            "comment" : "Thank you so much for delivering a quality piece. Will be using it with one of my outfits. Just not sure which one!!!!"
+                          }'></include>
+                    </div>
+                    <!-- Blog Details Comments area End -->
+
+                    <!-- Comments Post Area Start -->
+                    <include src="components/write-comment.html"></include>
+                    <!-- Comments Post Area End -->
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

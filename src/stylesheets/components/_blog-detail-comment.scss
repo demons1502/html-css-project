@@ -1,0 +1,33 @@
+@use "../abstracts/" as *;
+
+.blog-details-comment{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    .thumb {
+        margin-right: 30px;
+        width: 110px;
+        &__fit-image {
+            width: 75%;
+            object-fit: cover;
+        }
+    }
+    .content {
+        width: calc(100% - 110px);
+        &__title {
+            font-size: 16px;
+            line-height: 1;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+        &__meta {
+            li {
+                list-style-type: none;
+                font-size: 14px;
+                line-height: 1;
+                margin-bottom: 10px;
+                color: $background-color-tag;
+            }
+        }
+    }
+}

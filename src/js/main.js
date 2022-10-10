@@ -54,3 +54,22 @@ $(document).ready(function () {
     ]
   });
 });
+const likeBtn =document.querySelector(".like__button");
+let likeIcon =document.querySelector("#icon");
+let count =document.querySelector("#count");
+
+// button click
+let clicked = false;
+
+likeBtn.addEventListener("click", () =>{
+  if (!clicked) {
+    clicked = true;
+    likeIcon.innerHTML = '<i class="fas fa-regular fa-thumbs-up"></i>';
+    count.textContent++;
+  }else {
+    clicked = false;
+    likeIcon.innerHTML = '<i class="fas fa-regular fa-thumbs-up"></i>';
+    count.textContent--;
+  }
+});
+

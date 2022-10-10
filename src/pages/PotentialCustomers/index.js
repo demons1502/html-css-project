@@ -11,7 +11,6 @@ import InputSearch from '../../components/common/InputSearch';
 import * as S from './styles';
 
 // Image
-import Delete from '../../assets/images/icons/delete.svg';
 import Call from '../../assets/images/icons/call.svg';
 import Import from '../../assets/images/icons/import.svg';
 import CreateCustomer from './CreateCustomer';
@@ -26,20 +25,15 @@ import {
   getPotentialCustomers,
   setEmptyPotentialCustomers,
 } from '../../slices/potentialCustomersSlice';
-import {
-  acquaintanceLevel,
-  connectFrom,
-  filterListOption,
-  marriageStatus,
-  relationship,
-  typeCustomer,
-} from '../../constants/common';
+import { acquaintanceLevel, filterListOption, marriageStatus, typeCustomer } from '../../constants/common';
 import { generateAgeOptions, generateIncomeOptions } from '../../ultis/generateList';
 import Modal from '../../components/common/ModalSelect';
 import { convertToCurrency } from '../../ultis/convertToCurrency';
 import EditCustomer from './EditCustomer';
 import store from '../../store';
 import FilterStatus from '../../components/common/FilterStatus';
+import Add from '../../assets/images/icons/components/Add';
+import Delete from '../../assets/images/icons/components/Delete';
 
 export default function PotentialCustomers() {
   const potentialCustomers = useSelector((state) => state.potentialCustomersReducer.potentialCustomers);
@@ -117,8 +111,6 @@ export default function PotentialCustomers() {
     income: item.income ? convertToCurrency(item.income) : null,
     acquaintanceLevel: acquaintanceLevel.find((i) => i.value === Number(item.acquaintanceLevel))?.label,
     maritalStatus: marriageStatus.find((i) => i.value === Number(item.maritalStatus))?.label,
-    connectFrom: connectFrom.find((i) => i.value === Number(item.connectFrom))?.label,
-    relationship: relationship.find((i) => i.value === Number(item.relationship))?.label,
     typeId: typeCustomer.find((i) => i.value === Number(item.typeId))?.label,
   }));
 
@@ -197,7 +189,9 @@ export default function PotentialCustomers() {
         </S.WrapSearch>
         <S.WrapAction>
           <S.WrapIcon $isDelete>
-            <img src={Delete} alt="" onClick={() => onDelete(selectedRowKeys)} />
+            <div onClick={() => onDelete(selectedRowKeys)} style={{ cursor: 'pointer' }}>
+              <Delete />
+            </div>
           </S.WrapIcon>
           <S.WrapIcon $isCall>
             <Tooltip title="Chuyển sang lịch gọi điện">
@@ -212,7 +206,7 @@ export default function PotentialCustomers() {
               </S.Button>
             </Upload>
             <S.Button onClick={showModal}>
-              <img src={Import} alt="Add customer icon" />
+              <Add />
               Tạo mới
             </S.Button>
             <FilterStatus options={filterListOption} defaultValue={optionsFilter} setPayload={setOptionsFilter} />

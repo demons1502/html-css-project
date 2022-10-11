@@ -35,6 +35,7 @@ export const TimePicker = ({ form, fieldsValue }) => {
       }
     }
     setStartTime(time);
+    setEndTime();
     form.setFieldsValue({ startTime: time, endTime: undefined });
     setFormValues({ ...formValues, startTime: time })
     setShowStart(false);

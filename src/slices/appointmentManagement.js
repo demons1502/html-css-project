@@ -102,7 +102,7 @@ const appointmentSlice = createSlice({
         ...data,
         start: formatLocalTime(data.startTime, 0),
         end: formatLocalTime(data.endTime, 1),
-        title: data.title
+        title: getTitleAppointment(data.title)
       };
       const appointments = [...state.data, { ...appointment }];
       state.data = appointments;
@@ -125,7 +125,7 @@ const appointmentSlice = createSlice({
         ...data,
         start: formatLocalTime(data.startTime, 0),
         end: formatLocalTime(data.endTime, 1),
-        title: data.title
+        title: getTitleAppointment(data.title)
       };
       let appointments = [...state.data];
       state.data = appointments.map((i) => (i.apptId === data.apptId ? appointment : i));

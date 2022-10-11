@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updatePotentialCustomer } from '../../slices/potentialCustomersSlice';
 import { useEffect } from 'react';
 import { REGEX_PHONE } from './constants';
-import InputNumber from '../../components/common/InputNumber';
+import * as S from './styles';
 
 export default function EditCustomer({ isModalOpen, handleCancel, data }) {
   const { Option } = Select;
@@ -311,7 +311,7 @@ export default function EditCustomer({ isModalOpen, handleCancel, data }) {
                     },
                   ]}
                 >
-                  <InputNumber
+                  <S.InputNumber
                     controls={false}
                     defaultValue={data.income}
                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}

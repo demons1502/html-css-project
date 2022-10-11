@@ -107,7 +107,7 @@ export default function PotentialCustomers() {
   const dataWithActions = potentialCustomers?.map((item) => ({
     ...item,
     fullname: item.name || item.fullname,
-    actions: <TableActions handleDelete={() => onDelete([item.customerId])} handleEdit={() => handleEdit(item)} />,
+    actions: <TableActions handleDelete={() => onDelete([item.customerId])} handleEdit={() => handleEdit(item)} handleCall={() => handleCreateCustomerCalls([item?.customerId])} />,
     income: item.income ? convertToCurrency(item.income) : null,
     acquaintanceLevel: acquaintanceLevel.find((i) => i.value === Number(item.acquaintanceLevel))?.label,
     maritalStatus: marriageStatus.find((i) => i.value === Number(item.maritalStatus))?.label,
@@ -167,8 +167,8 @@ export default function PotentialCustomers() {
     setOpenModalDelete(false);
   };
 
-  const handleCreateCustomerCalls = () => {
-    dispatch(createCustomerCalls(selectedRowKeys));
+  const handleCreateCustomerCalls = (value) => {
+    value.length ? dispatch(createCustomerCalls(value)) : message.warning('Vui lòng chọn khách hàng cần tạo liên hệ!')
   };
 
   useEffect(() => {
@@ -195,7 +195,7 @@ export default function PotentialCustomers() {
           </S.WrapIcon>
           <S.WrapIcon $isCall>
             <Tooltip title="Chuyển sang lịch gọi điện">
-              <img src={Call} alt="Create customer calls icon" onClick={handleCreateCustomerCalls} />
+              <img src={Call} alt="Create customer calls icon" onClick={() => handleCreateCustomerCalls(selectedRowKeys)} />
             </Tooltip>
           </S.WrapIcon>
           <S.WrapButton>

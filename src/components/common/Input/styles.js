@@ -3,6 +3,7 @@ import { InputNumber as AntInputNumber } from 'antd';
 import styled from 'styled-components';
 
 export const Input = styled(AntInput)`
+  height: 40px;
   background: #f8f8f8;
   border-radius: 5px;
   border: none;
@@ -10,8 +11,12 @@ export const Input = styled(AntInput)`
   font-size: 14px;
   line-height: 18px;
   color: #999999;
-  .ant-input{
-  background-color: #f8f8f8;
+  .ant-input {
+    background-color: #f8f8f8;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #999999;
   }
   &:focus {
     border-color: #30a867;

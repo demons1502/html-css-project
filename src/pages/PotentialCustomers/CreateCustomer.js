@@ -10,6 +10,7 @@ import { createPotentialCustomers, getCompanies } from '../../slices/potentialCu
 import { acquaintanceLevel, connectFrom, gender, marriageStatus, relationship } from '../../constants/common';
 import { REGEX_PHONE } from './constants';
 import moment from 'moment';
+import * as S from './styles';
 
 export default function CreateCustomer({ isModalOpen, handleCancel }) {
   const { Option } = Select;
@@ -291,7 +292,12 @@ export default function CreateCustomer({ isModalOpen, handleCancel }) {
                     },
                   ]}
                 >
-                  <InputNumber
+                  <S.InputNumber
+                    style={{
+                      height: '40px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
                     controls={false}
                     defaultValue={0}
                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}

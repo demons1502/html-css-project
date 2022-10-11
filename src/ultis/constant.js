@@ -71,3 +71,8 @@ export const DEPOSIT_TERM = [
   { label: 'Nửa năm', value: '6' },
   { label: 'Năm', value: '12' },
 ];
+
+export const RESPONSE_STATUS = {
+  SUCCESS: 'success',
+  FAILED: 'failed'
+}

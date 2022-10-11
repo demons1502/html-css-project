@@ -8,6 +8,16 @@ import {
 import { creactAppointmentApi } from '../services/appointment';
 
 const initialState = {
+  newCallRecordResponse: {
+    status: '',
+    data: null,
+    error: null
+  },
+  updateCallRecordResponse: {
+    status: '',
+    data: null,
+    error: null
+  },
   callRecord: {
     createdAt: null,
     updatedAt: null,
@@ -73,6 +83,16 @@ export const createAppointment = createAsyncThunk('customerCall/createAppointmen
 const customerCallSlice = createSlice({
   name: 'customerCall',
   initialState,
+  reducers: {
+    reset: (currentState) => {
+      currentState.callRecord = initialState.callRecord;
+      currentState.customerCall = initialState.customerCall;
+      currentState.customerInfo = initialState.customerInfo;
+      currentState.newCallRecordResponse = initialState.newCallRecordResponse;
+      currentState.speechScript = initialState.speechScript;
+      currentState.updateCallRecordResponse = initialState.updateCallRecordResponse;
+    },
+  },
   extraReducers: (builder) => {
     // GET CALL-DATA
     builder.addCase(getCustomerCallsData.pending, (state) => {
@@ -120,10 +140,18 @@ const customerCallSlice = createSlice({
       // state.speechScript = action.payload;
       state.status = 'success';
       state.loading = false;
+
+      state.updateCallRecordResponse.status = 'success';
+      state.updateCallRecordResponse.data = action.payload;
+
+      state.newCallRecordResponse = initialState.newCallRecordResponse;
     });
     builder.addCase(updateCallRecord.rejected, (state) => {
       state.status = 'rejected';
       state.loading = false;
+
+      state.updateCallRecordResponse.status = 'failed';
+      state.updateCallRecordResponse.error = action.payload;
     });
 
     // CREATE CALL-RECORD
@@ -134,10 +162,14 @@ const customerCallSlice = createSlice({
     builder.addCase(createCallRecord.fulfilled, (state, action) => {
       state.status = 'success';
       state.loading = false;
+      state.newCallRecordResponse.status = 'success';
+      state.newCallRecordResponse.data = action.payload;
     });
     builder.addCase(createCallRecord.rejected, (state) => {
       state.status = 'rejected';
       state.loading = false;
+      state.newCallRecordResponse.status = 'failed';
+      state.newCallRecordResponse.error = action.payload;
     });
 
     // CREATE APPOINTMENT
@@ -159,5 +191,5 @@ const customerCallSlice = createSlice({
 });
 
 const { reducer } = customerCallSlice;
-
+export const { reset } = customerCallSlice.actions;
 export default reducer;

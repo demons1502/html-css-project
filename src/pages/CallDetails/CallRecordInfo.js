@@ -4,14 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import * as S from './styles';
-import { updateCustomerCallRecord } from '../../services/customerCalls';
+// import { updateCustomerCallRecord } from '../../services/customerCalls';
 import { creactAppointmentApi } from '../../services/appointment';
 import { useNavigate } from 'react-router-dom';
 import CreateAppointment from '../Main/views/AppointmentManagement/components/CreateAppointment';
 import { COMPANY_CUSTOMER_TYPE_ID, EMPLOYEE_CUSTOMER_TYPE_ID, PERSONAL_CUSTOMER_TYPE_ID } from './constants';
 import { updateCallRecord } from '../../slices/customerCall';
-import { createAppointment } from '../../slices/appointmentManagement';
+// import { createAppointment } from '../../slices/appointmentManagement';
 import moment from 'moment';
+import { RESPONSE_STATUS } from '../../ultis/constant';
 
 export default function CallRecordInfo(props) {
   const [currentCheck, setCurrentCheck] = useState('');
@@ -23,19 +24,46 @@ export default function CallRecordInfo(props) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { callRecord: callRecordData, customerInfo: customerData, customerCall: customerCallData } = useSelector(state => state.customerCall);
+  const { callRecord: callRecordData, customerInfo: customerData, customerCall: customerCallData, updateCallRecordResponse } = useSelector(state => state.customerCall);
   // const { callRecordData, customerData, customerCallData } = props;
   const isCompleted = callRecordData?.completedAt;
 
+  useEffect(() => {
+    const res = updateCallRecordResponse;
+    if (res?.status === RESPONSE_STATUS.SUCCESS) {
+      navigate('/dashboard');
+    }
+    if (res?.status === RESPONSE_STATUS.FAILED) {
+      message.error('Hoàn thành hoặc hủy cuộc gọi xảy ra lỗi');
+    }
+  }, [updateCallRecordResponse])
 
   const renderNoteStatus = (sttEnum) => {
     switch (sttEnum) {
+      case 'STOP_CONSULTING':
+        return 'Không còn tiềm năng, dừng tư vấn'
       case 'NOT_CALL_YET':
         return 'Chưa gọi điện lần nào';
       case 'CALL_1_CALL_2':
         return 'Đã gọi điện 1 lần';
       case 'CALL_N_CALL_N_1':
         return `Đã gọi điện ${customerCallData?.noteCount} lần`;
+      case 'APPOINTMENT_SURVEY':
+        return `Đã có lịch hẹn gặp khảo sát`;
+      case 'SURVEYED_FINANCE_CONSULT':
+        return `Đã khảo sát, chờ lịch tư vấn tài chính`;
+      case 'APPOINTMENT_CONSULT':
+        return `Đã có lịch tư vấn tài chính`;
+      case 'CONSULTED_SOLUTION':
+        return `Đã tư vấn tài chính, chờ lịch hẹn tư vấn  giải pháp`;
+      case 'SOLUTION_RESULT':
+        return `Đã tư vấn giải pháp, chờ chốt kết quả`;
+      case 'RESULT_CONTRACT':
+        return `Đã chốt kết quả, chờ thông tin hợp đồng`;
+      case 'CONTRACTED':
+        return `Đã có hợp đồng`;
+      case 'CUSTOMER_CARE':
+        return `Chăm sóc khách hàng cho hợp đồng tiếp theo`;
       default:
         return sttEnum;
     }
@@ -71,14 +99,8 @@ export default function CallRecordInfo(props) {
       prePayload.isPotential = currentCheck === '1' ? true : false
     }
 
-    dispatch(updateCallRecord(prePayload)).then(({ error }) => {
-      setLoadingBtn({ ...loadingBtn, [action]: false });
-      if (error) {
-        message.error('Hoàn thành hoặc hủy cuộc gọi xảy ra lỗi')
-      } else {
-        navigate('/dashboard')
-      }
-    })
+    setLoadingBtn({ ...loadingBtn, [action]: false })
+    dispatch(updateCallRecord(prePayload));
   };
 
   const toggleAppointment = (status) => {

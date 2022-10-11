@@ -7,7 +7,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { SurveyForm } from "./SurveyForm";
 import { Checkbox as CheckboxControl } from "../../../components/controls";
 import { ClosingModal } from "../Modals/ClosingModal";
-import { createSurvey, getSurveyDetails } from "../../../slices/surveys";
+import { createSurvey, getSurveyDetails, updateSurvey } from "../../../slices/surveys";
 import { isEmpty } from "lodash";
 import { Input} from "../../../components/styles";
 import { useSearchParams  } from "react-router-dom";
@@ -19,15 +19,13 @@ const CustomerServeyTable = () => {
   const [dataTables, setDataTables] = useState([]);
   const [formValue, setFromValue] = useState({});
   const [formValues, setFromValues] = useState([]);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [apptId, setApptId] = useState(0);
-
-  console.log("formValues", formValues);
 
   //get data from redux
   const { surveys, customers, appointment } = useSelector((state) => state);
   const { selectedCustomer } = customers;
-  const { survey, isClearSurvey } = surveys;
+  const { survey, isClearSurvey, isHistory } = surveys;
   const { finance, influence, priority, others, ...value } = survey;
   const financeValue = finance ? JSON.parse(finance) : {};
   const influenceValue = influence ? JSON.parse(influence) : {};
@@ -64,10 +62,10 @@ const CustomerServeyTable = () => {
       const dataInfos = [...dataTables];
 
       if (dataInfos.length === 0) {
-        dispatch(getSurveyDetails(208))
+        // dispatch(getSurveyDetails(208))
         // Get survey
         if (selectedCustomer?.surveyId) {
-          // dispatch(getSurveyDetails(selectedCustomer?.surveyId))
+          dispatch(getSurveyDetails(selectedCustomer?.surveyId))
         }
       } else {
         const isIdExist = dataInfos.some((item) => item.customerId === selectedCustomer?.customerId);
@@ -97,51 +95,144 @@ const CustomerServeyTable = () => {
     }
   }, [isClearSurvey]);
 
+  useEffect(() => {
+    const tData =
+    selectedCustomer?.customerId && dataTables?.length > 0
+      ? dataTables?.find((item) => item?.customerId === selectedCustomer?.customerId)
+      : {};
+    const fData =
+      selectedCustomer?.customerId && formValues?.length > 0
+        ? formValues?.find((item) => item?.id === selectedCustomer?.customerId)
+        : {};
+
+    if (!isEmpty(tData)) {
+      setDataTable(tData?.data);
+    } 
+    if (!isEmpty(fData)) {
+      setFromValue(fData);
+      reset({
+        other1: fData?.others?.other1,
+        other2: fData?.others?.other1,
+        other3: fData?.others?.other1,
+        other4: fData?.others?.other1,
+        isPotential: fData?.isPotential,
+        hintName: fData?.hintName,
+      });
+    }
+  }, [isHistory]);
+
   //reset form after submit
   useEffect(() => {
     if (!isEmpty(surveys?.data)) {
-      console.log("isClearSurvey", isClearSurvey);
-      const tableInfos = [...dataTables];
-      const formInfos = [...formValues];
-      const currentTableIndex = tableInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
-      const currentformIndex = formInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
-      tableInfos[currentTableIndex] = generateTableData(surveys?.data?.customerId);
-      formInfos[currentformIndex] = generateFormData(surveys?.data?.customerId);
-      setDataTables(tableInfos);
-      setFromValues(formInfos);
+      let tData =
+        selectedCustomer?.customerId && dataTables?.length > 0
+        ? dataTables?.find((item) => item?.customerId === selectedCustomer?.customerId)
+        : {};
+      let fData =
+        selectedCustomer?.customerId && formValues?.length > 0
+        ? formValues?.find((item) => item?.id === selectedCustomer?.customerId)
+        : {};
+
+      tData = {
+        ...tData,
+        id: surveys?.data?.surveyId
+      }
+
+      fData = {
+        ...fData,
+        id: surveys?.data?.surveyId
+      }
+      
+      setDataTable(tData)
+      setFromValue(fData)
+
+      // console.log("isClearSurvey", isClearSurvey);
+      // const tableInfos = [...dataTables];
+      // const formInfos = [...formValues];
+      // const currentTableIndex = tableInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
+      // const currentformIndex = formInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
+      // tableInfos[currentTableIndex] = generateTableData(surveys?.data?.customerId, surveys?.data);
+      // formInfos[currentformIndex] = generateFormData(surveys?.data?.customerId, surveys?.data);
+      // setDataTables(tableInfos);
+      // setFromValues(formInfos);
     }
   }, [surveys?.data]);
 
   //generate form data
   useEffect(() => {
-    if (isEmpty(surveys?.survey) && selectedCustomer?.customerId) {
-      const formInfos = [...formValues];
+    if (selectedCustomer?.customerId) {
+      const survey = !isEmpty(surveys?.survey)? surveys.survey : null
+      const formInfos = [...formValues]
+      const formValue = generateFormData(selectedCustomer?.customerId, survey)
+
       if (formInfos?.length === 0) {
-        formInfos.push(generateFormData(selectedCustomer?.customerId));
+        setFromValue(formValue)
+        formInfos.push(formValue);
       } else {
         const isIdExist = formInfos.some((item) => item?.customerId === selectedCustomer?.customerId);
         if (!isIdExist) {
-          formInfos.push(generateFormData(selectedCustomer?.customerId));
+          setFromValue(formValue)
+          formInfos.push(formValue);
+        }
+        else {
+          formInfos.map((item) => {
+            return item?.customerId === selectedCustomer?.customerId ? formValue : item
+          })
         }
       }
       setFromValues(formInfos);
     }
+
+    // if (isEmpty(surveys?.survey) && selectedCustomer?.customerId) {
+    //   const formInfos = [...formValues];
+    //   if (formInfos?.length === 0) {
+    //     formInfos.push(generateFormData(selectedCustomer?.customerId));
+    //   } else {
+    //     const isIdExist = formInfos.some((item) => item?.customerId === selectedCustomer?.customerId);
+    //     if (!isIdExist) {
+    //       formInfos.push(generateFormData(selectedCustomer?.customerId));
+    //     }
+    //   }
+    //   setFromValues(formInfos);
+    // }
   }, [selectedCustomer, surveys?.survey]);
 
   useEffect(() => {
-    if (isEmpty(surveys?.survey) && selectedCustomer?.customerId) {
+    console.log(surveys?.survey)
+    if (selectedCustomer?.customerId) {
+      const survey = !isEmpty(surveys?.survey)? surveys.survey : null
       const dataInfos = [...dataTables];
+      const tableValue = generateTableData(selectedCustomer?.customerId, survey)
 
       if (dataInfos.length === 0) {
-        dataInfos.push(generateTableData(selectedCustomer?.customerId));
+        dataInfos.push(tableValue);
       } else {
         const isIdExist = dataInfos.some((item) => item.customerId === selectedCustomer?.customerId);
         if (!isIdExist) {
-          dataInfos.push(generateTableData(selectedCustomer?.customerId));
+          dataInfos.push(tableValue);
+        }
+        else {
+          dataInfos.map((item) => {
+            return item?.customerId === selectedCustomer?.customerId ? tableValue : item
+          })
         }
       }
       setDataTables(dataInfos);
     }
+
+    // if (isEmpty(surveys?.survey) && selectedCustomer?.customerId) {
+    //   const dataInfos = [...dataTables];
+
+    //   if (dataInfos.length === 0) {
+    //     dataInfos.push(generateTableData(selectedCustomer?.customerId));
+    //   } else {
+    //     const isIdExist = dataInfos.some((item) => item.customerId === selectedCustomer?.customerId);
+    //     if (!isIdExist) {
+    //       dataInfos.push(generateTableData(selectedCustomer?.customerId));
+    //     }
+    //   }
+    //   setDataTables(dataInfos);
+    // }
   }, [selectedCustomer, surveys?.survey]);
 
   useEffect(() => {
@@ -193,6 +284,8 @@ const CustomerServeyTable = () => {
       selectedFormInfo["others"]["other3"] = watchOther3;
       selectedFormInfo["others"]["other4"] = watchOther4;
       formInfos[currentIndex] = selectedFormInfo;
+      setFromValue(selectedFormInfo);
+      setFromValues(formInfos);
     }
   }, [watchOther1, watchOther2, watchOther3, watchOther4, watchPotential, watchHintName]);
 
@@ -272,6 +365,7 @@ const CustomerServeyTable = () => {
         },
       ];
       setDataTable(tableData);
+      console.log(value)
       reset({
         other1: othersValue?.ans1,
         other2: othersValue?.ans2,
@@ -559,13 +653,13 @@ const CustomerServeyTable = () => {
       hintName: formValue?.hintName,
       isPotential: formValue?.isPotential,
     };
-
+    console.log(formValues)
     if (formValue?.hintName) {
-      if (formValue.surveyId) {
+      if (!formValue.id) {
         dispatch(createSurvey(submitFormData));
       }
       else {
-        dispatch(updateSurvey(submitFormData));
+        dispatch(updateSurvey(formValue.id, submitFormData));
       }
       
     } else {
@@ -581,11 +675,11 @@ const CustomerServeyTable = () => {
           <div className="">{table}</div>
         </div>
         <SurveyForm />
-        <div className={`container-right-submit ${!isEmpty(surveys?.survey) && "content-hide"}`}>
+        <div className={`container-right-submit`}>
           <div>
             <CheckboxControl control={control} name="isPotential" label="Không còn tiềm năng" />
           </div>
-          {selectedCustomer?.customerId && (
+          {selectedCustomer?.customerId && !surveys?.isHistory && (
             <div>
               <ClosingModal onSubmit={onSubmit} />
             </div>
@@ -600,78 +694,82 @@ const CustomerServeyTable = () => {
 export default CustomerServeyTable;
 
 const generateTableData = (customerId, survey = null) => {
+  const priorityValue = survey? JSON.parse(survey.priority) : {}
+  const financeValue = survey? JSON.parse(survey.finance) : {}
+  const influenceValue = survey? JSON.parse(survey.influence) : {}
+  
   return {
-    id: survey?.surveyId,
+    id: survey && survey?.surveyId?survey.surveyId: 0,
     customerId: customerId,
     data: [
       {
         key: 1,
         type: "Quỹ dự phòng đảm bảo tài chính cho người mà anh/chị yêu thương",
         infulence: "",
-        infulence1: "",
-        infulence2: "",
-        infulence3: "",
+        infulence1: influenceValue?.family === 1 ? 1 : "",
+        infulence2: influenceValue?.family === 2 ? 2 : "",
+        infulence3: influenceValue?.family === 3 ? 3 : "",
         finance: "",
-        finance1: "",
-        finance2: "",
-        money: "",
-        prior: "",
+        finance1: financeValue?.family?.ans1 === 1 ? 1 : "",
+        finance2: financeValue?.family?.ans1 === 2 ? 2 : "",
+        money: financeValue?.family?.ans2,
+        prior: priorityValue?.family,
         label: "family",
       },
       {
         key: 2,
         type: "Quỹ đảm bảo hoàn thành bậc cử nhân",
         infulence: "",
-        infulence1: "",
-        infulence2: "",
-        infulence3: "",
+        infulence1: influenceValue?.bachelor === 1 ? 1 : "",
+        infulence2: influenceValue?.bachelor === 2 ? 2 : "",
+        infulence3: influenceValue?.bachelor === 3 ? 3 : "",
         finance: "",
-        finance1: "",
-        finance2: "",
-        money: "",
-        prior: "",
+        finance1: financeValue?.bachelor?.ans1 === 1 ? 1 : "",
+        finance2: financeValue?.bachelor?.ans1 === 2 ? 2 : "",
+        money: financeValue?.bachelor?.ans2,
+        prior: priorityValue?.bachelor,
         label: "bachelor",
       },
       {
         key: 3,
         type: "Quỹ khởi nghiệp chắp cánh cho con vào đời",
         infulence: "",
-        infulence1: "",
-        infulence2: "",
-        infulence3: "",
+        infulence1: influenceValue?.son === 1 ? 1 : "",
+        infulence2: influenceValue?.son === 2 ? 2 : "",
+        infulence3: influenceValue?.son === 3 ? 3 : "",
         finance: "",
-        finance1: "",
-        finance2: "",
-        money: "",
-        prior: "",
+        finance1: financeValue?.son?.ans1 === 1 ? 1 : "",
+        finance2: financeValue?.son?.ans1 === 2 ? 2 : "",
+        money: financeValue?.son?.ans2,
+        prior: priorityValue?.son,
         label: "son",
       },
       {
         key: 4,
         type: "Quỹ lương hưu từ năm 61-85 tuổi",
         infulence: "",
-        infulence1: "",
-        infulence2: "",
-        infulence3: "",
+        infulence1: influenceValue?.retire === 1 ? 1 : "",
+        infulence2: influenceValue?.retire === 2 ? 2 : "",
+        infulence3: influenceValue?.retire === 3 ? 3 : "",
         finance: "",
-        finance1: "",
-        finance2: "",
-        money: "",
-        prior: "",
+        finance1: financeValue?.retire?.ans1 === 1 ? 1 : "",
+        finance2: financeValue?.retire?.ans1 === 2 ? 2 : "",
+        money: financeValue?.retire?.ans2,
+        prior: priorityValue?.retire,
         label: "retire",
       },
       {
         key: 5,
         type: "Quỹ đầu tư gấp đôi tài sản",
         infulence: "",
-        infulence1: "",
-        infulence2: "",
-        infulence3: "",
+        infulence1: influenceValue?.doubleAsset === 1 ? 1 : "",
+        infulence2: influenceValue?.doubleAsset === 2 ? 2 : "",
+        infulence3: influenceValue?.doubleAsset === 3 ? 3 : "",
         finance: "",
-        finance1: "",
-        finance2: "",
-        money: "",
-        prior: "",
+        finance1: financeValue?.doubleAsset?.ans1 === 1 ? 1 : "",
+        finance2: financeValue?.doubleAsset?.ans2 === 2 ? 2 : "",
+        money: financeValue?.doubleAsset?.ans2,
+        prior: priorityValue?.doubleAsset,
         label: "doubleAsset",
       },
     ],
@@ -679,16 +777,19 @@ const generateTableData = (customerId, survey = null) => {
 };
 
 const generateFormData = (customerId, survey = null) => {
+  console.log(survey)
+  const others = survey?.others? JSON.parse(survey?.others) : {}
+
   return {
-    id: survey?.surveyId,
+    id: survey && survey?.surveyId?survey.surveyId: 0,
     customerId: customerId,
     others: {
-      other1: [],
-      other2: [],
-      other3: [],
-      other4: [],
+      other1: !isEmpty(others)?  others.ans1 : [],
+      other2: !isEmpty(others)?  others.ans2 : [],
+      other3: !isEmpty(others)?  others.ans3 : [],
+      other4: !isEmpty(others)?  others.ans4 : [],
     },
-    hintName: "",
-    isPotential: false,
+    hintName: survey? survey?.hintName : "",
+    isPotential: survey? survey?.isPotential : false,
   };
 };

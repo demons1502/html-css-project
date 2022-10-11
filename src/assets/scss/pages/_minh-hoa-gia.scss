@@ -53,7 +53,14 @@
       display: flex;
     }
   }
-
+  .ant-input-number{
+    input{
+      text-align: center;
+      // background-color: #fff;
+      background-color: #f4f4f4;
+      color: black;
+    }
+  }
   // Table
   .minh_table {
     width: 100%;

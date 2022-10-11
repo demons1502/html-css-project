@@ -13,7 +13,7 @@ import calender from "../../assets/images/icons/calendar.svg";
 import left_arrow from "../../assets/images/icons/left-arrow.svg";
 import { HistoryPopup } from "./Modals/HistoryPopup";
 import { formatDate } from "../../helper/index";
-// import { getSppechScriptInfo, clearSurvey } from "../../slices/surveys";
+import { setHistory } from "../../slices/surveys";
 import { getAppointments, getAppointment } from "../../slices/appointmentManagement";
 import moment from "moment";
 import Dialogue from "../../components/common/Dialogue";
@@ -43,6 +43,7 @@ const Survey = () => {
 
   useEffect(() => {
     const apptId = searchParams.get('appointment_id');
+    const customerId = searchParams.get('customer_id');
 
     if (apptId) {
       setApptId(apptId)
@@ -55,6 +56,9 @@ const Survey = () => {
         endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss')
       }
       dispatch(getAppointments(params));
+    }
+    if (customerId) {
+      dispatch(setSelectedCustomer(customerId));
     }
   }, []);
 
@@ -80,6 +84,8 @@ const Survey = () => {
 
   const backToSurvey = () => {
     // dispatch(clearSurvey());
+    dispatch(setHistory({isHistory: false}));
+    
   };
 
   const historyHandler = () => {
@@ -95,6 +101,7 @@ const Survey = () => {
     navigate('/appointment-management');
   };
 
+  console.log(surveys?.isHistory)
   return (
     <Fragment>
       <div className="survey">
@@ -127,7 +134,7 @@ const Survey = () => {
                   </div>
 
                   <div className="container-right">
-                    {selectedCustomer?.customerId? (
+                    {selectedCustomer?.customerId && !surveys?.isHistory? (
                       <div className="container-right-header">
                         <div>
                           <HistoryPopup historyHandler={historyHandler} />
@@ -144,10 +151,10 @@ const Survey = () => {
                           </Button>
                         </div>
                       </div>
-                    ) : (surveys?.survey?.createdAt?(
+                    ) : (surveys?.isHistory && surveys?.survey?.createdAt?(
                       <div className="container-right-header" style={{ padding: '20px' }}>
                         <div onClick={backToSurvey} className="back-to-survey">
-                          <img src={left_arrow} alt="back" height={12} style={{ marginRight: '5px' }} />
+                          <img src={left_arrow} alt="back" height={16} style={{ marginRight: '5px' }} />
                         </div>
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: "5px" }} />

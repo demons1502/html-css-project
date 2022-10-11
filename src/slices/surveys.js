@@ -12,6 +12,7 @@ const initialState = {
   isError: false,
   error: "",
   isClearSurvey: false,
+  isHistory: false
 };
 
 export const createSurvey = createAsyncThunk("surveys/create", async (data) => {
@@ -86,6 +87,9 @@ const surveySlice = createSlice({
       state.survey = {};
       state.isClearSurvey = true;
     },
+    setHistory: (state, action) => {
+      state.isHistory = action.payload.isHistory;
+    },
   },
   extraReducers: (builder) => {
     // add survey
@@ -129,8 +133,13 @@ const surveySlice = createSlice({
     });
     builder.addCase(getSurveyDetails.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.survey = action.payload;
       state.error = "";
+
+      const survey = {
+        ...action.payload,
+        editable: false
+      }
+      state.survey = survey;
     });
     builder.addCase(getSurveyDetails.rejected, (state, action) => {
       state.isLoading = false;
@@ -179,7 +188,7 @@ const surveySlice = createSlice({
   },
 });
 
-export const { clearSurvey } = surveySlice.actions;
+export const { clearSurvey, setHistory } = surveySlice.actions;
 const { reducer } = surveySlice;
 
 export default reducer;

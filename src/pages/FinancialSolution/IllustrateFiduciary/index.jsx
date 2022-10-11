@@ -1,6 +1,6 @@
 import { Tabs, Popover } from "antd";
 import { Button } from "../../../components/styles";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import PageBack from "../../../assets/images/financial/PageBack";
 import Calender from "../../../assets/images/icons/components/calender";
@@ -16,27 +16,30 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCustomerContracts, postSaveFinances, getFinanceSolution } from "../../../slices/financialSolutions";
 
 const IllustrateFiduciary = () => {
-  const location = useLocation();
-  console.log(location.state);
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [callSave, setCallSave] = useState(false)
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const [contract, setContract] = useState([]) // contract of user
-  const [dataToSave, setDataToSave] = useState({ ...location?.state, investmentYear: '', additionalInvestmentYear: '', hideName: '' } || {})
-  const [callSave, setCallSave] = useState(false)
+  const [dataToSave, setDataToSave] = useState({investmentYear: '', additionalInvestmentYear: '', hideName: '' } || {})
   const [date, setDate] = useState(() => {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
-
     return mm + '/' + dd + '/' + yyyy;
   })
+  const [ageCustomer, setAgeCustomer] = useState(0)
+  const dataCustomerById = useSelector((state)=>state.financialSolution.customerSelect)
+  // console.log(dataCustomerById);
+  const {historyList}= useSelector((state)=>state.financialSolution)
 
-  const {historyList}= useSelector((state)=>state.financialSolution)      //call api history
-  useEffect(()=>{
-    // dispatch(getFinanceSolution(id))
+  useLayoutEffect(()=>{
+    setDataToSave({...dataToSave, ...dataCustomerById})
   },[])
+  useEffect(()=>{//call api history
+    // dispatch(getFinanceSolution(id))
+  },[dataCustomerById])
   
   useEffect(() => {
     if (callSave) {
@@ -89,8 +92,8 @@ const IllustrateFiduciary = () => {
     setIsHistoryModalOpen(!isHistoryModalOpen);
   }
 
+  // console.log(dataToSave);
   useEffect(() => {
-    console.log(dataToSave);
   }, [dataToSave])
 
   const sendEmail = () => {

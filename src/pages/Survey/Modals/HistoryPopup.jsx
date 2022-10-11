@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Button, Popover } from "antd";
 import { useTranslation } from "react-i18next";
-import { Spin, message } from "antd";
+import { Spin } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { getSurveyDetails } from "../../../slices/surveys";
+import { getSurveyDetails, setHistory } from "../../../slices/surveys";
 import { formatDate } from "../../../helper/index";
 
 export const HistoryPopup = ({ historyHandler }) => {
@@ -33,11 +33,8 @@ export const HistoryPopup = ({ historyHandler }) => {
 
   const getSelectedSurvey = (id) => {
     setOpen(false);
+    dispatch(setHistory({isHistory: true}));
     dispatch(getSurveyDetails(id));
-  };
-
-  const onCancel = () => {
-    setOpen(false);
   };
 
   const content = (

@@ -10,6 +10,7 @@ import Reminiscent from './Reminiscent';
 
 const spendingForm = (props) => {
   const { id, useSelected, setKeywords } = props;
+  console.log(useSelected);
 
   const [reminiscent, setReminiscent] = useState(null);
   const [checked, setChecked] = useState(true);
@@ -21,7 +22,6 @@ const spendingForm = (props) => {
   const dispatch = useDispatch();
 
   const handleFinish = (values) => {
-    
     const consultAttrs = [];
     for (const key of Object.keys(values)) {
       consultAttrs.push({ label: key, value: values[key] > 0 ? values[key] : 0 });

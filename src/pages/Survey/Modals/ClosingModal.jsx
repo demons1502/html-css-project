@@ -13,9 +13,7 @@ export const ClosingModal = ({ onSubmit }) => {
   const { data } = useSelector((state) => state?.surveys);
 
   const { customers } = useSelector((state) => state);
-  const selectedCustomer = customers?.selectedCustomer || {};
-
-  console.log("survey data", data);
+  // const selectedCustomer = customers?.selectedCustomer || {};
 
   useEffect(() => {
     if (!isEmpty(data)) {
@@ -36,7 +34,7 @@ export const ClosingModal = ({ onSubmit }) => {
       <div className="closing-body">
         <div className="form-group">
           <FieldLabel name="hintName" label="Tên gợi nhớ" />
-          <Input control={control} name="hintName" className="form-control" />
+          <Input control={control} name="hintName" className="form-control" value={data.hintName} />
         </div>
       </div>
       <Divider />

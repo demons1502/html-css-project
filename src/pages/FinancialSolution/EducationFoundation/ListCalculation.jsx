@@ -88,7 +88,7 @@ const ListCalculation = ({ typeFund, userSelected }) => {
 
   const onFinish = (values) => {
     console.log("Success:", values);
-    userSelected ? navigate("/advise/financial-solutions/minh-hoa-gia", {state:{values: values,total:TotalAmount, typeFund:typeFund, userSelected:userSelected}}) : null
+    userSelected ? navigate("/advise/financial-solutions/minh-hoa-gia", { state: { total: totalAmount, typeFund: typeFund, userSelected: userSelected, values: values } }) : null
   };
 
   const onFinishFailed = (errorInfo) => {

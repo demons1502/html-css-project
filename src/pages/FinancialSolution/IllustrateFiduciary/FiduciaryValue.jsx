@@ -1,18 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Form } from "antd";
 import { InputNumber } from '../../../components/common/Input/styles'
+import { formatDataNumber } from "../../../helper";
 
-export const FiduciaryValue = ({ nameCustomer, data, setDataToSave }) => {
+
+export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllustration }) => {
   const [investmentYear, setInvestmentYear] = useState(20);  //thoi gian uyu thac
-  const [percentage, setPercentage] = useState(data?.values?.percantage || 6.850);  // muc ty suat dau tu minh hoa
+  const [percentage, setPercentage] = useState(preparedIllustration?.rate || 6.850);  // muc ty suat dau tu minh hoa
   const [totalOfMoney, setTotalOfMoney] = useState(20000000);       //so tien dau tu them
   const [additionalInvestmentYear, setAdditionalInvestmentYear] = useState(10);   //so nam dau tu them
   const [bankRate, setBankRate] = useState(6)
-  // const [valueColum, setValueColum] = useState(0)
-  // console.log("investmentYear", investmentYear);
-  // console.log("percentage", percentage);
-  // console.log("totalOfMoney", totalOfMoney);
-  // console.log("additionalInvestmentYear", additionalInvestmentYear);
+  const [columnC, setColumnC] = useState(preparedIllustration?.annualBasePremiums || [])
+  const [columnD, setColumnD] = useState(preparedIllustration?.annualTopUpPremiums || [])
+  const [columnT, setColumnT] = useState([50])
+  useEffect(() => {
+    setColumnC(preparedIllustration?.annualBasePremiums)
+    setColumnD(preparedIllustration?.annualTopUpPremiums)
+  }, [preparedIllustration])
+
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -21,120 +26,160 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave }) => {
     console.log("Failed:", errorInfo);
   };
 
+  useEffect(()=>{
+    let arr=[...columnD]
+    if(columnD.length<additionalInvestmentYear){
+      const lengthOfArr= investmentYear < additionalInvestmentYear ? investmentYear : additionalInvestmentYear
+      for(let i=columnD.length; i< lengthOfArr; i++){
+        arr.push(totalOfMoney)
+      }
+    }
+    else if(columnD.length>additionalInvestmentYear){
+      arr.splice(0,columnD.length - additionalInvestmentYear)
+    }
+    setColumnD(arr)
+  },[additionalInvestmentYear])
+
+  useEffect(()=>{
+    let arr = Array.from({ length: columnD.length }, (_, i) => i=totalOfMoney)
+    setColumnD(arr)
+  },[totalOfMoney])
+
   useEffect(() => {
     setDataToSave((prev) => {
       prev.additionalInvestmentYear = additionalInvestmentYear;
       prev.investmentYear = investmentYear;
-      prev.percantage = percentage;
+      prev.percentage = percentage;
       prev.total = totalOfMoney;
+      prev.annualBasePremiums= columnC;
+      prev.annualTopUpPremiums= columnD;
       return ({
         ...prev
       })
     })
-  }, [investmentYear, percentage, totalOfMoney, additionalInvestmentYear])
+  }, [investmentYear, percentage, totalOfMoney, additionalInvestmentYear, columnC, columnD])
 
-  const columnC = 30000       //fix if API return Arr
-  const columnD = 20000       //fix if API return Arr
   const columnL = [85, 75, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   const columnN = [2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
   const columnJ7 = 8.70
   const columnR = [90, 75, 60, 45, 30, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  const columnT = [50] // all  1ty< column C < 1.5ty =>100% , lon hon 1.5ty => 10%, nho hon 1ty=>50%
 
-  // const setValueColumnT()=>{
-  //   columnC.map
-  // }
+  const setValueColumnT = () => {
+    let result = 0
+    columnC.map(item => {
+      result += item
+    })
+    if (1000000000 < result < 1500000000) {
+      setColumnT([100])
+    }
+    else if (result < 1000000000) {
+      setColumnT([50])
+    }
+    else setColumnT([150])
+  }
+
+  useEffect(() => {
+    setValueColumnT()
+  }, [columnC, columnD])
 
   const calculatorE = (i) => {
-    return (columnC + columnD) * (i + 1)
+    return columnD[i] ? formatDataNumber((columnC[i] + columnD[i]) * (i + 1)) : formatDataNumber(columnC[i] * (i + 1))
   }
 
   var totalColumnF;
   const calculatorF0 = (i) => {
-    totalColumnF = columnL[i] ? columnC * (100 - columnL[i]) * (100 + percentage) / 10000 : columnC * 100 * (100 + percentage) / 10000
-    return totalColumnF.toFixed()
+    totalColumnF = columnL[i] ? columnC[i] * (100 - columnL[i]) * (100 + percentage) / 10000 : columnC[i] * 100 * (100 + percentage) / 10000
+    return formatDataNumber(totalColumnF.toFixed())
   }
   const calculatorF1 = (i) => {
     const formatL = (100 - columnL[i]) / 100
-    totalColumnF = (Number(formatL * columnC) + Number(totalColumnF)) * 1.0685
-    return totalColumnF.toFixed()
+    totalColumnF = (Number(formatL * columnC[i]) + Number(totalColumnF)) * (100 + percentage) / 100
+    return formatDataNumber(totalColumnF.toFixed())
   }
 
   var totalColumnG;
   const calculatorG0 = (i) => {
-    totalColumnG = columnD * (100 - columnN[i]) * (100 + columnJ7) / 10000
-    return totalColumnG.toFixed()
+    totalColumnG = columnD[i] ? columnD[i] * (100 - columnN[i]) * (100 + columnJ7) / 10000 : (100 + columnJ7) / 10000
+    return formatDataNumber(totalColumnG.toFixed())
   }
   const calculatorG1 = (i) => {
     let formatN = (100 - columnN[i]) / 100
     let formatJ7 = (100 + columnJ7) / 100
-    totalColumnG = (Number(formatN * columnD) + Number(totalColumnG)) * formatJ7
-    return totalColumnG.toFixed()
+    totalColumnG = columnD[i] ? (Number(formatN * columnD[i]) + Number(totalColumnG)) * formatJ7 : Number(totalColumnG) * formatJ7
+    return formatDataNumber(totalColumnG.toFixed())
   }
   const calculatorH = (i) => {
     const result = Number(totalColumnG) + Number(totalColumnF)
-    return result.toFixed()
+    return formatDataNumber(result.toFixed())
   }
   const calculatorI0 = (i) => {
     let formatColumnR = columnR[i] / 100
-    let columnQ = (columnC * columnR[i] - totalColumnF > 0) ? (columnC * formatColumnR) : (columnC * formatColumnR)
+    let columnQ = (columnC[i] * columnR[i] - totalColumnF > 0) ? (columnC[i] * formatColumnR) : (columnC[i] * formatColumnR)
     const result = Number(totalColumnG) + ((Number(totalColumnF) - columnQ > 0) ? Number(totalColumnF) - columnQ : 0)
-    return result.toFixed()
+    return formatDataNumber(result.toFixed())
   }
   const calculatorI1 = (i) => {
     let formatColumnR = columnR[i] / 100
-    let columnQ = (columnC * columnR[i] - totalColumnF > 0) ? (columnC * formatColumnR) : (columnC * formatColumnR)
-    console.log('g',totalColumnG);
-    console.log('f',totalColumnF);
-    console.log('q',columnQ);
-
+    let columnQ = (columnC[i] * columnR[i] - totalColumnF > 0) ? (columnC[i] * formatColumnR) : (columnC[i] * formatColumnR)
     const result = Number(totalColumnG) + ((Number(totalColumnF) - columnQ > 0) ? Number(totalColumnF) - columnQ : 0)
 
 
 
-    return result.toFixed()
+    return formatDataNumber(result.toFixed())
 
     // check column T to get % 
-    // let totalI= Number(result) + (columnC * columnT)/100
+    // let totalI= Number(result) + (columnC[i] * columnT)/100
     // return totalI.toFixed()
   }
 
-
-  const calculatorJ = (i) => {
-    let ii = i + 1
-    let total = columnC + columnD
-    let arr1 = []
-    let result = 0
-    let rate = (100 + bankRate) / 100
-    for (let a = 1; a <= ii; a++) {
-      arr1.push(total * (rate ** a))
+  var totalBankInterest;
+  const calculatorJ0 = (i) => {
+    if (i == 0) {
+      let rate = (100 + bankRate) / 100
+      let total = columnD[i] ? columnC[i] + columnD[i] : columnC[i]
+      const result = total * rate
+      totalBankInterest = result
+      return formatDataNumber(result.toFixed())
     }
-    arr1.map(item => {
-      result = result + item
-    })
-    return result.toFixed();
   }
 
+  const calculatorJ1 = (i) => {
+    let rate = (100 + bankRate) / 100
+    let total = columnD[i] ? columnC[i] + columnD[i] : columnC[i]
+    const result = (total + totalBankInterest) * rate
+    totalBankInterest = result
+    return formatDataNumber(result.toFixed())
+  }
+  const inputColumnD = (e, i) => {
+    console.log(e, i);
+  }
   const renderTable = (age, length) => {
     let arr = []
     for (let i = 0; i < length; i++) {
       let index = i
       arr.push(
         <tr key={i}>
-          <td>{age + 1}</td>
+          <td>{age + 1 + i}</td>
           <td>{index + 1}</td>
-          <td>{columnC}</td>
-          <td>{columnD}</td>
+          <td>{columnC[i]}</td>
+          <td>{columnD[i]}</td>
+          {/* <td>{
+            <InputNumber controls={false} type="number"
+              value={columnD[i]} onChange={(e)=>inputColumnD(e)}
+              style={{ width: "120px", backgroundColor: 'white' }}
+              // formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              // parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+            />
+          }</td> */}
           <td>{calculatorE(i)}</td>
           <td>{(i == 0) ? calculatorF0(i) : calculatorF1(i)}</td>
           <td>{(i == 0) ? calculatorG0(i) : calculatorG1(i)}</td>
           <td>{calculatorH(i)}</td>
-          <td>{(i>1 && i<9) ? calculatorI1(i) : calculatorI0(i)}</td>
-          <td>{calculatorJ(i)}</td>
+          <td>{(i > 1 && i < 9) ? calculatorI1(i) : calculatorI0(i)}</td>
+          <td>{(i == 0) ? calculatorJ0(i) : calculatorJ1(i)}</td>
         </tr>
       )
     }
-    // console.log(arr);
     return arr
   }
 
@@ -209,6 +254,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave }) => {
               <Form.Item name="additional_investment_year">
                 <InputNumber type="number"
                   controls={false}
+                  max={20}
                   style={{ textAlign: 'center', width: 152 }}
                   className="form-input-text"
                   placeholder="0"
@@ -259,159 +305,11 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave }) => {
           </tr>
         </thead>
         <tbody>
-          {/* const [investmentYear                //thoi gian uyu thac
-            const [percentage              // muc ty suat dau tu minh hoa
-            const [totalOfMoney,                 //so tien dau tu them
-            const [additionalInvestmentYear     //so nam dau tu them */}
           {
-            // (data?.age && investmentYear) ?
-            renderTable(34, 20)
-            // : <></>
+            (data?.age && preparedIllustration) ?
+              renderTable(34, investmentYear)
+              : <></>
           }
-          {/* <tr>
-            <td>31</td>
-            <td>1</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-          </tr>
-          <tr>
-            <td>31</td>
-            <td>1</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-          </tr>
-          <tr>
-            <td>31</td>
-            <td>1</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-          </tr>
-          <tr>
-            <td>31</td>
-            <td>1</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-          </tr>
-          <tr>
-            <td>31</td>
-            <td>1</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-          </tr>
-          <tr>
-            <td>31</td>
-            <td>1</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-          </tr>
-          <tr>
-            <td>31</td>
-            <td>1</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-          </tr>
-          <tr>
-            <td>31</td>
-            <td>1</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-          </tr>
-          <tr>
-            <td>31</td>
-            <td>1</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-          </tr>
-          <tr>
-            <td>31</td>
-            <td>1</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-          </tr>
-          <tr>
-            <td>31</td>
-            <td>1</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-          </tr>
-          <tr>
-            <td>31</td>
-            <td>1</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-            <td>22.711.000</td>
-          </tr> */}
         </tbody>
       </table>
     </Form>

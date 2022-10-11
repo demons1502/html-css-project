@@ -1,7 +1,7 @@
 import { sendGet, sendPost, sendPatch, sendDelete } from './axios';
 
 export const getAppointmentsApi = (payload) =>
-  sendGet('/appointments', payload);
+  sendGet(`/appointments?title=${payload.titles}&startDate=${payload.startDate}&endDate=${payload.endDate}`);
 
 export const creactAppointmentApi = (payload) =>
   sendPost('/appointment', payload);

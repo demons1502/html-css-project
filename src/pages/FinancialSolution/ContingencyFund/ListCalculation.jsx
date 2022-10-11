@@ -6,7 +6,6 @@ import { formatDataNumber } from '../../../helper';
 import { postFinanceDatas } from '../../../slices/financeSolutions';
 import InputNumber from '../../../components/common/InputNumber';
 import Input from '../../../components/common/Input';
-import { updateSelectCustomer, getCustomerByIdAndType} from '../../../slices/financialSolutions';
 
 const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) => {
   const [Percent, setPercent] = useState(0);
@@ -15,7 +14,6 @@ const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) 
   const [TotalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  console.log(userSelected);
   // dispatch
   const dispatch = useDispatch();
 
@@ -49,43 +47,9 @@ const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) 
   // submit data
   const onFinish = async (values) => {
     console.log(values);
-    // try {
-    //   if (values?.amount !== undefined && isPotential !== undefined) {
-    //     dispatch(
-    //       postFinanceDatas({
-    //         fundId: finaceDatas?.id,
-    //         isPotential: isPotential,
-    //         result: {
-    //           key: "",
-    //           value: String(TotalAmount),
-    //         },
-    //         sumInsured: 1000000,
-    //         baseYears: 5,
-    //         basePremium: 20000,
-    //         investmentRate: 6,
-    //         riderPremium: 20000,
-    //         topUpPremium: 20000,
-    //         topUpYears: 10,
-    //         interestRate: {
-    //           key: "",
-    //           value: String(Percent),
-    //         },
-    //         expensePerMonth: {
-    //           key: "",
-    //           value: String(Amount),
-    //         },
-    //       })
-    //     );
-    //   }
-    // } catch (e) {
-    //   console.log(e);
-    // }
-    if (userSelected) {
-      dispatch(updateSelectCustomer({total: TotalAmount, typeFund: typeFund, userSelected: userSelected, values:values }))
-      dispatch(getCustomerByIdAndType({id:userSelected.customerId, typeId: userSelected.typeId}))
-      navigate("/advise/financial-solutions/minh-hoa-gia")
-    }
-    
+    userSelected ?
+      navigate("/advise/financial-solutions/minh-hoa-gia", { state: { total: TotalAmount, typeFund: typeFund, userSelected: userSelected, values: values } })
+      : null
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -137,7 +101,7 @@ const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) 
               onChange={(e) => setPercent(Number(e.target.value))}
               placeholder="Nhap"
               type="text"
-              style={{ width: 65}}
+              style={{ width: 65 }}
               value={Percent}
               size='large'
             />

@@ -53,49 +53,8 @@ const ContingencyFund = () => {
     apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId();
   }, []);
 
-  // useEffect(() => {
-  //   let arr = []
-  //   arr.push(customerAppRecords?.map(item => {
-  //     return { title: item.customerApptRecords[0].name, apptId: item.apptId, customerApptRecordId: item.customerApptRecords[0].customerApptRecordId, typeId: item.typeId, customerId: item.customerApptRecords[0].customerId }
-  //   }))
-  //   setLists(arr[0])
-  // }, [customerAppRecords])
-  // useEffect(() => {
-  //   let arr = [];
-  //   arr.push(
-  //     customerAppRecords?.map((item) => {
-  //       // dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
-  //       return {
-  //         title: item.customerApptRecords[0].name,
-  //         apptId: item.apptId,
-  //         customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
-  //       };
-  //     })
-  //   );
-  //   setLists(arr[0]);
-  // }, [customerAppRecords]);
-  // console.log(customerAppRecords);
-
-  // useEffect(() => {
-  //   const data = [];
-  //   const dataFilter = customerAppRecords.filter((item) =>
-  //     item.customerApptRecords[0].name.toLowerCase().includes(payload.toLowerCase())
-  //   );
-  //   data.push(
-  //     ...dataFilter.map((item) => {
-  //       return {
-  //         title: item.customerApptRecords[0].name,
-  //         apptId: item.apptId,
-  //         customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
-  //         customerId: item.customerApptRecords[0].customerId,
-  //       };
-  //     })
-  //   );
-  //   setLists(data);
-  // }, [customerAppRecords, payload]);
-
   const appointments = useSelector((state) => state.appointment);
-  console.log(appointments.data);
+
   useEffect(() => {
     const apptId = searchParams.get('appointment_id');
     const customerId = searchParams.get('customer_id');
@@ -104,9 +63,9 @@ const ContingencyFund = () => {
       dispatch(getAppointment(apptId));
     } else {
       const params = {
-        titles: ['finance'],
+        titles: 'finance',
         startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
-        endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
+        endDate: moment().add(30000, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
       };
       dispatch(getAppointments(params));
     }
@@ -116,13 +75,13 @@ const ContingencyFund = () => {
   useEffect(() => {
     const customerList = appointments?.data?.length > 0 ? appointments?.data[0]?.customerApptRecords : null;
     const dataFilter = customerList?.filter((item) => item.name.toLowerCase().includes(payload.toLowerCase()));
-    console.log(customerList);
     setData(dataFilter);
   }, [appointments?.data, payload]);
 
   useEffect(() => {
     if (customerId) {
       const index = data?.findIndex((item) => item.customerId === +customerId);
+      console.log(data[index]);
       setItemContent(data[index]);
     } else {
       setItemContent(data?.[0]);
@@ -191,7 +150,7 @@ const ContingencyFund = () => {
                   </div>
                   <ListCalculation
                     typeFund="prevention"
-                    userSelected={appointments.data}
+                    userSelected={itemContent}
                     setKeywords={setKeywords}
                   />
                 </div>

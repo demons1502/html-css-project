@@ -17,7 +17,6 @@ export const statusAppointment = (
 };
 
 const activeComplete = (active) => {
-  console.log(active);
   if (!active) {
     return {
       color: '#3DBD77',

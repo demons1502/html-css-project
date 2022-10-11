@@ -91,7 +91,7 @@ export const DetailAppointment = ({ info }) => {
             <Calender color="#999999" width={ 13 } height={ 13 } />
             <S.ItemMiddleContent>
               <S.ItemMiddleTitle>Ngày hẹn:</S.ItemMiddleTitle>
-              <S.ItemMiddleTextCalender>{ moment(info.startTime).format('DD/MM/YYYY') }</S.ItemMiddleTextCalender>
+              <S.ItemMiddleTextCalender>{ moment(info.startTime).utc().format('DD/MM/YYYY') }</S.ItemMiddleTextCalender>
             </S.ItemMiddleContent>
           </S.ItemMiddle>
 
@@ -101,7 +101,7 @@ export const DetailAppointment = ({ info }) => {
             <S.ItemMiddleContent>
               <S.ItemMiddleTitle>Thời gian:</S.ItemMiddleTitle>
               <S.ItemMiddleText time>
-                { `${moment(info.startTime).format('HH:ss')} (${minutes})p` }
+                { `${moment(info.startTime).utc().format('HH:ss')} (${minutes})p` }
               </S.ItemMiddleText>
             </S.ItemMiddleContent>
           </S.ItemMiddle>

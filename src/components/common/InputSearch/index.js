@@ -1,11 +1,12 @@
 import React from 'react';
-import {Input} from 'antd';
+import { Input } from 'antd';
 import SearchIcon from '../../../assets/images/icons/green-search.svg';
 
 export default function InputSearch(props) {
   const {
     classStyle = 'input-item-search',
-    setPayload
+    setPayload,
+    onClick
   } = props;
 
   const handleSearch = (e) => {
@@ -13,6 +14,6 @@ export default function InputSearch(props) {
   };
 
   return (
-    <Input onPressEnter={handleSearch} className={classStyle} prefix={<img src={SearchIcon} alt="" />} />
+    <Input onPressEnter={ handleSearch } className={ classStyle } prefix={ <img onClick={ onClick && onClick } src={ SearchIcon } alt="" /> } />
   );
 }

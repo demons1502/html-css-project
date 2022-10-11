@@ -25,9 +25,6 @@ export const WrapDatePicker = styled(DatePicker)`
     }
     > input {
       color: #333333;
-      &:focus {
-        color: #3DBD78;
-      }
     }
   }
 `;

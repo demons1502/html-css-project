@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { getAppointments } from '../../../../../../slices/appointmentManagement';

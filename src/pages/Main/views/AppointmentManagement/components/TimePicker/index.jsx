@@ -99,8 +99,6 @@ export const TimePicker = ({ form, fieldsValue }) => {
     return formDate.getDate() === now.getDate() && now.getTime() > date.getTime() ? true : false
   }
 
-  console.log(disableTimePiker(startTime, formDate, now));
-
   return (
     <S.WrapContainer>
       <S.BoxTimePicker>

@@ -70,8 +70,6 @@ function CalendarToolbar(props) {
         ? getdate(dateEvent, 0, 13, false, checkMonth, 0)
         : getdate(dateEvent, 0, 7, false, checkMonth, 1);
 
-    console.log(startDate, prevDate, endDate)
-
     dispatch(
       getAppointments({
         startDate: moment.utc(`${startDate} 00:00:00`).format(),
@@ -107,7 +105,6 @@ function CalendarToolbar(props) {
         endDate: moment.utc(`${endDate} 23:59:59`).format(),
       })
     );
-    console.log(startDate, nextDate, endDate)
     setDateEventEndOld(dateEventEnd)
     onNavigate('NEXT', nextDate);
   };

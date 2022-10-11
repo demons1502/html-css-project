@@ -12,7 +12,6 @@ import * as S from './styles';
 export const GroupButton = ({ handleOpenEdit, handleDelete, info }) => {
   const navigate = useNavigate();
   const { customerApptRecords } = info
-  console.log(info)
   const handleFinacial = () => {
     navigate(`/advise/survey?appointment_id=${info.apptId}`);
   };

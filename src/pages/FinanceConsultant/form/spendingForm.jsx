@@ -10,7 +10,6 @@ import Reminiscent from './Reminiscent';
 
 const spendingForm = (props) => {
   const { id, useSelected, setKeywords } = props;
-  console.log(useSelected);
 
   const [reminiscent, setReminiscent] = useState(null);
   const [checked, setChecked] = useState(true);

@@ -116,7 +116,13 @@
 
     &--list {
       background: $gray-1;
-      min-height: 28vh;
+      .ant-table {
+        max-height: 35vh;
+        overflow-y: scroll;
+      }
+    }
+    &--management {
+      height: 50vh;
     }
     &--footer {
       display: flex;

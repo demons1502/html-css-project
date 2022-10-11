@@ -1,10 +1,10 @@
 @use "../abstracts/" as *;
 
-.blog-details-comment-wrapper{
+.blog-details-comment{
     display: flex;
     align-items: center;
     flex-direction: row;
-    &-thumb {
+    .thumb {
         margin-right: 30px;
         width: 110px;
         &__fit-image {
@@ -12,10 +12,11 @@
             object-fit: cover;
         }
     }
-    &-content {
+    .content {
         width: calc(100% - 110px);
         &__title {
             font-size: 16px;
+            line-height: 1;
             font-weight: 600;
             text-transform: capitalize;
         }
@@ -23,6 +24,7 @@
             li {
                 list-style-type: none;
                 font-size: 14px;
+                line-height: 1;
                 margin-bottom: 10px;
                 color: $background-color-tag;
             }

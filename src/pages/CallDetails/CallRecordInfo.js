@@ -158,7 +158,7 @@ export default function CallRecordInfo(props) {
         endTime: startTime.add(10, 'm').format('YYYY-MM-DD HH:mm:ss'),
         isAuto: true
       };
-      console.log({ appointmentPayload, callRecordPayload })
+
       const combinePayload = {
         appointmentPayload, callRecordPayload, action
       }

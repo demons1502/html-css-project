@@ -155,22 +155,30 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   }
   const renderTable = (age, length) => {
     let arr = []
-    for (let i = 0; i < length; i++) {
-      let index = i
+    for (var i = 0; i < length; i++) {
+      const input=document.createElement("input")
+      input.innerText= i
+      function getIndex(i){
+        input.addEventListener("click",function (){
+          console.log(index);
+        })
+      }
+      getIndex(index + 1)
+      var index = i
       arr.push(
         <tr key={i}>
           <td>{age + 1 + i}</td>
           <td>{index + 1}</td>
           <td>{columnC[i]}</td>
-          <td>{columnD[i]}</td>
-          {/* <td>{
-            <InputNumber controls={false} type="number"
-              value={columnD[i]} onChange={(e)=>inputColumnD(e)}
+          {/* <td>{columnD[i]}</td> */}
+          <td>{
+            <InputNumber controls={false} type="number" className="input_columnD"
+              value={columnD[i]}  onChange={(e)=>{inputColumnD(e, index)}}
               style={{ width: "120px", backgroundColor: 'white' }}
               // formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
               // parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
             />
-          }</td> */}
+          }</td>
           <td>{calculatorE(i)}</td>
           <td>{(i == 0) ? calculatorF0(i) : calculatorF1(i)}</td>
           <td>{(i == 0) ? calculatorG0(i) : calculatorG1(i)}</td>
@@ -179,6 +187,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
           <td>{(i == 0) ? calculatorJ0(i) : calculatorJ1(i)}</td>
         </tr>
       )
+      
     }
     return arr
   }

@@ -40,7 +40,7 @@ const IllustrateFiduciary = () => {
     dispatch(updateSelectCustomer({ total: total, typeFund: typeFund, userSelected: userSelected, values: values }))
     dispatch(getCustomerByIdAndType({ id: userSelected.customerId, typeId: userSelected.typeId }))
   }, [])
-  console.log(dataToSave);
+  // console.log(dataToSave);
   useEffect(() => {
     let params = {
       "fundType": typeFund,

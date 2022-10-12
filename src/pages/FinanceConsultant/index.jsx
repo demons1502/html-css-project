@@ -1,71 +1,99 @@
 import { ClockCircleOutlined, LeftOutlined } from '@ant-design/icons';
-import { Col, Layout, List, Popover, Row, Typography } from 'antd';
+import { Col, Layout, List, message, Popover, Row, Typography } from 'antd';
 import moment from 'moment';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import calender from '../../assets/images/icons/calendar.svg';
 import Dialogue from '../../components/common/Dialogue';
 import * as S from '../../components/styles';
 import { formatDate } from '../../helper';
-import { getAppointment, getAppointmentByIds } from '../../slices/financialSolutions';
+import { getConsultById } from '../../services/financialConsultant';
+import { getAppointment, getAppointments } from '../../slices/appointmentManagement';
 import SearchInputBox from '../Survey/SearchInputBox';
 import HistoryDetail from './components/historyDetail';
 import SpendingForm from './form/spendingForm';
 import History from './history';
 
-export default function FinanceConsultant({ apptId }) {
+export default function FinanceConsultant() {
   const { t } = useTranslation();
   const [selectItem, setSelectItem] = useState(null);
   const [history, setHistory] = useState(null);
   const [searchPayload, setSearchPayload] = useState('');
-  const [lists, setLists] = useState(null);
   const [keywords, setKeywords] = useState({});
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [apptId, setApptId] = useState(null);
+  const [customerId, setCustomerId] = useState(null);
+  const [consultId, setConsultId] = useState(null);
+  const [data, setData] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { customerAppRecords } = useSelector((state) => state.financialSolution);
-  // const customers = useSelector((state) => state.consultReducer);
+  const appointments = useSelector((state) => state.appointment);
+  const { me } = useSelector((state) => state.auth);
 
   const handleSelect = (item) => {
     setSelectItem(item);
     setHistory(null);
   };
 
-  const getAppointmentNoId = () => {
-    let endDate = new Date();
-    // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
-    endDate = endDate.setHours(23, 59, 59, 999);
-    let startDate = new Date();
-    dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
-  };
+  useEffect(() => {
+    const apptId = searchParams.get('appointment_id');
+    const customerId = searchParams.get('customer_id');
+    if (apptId) {
+      setApptId(apptId);
+      dispatch(getAppointment(apptId));
+    } else {
+      const params = {
+        titles: ['consult'],
+        startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+        endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
+      };
+      dispatch(getAppointments(params));
+    }
+    customerId && setCustomerId(customerId);
+  }, [searchParams]);
 
   useEffect(() => {
-    apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId();
-  }, []);
+    const consultId = searchParams.get('consult_id');
+    const fetchData = async () => {
+      try {
+        const res = await getConsultById(consultId);
+        console.log(res.data);
+        setHistory(res.data);
+      } catch (err) {
+        message.error(err.response.data, 3);
+      }
+    };
+    consultId && consultId !== 'undefined' && fetchData();
+    customerId && setConsultId(consultId);
+  }, [searchParams]);
 
   useEffect(() => {
-    const data = [];
-    const dataFilter = customerAppRecords.filter((item) =>
-      item.customerApptRecords[0].name.toLowerCase().includes(searchPayload.toLowerCase())
-    );
-    data.push(
-      ...dataFilter.map((item) => {
-        return {
-          title: item.customerApptRecords[0].name,
-          apptId: item.apptId,
-          customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
-          customerId: item.customerApptRecords[0].customerId,
-        };
-      })
-    );
-    setLists(data);
-  }, [customerAppRecords, searchPayload]);
+    const customerList = appointments?.data?.length > 0 ? appointments?.data[0]?.customerApptRecords : null;
+    const dataFilter = customerList?.filter((item) => item.name.toLowerCase().includes(searchPayload.toLowerCase()));
+    setData(dataFilter);
+    // data.push(
+    //   ...dataFilter.map((item) => {
+    //     return {
+    //       title: item.customerApptRecords[0].name,
+    //       apptId: item.apptId,
+    //       customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
+    //       customerId: item.customerApptRecords[0].customerId,
+    //     };
+    //   })
+    // );
+  }, [appointments?.data, searchPayload]);
 
   useEffect(() => {
-    lists && setSelectItem(lists[0]);
-  }, [lists]);
+    if (customerId) {
+      const index = data?.findIndex((item) => item.customerId === +customerId);
+      setSelectItem(data[index]);
+    } else {
+      setSelectItem(data?.[0]);
+    }
+  }, [data]);
 
   return (
     <Fragment>
@@ -73,7 +101,7 @@ export default function FinanceConsultant({ apptId }) {
         <h3 className="title">{t('financial consultant.title')}</h3>
         <div className="financialConsultant-container">
           <Row gutter={[16, 10]} justify="start" align="stretch">
-            <Col lg={15} md={24} sm={24} xs={24}>
+            <Col lg={me?.isDefaultHelper ? 15 : 24} md={24} sm={24} xs={24}>
               <Layout.Content>
                 <div className="content-div-1">
                   <div className="container-left">
@@ -82,15 +110,15 @@ export default function FinanceConsultant({ apptId }) {
                       <SearchInputBox setPayload={setSearchPayload}></SearchInputBox>
                     </div>
 
-                    {lists?.length > 0 && (
+                    {data?.length > 0 && (
                       <List
-                        dataSource={lists}
-                        renderItem={(customer, index) => (
+                        dataSource={data}
+                        renderItem={(customer) => (
                           <List.Item
                             onClick={() => handleSelect(customer)}
                             className={`${customer === selectItem ? 'active' : ''}`}
                           >
-                            <Typography.Text ellipsis>{customer?.title}</Typography.Text>
+                            <Typography.Text ellipsis>{customer?.name || customer.title}</Typography.Text>
                           </List.Item>
                         )}
                       />
@@ -130,6 +158,7 @@ export default function FinanceConsultant({ apptId }) {
                           {/* <img src={left_arrow} alt="calender" height={12} style={{ marginRight: '5px' }} /> */}
                           <LeftOutlined className="icon" />
                         </div>
+
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: '5px' }} />
                           <span>Ngày: {formatDate(history?.createdAt)}</span>
@@ -139,25 +168,30 @@ export default function FinanceConsultant({ apptId }) {
                     {history ? (
                       <HistoryDetail history={history} />
                     ) : (
-                      <SpendingForm id={selectItem?.customerId} useSelected={selectItem} setKeywords={setKeywords} />
+                      <SpendingForm
+                        id={customerId || selectItem?.customerId}
+                        useSelected={{ ...selectItem, apptId: apptId }}
+                        setKeywords={setKeywords}
+                      />
                     )}
                   </div>
                 </div>
               </Layout.Content>
             </Col>
-
-            <Col lg={9} md={24} sm={24} xs={24}>
-              <Layout.Content className="manageContent">
-                <div className="content-div-2">
-                  <Dialogue
-                    type="consult"
-                    title={t('financial consultant.process title')}
-                    customerId={selectItem?.customerId}
-                    keywords={keywords}
-                  />
-                </div>
-              </Layout.Content>
-            </Col>
+            {me?.isDefaultHelper && (
+              <Col lg={9} md={24} sm={24} xs={24}>
+                <Layout.Content className="manageContent">
+                  <div className="content-div-2">
+                    <Dialogue
+                      type="consult"
+                      title={t('financial consultant.process title')}
+                      customerId={customerId || selectItem?.customerId}
+                      keywords={keywords}
+                    />
+                  </div>
+                </Layout.Content>
+              </Col>
+            )}
           </Row>
         </div>
       </div>

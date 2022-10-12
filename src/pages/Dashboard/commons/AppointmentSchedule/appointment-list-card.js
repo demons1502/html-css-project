@@ -49,8 +49,8 @@ export default function AppointmentListCard(props) {
 
   useEffect(() => {
     let payload = {
-      startDate: decodeURIComponent(moment(startDate).hour(0).minute(0).second(0)),
-      endDate: decodeURIComponent(moment(startDate).hour(23).minute(59).second(59)),
+      startDate: decodeURIComponent(moment(startDate).utc().hour(0).minute(0).second(0)),
+      endDate: decodeURIComponent(moment(startDate).utc().hour(23).minute(59).second(59)),
     };
 
     if (select?.length === 0) {

@@ -21,7 +21,6 @@ const spendingForm = (props) => {
   const dispatch = useDispatch();
 
   const handleFinish = (values) => {
-    
     const consultAttrs = [];
     for (const key of Object.keys(values)) {
       consultAttrs.push({ label: key, value: values[key] > 0 ? values[key] : 0 });

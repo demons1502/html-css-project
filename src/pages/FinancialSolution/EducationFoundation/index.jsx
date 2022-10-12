@@ -1,66 +1,61 @@
 import { Col, Layout, List, Row, Typography } from 'antd';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { sideBarMenuItems } from '../../../assets/fake-data/QuyDuPhongData';
-import SearchInputBox from './SearchInputBox';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { getAppointment, getAppointments } from '../../../slices/appointmentManagement';
 import ListCalculation from './ListCalculation';
 import ListDetails from './ListDetails';
-import { Link, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAppointment, getSpeechScriptType } from '../../../slices/financialSolutions';
-import moment from 'moment';
+import SearchInputBox from './SearchInputBox';
+import Dialogue from '../../../components/common/Dialogue';
 
 const EducationFoundation = () => {
   const location = useLocation();
   const [title] = useState(location?.state?.title);
 
   const [itemContent, setItemContent] = useState({});
-  const [buttonState, setButtonState] = useState(true);
-  const [lists, setLists] = useState(sideBarMenuItems);
   const [payload, setPayload] = useState('');
+  const [keywords, setKeywords] = useState({});
+  const [data, setData] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [apptId, setApptId] = useState(null);
+  const [customerId, setCustomerId] = useState(null);
 
   const dispatch = useDispatch();
-  var { customerAppRecords, getSpeechScript } = useSelector((state) => state.financialSolution);
+  const appointments = useSelector((state) => state.appointment);
+  const { me } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    let endDate = new Date();
-    // endDate = new Date(endDate.getTime() + 30 * 60 * 1000)
-    endDate = endDate.setHours(23, 59, 59, 999);
-    let startDate = new Date();
-    dispatch(getAppointment({ titles: 'finance', startDate: moment(startDate), endDate: moment(endDate) })); //main code
-    dispatch(getSpeechScriptType('preventionFund'));
-  }, []);
-
-  // useEffect(() => {
-  //   let arr = []
-  //   arr.push(customerAppRecords?.map(item => {
-  //     return { title: item.customerApptRecords[0].name }
-  //   }))
-  //   setLists(arr[0])
-  // }, [customerAppRecords])
-
-  useEffect(() => {
-    const data = [];
-    const dataFilter = customerAppRecords.filter((item) =>
-      item.customerApptRecords[0].name.toLowerCase().includes(payload.toLowerCase())
-    );
-    data.push(
-      ...dataFilter.map((item) => {
-        return {
-          title: item.customerApptRecords[0].name,
-          apptId: item.apptId,
-          customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
-          customerId: item.customerApptRecords[0].customerId,
-        };
-      })
-    );
-    setLists(data);
-  }, [customerAppRecords, payload]);
-
-  useEffect(() => {
-    if (lists) {
-      setItemContent(lists[0]);
+    const apptId = searchParams.get('appointment_id');
+    const customerId = searchParams.get('customer_id');
+    if (apptId) {
+      setApptId(apptId);
+      dispatch(getAppointment(apptId));
+    } else {
+      const params = {
+        titles: ['survey'],
+        startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+        endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
+      };
+      dispatch(getAppointments(params));
     }
-  }, [lists]);
+    customerId && setCustomerId(customerId);
+  }, [searchParams]);
+
+  useEffect(() => {
+    const customerList = appointments?.data?.length > 0 ? appointments?.data[0]?.customerApptRecords : null;
+    const dataFilter = customerList?.filter((item) => item.name.toLowerCase().includes(payload.toLowerCase()));
+    setData(dataFilter);
+  }, [appointments?.data, payload]);
+
+  useEffect(() => {
+    if (customerId) {
+      const index = data?.findIndex((item) => item.customerId === +customerId);
+      setItemContent(data[index]);
+    } else {
+      setItemContent(data?.[0]);
+    }
+  }, [data]);
 
   return (
     <div className="quyduphone">
@@ -90,7 +85,7 @@ const EducationFoundation = () => {
       {/* quyduphone-container start */}
       <div className="quyduphone-container">
         <Row gutter={[16, 10]} justify="start" align="stretch">
-          <Col lg={12} md={24} sm={24} xs={24}>
+          <Col lg={me?.isDefaultHelper ? 12 : 24} md={24} sm={24} xs={24}>
             <Layout.Content>
               {/* content-div-1 start  */}
               <div className="content-div-1">
@@ -100,17 +95,21 @@ const EducationFoundation = () => {
                     <SearchInputBox setPayload={setPayload}></SearchInputBox>
                   </div>
 
-                  <List
-                    dataSource={lists}
-                    renderItem={(item, index) => (
-                      <List.Item
-                        onClick={() => setItemContent(item)}
-                        className={`${item === itemContent ? 'active' : ''}`}
-                      >
-                        <Typography.Text ellipsis>{item.title}</Typography.Text>
-                      </List.Item>
-                    )}
-                  />
+                  {data?.length > 0 && (
+                    <List
+                      dataSource={data}
+                      renderItem={(item, index) => (
+                        <List.Item
+                          onClick={() => {
+                            setItemContent(item);
+                          }}
+                          className={`${item === itemContent ? 'active' : ''}`}
+                        >
+                          <Typography.Text ellipsis>{item.name}</Typography.Text>
+                        </List.Item>
+                      )}
+                    />
+                  )}
                 </div>
 
                 {/* container-right start */}
@@ -118,7 +117,7 @@ const EducationFoundation = () => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation typeFund= "education" userSelected={itemContent}/>
+                  <ListCalculation typeFund="education" userSelected={{ ...itemContent, apptId: apptId }} />
                 </div>
 
                 {/* container-right end */}
@@ -129,13 +128,20 @@ const EducationFoundation = () => {
           </Col>
 
           {/* manageContent start  */}
-          <Col lg={12} md={24} sm={24} xs={24}>
-            <Layout.Content className="manageContent">
-              <div className="content-div-2">
-                <ListDetails />
-              </div>
-            </Layout.Content>
-          </Col>
+          {me?.isDefaultHelper && (
+            <Col lg={12} md={24} sm={24} xs={24}>
+              <Layout.Content className="manageContent">
+                <div className="content-div-2">
+                  <Dialogue
+                    title={'Lời thoại'}
+                    type={'preventionFund'}
+                    customerId={customerId || itemContent?.customerId}
+                    keywords={keywords}
+                  />
+                </div>
+              </Layout.Content>
+            </Col>
+          )}
           {/* manageContent end  */}
         </Row>
       </div>

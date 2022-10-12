@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Form } from 'antd';
 
 // IMAGE
-import { Clock, ArrowDown } from '../../../../../../assets/images/icons/components';
+import { Clock } from '../../../../../../assets/images/icons/components';
 
 //STYLES
 import * as S from './styles';
@@ -17,6 +17,7 @@ export const TimePicker = ({ form, fieldsValue }) => {
   const [endTime, setEndTime] = useState();
   const hoursDisables = [0, 1, 2, 3, 4, 5, 6, 23];
   const now = new Date();
+  const formDate = new Date(formValues.date);
 
   useEffect(() => {
     setStartTime(fieldsValue.startTime)
@@ -26,7 +27,6 @@ export const TimePicker = ({ form, fieldsValue }) => {
 
 
   const handleOnChangeStart = (time) => {
-    const formDate = new Date(formValues.date);
     const selectTime = new Date(time);
     if (formDate.getDate() === now.getDate()) {
       if (now.getTime() > selectTime.getTime()) {
@@ -35,6 +35,7 @@ export const TimePicker = ({ form, fieldsValue }) => {
       }
     }
     setStartTime(time);
+    setEndTime();
     form.setFieldsValue({ startTime: time, endTime: undefined });
     setFormValues({ ...formValues, startTime: time })
     setShowStart(false);
@@ -47,7 +48,6 @@ export const TimePicker = ({ form, fieldsValue }) => {
   };
 
   const disabledHoursStart = () => {
-    const formDate = new Date(formValues.date);
     const hours = [];
     if (formDate.getDate() === now.getDate()) {
       const currentHour = moment(now).hour();
@@ -94,6 +94,11 @@ export const TimePicker = ({ form, fieldsValue }) => {
     return end - start;
   };
 
+  const disableTimePiker = (datevalue, formDate, now) => {
+    const date = new Date(datevalue)
+    return formDate.getDate() === now.getDate() && now.getTime() > date.getTime() ? true : false
+  }
+
   return (
     <S.WrapContainer>
       <S.BoxTimePicker>
@@ -105,7 +110,6 @@ export const TimePicker = ({ form, fieldsValue }) => {
         // rules={[{ required: true, message: 'Missing ' }]}
         >
           <S.TimePicker
-            value={ startTime }
             open={ showStart }
             placeholder="hh:mm"
             format={ 'HH:mm' }
@@ -115,6 +119,7 @@ export const TimePicker = ({ form, fieldsValue }) => {
             suffixIcon={ null }
             showNow={ false }
             minuteStep={ 5 }
+            disabled={ disableTimePiker(startTime, formDate, now) }
             onClick={ () => setShowStart(!showStart) }
             onChange={ handleOnChangeStart }
             disabledHours={ disabledHoursStart }
@@ -137,6 +142,7 @@ export const TimePicker = ({ form, fieldsValue }) => {
             suffixIcon={ null }
             showNow={ false }
             minuteStep={ 5 }
+            disabled={ disableTimePiker(endTime, formDate, now) }
             onClick={ () => setShowEnd(!showEnd) }
             onChange={ handleOnChangeEnd }
             disabledHours={ disabledHoursEnd }
@@ -144,8 +150,6 @@ export const TimePicker = ({ form, fieldsValue }) => {
             onBlur={ () => setShowEnd(false) }
           />
         </Form.Item>
-
-        <S.DropDownBtn><ArrowDown /></S.DropDownBtn>
       </S.BoxTimePicker>
 
       <S.WrapMinutes>

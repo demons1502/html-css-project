@@ -20,6 +20,7 @@ import { createAppointment } from '../../../../../../slices/appointmentManagemen
 export const CreateAppointment = ({ open, handleCancel, customerInfo, outsideLink }) => {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [fieldsValue, setFieldsValue] = useState({});
   let udpatedSearchParams = new URLSearchParams(searchParams.toString());
   const { Option } = Select;
   const [form] = Form.useForm();
@@ -30,6 +31,10 @@ export const CreateAppointment = ({ open, handleCancel, customerInfo, outsideLin
   useEffect(() => {
     customerInfo && setCustomer(customerInfo);
   }, [customerInfo]);
+
+  useEffect(() => {
+    setFieldsValue(form.getFieldsValue())
+  }, [form]);
 
   const handleChangeSelectCustomer = (value) => {
     setTypeId(value);
@@ -45,10 +50,9 @@ export const CreateAppointment = ({ open, handleCancel, customerInfo, outsideLin
 
   const onFinish = (values) => {
     const subCustomerIds = values?.users && values?.users.length !== 0 ? values?.users.map((i) => i.customerId) : [];
-    const timeZone = moment().format('Z');
-    const startTime = moment(values.date).format('YYYY-MM-DDT') + moment(values.startTime).format('HH:mm:ss') + timeZone;
+    const startTime = moment(values.date).format('YYYY-MM-DDT') + moment(values.startTime).format('HH:mm:ss');
     const endTime =
-      moment(values.date).format('YYYY-MM-DDT') + moment(values.endTime).subtract(1, 'seconds').format('HH:mm:ss') + timeZone;
+      moment(values.date).format('YYYY-MM-DDT') + moment(values.endTime).subtract(1, 'seconds').format('HH:mm:ss');
     const data = {
       typeId: typeId,
       customerId: customer.customerId,
@@ -75,6 +79,7 @@ export const CreateAppointment = ({ open, handleCancel, customerInfo, outsideLin
 
   const onCancel = () => {
     setCustomer({})
+    setFieldsValue({})
     form.resetFields();
     handleCancel();
   };
@@ -158,18 +163,20 @@ export const CreateAppointment = ({ open, handleCancel, customerInfo, outsideLin
                 format={ 'DD/MM/YYYY' }
                 suffixIcon={ <Calender color="#999999" /> }
                 style={ { width: '100%' } }
+                allowClear={ false }
                 placeholder="DD/MM/YYYY"
                 disabledDate={ (current) => {
                   let customDate = moment().format('YYYY-MM-DD');
                   return current && current < moment(customDate, 'YYYY-MM-DD');
                 } }
+                onChange={ (date) => setFieldsValue({ ...fieldsValue, date: date }) }
                 onOpenChange={ () => form.setFieldsValue({ startTime: undefined, endTime: undefined }) }
               />
             </Form.Item>
           </Col>
 
           <Col span={ 16 }>
-            <TimePicker form={ form } fieldsValue={ form.getFieldsValue() } />
+            <TimePicker form={ form } fieldsValue={ fieldsValue } />
           </Col>
         </S.WrapRow>
         <S.WrapRow gutter={ 12 }>

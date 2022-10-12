@@ -89,6 +89,9 @@ const manageContentSlice = createSlice({
     [deleteContent.fulfilled]: (state) => {
       state.isReload = true;
     },
+    [likeContent.fulfilled]: (state) => {
+      state.isReload = true;
+    },
   },
 });
 

@@ -163,6 +163,7 @@ export const CreateAppointment = ({ open, handleCancel, customerInfo, outsideLin
                 format={ 'DD/MM/YYYY' }
                 suffixIcon={ <Calender color="#999999" /> }
                 style={ { width: '100%' } }
+                allowClear={ false }
                 placeholder="DD/MM/YYYY"
                 disabledDate={ (current) => {
                   let customDate = moment().format('YYYY-MM-DD');

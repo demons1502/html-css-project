@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Dropdown, Menu } from 'antd';
+import { Avatar, Dropdown, Menu, Layout } from 'antd';
 import { useTranslation } from 'react-i18next';
 import InputSearch from '../common/InputSearch';
 
@@ -13,16 +13,21 @@ import SetingIcon from '../../assets/images/icons/setting.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import useInterval from '../../hooks/useInterval';
+import useWindowDimensions from '../../hooks/useWindowDimensions';
 
 export default function Header() {
   const { t } = useTranslation();
+  const { width } = useWindowDimensions()
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [payload, setPayload] = useState({});
   const titlesHeader = [t('common.slogan'), t('common.support')];
+  const [openSearch, setopenSearch] = useState(false);
   const [title, setTitle] = useState(titlesHeader[0]);
   const [curNewtitle, setCurNewtitle] = useState(-1);
   const { me } = useSelector((state) => state.auth);
+  const { Header } = Layout;
+
   useEffect(() => {
     // fetchdata
   }, [payload]);
@@ -39,6 +44,11 @@ export default function Header() {
   const handleLogout = () => {
     dispatch(logout());
   };
+
+  const hanldOpenSearch = () => {
+    console.log('dsadsadas');
+    width < 1024 && setopenSearch(!openSearch)
+  }
 
   const menu = (
     <Menu
@@ -70,7 +80,7 @@ export default function Header() {
   );
 
   return (
-    <header className='header'>
+    <Header className='header'>
       <div className='header__left'>
         <img src={ Logo } alt='' />
         <span>{ t('common.manulife') }</span>
@@ -78,9 +88,11 @@ export default function Header() {
       <div className='header__center'>
         <p>{ title }</p>
       </div>
+
       <div className='header__right'>
         <InputSearch
-          classStyle='input-item-search-dark'
+          onClick={ hanldOpenSearch }
+          classStyle={ width < 1024 ? !openSearch ? 'input-narrow-mode' : 'input-focused' : 'input-item-search-dark' }
           setPayload={ setPayload }
         />
 
@@ -97,6 +109,6 @@ export default function Header() {
         </div>
 
       </div>
-    </header>
+    </Header>
   );
 }

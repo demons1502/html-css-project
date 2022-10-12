@@ -18,7 +18,7 @@ export default function CallScheduleItemNextCall(props) {
     setOpen(false);
     const payload = {
       id,
-      nextCall: value.format('YYYY-MM-DD'),
+      nextCall: value.utc().format('YYYY-MM-DD'),
     };
     dispatch(setNextCall(payload));
   };

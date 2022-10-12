@@ -11,6 +11,7 @@ import {
   getTopPotentialCustomerApi,
   sendEmailApi,
   sendSMSApi,
+  setCSKHForAppointmentApi,
   setDoneCallApi,
   setNextCallApi,
   updateAppointmentScheduleApi,
@@ -80,6 +81,14 @@ export const sendEmail = createAsyncThunk('dashboard/SEND_EMAIL', async (data) =
 export const getMissedAppointments = createAsyncThunk('dashboard/GET_MISSED_APPOINTMENTS', async (data) => {
   try {
     const response = await getMissedAppointmentApi(data);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
+export const setCSKHForAppointments = createAsyncThunk('dashboard/SET_CSKH_APPOINTMENTS', async (data) => {
+  try {
+    const response = await setCSKHForAppointmentApi(data);
     return response.data;
   } catch (error) {
     return Promise.reject(error.data);

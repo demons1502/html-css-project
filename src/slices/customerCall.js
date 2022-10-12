@@ -4,20 +4,21 @@ import {
   updateCustomerCallRecord,
   getCustomerCallById,
   getSpeechScript,
+  createAutoApptAndCompleteCall
 } from '../services/customerCalls';
 import { creactAppointmentApi } from '../services/appointment';
 
+const response = {
+  status: '',
+  data: null,
+  error: null
+}
+
 const initialState = {
-  newCallRecordResponse: {
-    status: '',
-    data: null,
-    error: null
-  },
-  updateCallRecordResponse: {
-    status: '',
-    data: null,
-    error: null
-  },
+  newCallRecordResponse: {...response},
+  updateCallRecordResponse: {...response},
+  newApptAndCompleteCallResponse: {...response},
+
   callRecord: {
     createdAt: null,
     updatedAt: null,
@@ -80,6 +81,16 @@ export const createAppointment = createAsyncThunk('customerCall/createAppointmen
   }
 });
 
+export const createAppointmentAndCompleteCall = createAsyncThunk('customerCall/createAppointmentAndCompleteCall', async (data) => {
+  const { appointmentPayload, callRecordPayload, action } = data;
+  try {
+    const res = await createAutoApptAndCompleteCall(appointmentPayload, callRecordPayload, action);
+    return res;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
+
 const customerCallSlice = createSlice({
   name: 'customerCall',
   initialState,
@@ -91,6 +102,7 @@ const customerCallSlice = createSlice({
       currentState.newCallRecordResponse = initialState.newCallRecordResponse;
       currentState.speechScript = initialState.speechScript;
       currentState.updateCallRecordResponse = initialState.updateCallRecordResponse;
+      currentState.newApptAndCompleteCallResponse = initialState.newApptAndCompleteCallResponse;
     },
   },
   extraReducers: (builder) => {
@@ -186,6 +198,23 @@ const customerCallSlice = createSlice({
     builder.addCase(createAppointment.rejected, (state) => {
       state.status = 'rejected';
       state.loading = false;
+    });
+
+    // CREATE AUTO-APPT AND COMPLETE CALL
+    builder.addCase(createAppointmentAndCompleteCall.pending, (state) => {
+      state.status = 'pending';
+      state.loading = true;
+    });
+    builder.addCase(createAppointmentAndCompleteCall.fulfilled, (state, action) => {
+      console.log('action.payload - reducers', action.payload)
+      state.newApptAndCompleteCallResponse.status = 'success';
+      state.newApptAndCompleteCallResponse.data = action.payload;
+    });
+    builder.addCase(createAppointmentAndCompleteCall.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.loading = false;
+      state.newApptAndCompleteCallResponse.status = 'failed';
+      state.newApptAndCompleteCallResponse.error = action.payload;
     });
   },
 });

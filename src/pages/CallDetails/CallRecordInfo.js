@@ -5,11 +5,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import * as S from './styles';
 // import { updateCustomerCallRecord } from '../../services/customerCalls';
-import { creactAppointmentApi } from '../../services/appointment';
+// import { creactAppointmentApi } from '../../services/appointment';
 import { useNavigate } from 'react-router-dom';
 import CreateAppointment from '../Main/views/AppointmentManagement/components/CreateAppointment';
 import { COMPANY_CUSTOMER_TYPE_ID, EMPLOYEE_CUSTOMER_TYPE_ID, PERSONAL_CUSTOMER_TYPE_ID } from './constants';
-import { updateCallRecord } from '../../slices/customerCall';
+import { createAppointmentAndCompleteCall, updateCallRecord } from '../../slices/customerCall';
 // import { createAppointment } from '../../slices/appointmentManagement';
 import moment from 'moment';
 import { RESPONSE_STATUS } from '../../ultis/constant';
@@ -24,7 +24,10 @@ export default function CallRecordInfo(props) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { callRecord: callRecordData, customerInfo: customerData, customerCall: customerCallData, updateCallRecordResponse } = useSelector(state => state.customerCall);
+  const { 
+    callRecord: callRecordData, customerInfo: customerData, customerCall: customerCallData, 
+    updateCallRecordResponse, newApptAndCompleteCallResponse
+  } = useSelector(state => state.customerCall);
   // const { callRecordData, customerData, customerCallData } = props;
   const isCompleted = callRecordData?.completedAt;
 
@@ -37,6 +40,22 @@ export default function CallRecordInfo(props) {
       message.error('Hoàn thành hoặc hủy cuộc gọi xảy ra lỗi');
     }
   }, [updateCallRecordResponse])
+
+  useEffect(() => {
+    const res = newApptAndCompleteCallResponse;
+    if (res?.status === RESPONSE_STATUS.SUCCESS) {
+      const redirectPage = {
+        'survey': `/advise/survey?appointment_id=${res?.data?.appointmentResponse?.apptId}`,
+        'consult': '/advise',
+        'solution': '/advise/financial-solutions'
+      }
+      setLoadingBtn({ ...loadingBtn, [res?.data?.action]: false })
+      navigate(redirectPage[res?.data?.action])
+    }
+    if (res?.status === RESPONSE_STATUS.FAILED) {
+      message.error('Tạo cuộc hẹn tự động hoặc hoàn thành cuộc gọi xảy ra lỗi');
+    }
+  }, [newApptAndCompleteCallResponse])
 
   const renderNoteStatus = (sttEnum) => {
     switch (sttEnum) {
@@ -80,7 +99,7 @@ export default function CallRecordInfo(props) {
       default:
         return '';
     }
-  }
+  };
 
   const handleUpdateCallRecord = async (action) => {
     if (!action) return;
@@ -110,52 +129,41 @@ export default function CallRecordInfo(props) {
   };
 
   const handleClickFuncBtn = async (action) => {
-    setLoadingBtn({ ...loadingBtn, [action]: true });
 
     if (action === 'appointment') {
       toggleAppointment(true)
     } else {
-      const prePayload = {
+      setLoadingBtn({ ...loadingBtn, [action]: true });
+      // call-record payload
+      const callRecordPayload = {
         customerCallId: customerCallData.id,
         customerCallRecordId: callRecordData.id,
         isCompleted: true
       }
       if (currentCheck) {
-        prePayload.isPotential = currentCheck === '1' ? true : false
+        callRecordPayload.isPotential = currentCheck === '1' ? true : false
       }
-      // complete call
-      dispatch(updateCallRecord(prePayload)).then(({ error }) => {
-        setLoadingBtn({ ...loadingBtn, [action]: false });
-        if (error) {
-          message.error('Hoàn thành hoặc hủy cuộc gọi xảy ra lỗi')
-        } else {
-          const title = {
-            'survey': 'Khảo sát',
-            'consult': 'Tư vấn tài chính',
-            'solution': 'Tư vấn giải pháp'
-          };
-          const startTime = moment(new Date());
-          const appointmentPayload = {
-            typeId: customerData.typeId,
-            customerId: customerData.customerId,
-            title: title[action],
-            startTime: startTime.format('YYYY-MM-DD HH:mm:ss'),
-            endTime: startTime.add(10, 'm').format('YYYY-MM-DD HH:mm:ss'),
-            isAuto: true
-          };
-          // console.log('appointmentPayload', appointmentPayload)
-          creactAppointmentApi(appointmentPayload).then(data => {
-            const redirectPage = {
-              'survey': `/advise/survey?appointment_id=${data.apptId}`,
-              'consult': '/advise',
-              'solution': '/advise/financial-solutions'
-            }
-            navigate(redirectPage[action])
-          })
-        }
-      })
+      // appt payload
+      const title = {
+        'survey': 'Khảo sát',
+        'consult': 'Tư vấn tài chính',
+        'solution': 'Tư vấn giải pháp'
+      };
+      const startTime = moment(new Date());
+      const appointmentPayload = {
+        typeId: customerData.typeId,
+        customerId: customerData.customerId,
+        title: title[action],
+        startTime: startTime.format('YYYY-MM-DD HH:mm:ss'),
+        endTime: startTime.add(10, 'm').format('YYYY-MM-DD HH:mm:ss'),
+        isAuto: true
+      };
+      console.log({ appointmentPayload, callRecordPayload })
+      const combinePayload = {
+        appointmentPayload, callRecordPayload, action
+      }
+      dispatch(createAppointmentAndCompleteCall(combinePayload))
     }
-    setLoadingBtn({ ...loadingBtn, [action]: false })
   }
 
   return (

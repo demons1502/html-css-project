@@ -1,5 +1,6 @@
 import { sendGet, sendPost, sendPatch } from './axios';
 import { ENDPOINT } from '../config/endpoint';
+import { creactAppointmentApi } from './appointment';
 
 export const getCustomerCallById = async (cId) => {
   const response = await sendGet(ENDPOINT.customerCall + '/' + cId);
@@ -35,4 +36,11 @@ export const createCustomerCallRecord = async (customerCallId) => {
   });
 
   return response.data;
-}
+};
+
+export const createAutoApptAndCompleteCall = async (appointmentPayload, callRecordPayload, actionName) => {
+  const apptResponse = await creactAppointmentApi(appointmentPayload);
+  const callRecordResponse = await updateCustomerCallRecord(callRecordPayload);
+
+  return { callRecordResponse, appointmentResponse: apptResponse?.data, action: actionName }
+};

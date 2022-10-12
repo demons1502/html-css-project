@@ -3,6 +3,7 @@
   padding: 0 30px 0 30px;
   @extend %align-items-center;
   background: $blue-dark-color;
+  justify-content: space-between;
 
   &__left {
     @extend %align-items-center;
@@ -12,22 +13,49 @@
 
   &__center {
     width: 45%;
+    @media (max-width: 1024px) {
+      display: none;
+    }
 
     p {
+      width: 100%;
       color: $green-color;
       font-size: 1.5rem;
       text-align: center;
       line-height: 1.9rem;
+      @media (max-width: 1024px) {
+        font-size: 1.3rem;
+        line-height: 1.6rem;
+      }
     }
   }
 
   &__right {
     @extend %flex-end;
-    column-gap: 20px;
+    align-items: center;
+    column-gap: 10px;
     width: 30%;
+
+    @media (max-width: 1024px) {
+      width: 50%;
+    }
 
     .input-item-search-dark {
       width: 180px;
+      transition: all .3s cubic-bezier(.78,.14,.15,.86);
+    }
+
+    .input-narrow-mode {
+      @extend .input-item-search-dark;
+      width: 30px;
+      border: unset;
+      transition: all .3s cubic-bezier(.78,.14,.15,.86);
+      background: unset !important;
+    }
+
+    .input-focused {
+      @extend .input-item-search-dark;
+      transition: all .3s cubic-bezier(.78,.14,.15,.86);
     }
 
     &__user {
@@ -44,17 +72,26 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        margin-right: 10px;
+        line-height: 18px;
+        @media (max-width:1281px) { 
+          display: none;
+        }
       }
 
       &__avatar {
         @extend %align-items-center;
-        margin-left: 10px;
       }
 
       &__box-icon {
+        display: flex;
+        align-items: center;
         margin-left: 6px;
         width: 13px;
         height: 13px;
+        &img {
+          display: flex;
+        }
       }
     }
   }

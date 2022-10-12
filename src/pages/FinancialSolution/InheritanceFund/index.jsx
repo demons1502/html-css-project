@@ -24,6 +24,7 @@ const InheritanceFund = () => {
 
   const dispatch = useDispatch();
   const appointments = useSelector((state) => state.appointment);
+  const { me } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const apptId = searchParams.get('appointment_id');
@@ -85,7 +86,7 @@ const InheritanceFund = () => {
       {/* quyduphone-container start */}
       <div className="quyduphone-container">
         <Row gutter={[16, 10]} justify="start" align="stretch">
-          <Col lg={12} md={24} sm={24} xs={24} xl={12}>
+          <Col lg={me?.isDefaultHelper ? 12 : 24} md={24} sm={24} xs={24}>
             <Layout.Content>
               {/* content-div-1 start  */}
               <div className="content-div-1">
@@ -132,18 +133,20 @@ const InheritanceFund = () => {
           </Col>
 
           {/* manageContent start  */}
-          <Col lg={12} md={24} sm={24} xs={24} xl={12}>
-            <Layout.Content className="manageContent">
-              <div className="content-div-2">
-                <Dialogue
-                  title="Lời thoại"
-                  type="preventionFund"
-                  customerId={customerId || itemContent?.customerId}
-                  keywords={keywords}
-                />
-              </div>
-            </Layout.Content>
-          </Col>
+          {me?.isDefaultHelper && (
+            <Col lg={12} md={24} sm={24} xs={24} xl={12}>
+              <Layout.Content className="manageContent">
+                <div className="content-div-2">
+                  <Dialogue
+                    title="Lời thoại"
+                    type="preventionFund"
+                    customerId={customerId || itemContent?.customerId}
+                    keywords={keywords}
+                  />
+                </div>
+              </Layout.Content>
+            </Col>
+          )}
           {/* manageContent end  */}
         </Row>
       </div>

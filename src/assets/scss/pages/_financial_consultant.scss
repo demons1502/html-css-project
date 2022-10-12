@@ -128,16 +128,18 @@
           }
         }
         .container-right-header_arrow {
-          width: 24px;
-          height: 24px;
-          font-size: 1rem;
-          font-weight: bold;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border-radius: 50%;
-          background-color: #f3f3f3;
-          cursor: pointer;
+          .icon {
+            width: 24px;
+            height: 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: #f3f3f3;
+            cursor: pointer;
+          }
         }
 
         .ant-tabs-nav-wrap {

@@ -18,6 +18,8 @@ export default function FinanceConsultant() {
 
   const consults = useSelector((state) => state.consultReducer);
   const loading = useSelector((state) => state.loading.loading);
+  console.log(consults);
+  console.log(consults);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -115,18 +117,18 @@ export default function FinanceConsultant() {
           <div className="header_list_container">
             <ul className="header_list">
               <li>
-                <span className="list_item_badge">68</span>
+                <span className="list_item_badge">{consults.data?.waitSurveys?.total}</span>
                 <span>
                   {' '}
-                  Chờ khảo sát (<span className="item_num">20</span> đã có lịch)
+                  Chờ khảo sát (<span className="item_num">{consults.data.waitSurveys?.surveys}</span> đã có lịch)
                 </span>
               </li>
               <li>
-                <span className="list_item_badge">12</span>
+                <span className="list_item_badge">{consults.data.waitConsults}</span>
                 <span> Chờ tư vấn</span>
               </li>
               <li>
-                <span className="list_item_badge">20</span>
+                <span className="list_item_badge">{consults.data.waitContract}</span>
                 <span> Chờ hợp đồng</span>
               </li>
             </ul>
@@ -138,9 +140,9 @@ export default function FinanceConsultant() {
       </div>
       <div className="contract_list">
         <Spin spinning={loading === LOADING_STATUS.pending}>
-          <TableCommon dataSource={consults.data} columnTable={columns} />
+          <TableCommon dataSource={consults.data.data} columnTable={columns} />
         </Spin>
-        <Pagination total={consults.count} setPaginate={setPaginate} />
+        <Pagination total={consults.data.count} setPaginate={setPaginate} />
       </div>
     </div>
   );

@@ -13,8 +13,10 @@ const HistoryDetail = (props) => {
       (obj, item) => Object.assign(obj, { [item.label]: item.value }),
       {}
     );
-    if (histories && Object.keys(histories).length > 0) {
-      form.setFieldsValue({ ...histories });
+    if (histories) {
+      if (Object.keys(histories).length > 0) {
+        form.setFieldsValue({ ...histories });
+      }
     } else {
       form.resetFields();
     }

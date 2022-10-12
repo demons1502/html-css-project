@@ -23,7 +23,6 @@ const IllustrateFiduciary = () => {
   const [callSave, setCallSave] = useState(false)
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const [version, setVersion] = useState('1.0')
-  // const [contract, setContract] = useState([]) // contract of user
   const [dataToSave, setDataToSave] = useState({ hideName: '' } || {})
   const [date, setDate] = useState(() => {
     var today = new Date();
@@ -34,7 +33,7 @@ const IllustrateFiduciary = () => {
   })
 
   const dataCustomerById = useSelector((state) => state.financialSolution.customerSelect)
-  const { historyList, preparedIllustration } = useSelector((state) => state.financialSolution)
+  const { historyList, preparedIllustration, history } = useSelector((state) => state.financialSolution)
 
   useLayoutEffect(() => {
     dispatch(updateSelectCustomer({ total: total, typeFund: typeFund, userSelected: userSelected, values: values }))
@@ -57,20 +56,37 @@ const IllustrateFiduciary = () => {
 
   useEffect(() => {//call api history
     // dispatch(getFinanceSolution(id))
-    setDataToSave({ ...dataToSave, ...dataCustomerById })
+    setDataToSave({ ...dataToSave, ...dataCustomerById, apptId: userSelected.apptId })
 
   }, [dataCustomerById])
 
   useEffect(() => {
+    history ?
+      setDataToSave(prev => {
+        prev.additionalInvestmentYear = history.topUpYears
+        prev.annualBasePremiums = history.annualBasePremiums
+        prev.annualTopUpPremiums = history.annualTopUpPremiums
+        prev.investmentYear = history.baseYears
+        prev.percentage = history.rate
+        prev.total = history.sumInsured.faceAmount
+        return ({
+          ...prev
+        })
+      })
+      // setVersion(history.version)
+      : null
+  }, [history])
+  useEffect(() => {
     if (callSave) {
       let data = {
-        customerApptRecordId: dataToSave.userSelected.customerApptRecordId,
+        apptId: dataToSave.apptId,
+        customerId: dataToSave.userSelected.customerId,
         fundType: dataToSave.typeFund,
         isPotential: (dataToSave.values.isPotential == undefined) ? "false" : 'true',
         result: "string",
         hintName: dataToSave.hideName,
         version: version,
-        sumInsured: 2000000000,
+        sumInsured: Number(dataToSave.total),
         baseYears: Number(dataToSave.investmentYear),
         basePremium: 20000000,
         annualBasePremiums: dataToSave.annualBasePremiums,
@@ -84,42 +100,24 @@ const IllustrateFiduciary = () => {
         rate: Number(dataToSave.percentage),
         healthInsuranceRate: 2.8,
         healthInsured: 10600000,
-        healthInsuredArray: [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
+        healthInsuredArray: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
         interestRate: dataToSave.investmentYear.toString(),
         expensePerMonth: "string"
       }
       dispatch(postSaveFinances(data))
       setCallSave(false)
     }
-    dispatch(getIllustrationHistoryS(userSelected.customerId))
   }, [callSave])
+
+  useEffect(() => {
+    dispatch(getIllustrationHistoryS(userSelected.customerId))
+  }, [isHistoryModalOpen])
 
   const toggleHistoryModal = () => {
     setIsHistoryModalOpen(!isHistoryModalOpen);
   }
 
-  // console.log(dataToSave);
+  console.log(dataToSave);
   useEffect(() => {
   }, [dataToSave])
 
@@ -209,7 +207,7 @@ const IllustrateFiduciary = () => {
             </div>
 
             <div className="finance-btn-wrapper-sm">
-              <ClosingModal setCallSave={(e) => setCallSave(e)} setDataToSave={(e) => { setDataToSave(e)}}  />
+              <ClosingModal setCallSave={(e) => setCallSave(e)} setDataToSave={(e) => { setDataToSave(e) }} />
             </div>
           </div>
         </div>
@@ -219,14 +217,15 @@ const IllustrateFiduciary = () => {
               {
                 label: 'Minh họa giá trị ủy thác',
                 key: '1',
-                children: <FiduciaryValue data={dataToSave} setDataToSave={(e) => setDataToSave(e)} preparedIllustration={preparedIllustration} />,
+                children: <FiduciaryValue data={dataToSave} setDataToSave={(e) => setDataToSave(e)} preparedIllustration={preparedIllustration} callSave={callSave}/>,
               },
               {
                 label: 'Tóm tắt quyền lợi bằng bông hoa',
                 key: '2',
                 children: <SummaryOfBenefits />,
               }]}
-          />}
+          />
+        }
       </div>
     </>
   );

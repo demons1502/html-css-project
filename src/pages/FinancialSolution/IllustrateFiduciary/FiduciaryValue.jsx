@@ -4,15 +4,14 @@ import { InputNumber } from '../../../components/common/Input/styles'
 import { formatDataNumber } from "../../../helper";
 
 
-export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllustration }) => {
+export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllustration, callSave }) => {
   const [investmentYear, setInvestmentYear] = useState(20);  //thoi gian uyu thac
-  const [percentage, setPercentage] = useState(preparedIllustration?.rate || 6.850);  // muc ty suat dau tu minh hoa
+  const [percentage, setPercentage] = useState(preparedIllustration.rate || 6.850);  // muc ty suat dau tu minh hoa
   const [totalOfMoney, setTotalOfMoney] = useState(20000000);       //so tien dau tu them
   const [additionalInvestmentYear, setAdditionalInvestmentYear] = useState(10);   //so nam dau tu them
-  const [dataTable, setDataTable] = useState([])
   const [bankRate, setBankRate] = useState(6)
-  const [columnC, setColumnC] = useState(preparedIllustration?.annualBasePremiums || [])
-  const [columnD, setColumnD] = useState(preparedIllustration?.annualTopUpPremiums || [])
+  const [columnC, setColumnC] = useState(preparedIllustration.annualBasePremiums || [])
+  const [columnD, setColumnD] = useState(preparedIllustration.annualTopUpPremiums || [])
   const [columnT, setColumnT] = useState([50])
 
   const [form] = Form.useForm();
@@ -36,6 +35,13 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   const onFinish = (values) => {
     console.log("Success:", values);
   };
+
+  useEffect(() => {
+    setInvestmentYear(data.investmentYear)
+    setPercentage(data.percentage)
+    setTotalOfMoney(data.total)
+    setAdditionalInvestmentYear(data.additionalInvestmentYear)
+  }, [data])
 
   const inputColumnD = (record, index) => {
     let arr = [...columnD]
@@ -199,8 +205,8 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
         ...prev
       })
     })
-  }, [investmentYear, percentage, totalOfMoney, additionalInvestmentYear, columnC, columnD])
-
+  }, [callSave])
+  //[investmentYear, percentage, totalOfMoney, additionalInvestmentYear, columnC, columnD]
   const columnL = [85, 75, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   const columnN = [2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
   const columnJ7 = 8.70
@@ -225,7 +231,8 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   }, [columnC, columnD])
 
   const calculatorE = (i) => {
-    return columnD[i] ? formatDataNumber((columnC[i] + columnD[i]) * (i + 1)) : formatDataNumber(columnC[i] * (i + 1))
+    const result = columnD[i] ? ((Number(columnC[i]) + Number(columnD[i])) * (i + 1)) : (Number(columnC[i]) * (i + 1))
+    return formatDataNumber(result)
   }
 
   var totalColumnF;
@@ -278,7 +285,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   const calculatorJ0 = (i) => {
     if (i == 0) {
       let rate = (100 + bankRate) / 100
-      let total = columnD[i] ? columnC[i] + columnD[i] : columnC[i]
+      let total = columnD[i] ? Number(columnC[i]) + Number(columnD[i]) : Number(columnC[i])
       const result = total * rate
       totalBankInterest = result
       return formatDataNumber(result.toFixed())
@@ -287,7 +294,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
 
   const calculatorJ1 = (i) => {
     let rate = (100 + bankRate) / 100
-    let total = columnD[i] ? columnC[i] + columnD[i] : columnC[i]
+    let total = columnD[i] ?  Number(columnC[i]) +  Number(columnD[i]) :  Number(columnC[i])
     const result = (total + totalBankInterest) * rate
     totalBankInterest = result
     return formatDataNumber(result.toFixed())

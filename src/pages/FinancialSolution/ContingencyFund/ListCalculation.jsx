@@ -16,7 +16,6 @@ const ListCalculation = ({ financeDatas, typeFund, userSelected, setKeywords }) 
   const [form] = Form.useForm();
   // dispatch
   const dispatch = useDispatch();
-
   // setPercent
   useEffect(() => {
     if (financeDatas !== '' || financeDatas !== undefined) {

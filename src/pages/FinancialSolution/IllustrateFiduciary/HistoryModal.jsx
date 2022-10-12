@@ -3,8 +3,11 @@ import React, { useState, useMemo } from "react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Table from "../../../components/common/TableNormal";
+import { useDispatch } from "react-redux";
+import { getIllustrationByIds } from "../../../slices/financialSolutions";
 
 export const HistoryModal = ({ historyList }) => {
+  const dispatch = useDispatch()
   const { t } = useTranslation();
   const [dataTable, setDataTable] = useState([]);
 
@@ -12,7 +15,7 @@ export const HistoryModal = ({ historyList }) => {
     let arr = []
     historyList.map((item, index) => {
       arr.push({
-        key: index,
+        key: item.id,
         date: item.createdAt,
         name: item.hintName,
         total: item.sumInsured
@@ -42,6 +45,11 @@ export const HistoryModal = ({ historyList }) => {
     if (!!dataTable && dataTable.length > 0) {
       return (
         <Table dataSource={dataTable} columnTable={columns}
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: e => { dispatch(getIllustrationByIds(record.key)) }, // click row
+            };
+          }}
           scroll={{
             y: 400,
           }}
@@ -53,6 +61,6 @@ export const HistoryModal = ({ historyList }) => {
   }, [dataTable]);
 
   return (
-    <div style={{width:'500px'}}>{table}</div>
+    <div style={{ width: '500px' }}>{table}</div>
   );
 };

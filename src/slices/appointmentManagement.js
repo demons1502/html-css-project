@@ -72,6 +72,7 @@ const appointmentSlice = createSlice({
       state.status = 'success';
       const appointments = action.payload.data.map((i) => {
         i.customerApptRecords[0].typeId = i.typeId
+        i.customerApptRecords[0].apptId = i.apptId
         return {
           ...i,
           start: formatLocalTime(i.startTime, 0),

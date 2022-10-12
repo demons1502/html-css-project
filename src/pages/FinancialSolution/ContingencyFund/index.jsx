@@ -74,7 +74,7 @@ const ContingencyFund = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    const customerList = appointments?.data?.length > 0 ? appointments?.data[0]?.customerApptRecords : null;
+    const customerList = appointments?.data?.length > 0 ? appointments?.data[1]?.customerApptRecords : null;
     const dataFilter = customerList?.filter((item) => item.name.toLowerCase().includes(payload.toLowerCase()));
     setData(dataFilter);
   }, [appointments?.data, payload]);
@@ -82,13 +82,11 @@ const ContingencyFund = () => {
   useEffect(() => {
     if (customerId) {
       const index = data?.findIndex((item) => item.customerId === +customerId);
-      console.log(data[index]);
       setItemContent(data[index]);
     } else {
       setItemContent(data?.[0]);
     }
   }, [data]);
-
   return (
     <div className="quyduphone">
       {/* quyduphone-nav start */}

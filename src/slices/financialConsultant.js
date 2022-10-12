@@ -4,7 +4,6 @@ import { addNewConsult, getConsult, getConsultById, getSpeechScript } from '../s
 const initialState = {
   isReload: false,
   data: [],
-  consultScrip: {},
   count: 0,
 };
 
@@ -38,16 +37,6 @@ export const getConsultantsById = createAsyncThunk('financeConsultant/getById', 
   }
 });
 
-export const getConsultScript = createAsyncThunk('financeConsultant/getScript', async (_, { rejectWithValue }) => {
-  try {
-    const res = await getSpeechScript();
-
-    return res.data;
-  } catch (error) {
-    return rejectWithValue(error.response.data);
-  }
-});
-
 const financeConsultantSlice = createSlice({
   name: 'financeConsultant',
   initialState,
@@ -60,9 +49,6 @@ const financeConsultantSlice = createSlice({
       state.data = action.payload.data;
       state.count = action.payload.total;
       state.isReload = false;
-    },
-    [getConsultScript.fulfilled]: (state, action) => {
-      state.consultScrip = action.payload;
     },
   },
 });

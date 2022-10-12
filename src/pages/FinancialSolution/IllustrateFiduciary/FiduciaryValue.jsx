@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Form } from "antd";
+import { Form, Popconfirm, Table, Typography } from "antd";
 import { InputNumber } from '../../../components/common/Input/styles'
 import { formatDataNumber } from "../../../helper";
 
@@ -9,41 +9,183 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   const [percentage, setPercentage] = useState(preparedIllustration?.rate || 6.850);  // muc ty suat dau tu minh hoa
   const [totalOfMoney, setTotalOfMoney] = useState(20000000);       //so tien dau tu them
   const [additionalInvestmentYear, setAdditionalInvestmentYear] = useState(10);   //so nam dau tu them
+  const [dataTable, setDataTable] = useState([])
   const [bankRate, setBankRate] = useState(6)
   const [columnC, setColumnC] = useState(preparedIllustration?.annualBasePremiums || [])
   const [columnD, setColumnD] = useState(preparedIllustration?.annualTopUpPremiums || [])
   const [columnT, setColumnT] = useState([50])
+
+  const [form] = Form.useForm();
+  useEffect(() => {
+    let lengthColumnD = columnD.length
+    if (lengthColumnD != additionalInvestmentYear) {
+      setAdditionalInvestmentYear(lengthColumnD)
+      form.setFieldValue('additional_investment_year', lengthColumnD)
+    }
+  }, [columnD])
+
   useEffect(() => {
     setColumnC(preparedIllustration?.annualBasePremiums)
     setColumnD(preparedIllustration?.annualTopUpPremiums)
+    form.setFieldValue('amount_of_money', 20000000)
+    setTotalOfMoney(20000000)
+    form.setFieldValue('additional_investment_year', preparedIllustration.topUpYears)
+    setAdditionalInvestmentYear(preparedIllustration.topUpYears)
   }, [preparedIllustration])
 
   const onFinish = (values) => {
     console.log("Success:", values);
   };
-  // console.log(data);
+
+  const inputColumnD = (record, index) => {
+    let arr = [...columnD]
+    if (record == null) {
+      arr[index.key] = 0
+      // form.setFieldValue('additional_investment_year', additionalInvestmentYear - 1)
+      // setAdditionalInvestmentYear(additionalInvestmentYear - 1)
+    }
+    else {
+      arr[index.key] = record
+    }
+    setColumnD(arr)
+  }
+
+  const inputColumnC = (record, index) => {
+    let arr = [...columnC]
+    if (record == null) {
+      arr[index.key] = 0
+
+    }
+    else {
+      arr[index.key] = record
+    }
+    setColumnC(arr)
+  }
+
+  const columns = [
+    {
+      title: 'Tuổi',
+      align: 'center',
+      dataIndex: 'age',
+      key: '0',
+    },
+    {
+      title: 'Năm HĐ',
+      align: 'center',
+      dataIndex: 'index',
+      key: '1'
+    },
+    {
+      title: 'Phí BH cơ bản',
+      align: 'center',
+      dataIndex: 'columnC',
+      key: '2',
+      render: (record, index) =>
+        <div key={index}>
+          <InputNumber controls={false} type="number" className="input_columnD" min={0}
+            value={columnC[index.key]} onChange={(record) => { inputColumnC(record, index) }}
+            style={{ width: "120px", backgroundColor: 'white' }}
+          // formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          // parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+          />
+        </div>
+    },
+    {
+      title: 'Phí BH đóng thêm',
+      align: 'center',
+      dataIndex: 'columnD',
+      key: '3',
+      render: (record, index) =>
+        <div key={index}>
+          <InputNumber controls={false} type="number" className="input_columnD" min={0}
+            value={columnD[index.key]} onChange={(record) => { inputColumnD(record, index) }}
+            style={{ width: "120px", backgroundColor: 'white' }}
+          // formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          // parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+          />
+        </div>
+    },
+    {
+      title: 'Tổng phí BH luỹ kế',
+      align: 'center',
+      dataIndex: 'columnE',
+      key: '4',
+    },
+    {
+      title: 'Mức tỷ suất đầu tư với lãi suất minh hoạ - Quỹ Tắng Trưởng',
+      children: [
+        {
+          title: 'GTTK cơ bản',
+          align: 'center',
+          dataIndex: 'columnF',
+          key: '5',
+          width: 150,
+        },
+        {
+          title: 'GTTK đóng thêm',
+          align: 'center',
+          dataIndex: 'columnG',
+          key: '6',
+          width: 150,
+        },
+        {
+          title: 'GTTK hợp đồng',
+          align: 'center',
+          dataIndex: 'columnH',
+          key: '7',
+          width: 150,
+        },
+        {
+          title: 'Giá trị hoàn lại',
+          align: 'center',
+          dataIndex: 'columnI',
+          key: '8',
+          width: 150,
+        },
+      ]
+    },
+    {
+      title: 'Các kênh đầu tư khác',
+      align: "center",
+      children: [
+        {
+          title: 'Ngân hàng',
+          align: "center",
+          children: [
+            {
+              title: <InputNumber type="number" value={bankRate} onChange={(e) => setBankRate(e)} style={{ width: "152px", backgroundColor: 'white' }} />,
+              align: 'center',
+              dataIndex: 'columnJ',
+              key: '9'
+            },
+          ]
+        },
+      ]
+    }
+  ]
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
-  useEffect(()=>{
-    let arr=[...columnD]
-    if(columnD.length<additionalInvestmentYear){
-      const lengthOfArr= investmentYear < additionalInvestmentYear ? investmentYear : additionalInvestmentYear
-      for(let i=columnD.length; i< lengthOfArr; i++){
+  useEffect(() => {
+    let arr = [...columnD]
+    if (columnD.length < additionalInvestmentYear) {
+      const lengthOfArr = investmentYear < additionalInvestmentYear ? investmentYear : additionalInvestmentYear
+      for (let i = columnD.length; i < lengthOfArr; i++) {
         arr.push(totalOfMoney)
       }
     }
-    else if(columnD.length>additionalInvestmentYear){
-      arr.splice(0,columnD.length - additionalInvestmentYear)
+    else if (columnD.length > additionalInvestmentYear) {
+      arr.splice(0, columnD.length - additionalInvestmentYear)
     }
     setColumnD(arr)
-  },[additionalInvestmentYear])
+  }, [additionalInvestmentYear])
 
-  useEffect(()=>{
-    let arr = Array.from({ length: columnD.length }, (_, i) => i=totalOfMoney)
+  useEffect(() => {
+    let arr = Array.from({ length: columnD.length }, (_, i) => i = totalOfMoney)
     setColumnD(arr)
-  },[totalOfMoney])
+  }, [totalOfMoney])
 
   useEffect(() => {
     setDataToSave((prev) => {
@@ -51,8 +193,8 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
       prev.investmentYear = investmentYear;
       prev.percentage = percentage;
       prev.total = totalOfMoney;
-      prev.annualBasePremiums= columnC;
-      prev.annualTopUpPremiums= columnD;
+      prev.annualBasePremiums = columnC;
+      prev.annualTopUpPremiums = columnD;
       return ({
         ...prev
       })
@@ -150,50 +292,32 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
     totalBankInterest = result
     return formatDataNumber(result.toFixed())
   }
-  const inputColumnD = (e, i) => {
-    console.log(e, i);
-  }
+
+  var arr = []
   const renderTable = (age, length) => {
-    let arr = []
+
     for (var i = 0; i < length; i++) {
-      const input=document.createElement("input")
-      input.innerText= i
-      function getIndex(i){
-        input.addEventListener("click",function (){
-          console.log(index);
-        })
-      }
-      getIndex(index + 1)
       var index = i
       arr.push(
-        <tr key={i}>
-          <td>{age + 1 + i}</td>
-          <td>{index + 1}</td>
-          <td>{columnC[i]}</td>
-          {/* <td>{columnD[i]}</td> */}
-          <td>{
-            <InputNumber controls={false} type="number" className="input_columnD"
-              value={columnD[i]}  onChange={(e)=>{inputColumnD(e, index)}}
-              style={{ width: "120px", backgroundColor: 'white' }}
-              // formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              // parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
-            />
-          }</td>
-          <td>{calculatorE(i)}</td>
-          <td>{(i == 0) ? calculatorF0(i) : calculatorF1(i)}</td>
-          <td>{(i == 0) ? calculatorG0(i) : calculatorG1(i)}</td>
-          <td>{calculatorH(i)}</td>
-          <td>{(i > 1 && i < 9) ? calculatorI1(i) : calculatorI0(i)}</td>
-          <td>{(i == 0) ? calculatorJ0(i) : calculatorJ1(i)}</td>
-        </tr>
+        {
+          key: i,
+          age: age + 1 + i,
+          index: index + 1,
+          columnC: columnC[i],
+          columnD: columnD[i],
+          columnE: calculatorE(i),
+          columnF: (i == 0) ? calculatorF0(i) : calculatorF1(i),
+          columnG: (i == 0) ? calculatorG0(i) : calculatorG1(i),
+          columnH: calculatorH(i),
+          columnI: (i > 1 && i < 9) ? calculatorI1(i) : calculatorI0(i),
+          columnJ: (i == 0) ? calculatorJ0(i) : calculatorJ1(i),
+        }
       )
-      
     }
-    return arr
   }
-
+  renderTable(data.age, investmentYear)
   return (
-    <Form
+    <Form form={form}
       name="basic"
       labelCol={{
         span: 8,
@@ -255,6 +379,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
                     `${e}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
                   parser={(e) => e.replace(/\$\s?|(,*)/g, "")}
+                  value={totalOfMoney}
                   onChange={(e) => setTotalOfMoney(e)}
                 />
               </Form.Item>
@@ -263,64 +388,21 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
               <Form.Item name="additional_investment_year">
                 <InputNumber type="number"
                   controls={false}
-                  max={20}
+                  max={investmentYear}
                   style={{ textAlign: 'center', width: 152 }}
                   className="form-input-text"
                   placeholder="0"
+                  value={additionalInvestmentYear}
                   onChange={(e) => setAdditionalInvestmentYear(e)}
                 />
               </Form.Item>
             </th>
           </tr>
-          <tr>
-            <th rowSpan={3}>
-              <span className="merge-heading"> Tuổi</span>
-            </th>
-            <th rowSpan={3}>
-              <span className="merge-heading"> Năm HĐ</span>
-            </th>
-            <th rowSpan={3}>
-              <span className="merge-heading"> Phí BH cơ bản</span>
-            </th>
-            <th rowSpan={3}>
-              <span className="merge-heading"> Phí BH đóng thêm</span>
-            </th>
-            <th rowSpan={3}>
-              <span className="merge-heading"> Tổng phí BH lũy kế</span>
-            </th>
-            <th colSpan={4}>
-              Mức tỷ suất đầu tư với lãi suất minh họa - Quỹ Tăng Trưởng
-            </th>
-            <th colSpan={4}>Các kênh đầu tư khác</th>
-          </tr>
-
-          <tr>
-            <th rowSpan={2}>
-              <span className="merge-heading"> GTTK cơ bản</span>
-            </th>
-            <th rowSpan={2}>
-              <span className="merge-heading"> GTTK đóng thêm</span>
-            </th>
-            <th rowSpan={2}>
-              <span className="merge-heading"> GTTK hợp đồng</span>
-            </th>
-            <th rowSpan={2}>
-              <span className="merge-heading"> Giá trị hoàn lại</span>
-            </th>
-            <th>Ngân hàng</th>
-          </tr>
-          <tr>
-            <th><InputNumber type="number" value={bankRate} onChange={(e) => setBankRate(e)} style={{ width: "152px", backgroundColor: 'white' }} /></th>
-          </tr>
         </thead>
         <tbody>
-          {
-            (data?.age && preparedIllustration) ?
-              renderTable(34, investmentYear)
-              : <></>
-          }
         </tbody>
       </table>
+      <Table columns={columns} dataSource={arr} bordered size="small" pagination={false} />
     </Form>
   );
 };

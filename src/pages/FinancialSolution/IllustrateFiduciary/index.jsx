@@ -13,11 +13,10 @@ import { HistoryModal } from "./HistoryModal";
 import { ClosingModal } from "./ClosingModal";
 import { SaveConfirmation } from "./SaveConfirmation";
 import { useSelector, useDispatch } from "react-redux";
-import { getCustomerContracts, postSaveFinances, getFinanceSolution, updateSelectCustomer, getCustomerByIdAndType, getPreparedIllustrations } from "../../../slices/financialSolutions";
+import { getCustomerContracts, postSaveFinances, getFinanceSolution, updateSelectCustomer, getCustomerByIdAndType, getPreparedIllustrations, getIllustrationHistoryS } from "../../../slices/financialSolutions";
 
 const IllustrateFiduciary = () => {
   const location = useLocation()
-  // console.log(location.state);
   const { total, typeFund, userSelected, values } = location.state
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -33,12 +32,14 @@ const IllustrateFiduciary = () => {
     var yyyy = today.getFullYear();
     return mm + '/' + dd + '/' + yyyy;
   })
+
   const dataCustomerById = useSelector((state) => state.financialSolution.customerSelect)
   const { historyList, preparedIllustration } = useSelector((state) => state.financialSolution)
 
   useLayoutEffect(() => {
     dispatch(updateSelectCustomer({ total: total, typeFund: typeFund, userSelected: userSelected, values: values }))
     dispatch(getCustomerByIdAndType({ id: userSelected.customerId, typeId: userSelected.typeId }))
+    dispatch(getIllustrationHistoryS(userSelected.customerId))
   }, [])
   // console.log(dataToSave);
   useEffect(() => {
@@ -109,27 +110,10 @@ const IllustrateFiduciary = () => {
         expensePerMonth: "string"
       }
       dispatch(postSaveFinances(data))
-      //call api save
       setCallSave(false)
     }
+    dispatch(getIllustrationHistoryS(userSelected.customerId))
   }, [callSave])
-
-  // const customerId = useSelector((state) => state.financialSolution.customerSelect)
-  // const customerContract = useSelector((state) => state.financialSolution.customerContract)
-
-  // useEffect(() => {
-  //   dispatch(getCustomerContracts())
-  // }, [customerId])
-
-  // useEffect(() => {
-  //   console.log(customerContract.customers);
-  //   if (customerContract?.customers?.length > 0 && customerId) {
-  //     const data = customerContract.customers.find(item => {
-  //       return item.customerId == customerId
-  //     })
-  //     setContract(data)
-  //   }
-  // }, [customerContract])
 
   const toggleHistoryModal = () => {
     setIsHistoryModalOpen(!isHistoryModalOpen);
@@ -225,11 +209,11 @@ const IllustrateFiduciary = () => {
             </div>
 
             <div className="finance-btn-wrapper-sm">
-              <ClosingModal setCallSave={(e) => setCallSave(e)} setDataToSave={(e) => { setDataToSave(e) }} />
+              <ClosingModal setCallSave={(e) => setCallSave(e)} setDataToSave={(e) => { setDataToSave(e)}}  />
             </div>
           </div>
         </div>
-        {preparedIllustration &&
+        {preparedIllustration && dataToSave?.age &&
           <Tabs defaultActiveKey="1" tabBarExtraContent={tabExtra()}
             items={[
               {

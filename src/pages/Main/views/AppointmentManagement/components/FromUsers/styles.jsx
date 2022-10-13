@@ -7,6 +7,10 @@ export const WrapInput = styled(Input)`
   font-weight: 600;
   font-size: 14px;
   color: #333333;
+  &.ant-input-disabled {
+    color: #333333;
+    background: #F8F8F8;
+  }
 `;
 
 export const WrapSelect = styled(Select)`
@@ -19,6 +23,9 @@ export const WrapSelect = styled(Select)`
       font-weight: 700;
     }
   }
+  &.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector{
+    color: #333333;
+  }
 `;
 
 export const WrapRow = styled(RowAntd)`
@@ -26,7 +33,10 @@ export const WrapRow = styled(RowAntd)`
 `;
 
 export const WrapDatePicker = styled(DatePicker)`
-  height: 40px;
+  height: 40px !important; 
+  >.ant-picker-input>input[disabled]{
+    color: #333333;
+  }
 `;
 
 export const ButtonAdd = styled(ButtonAntd)`

@@ -77,6 +77,14 @@
     th {
       border: 1px solid $border-color;
       padding: 10px;
+      .ant-form-item-row{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .ant-input-number-input{
+          background-color: #ffffff !important;
+        }
+      }
     }
     td{
       padding: 10px;
@@ -84,4 +92,11 @@
       text-align: right;
     }
   }
+  // .ant-table-thead{
+  //   tr{
+  //     th{
+
+  //     }
+  //   }
+  // }
 }

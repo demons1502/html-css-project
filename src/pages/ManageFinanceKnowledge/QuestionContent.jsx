@@ -94,6 +94,13 @@ const QuestionAnswerContent = (props) => {
     }
   };
 
+  const handleCancel = () => {
+    setData(detail);
+    setAnswers(detail?.answers);
+    setCurrent(0);
+    setIsEdit(true);
+  };
+
   useEffect(() => {
     answers && setAnswer(answers[current]);
   }, [current, id, answers]);
@@ -112,14 +119,12 @@ const QuestionAnswerContent = (props) => {
   useEffect(() => {
     setData(null);
     setAnswers([]);
-    setId(null);
     setAnswer({});
   }, [option, addNew]);
 
   useEffect(() => {
     setData(null);
     setAnswers([]);
-    setId(null);
     setAnswer({});
   }, []);
 
@@ -222,7 +227,7 @@ const QuestionAnswerContent = (props) => {
             </div>
           </div>
           <div className="questionContent-submit">
-            <Button className="btn-danger" disabled={isEdit}>
+            <Button className="btn-danger" disabled={isEdit} onClick={handleCancel}>
               Hủy
             </Button>
             <Button type="primary" onClick={handleSave} disabled={isEdit}>

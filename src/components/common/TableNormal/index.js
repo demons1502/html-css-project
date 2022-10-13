@@ -12,6 +12,7 @@ export default function TableCommon(props) {
     isSelection = false,
     bordered = false,
     setSelectedRowKeys,
+    rowKey = 'id',
   } = props;
 
   const onSelectChange = (selectedRowKeys, selectedRows) => {
@@ -32,7 +33,7 @@ export default function TableCommon(props) {
       pagination={pagination}
       bordered={bordered}
       className={`${props.className} table-common`}
-      rowKey="id"
+      rowKey={rowKey}
       // scroll={isScroll ?
       //   {
       //     y: `calc(100vh - ${heightMargin}px)`,

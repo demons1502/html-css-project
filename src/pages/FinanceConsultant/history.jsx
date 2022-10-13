@@ -22,8 +22,9 @@ export default function History(props) {
     },
     {
       title: 'Tên gợi nhớ',
-      dataIndex: 'title',
-      key: 'title',
+      render: (record) => {
+        return <span>{record?.hintName || record?.title}</span>;
+      },
     },
     {
       title: 'Tổng chi tiêu',

@@ -46,7 +46,8 @@ export default function FinanceConsultant() {
       dispatch(getAppointment(apptId));
     } else {
       const params = {
-        titles: ['consult'],
+        titles: 'consult',
+        isCare: false,
         startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
         endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
       };
@@ -60,7 +61,6 @@ export default function FinanceConsultant() {
     const fetchData = async () => {
       try {
         const res = await getConsultById(consultId);
-        console.log(res.data);
         setHistory(res.data);
       } catch (err) {
         message.error(err.response.data, 3);
@@ -85,6 +85,8 @@ export default function FinanceConsultant() {
     //   })
     // );
   }, [appointments?.data, searchPayload]);
+
+  console.log(appointments);
 
   useEffect(() => {
     if (customerId) {
@@ -172,6 +174,7 @@ export default function FinanceConsultant() {
                         id={customerId || selectItem?.customerId}
                         useSelected={{ ...selectItem, apptId: apptId }}
                         setKeywords={setKeywords}
+                        apptId={apptId}
                       />
                     )}
                   </div>

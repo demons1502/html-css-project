@@ -23,6 +23,9 @@ export const WrapDatePicker = styled(DatePicker)`
     & .ant-picker-suffix {
       margin-right: 14px;
     }
+    > input {
+      color: #333333;
+    }
   }
 `;
 

@@ -22,8 +22,8 @@ export default function MissedAppointment() {
   const [total, setTotal] = useState(result.count || 0);
   const navigate = useNavigate();
 
-  const handleCSKH = () => {
-    navigate('/customer-care');
+  const handleCSKH = (value) => {
+    navigate(`/customer-care/${value?.customerApptRecords[0]?.customerId}`);
   };
 
   const columns = [
@@ -42,9 +42,9 @@ export default function MissedAppointment() {
     {
       key: 'action',
       width: 120,
-      render: () => (
+      render: (_, record) => (
         <S.WrapButtonTable $center>
-          <S.Button $width="87px" $height="30px" $type="ghost" onClick={handleCSKH}>
+          <S.Button $width="87px" $height="30px" $type="ghost" onClick={() => handleCSKH(record)}>
             CSKH
           </S.Button>
         </S.WrapButtonTable>
@@ -56,7 +56,7 @@ export default function MissedAppointment() {
     const payload = {
       limit,
       offset,
-      endDate: decodeURIComponent(moment()),
+      endDate: decodeURIComponent(moment().utc()),
     };
     dispatch(getMissedAppointments(payload));
   }, [dispatch, limit, offset]);

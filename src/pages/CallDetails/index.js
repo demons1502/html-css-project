@@ -9,7 +9,7 @@ import { Link, useParams } from 'react-router-dom';
 import CallRecordInfo from './CallRecordInfo';
 import CustomerSummaryInfo from './CustomerSummaryInfo';
 import CustomerVoiceCall from './CustomerVoiceCall';
-import { getCustomerCallsData } from '../../slices/customerCall';
+import { getCustomerCallsData, reset } from '../../slices/customerCall';
 
 
 export default function CallDetails() {
@@ -28,6 +28,9 @@ export default function CallDetails() {
 
   useEffect(() => {
     fetchCustomerCallData();
+    return () => {
+      dispatch(reset())
+    }
   }, []);
 
 

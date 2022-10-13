@@ -4,10 +4,21 @@ import {
   updateCustomerCallRecord,
   getCustomerCallById,
   getSpeechScript,
+  createAutoApptAndCompleteCall
 } from '../services/customerCalls';
 import { creactAppointmentApi } from '../services/appointment';
 
+const response = {
+  status: '',
+  data: null,
+  error: null
+}
+
 const initialState = {
+  newCallRecordResponse: {...response},
+  updateCallRecordResponse: {...response},
+  newApptAndCompleteCallResponse: {...response},
+
   callRecord: {
     createdAt: null,
     updatedAt: null,
@@ -70,9 +81,30 @@ export const createAppointment = createAsyncThunk('customerCall/createAppointmen
   }
 });
 
+export const createAppointmentAndCompleteCall = createAsyncThunk('customerCall/createAppointmentAndCompleteCall', async (data) => {
+  const { appointmentPayload, callRecordPayload, action } = data;
+  try {
+    const res = await createAutoApptAndCompleteCall(appointmentPayload, callRecordPayload, action);
+    return res;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
+
 const customerCallSlice = createSlice({
   name: 'customerCall',
   initialState,
+  reducers: {
+    reset: (currentState) => {
+      currentState.callRecord = initialState.callRecord;
+      currentState.customerCall = initialState.customerCall;
+      currentState.customerInfo = initialState.customerInfo;
+      currentState.newCallRecordResponse = initialState.newCallRecordResponse;
+      currentState.speechScript = initialState.speechScript;
+      currentState.updateCallRecordResponse = initialState.updateCallRecordResponse;
+      currentState.newApptAndCompleteCallResponse = initialState.newApptAndCompleteCallResponse;
+    },
+  },
   extraReducers: (builder) => {
     // GET CALL-DATA
     builder.addCase(getCustomerCallsData.pending, (state) => {
@@ -120,10 +152,18 @@ const customerCallSlice = createSlice({
       // state.speechScript = action.payload;
       state.status = 'success';
       state.loading = false;
+
+      state.updateCallRecordResponse.status = 'success';
+      state.updateCallRecordResponse.data = action.payload;
+
+      state.newCallRecordResponse = initialState.newCallRecordResponse;
     });
     builder.addCase(updateCallRecord.rejected, (state) => {
       state.status = 'rejected';
       state.loading = false;
+
+      state.updateCallRecordResponse.status = 'failed';
+      state.updateCallRecordResponse.error = action.payload;
     });
 
     // CREATE CALL-RECORD
@@ -134,10 +174,14 @@ const customerCallSlice = createSlice({
     builder.addCase(createCallRecord.fulfilled, (state, action) => {
       state.status = 'success';
       state.loading = false;
+      state.newCallRecordResponse.status = 'success';
+      state.newCallRecordResponse.data = action.payload;
     });
     builder.addCase(createCallRecord.rejected, (state) => {
       state.status = 'rejected';
       state.loading = false;
+      state.newCallRecordResponse.status = 'failed';
+      state.newCallRecordResponse.error = action.payload;
     });
 
     // CREATE APPOINTMENT
@@ -155,9 +199,26 @@ const customerCallSlice = createSlice({
       state.status = 'rejected';
       state.loading = false;
     });
+
+    // CREATE AUTO-APPT AND COMPLETE CALL
+    builder.addCase(createAppointmentAndCompleteCall.pending, (state) => {
+      state.status = 'pending';
+      state.loading = true;
+    });
+    builder.addCase(createAppointmentAndCompleteCall.fulfilled, (state, action) => {
+      console.log('action.payload - reducers', action.payload)
+      state.newApptAndCompleteCallResponse.status = 'success';
+      state.newApptAndCompleteCallResponse.data = action.payload;
+    });
+    builder.addCase(createAppointmentAndCompleteCall.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.loading = false;
+      state.newApptAndCompleteCallResponse.status = 'failed';
+      state.newApptAndCompleteCallResponse.error = action.payload;
+    });
   },
 });
 
 const { reducer } = customerCallSlice;
-
+export const { reset } = customerCallSlice.actions;
 export default reducer;

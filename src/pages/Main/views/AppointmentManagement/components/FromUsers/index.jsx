@@ -63,7 +63,7 @@ const FormUsers = ({ form, companyId, customerApptRecords, open }) => {
                   name={ [name, 'phone'] }
                   rules={ [{ required: true, message: 'Vui lòng nhập số điện' }] }
                 >
-                  <S.WrapInput placeholder="SĐT" />
+                  <S.WrapInput disabled={ customer[key].phone ? true : false } placeholder="SĐT" />
                 </Form.Item>
               </Col>
               <Col span={ 6 }>
@@ -72,7 +72,7 @@ const FormUsers = ({ form, companyId, customerApptRecords, open }) => {
                   name={ [name, 'gender'] }
                   rules={ [{ required: true, message: 'Vui lòng nhập giới tính' }] }
                 >
-                  <S.WrapSelect placeholder="Giới tính">
+                  <S.WrapSelect disabled={ customer[key].gender ? true : false } placeholder="Giới tính">
                     <S.WrapSelect.Option value={ 1 }>Nam</S.WrapSelect.Option>
                     <S.WrapSelect.Option value={ 2 }>Nữ</S.WrapSelect.Option>
                     <S.WrapSelect.Option value={ 3 }>Khác</S.WrapSelect.Option>
@@ -86,6 +86,7 @@ const FormUsers = ({ form, companyId, customerApptRecords, open }) => {
                   rules={ [{ required: true, message: 'Vui lòng nhập ngày sinh' }] }
                 >
                   <S.WrapDatePicker
+                    disabled={ customer[key].birthday ? true : false }
                     suffixIcon={ null }
                     style={ { width: '100%', height: '40px' } }
                     placeholder="DD/MM/YYYY"

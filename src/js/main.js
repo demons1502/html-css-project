@@ -19,17 +19,17 @@ $(document).ready(function () {
         breakpoint: 980,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 2
-        }
+          slidesToScroll: 2,
+        },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
+          slidesToScroll: 1,
+        },
+      },
+    ],
   });
   $(".pinned-review").slick({
     slidesToShow: 3,
@@ -41,16 +41,29 @@ $(document).ready(function () {
         breakpoint: 980,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 2
-        }
+          slidesToScroll: 2,
+        },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
+          slidesToScroll: 1,
+        },
+      },
+    ],
   });
 });
+const likeBtn = document.querySelector(".like__button");
+let likeIcon = document.querySelector("#icon");
+let count = document.querySelector("#count");
+
+// button click
+let clicked = false;
+
+likeIcon.className = "fa-regular fa-thumbs-up";
+
+likeBtn.addEventListener("click", () => {
+      likeIcon.classList.toggle("fas");
+});
+

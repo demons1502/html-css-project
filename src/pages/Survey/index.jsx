@@ -13,7 +13,7 @@ import calender from "../../assets/images/icons/calendar.svg";
 import left_arrow from "../../assets/images/icons/left-arrow.svg";
 import { HistoryPopup } from "./Modals/HistoryPopup";
 import { formatDate } from "../../helper/index";
-import { getSppechScriptInfo, clearSurvey } from "../../slices/surveys";
+import { setHistory } from "../../slices/surveys";
 import { getAppointments, getAppointment } from "../../slices/appointmentManagement";
 import moment from "moment";
 import Dialogue from "../../components/common/Dialogue";
@@ -24,7 +24,7 @@ const Survey = () => {
   const dispatch = useDispatch();
   const [payload, setPayload] = useState('');
   const { customers, surveys } = useSelector((state) => state);
-  const appointments = useSelector((state) => state.appointment);
+  const appointment = useSelector((state) => state.appointment);
   const [searchParams, setSearchParams] = useSearchParams();
   // const [customerList, setCustomerList] = useState([]);
   // const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -32,21 +32,21 @@ const Survey = () => {
   const { me } = useSelector((state) => state.auth);
   const [apptId, setApptId] = useState(0);
 
-  useEffect(() => {
-    if (!isEmpty(surveys?.survey)) {
-      const filteredCustomer = data?.filter((customer) => customer?.customerId === selectedCustomer?.customerId);
-      // setCustomerList(filteredCustomer);
-    } else {
-      // setCustomerList(data);
-    }
-  }, [customers, surveys?.survey]);
+  const paramApptId = searchParams.get('appointment_id');
+  const paramCustomerId = searchParams.get('customer_id');
+
+  // useEffect(() => {
+  //   if (!isEmpty(surveys?.survey)) {
+  //     const filteredCustomer = data?.filter((customer) => customer?.customerId === selectedCustomer?.customerId);
+  //     // setCustomerList(filteredCustomer);
+  //   } else {
+  //     // setCustomerList(data);
+  //   }
+  // }, [customers, surveys?.survey]);
 
   useEffect(() => {
-    const apptId = searchParams.get('appointment_id');
-
-    if (apptId) {
-      setApptId(apptId)
-      dispatch(getAppointment(apptId));
+    if (paramApptId) {
+      dispatch(getAppointment(paramApptId));
     }
     else {
       const params = {
@@ -59,19 +59,20 @@ const Survey = () => {
   }, []);
 
   useEffect(() => {
-    const customerList = appointments?.data?.length > 0 ? appointments.data[0].customerApptRecords : []
+    const customerList = appointment?.data?.length > 0 ? appointment.data[0].customerApptRecords : []
     dispatch(setData(customerList))
 
-    const apptId = appointments?.data?.length > 0? appointments.data[0].apptId : 0
+    const apptId = appointment?.data?.length > 0? appointment.data[0].apptId : 0
     setApptId(apptId)
-  }, [appointments.data, dispatch]);
-
-  // useEffect(() => {
-  //   customerList && setSelectedCustomer(customerList[0])
-  // }, [customerList]);
+  }, [appointment.data, dispatch]);
 
   useEffect(() => {
-    data?.length > 0 && dispatch(setSelectedCustomer(data[0]?.customerId));
+    if (paramCustomerId) {
+      dispatch(setSelectedCustomer(paramCustomerId));
+    }
+    else {
+      data?.length > 0 && dispatch(setSelectedCustomer(data[0]?.customerId));
+    }    
   }, [data, dispatch]);
 
   const handleSelectCustomer = (id) => {
@@ -80,6 +81,7 @@ const Survey = () => {
 
   const backToSurvey = () => {
     // dispatch(clearSurvey());
+    dispatch(setHistory(false));  
   };
 
   const historyHandler = () => {
@@ -127,7 +129,7 @@ const Survey = () => {
                   </div>
 
                   <div className="container-right">
-                    {selectedCustomer?.customerId? (
+                    {selectedCustomer?.customerId && !surveys?.isHistory? (
                       <div className="container-right-header">
                         <div>
                           <HistoryPopup historyHandler={historyHandler} />
@@ -144,10 +146,10 @@ const Survey = () => {
                           </Button>
                         </div>
                       </div>
-                    ) : (surveys?.survey?.createdAt?(
+                    ) : (surveys?.isHistory && surveys?.survey?.createdAt?(
                       <div className="container-right-header" style={{ padding: '20px' }}>
                         <div onClick={backToSurvey} className="back-to-survey">
-                          <img src={left_arrow} alt="back" height={12} style={{ marginRight: '5px' }} />
+                          <img src={left_arrow} alt="back" height={16} style={{ marginRight: '5px' }} />
                         </div>
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: "5px" }} />

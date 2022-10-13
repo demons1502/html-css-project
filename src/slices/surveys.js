@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addSurvey, getSurvey, getCustomerHistory, getCompanyHistory, getSpeechScript } from "../services/surveys";
+import { addSurvey, getSurvey, getCustomerHistory, getCompanyHistory, patchSurvey } from "../services/surveys";
 import { message } from "antd";
 
 const initialState = {
@@ -12,6 +12,7 @@ const initialState = {
   isError: false,
   error: "",
   isClearSurvey: false,
+  isHistory: false
 };
 
 export const createSurvey = createAsyncThunk("surveys/create", async (data) => {
@@ -55,14 +56,38 @@ export const getCompanyHistoryById = createAsyncThunk("surveys/company-history",
   }
 });
 
-export const getSppechScriptInfo = createAsyncThunk("surveys/speech-script", async () => {
+// export const getSppechScriptInfo = createAsyncThunk("surveys/speech-script", async () => {
+//   try {
+//     const res = await getSpeechScript();
+//     return res.data;
+//   } catch (error) {
+//     return Promise.reject(error.data);
+//   }
+// });
+
+export const updateSurvey = createAsyncThunk("surveys/update", async ({id, data}) => {
   try {
-    const res = await getSpeechScript();
+    const res = await patchSurvey(id, data);
+    if (res?.status === 201 || res?.status === 200) {
+      message.success("Cập nhật khảo sát thành công");
+      return res.data;
+    } else {
+      message.error("Có lỗi xảy ra khi lưu thông tin khảo sát");
+    }
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
+
+export const getHistoryDetail = createAsyncThunk("surveys/history", async (id) => {
+  try {
+    const res = await getSurvey(id);
     return res.data;
   } catch (error) {
     return Promise.reject(error.data);
   }
 });
+
 const surveySlice = createSlice({
   name: "surveys",
   initialState,
@@ -70,6 +95,9 @@ const surveySlice = createSlice({
     clearSurvey: (state) => {
       state.survey = {};
       state.isClearSurvey = true;
+    },
+    setHistory: (state, action) => {
+      state.isHistory = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -90,6 +118,23 @@ const surveySlice = createSlice({
       state.data = [];
     });
 
+    // update survey
+    builder.addCase(updateSurvey.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+    });
+    builder.addCase(updateSurvey.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.data = action.payload;
+      state.error = "";
+    });
+    builder.addCase(updateSurvey.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.error = action.error?.message;
+      state.data = [];
+    });
+
     // get survey details
     builder.addCase(getSurveyDetails.pending, (state) => {
       state.isLoading = true;
@@ -97,8 +142,9 @@ const surveySlice = createSlice({
     });
     builder.addCase(getSurveyDetails.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.survey = action.payload;
       state.error = "";
+      state.survey = action.payload;
+      state.isHistory = false;
     });
     builder.addCase(getSurveyDetails.rejected, (state, action) => {
       state.isLoading = false;
@@ -134,21 +180,38 @@ const surveySlice = createSlice({
       state.companyHistories = action.payload;
       state.error = "";
     });
-    builder
-      .addCase(getCompanyHistoryById.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.error = action.error?.message;
-        state.companyHistories = [];
-      })
+    builder.addCase(getCompanyHistoryById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.error = action.error?.message;
+      state.companyHistories = [];
+    });
 
-      .addCase(getSppechScriptInfo.fulfilled, (state, action) => {
-        state.surveyScript = action.payload;
-      });
+    // set history
+    builder.addCase(getHistoryDetail.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+    });
+    builder.addCase(getHistoryDetail.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.error = "";
+      state.survey = action.payload;
+      state.isHistory = true;
+    });
+    builder.addCase(getHistoryDetail.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.error = action.error?.message;
+      state.survey = {};
+    });
+
+    // .addCase(getSppechScriptInfo.fulfilled, (state, action) => {
+    //   state.surveyScript = action.payload;
+    // });
   },
 });
 
-export const { clearSurvey } = surveySlice.actions;
+export const { clearSurvey, setHistory } = surveySlice.actions;
 const { reducer } = surveySlice;
 
 export default reducer;

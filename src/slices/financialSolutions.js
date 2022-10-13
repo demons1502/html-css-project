@@ -110,7 +110,8 @@ export const getIllustrationHistoryS = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const res = await getIllustrationHistory(payload);
-      return res.data;
+      // return { data: res.data, message: res.statusText };
+      return res.data
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -121,7 +122,8 @@ export const getIllustrationByIds = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const res = await getIllustrationById(payload);
-      return res.data;
+      // return { data: res.data, message: res.statusText };
+      return res.data
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -165,7 +167,6 @@ const financialSolutions = createSlice({
       state.getFinanceSolution = action.payload
     },
     [getCustomerByIdAndType.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.customerSelect.age = action.payload.age
     },
     [getPreparedIllustrations.fulfilled]: (state, action) => {

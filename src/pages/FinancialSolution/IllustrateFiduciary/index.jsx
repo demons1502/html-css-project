@@ -11,12 +11,9 @@ import { FiduciaryValue } from './FiduciaryValue';
 import { SummaryOfBenefits } from './SummaryOfBenefits';
 import { HistoryModal } from './HistoryModal';
 import { ClosingModal } from './ClosingModal';
-import { SaveConfirmation } from './SaveConfirmation';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  getCustomerContracts,
   postSaveFinances,
-  getFinanceSolution,
   updateSelectCustomer,
   getCustomerByIdAndType,
   getPreparedIllustrations,
@@ -40,24 +37,20 @@ const IllustrateFiduciary = () => {
     return mm + '/' + dd + '/' + yyyy;
   });
   const [isHistory, setIsHistory] = useState(false);
-  const [dataHistory, setDataHistory] = useState([]);
-
   const dataCustomerById = useSelector((state) => state.financialSolution.customerSelect);
   const { historyList, preparedIllustration, history } = useSelector((state) => state.financialSolution);
-  console.log(history);
   useLayoutEffect(() => {
     dispatch(updateSelectCustomer({ total: total, typeFund: typeFund, userSelected: userSelected, values: values }));
     dispatch(getCustomerByIdAndType({ id: userSelected.customerId, typeId: userSelected.typeId }));
     dispatch(getIllustrationHistoryS(userSelected.customerId));
   }, []);
-  // console.log(dataToSave);
+
   useEffect(() => {
     if (!isHistory) {
       let params = {
         fundType: typeFund,
         customerId: userSelected.customerId,
         result: 'string',
-        // "baseYears": dataToSave.investmentYear,
         baseYears: dataToSave.investmentYear,
         version: version,
         interestRate: 'string',
@@ -66,30 +59,11 @@ const IllustrateFiduciary = () => {
       dispatch(getPreparedIllustrations(params));
     }
   }, [location?.state, dataToSave?.investmentYear]);
-  //
 
   useEffect(() => {
     //call api history
-    // dispatch(getFinanceSolution(id))
     setDataToSave({ ...dataToSave, ...dataCustomerById, apptId: userSelected.apptId });
   }, [dataCustomerById]);
-
-  // useEffect(() => {
-  //   history ?
-  //     setDataToSave(prev => {
-  //       prev.additionalInvestmentYear = history.topUpYears
-  //       prev.annualBasePremiums = history.annualBasePremiums
-  //       prev.annualTopUpPremiums = history.annualTopUpPremiums
-  //       prev.investmentYear = history.baseYears
-  //       prev.percentage = history.rate
-  //       prev.total = history.sumInsured.faceAmount
-  //       return ({
-  //         ...prev
-  //       })
-  //     })
-  //     // setVersion(history.version)
-  //     : null
-  // }, [history])
 
   useEffect(() => {
     if (callSave) {
@@ -100,7 +74,6 @@ const IllustrateFiduciary = () => {
         isPotential: dataToSave.values.isPotential == undefined ? 'false' : 'true',
         result: 'string',
         hintName: dataToSave.hideName,
-        version: version,
         sumInsured: Number(dataToSave.total),
         baseYears: Number(dataToSave.investmentYear),
         basePremium: 20000000,
@@ -139,6 +112,7 @@ const IllustrateFiduciary = () => {
         ],
         interestRate: dataToSave.investmentYear.toString(),
         expensePerMonth: 'string',
+        versionFE: version,
       };
       dispatch(postSaveFinances(data));
       setCallSave(false);
@@ -152,9 +126,6 @@ const IllustrateFiduciary = () => {
   const toggleHistoryModal = () => {
     setIsHistoryModalOpen(!isHistoryModalOpen);
   };
-
-  // console.log(dataToSave);
-  useEffect(() => {}, [dataToSave]);
 
   const sendEmail = () => {
     // window.location.href =
@@ -197,7 +168,14 @@ const IllustrateFiduciary = () => {
                 open={isHistoryModalOpen}
                 placement="bottomRight"
                 onOpenChange={(e) => setIsHistoryModalOpen(e)}
-                content={<HistoryModal historyList={historyList} setIsHistory={(e) => setIsHistory(e)} />}
+                content={
+                  <HistoryModal
+                    historyList={historyList}
+                    setIsHistory={(e) => setIsHistory(e)}
+                    setDate={(e) => setDate(e)}
+                    setVersion={(e) => setVersion(e)}
+                  />
+                }
                 trigger="click"
               >
                 <Button
@@ -268,6 +246,7 @@ const IllustrateFiduciary = () => {
                     isHistory={isHistory}
                     dataHistory={history}
                     setIsHistory={(e) => setIsHistory(e)}
+                    version={version}
                   />
                 ),
               },

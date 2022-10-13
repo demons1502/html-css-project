@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Form, Popconfirm, Table, Typography } from "antd";
+import React, { useState, useEffect, useLayoutEffect, Spin } from "react";
+import { Form, Table } from "antd";
 import { InputNumber } from '../../../components/common/Input/styles'
 import { formatDataNumber } from "../../../helper";
+import { versionData } from '../../../helper/version';
+// import { LOADING_STATUS } from '../../../ultis/constant';
+import { useDispatch, useSelector } from "react-redux";
 
 
-export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllustration, setIsHistory, dataHistory }) => {
+export const FiduciaryValue = ({ data, setDataToSave, preparedIllustration, setIsHistory, dataHistory, version }) => {
   const [investmentYear, setInvestmentYear] = useState(20);  //thoi gian uyu thac
   const [percentage, setPercentage] = useState(preparedIllustration.rate || 6.850);  // muc ty suat dau tu minh hoa
   const [totalOfMoney, setTotalOfMoney] = useState(20000000);       //so tien dau tu them
@@ -13,6 +16,12 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   const [columnC, setColumnC] = useState(preparedIllustration.annualBasePremiums || [])
   const [columnD, setColumnD] = useState(preparedIllustration.annualTopUpPremiums || [])
   const [columnT, setColumnT] = useState([50])
+  const [columnL, setColumnL] = useState([85, 75, 20])
+  const [columnN, setCColumnN] = useState([2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+  const [columnJ7, setColumnJ7] = useState(8.70)
+  const [columnR, setColumnR] = useState([90, 75, 60, 45, 30, 15, 0, 0, 0, 0, 0, 0])
+
+  const loading = useSelector((state) => state.loading.loading);
   const columns = [
     {
       title: 'Tuổi',
@@ -63,7 +72,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
       key: '4',
     },
     {
-      title: 'Mức tỷ suất đầu tư với lãi suất minh hoạ - Quỹ Tắng Trưởng',
+      title: 'Mức tỷ suất đầu tư với lãi suất minh hoạ - Quỹ Tăng Trưởng',
       children: [
         {
           title: 'GTTK cơ bản',
@@ -116,7 +125,16 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   ]
   const [form] = Form.useForm();
   useEffect(() => {
-    if(dataHistory){
+    if (version != '1.0') {
+      console.log('asd');
+      const getVersion = versionData.find(item => {
+        item.versionId === version
+      })
+      console.log(getVersion);
+    }
+  }, [version])
+  useEffect(() => {
+    if (dataHistory) {
       setInvestmentYear(Number(dataHistory?.baseYears))
       form.setFieldValue('investment_year', Number(dataHistory?.baseYears))
       setPercentage(Number(dataHistory?.rate))
@@ -131,20 +149,17 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   }, [dataHistory])
 
   const inputColumnD = (record, index) => {
-    // let arr = [...columnD]
-    // if (record == null) {
-    //   arr[index.key] = 0
-    //   form.setFieldValue('additional_investment_year', additionalInvestmentYear - 1)
-    //   setAdditionalInvestmentYear(additionalInvestmentYear - 1)
-    // }
-    // else {
-    //   arr[index.key] = record
-    // }
-    // setColumnD(arr)
+    let arr = [...columnD]
+    if (record == null) {
+      arr[index.key] = 0
+    }
+    else {
+      arr[index.key] = record
+    }
+    setColumnD(arr)
   }
-
   useEffect(() => {
-    let lengthColumnD = columnD.length
+    let lengthColumnD = columnD.filter(i => i != 0).length
     if (lengthColumnD != additionalInvestmentYear) {
       setAdditionalInvestmentYear(lengthColumnD)
       form.setFieldValue('additional_investment_year', lengthColumnD)
@@ -152,7 +167,6 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   }, [columnD])
 
   useEffect(() => {
-    console.log('go1');
     setColumnC(preparedIllustration?.annualBasePremiums)
     setColumnD(preparedIllustration?.annualTopUpPremiums)
     form.setFieldValue('amount_of_money', preparedIllustration.basePremium)
@@ -176,13 +190,14 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
 
   useEffect(() => {
     let arrD = [...columnD]
-    if (columnD.length < additionalInvestmentYear) {
+    const columnDLength = arrD.filter(i => i != 0).length
+    if (columnDLength < additionalInvestmentYear) {
       const lengthOfArr = investmentYear < additionalInvestmentYear ? investmentYear : additionalInvestmentYear
       for (let i = columnD.length; i < lengthOfArr; i++) {
         arrD.push(totalOfMoney)
       }
     }
-    else if (columnD.length > additionalInvestmentYear) {
+    else if (columnDLength > additionalInvestmentYear) {
       arrD.splice(0, columnD.length - additionalInvestmentYear)
     }
     setColumnD(arrD)
@@ -194,10 +209,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   }, [totalOfMoney])
 
   useEffect(() => {
-    console.log('totalOfMoney', totalOfMoney);
-    setIsHistory(false)
     setDataToSave((prev) => {
-      console.log(prev);
       prev.additionalInvestmentYear = additionalInvestmentYear;
       prev.investmentYear = investmentYear;
       prev.percentage = percentage;
@@ -217,10 +229,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  const columnL = [85, 75, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  const columnN = [2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-  const columnJ7 = 8.70
-  const columnR = [90, 75, 60, 45, 30, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
 
   const setValueColumnT = () => {
     let result = 0
@@ -251,7 +260,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
     return formatDataNumber(totalColumnF.toFixed())
   }
   const calculatorF1 = (i) => {
-    const formatL = (100 - columnL[i]) / 100
+    const formatL = columnL[i] ? (100 - columnL[i]) / 100 : 0
     totalColumnF = (Number(formatL * columnC[i]) + Number(totalColumnF)) * (100 + percentage) / 100
     return formatDataNumber(totalColumnF.toFixed())
   }
@@ -262,7 +271,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
     return formatDataNumber(totalColumnG.toFixed())
   }
   const calculatorG1 = (i) => {
-    let formatN = (100 - columnN[i]) / 100
+    let formatN = columnN[i] ? (100 - columnN[i]) / 100 : (100 - 1) / 100
     let formatJ7 = (100 + columnJ7) / 100
     totalColumnG = columnD[i] ? (Number(formatN * columnD[i]) + Number(totalColumnG)) * formatJ7 : Number(totalColumnG) * formatJ7
     return formatDataNumber(totalColumnG.toFixed())
@@ -272,13 +281,13 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
     return formatDataNumber(result.toFixed())
   }
   const calculatorI0 = (i) => {
-    let formatColumnR = columnR[i] / 100
+    let formatColumnR = columnR[i] ? columnR[i] / 100 : 0
     let columnQ = (columnC[i] * columnR[i] - totalColumnF > 0) ? (columnC[i] * formatColumnR) : (columnC[i] * formatColumnR)
     const result = Number(totalColumnG) + ((Number(totalColumnF) - columnQ > 0) ? Number(totalColumnF) - columnQ : 0)
     return formatDataNumber(result.toFixed())
   }
   const calculatorI1 = (i) => {
-    let formatColumnR = columnR[i] / 100
+    let formatColumnR = columnR[i] ? columnR[i] / 100 : 0
     let columnQ = (columnC[i] * columnR[i] - totalColumnF > 0) ? (columnC[i] * formatColumnR) : (columnC[i] * formatColumnR)
     const result = Number(totalColumnG) + ((Number(totalColumnF) - columnQ > 0) ? Number(totalColumnF) - columnQ : 0)
 
@@ -356,15 +365,15 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
         <thead>
           <tr className="table_top">
             <th colSpan={4}>THỜI GIAN ỦY THÁC</th>
-            <th>
+            <th style={{ verticalAlign: 'middle' }}>
               <Form.Item name="investment_year">
                 <InputNumber type="number"
-                  style={{ textAlign: 'center', width: 152 }}
+                  style={{ textAlign: 'center', width: 182 }}
                   className="form-input-text"
                   min={1}
                   controls={false}
                   placeholder="0"
-                  onChange={(e) => setInvestmentYear(e)}
+                  onChange={(e) => { setInvestmentYear(e), setIsHistory(false) }}
                 />
               </Form.Item>
             </th>
@@ -379,7 +388,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
             <th>
               <Form.Item name="percent">
                 <InputNumber controls={false} type="number"
-                  style={{ textAlign: 'center', width: 152 }}
+                  style={{ textAlign: 'center', width: 182 }}
                   className="form-input-text"
                   placeholder="0"
                   onChange={(e) => setPercentage(e)}
@@ -389,7 +398,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
             <th>
               <Form.Item name="amount_of_money">
                 <InputNumber controls={false}
-                  style={{ width: 152, textAlign: 'center' }}
+                  style={{ width: 182, textAlign: 'center' }}
                   className="form-input-text"
                   placeholder="0"
                   formatter={(e) =>
@@ -406,7 +415,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
                 <InputNumber type="number"
                   controls={false}
                   max={investmentYear}
-                  style={{ textAlign: 'center', width: 152 }}
+                  style={{ textAlign: 'center', width: 182 }}
                   className="form-input-text"
                   placeholder="0"
                   value={additionalInvestmentYear}
@@ -419,7 +428,9 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
         <tbody>
         </tbody>
       </table>
+      {/* <Spin spinning={loading === LOADING_STATUS.pending}> */}
       <Table columns={columns} dataSource={arr} bordered size="small" pagination={false} />
+      {/* </Spin> */}
     </Form>
   );
 };

@@ -1,16 +1,18 @@
-import { Modal, Empty, Popover } from "antd";
+import { Modal, Empty, Popover, Spin } from "antd";
 import React, { useState, useMemo } from "react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import Table from "../../../components/common/TableNormal";
-import { useDispatch } from "react-redux";
+import { Table } from "antd";
+// import Table from "../../../components/common/TableNormal";
+// import { LOADING_STATUS } from '../../../ultis/constant';
+import { useDispatch, useSelector } from "react-redux";
 import { getIllustrationByIds } from "../../../slices/financialSolutions";
 
-export const HistoryModal = ({ historyList, setIsHistory }) => {
+export const HistoryModal = ({ historyList, setIsHistory, setDate, setVersion }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation();
   const [dataTable, setDataTable] = useState([]);
-
+  const loading = useSelector((state) => state.loading.loading);
   useEffect(() => {
     let arr = []
     historyList.map((item, index) => {
@@ -23,7 +25,6 @@ export const HistoryModal = ({ historyList, setIsHistory }) => {
     })
     setDataTable(arr)
   }, [historyList])
-
   const columns = [
     {
       title: t("Date"),
@@ -44,16 +45,18 @@ export const HistoryModal = ({ historyList, setIsHistory }) => {
   const table = useMemo(() => {
     if (!!dataTable && dataTable.length > 0) {
       return (
-        <Table dataSource={dataTable} columnTable={columns}
+        // <Spin spinning={loading === LOADING_STATUS.pending}>
+        <Table dataSource={dataTable} columns={columns} pagination={false} size="small"
           onRow={(record, rowIndex) => {
             return {
-              onClick: e => { dispatch(getIllustrationByIds(record.key)); setIsHistory(true) }, // click row
+              onClick: e => { dispatch(getIllustrationByIds(record.key)); setIsHistory(true); setDate(record.date); setVersion(record.versionFE ? record.versionFE : '1.0') }, // click row
             };
           }}
           scroll={{
             y: 400,
           }}
         />
+        // </Spin>
       );
     } else {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;

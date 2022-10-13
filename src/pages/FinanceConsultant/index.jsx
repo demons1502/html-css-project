@@ -47,8 +47,10 @@ export default function FinanceConsultant() {
     } else {
       const params = {
         titles: ['consult'],
-        startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
-        endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
+        // startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+        // endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
+        startDate: moment().local().format('YYYY-MM-DD HH:mm:ss'),
+        endDate: moment().add(30, 'm').local().format('YYYY-MM-DD HH:mm:ss'),
       };
       dispatch(getAppointments(params));
     }

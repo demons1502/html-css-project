@@ -1,22 +1,22 @@
-import { Button, Col, Layout, List, Row, Typography, Spin } from "antd";
-import React, { Fragment, useEffect, useState } from "react";
-import SearchInputBox from "./SearchInputBox";
+import { Button, Col, Layout, List, Row, Typography, Spin } from 'antd';
+import React, { Fragment, useEffect, useState } from 'react';
+import SearchInputBox from './SearchInputBox';
 // import ListDetails from "./ListDetails";
-import { useNavigate, useSearchParams  } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import TabMenu from "./Tabs/TabMenu";
-import { useDispatch, useSelector } from "react-redux";
-import { getCustomerHistoryById } from "../../slices/surveys";
-import { setData, setSelectedCustomer } from "../../slices/customers";
-import { isEmpty } from "lodash";
-import calender from "../../assets/images/icons/calendar.svg";
-import left_arrow from "../../assets/images/icons/left-arrow.svg";
-import { HistoryPopup } from "./Modals/HistoryPopup";
-import { formatDate } from "../../helper/index";
-import { getSppechScriptInfo, clearSurvey } from "../../slices/surveys";
-import { getAppointments, getAppointment } from "../../slices/appointmentManagement";
-import moment from "moment";
-import Dialogue from "../../components/common/Dialogue";
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import TabMenu from './Tabs/TabMenu';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCustomerHistoryById } from '../../slices/surveys';
+import { setData, setSelectedCustomer } from '../../slices/customers';
+import { isEmpty } from 'lodash';
+import calender from '../../assets/images/icons/calendar.svg';
+import left_arrow from '../../assets/images/icons/left-arrow.svg';
+import { HistoryPopup } from './Modals/HistoryPopup';
+import { formatDate } from '../../helper/index';
+import { getSppechScriptInfo, clearSurvey } from '../../slices/surveys';
+import { getAppointments, getAppointment } from '../../slices/appointmentManagement';
+import moment from 'moment';
+import Dialogue from '../../components/common/Dialogue';
 
 const Survey = () => {
   const { t } = useTranslation();
@@ -45,25 +45,24 @@ const Survey = () => {
     const apptId = searchParams.get('appointment_id');
 
     if (apptId) {
-      setApptId(apptId)
+      setApptId(apptId);
       dispatch(getAppointment(apptId));
-    }
-    else {
+    } else {
       const params = {
         titles: ['survey'],
         startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
-        endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss')
-      }
+        endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
+      };
       dispatch(getAppointments(params));
     }
   }, []);
 
   useEffect(() => {
-    const customerList = appointments?.data?.length > 0 ? appointments.data[0].customerApptRecords : []
-    dispatch(setData(customerList))
+    const customerList = appointments?.data?.length > 0 ? appointments.data[0].customerApptRecords : [];
+    dispatch(setData(customerList));
 
-    const apptId = appointments?.data?.length > 0? appointments.data[0].apptId : 0
-    setApptId(apptId)
+    const apptId = appointments?.data?.length > 0 ? appointments.data[0].apptId : 0;
+    setApptId(apptId);
   }, [appointments.data, dispatch]);
 
   // useEffect(() => {
@@ -102,7 +101,7 @@ const Survey = () => {
 
         <div className="survey-container">
           <Row gutter={[16, 10]} justify="start" align="stretch">
-            <Col lg={me?.isDefaultHelper? 15: 24} md={24} sm={24} xs={24}>
+            <Col lg={me?.isDefaultHelper ? 15 : 24} md={24} sm={24} xs={24}>
               <Layout.Content>
                 <div className="content-div-1">
                   <div className="container-left">
@@ -127,7 +126,7 @@ const Survey = () => {
                   </div>
 
                   <div className="container-right">
-                    {selectedCustomer?.customerId? (
+                    {selectedCustomer?.customerId ? (
                       <div className="container-right-header">
                         <div>
                           <HistoryPopup historyHandler={historyHandler} />
@@ -144,28 +143,31 @@ const Survey = () => {
                           </Button>
                         </div>
                       </div>
-                    ) : (surveys?.survey?.createdAt?(
+                    ) : surveys?.survey?.createdAt ? (
                       <div className="container-right-header" style={{ padding: '20px' }}>
                         <div onClick={backToSurvey} className="back-to-survey">
                           <img src={left_arrow} alt="back" height={12} style={{ marginRight: '5px' }} />
                         </div>
                         <div className="right">
-                          <img src={calender} alt="calender" height={16} style={{ marginRight: "5px" }} />
-                          <span>Ngày: {surveys?.survey?.createdAt ? formatDate(surveys?.survey?.createdAt) : ""}</span>
+                          <img src={calender} alt="calender" height={16} style={{ marginRight: '5px' }} />
+                          <span>Ngày: {surveys?.survey?.createdAt ? formatDate(surveys?.survey?.createdAt) : ''}</span>
                         </div>
                       </div>
-                    ): (
-                      <div className="container-right-header" style={{ padding: '20px'  }}>
-                        <h4 className="primary-color font-weight-bold"><strong>Chưa có lịch hẹn khảo sát</strong></h4>
+                    ) : (
+                      <div className="container-right-header" style={{ padding: '20px' }}>
+                        <h4 className="primary-color font-weight-bold">
+                          <strong>Chưa có lịch hẹn khảo sát</strong>
+                        </h4>
                       </div>
-                    ))}
+                    )}
 
-                    {selectedCustomer?.customerId ? (<TabMenu />):(
-                        <div className="primary-color font-weight-bold" style={{ padding: '20px', minHeight: '500px'  }}>
-                          <strong>Chưa có lịch hẹn khảo sát khách hàng </strong>
-                        </div>
-                      )
-                    }
+                    {selectedCustomer?.customerId ? (
+                      <TabMenu />
+                    ) : (
+                      <div className="primary-color font-weight-bold" style={{ padding: '20px', minHeight: '500px' }}>
+                        <strong>Chưa có lịch hẹn khảo sát khách hàng </strong>
+                      </div>
+                    )}
                   </div>
                 </div>
               </Layout.Content>
@@ -175,10 +177,7 @@ const Survey = () => {
               <Col lg={9} md={24} sm={24} xs={24}>
                 <Layout.Content className="manageContent">
                   <div className="content-div-2">
-                    <Dialogue 
-                      title="Quy trình khảo sát" 
-                      type="survey" 
-                      customerId={selectedCustomer?.customerId} />
+                    <Dialogue title="Quy trình khảo sát" type="survey" customerId={selectedCustomer?.customerId} />
                   </div>
                 </Layout.Content>
               </Col>

@@ -20,12 +20,12 @@
         margin-bottom: 20px;
         box-shadow: 0px 0px 6px $box-search-color;
         a {
-            color: $text-color;
-            margin-right: 5px;
-            text-decoration: none;
-            &:hover {
-                color: $hover-color;
-              }
+          color: $text-color;
+          margin-right: 5px;
+          text-decoration: none;
+          &:hover {
+            color: $hover-color;
+          }
         }
       }
     }
@@ -41,26 +41,21 @@
         margin-bottom: 20px;
         box-shadow: 0px 0px 6px $box-search-color;
         a {
-            color: $text-color;
-            margin-right: 5px;
-            text-decoration: none;
-            &:hover {
-                color: $hover-color;
-              }
+          color: $text-color;
+          margin-right: 5px;
+          text-decoration: none;
+          &:hover {
+            color: $hover-color;
+          }
         }
       }
     }
   }
   &-img {
-    &__food {
-      &-wing7 {
-        width: 100%;
-        object-fit: cover;
-      }
-    }
-    &__food2 {
-    }
     &__food3 {
+      img {
+        width: auto;
+      }
     }
   }
 }

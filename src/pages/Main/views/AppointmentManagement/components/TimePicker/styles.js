@@ -48,12 +48,9 @@ export const TimePicker = styled(TimePickerAntd)`
 export const Space = styled.span`
   font-weight: bold;
   font-size: 14px;
+  margin-right: 8px;
 `;
 
-export const DropDownBtn = styled.div`
-  width: 16px;
-  height: 16px;
-`;
 
 export const BoxClock = styled.span`
   display: flex;

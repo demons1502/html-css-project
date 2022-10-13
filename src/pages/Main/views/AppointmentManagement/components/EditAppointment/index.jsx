@@ -170,6 +170,7 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
                 suffixIcon={ <Calender color="#999999" /> }
                 style={ { width: '100%' } }
                 placeholder="DD/MM/YYYY"
+                allowClear={ false }
                 disabledDate={ (current) => {
                   let customDate = moment().format('YYYY-MM-DD');
                   return current && current < moment(customDate, 'YYYY-MM-DD');

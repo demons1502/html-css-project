@@ -60,7 +60,6 @@ export default function FinanceConsultant() {
     const fetchData = async () => {
       try {
         const res = await getConsultById(consultId);
-        console.log(res.data);
         setHistory(res.data);
       } catch (err) {
         message.error(err.response.data, 3);
@@ -172,6 +171,7 @@ export default function FinanceConsultant() {
                         id={customerId || selectItem?.customerId}
                         useSelected={{ ...selectItem, apptId: apptId }}
                         setKeywords={setKeywords}
+                        apptId={apptId}
                       />
                     )}
                   </div>

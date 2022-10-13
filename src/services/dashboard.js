@@ -28,7 +28,8 @@ export const sendSMSApi = async (data) =>
 export const sendEmailApi = (data) => sendPost(`/${ENDPOINT.events}/send`, data);
 // MissedAppointment
 export const getMissedAppointmentApi = (data) => sendGet(`/${ENDPOINT.appointments}`, data);
-export const setCSKHForItemAppointmentApi = (data) => sendPatch(`/${ENDPOINT.customers}/${data.customerId}`, data);
+export const setCustomerCareForItemAppointmentApi = (data) =>
+  sendPatch(`/${ENDPOINT.customers}/${data.customerId}`, data);
 // AppointmentSchedule
 export const getAppointmentScheduleApi = (data) => sendGet(`/${ENDPOINT.appointments}`, data);
 export const updateAppointmentScheduleApi = (data) => sendPatch(`${ENDPOINT.appointments}/${data.apptId}`, data);

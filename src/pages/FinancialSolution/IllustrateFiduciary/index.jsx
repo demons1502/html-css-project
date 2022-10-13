@@ -11,9 +11,8 @@ import { FiduciaryValue } from "./FiduciaryValue";
 import { SummaryOfBenefits } from "./SummaryOfBenefits";
 import { HistoryModal } from "./HistoryModal";
 import { ClosingModal } from "./ClosingModal";
-import { SaveConfirmation } from "./SaveConfirmation";
 import { useSelector, useDispatch } from "react-redux";
-import { getCustomerContracts, postSaveFinances, getFinanceSolution, updateSelectCustomer, getCustomerByIdAndType, getPreparedIllustrations, getIllustrationHistoryS } from "../../../slices/financialSolutions";
+import { postSaveFinances, updateSelectCustomer, getCustomerByIdAndType, getPreparedIllustrations, getIllustrationHistoryS } from "../../../slices/financialSolutions";
 
 const IllustrateFiduciary = () => {
   const location = useLocation()
@@ -32,17 +31,15 @@ const IllustrateFiduciary = () => {
     return mm + '/' + dd + '/' + yyyy;
   })
   const [isHistory, setIsHistory] = useState(false)
-  const [dataHistory, setDataHistory] = useState([])
 
   const dataCustomerById = useSelector((state) => state.financialSolution.customerSelect)
   const { historyList, preparedIllustration, history } = useSelector((state) => state.financialSolution)
-  console.log(history);
   useLayoutEffect(() => {
     dispatch(updateSelectCustomer({ total: total, typeFund: typeFund, userSelected: userSelected, values: values }))
     dispatch(getCustomerByIdAndType({ id: userSelected.customerId, typeId: userSelected.typeId }))
     dispatch(getIllustrationHistoryS(userSelected.customerId))
   }, [])
-  // console.log(dataToSave);
+
   useEffect(() => {
     if(!isHistory){
       let params = {
@@ -58,30 +55,10 @@ const IllustrateFiduciary = () => {
       dispatch(getPreparedIllustrations(params))
     }
   }, [location?.state, dataToSave?.investmentYear])
-  //
 
   useEffect(() => {//call api history
-    // dispatch(getFinanceSolution(id))
     setDataToSave({ ...dataToSave, ...dataCustomerById, apptId: userSelected.apptId })
-
   }, [dataCustomerById])
-
-  // useEffect(() => {
-  //   history ?
-  //     setDataToSave(prev => {
-  //       prev.additionalInvestmentYear = history.topUpYears
-  //       prev.annualBasePremiums = history.annualBasePremiums
-  //       prev.annualTopUpPremiums = history.annualTopUpPremiums
-  //       prev.investmentYear = history.baseYears
-  //       prev.percentage = history.rate
-  //       prev.total = history.sumInsured.faceAmount
-  //       return ({
-  //         ...prev
-  //       })
-  //     })
-  //     // setVersion(history.version)
-  //     : null
-  // }, [history])
 
   useEffect(() => {
     if (callSave) {
@@ -124,10 +101,6 @@ const IllustrateFiduciary = () => {
     setIsHistoryModalOpen(!isHistoryModalOpen);
   }
 
-  // console.log(dataToSave);
-  useEffect(() => {
-  }, [dataToSave])
-
   const sendEmail = () => {
     // window.location.href =
     //   "https://mail.google.com/mail/u/0/#inbox?compose=new";
@@ -169,7 +142,7 @@ const IllustrateFiduciary = () => {
                 open={isHistoryModalOpen}
                 placement="bottomRight"
                 onOpenChange={(e) => setIsHistoryModalOpen(e)}
-                content={<HistoryModal historyList={historyList} setIsHistory={(e) => setIsHistory(e)} />}
+                content={<HistoryModal historyList={historyList} setIsHistory={(e) => setIsHistory(e)} setDate={e=>setDate(e)}/>}
                 trigger="click"
               >
                 <Button

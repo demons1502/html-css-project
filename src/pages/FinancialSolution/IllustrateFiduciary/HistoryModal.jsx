@@ -2,11 +2,12 @@ import { Modal, Empty, Popover } from "antd";
 import React, { useState, useMemo } from "react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import Table from "../../../components/common/TableNormal";
+import  { Table} from "antd";
+// import Table from "../../../components/common/TableNormal";
 import { useDispatch } from "react-redux";
 import { getIllustrationByIds } from "../../../slices/financialSolutions";
 
-export const HistoryModal = ({ historyList, setIsHistory }) => {
+export const HistoryModal = ({ historyList, setIsHistory, setDate }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation();
   const [dataTable, setDataTable] = useState([]);
@@ -44,10 +45,10 @@ export const HistoryModal = ({ historyList, setIsHistory }) => {
   const table = useMemo(() => {
     if (!!dataTable && dataTable.length > 0) {
       return (
-        <Table dataSource={dataTable} columnTable={columns}
+        <Table dataSource={dataTable} columns={columns} pagination={false} size="small"
           onRow={(record, rowIndex) => {
             return {
-              onClick: e => { dispatch(getIllustrationByIds(record.key)); setIsHistory(true) }, // click row
+              onClick: e => { dispatch(getIllustrationByIds(record.key)); setIsHistory(true); setDate(record.date)}, // click row
             };
           }}
           scroll={{

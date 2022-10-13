@@ -1,14 +1,13 @@
 import { Checkbox, message, Tooltip } from 'antd';
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import call from '../../../../assets/images/icons/callDashboard.svg';
-import * as S from '../../styles';
 import { createCallRecord } from '../../../../slices/customerCall';
-import moment from 'moment';
-import { dateContractFormat } from '../../constants';
 import { setDoneCall } from '../../../../slices/dashboard';
+import { RESPONSE_STATUS } from '../../../../ultis/constant';
+import * as S from '../../styles';
 
 export default function CallScheduleItemCall(props) {
   const { t } = useTranslation();
@@ -16,15 +15,20 @@ export default function CallScheduleItemCall(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(record.isChecked);
+  const customerCall = useSelector((state) => state.customerCall);
+
+  useEffect(() => {
+    const res = customerCall?.newCallRecordResponse;
+    if (res?.status === RESPONSE_STATUS.SUCCESS) {
+      navigate('/call-details/' + res?.data?.call?.id || 0);
+    }
+    if (res?.status === RESPONSE_STATUS.FAILED) {
+      message.error('Không thể tạo cuộc gọi');
+    }
+  }, [customerCall?.newCallRecordResponse]);
 
   const handleCall = async (value) => {
-    dispatch(createCallRecord(Number(value?.customerCallId || 0))).then(({ error }) => {
-      if (error) {
-        message.error('Không thể tạo cuộc gọi');
-      } else {
-        navigate('/call-details/' + value?.customerCallId || 0);
-      }
-    });
+    dispatch(createCallRecord(Number(value?.customerCallId || 0)));
   };
 
   const handleCheckCallDone = (e) => {

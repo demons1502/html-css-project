@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
-  getAppointments, getSpeechScript, getAppointmentsById, getCustomerContract, postSaveFinance, getFinanceSolutions, getCustomer, 
-  getPreparedIllustration
+  getAppointments, getSpeechScript, getAppointmentsById, getCustomerContract, postSaveFinance, 
+  getFinanceSolutions, getCustomer, getIllustrationHistory,getPreparedIllustration, getIllustrationById
 } from '../services/financialSolutions';
+import { formatDate} from '../helper';
 
 const initialState = {
   data: [],
@@ -13,6 +14,7 @@ const initialState = {
   customerContract: [],
   historyList: [],
   preparedIllustration: null,
+  history:null
 };
 
 export const getAppointment = createAsyncThunk(
@@ -103,6 +105,30 @@ export const getPreparedIllustrations = createAsyncThunk(
     }
   }
 );
+export const getIllustrationHistoryS = createAsyncThunk(
+  'financialSolutions/getIllustrationHistory',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await getIllustrationHistory(payload);
+      // return { data: res.data, message: res.statusText };
+      return res.data
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const getIllustrationByIds = createAsyncThunk(
+  'financialSolutions/getIllustrationById',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await getIllustrationById(payload);
+      // return { data: res.data, message: res.statusText };
+      return res.data
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const financialSolutions = createSlice({
   name: 'financialSolutions',
@@ -145,6 +171,18 @@ const financialSolutions = createSlice({
     },
     [getPreparedIllustrations.fulfilled]: (state, action) => {
       state.preparedIllustration = action.payload
+    },
+    [getIllustrationHistoryS.fulfilled]: (state, action) => {
+      const data=action.payload.illustrations.map(i=>{
+        return{
+          ...i,
+          createdAt: formatDate(i.createdAt)
+        }
+      })
+      state.historyList = data
+    },
+    [getIllustrationByIds.fulfilled]: (state, action) => {
+      state.history = action.payload.illustration
     },
   },
 });

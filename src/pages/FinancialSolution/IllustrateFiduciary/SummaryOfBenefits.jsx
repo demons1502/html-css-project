@@ -1,9 +1,20 @@
-import React from "react";
-import { Row, Col } from "antd";
-import { CircleData } from "./CircleData";
-import { CircleTitle } from "./CircleTitle";
+import React from 'react';
+import { Row, Col } from 'antd';
+import { CircleData } from './CircleData';
+import { CircleTitle } from './CircleTitle';
+import { formatDate, formatDataNumber } from '../../../helper';
+import { useMemo } from 'react';
+import { gender } from '../../../constants/common';
 
-export const SummaryOfBenefits = () => {
+export const SummaryOfBenefits = (props) => {
+  const { data } = props;
+  const { userSelected, values } = data;
+
+  const genderUser = useMemo(() => {
+    const index = gender.findIndex((item) => item.value === userSelected?.gender);
+    return gender[index]?.label;
+  }, [userSelected]);
+
   return (
     <div className="tom_tat_quyen_container">
       <Row gutter={[16, 10]}>
@@ -21,10 +32,10 @@ export const SummaryOfBenefits = () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Nguyễn Văn Tiến</td>
-                    <td>12/06/1978</td>
-                    <td>45</td>
-                    <td>Nam</td>
+                    <td>{userSelected?.name}</td>
+                    <td>{formatDate(userSelected?.dob)}</td>
+                    <td>{data?.age}</td>
+                    <td>{genderUser}</td>
                   </tr>
                 </tbody>
               </table>
@@ -85,8 +96,7 @@ export const SummaryOfBenefits = () => {
                     {/* five */}
                     <tr>
                       <td colSpan={2} className="item_num">
-                        5. Điều trị ngoại trú đặc biệt hoặc điều trị trong khoa
-                        cấp cứu:
+                        5. Điều trị ngoại trú đặc biệt hoặc điều trị trong khoa cấp cứu:
                       </td>
                     </tr>
                     <tr>
@@ -126,8 +136,7 @@ export const SummaryOfBenefits = () => {
                     </tr>
                     <tr>
                       <td colSpan={2} className="sub_label">
-                        (Nếu trong năm không phát sinh bất kỳ yêu cầu chi trả
-                        nào)
+                        (Nếu trong năm không phát sinh bất kỳ yêu cầu chi trả nào)
                       </td>
                     </tr>
                   </tbody>
@@ -193,8 +202,7 @@ export const SummaryOfBenefits = () => {
                     </tr>
                     <tr>
                       <td colSpan={2} className="sub_label">
-                        (Quyền lợi TV do tai nạn sẽ trừ đi quyền lợi thương tật
-                        đã trả trước đó)
+                        (Quyền lợi TV do tai nạn sẽ trừ đi quyền lợi thương tật đã trả trước đó)
                       </td>
                     </tr>
                   </tbody>
@@ -221,11 +229,11 @@ export const SummaryOfBenefits = () => {
                 <tbody>
                   <tr>
                     <td>Chi phí sinh hoạt hàng tháng</td>
-                    <td>10.000.000 đ</td>
+                    <td>{formatDataNumber(values?.total)}</td>
                   </tr>
                   <tr>
                     <td>Chi phí sinh hoạt hằng năm</td>
-                    <td>120.000.000 đ</td>
+                    <td>{formatDataNumber(values?.total * 12)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -235,11 +243,11 @@ export const SummaryOfBenefits = () => {
                 <tbody>
                   <tr>
                     <td>Tổng số tiền ủy thác hàng năm</td>
-                    <td>25.000.000 đ</td>
+                    <td>{formatDataNumber(data?.total)}</td>
                   </tr>
                   <tr>
                     <td>Thời gian ủy thác</td>
-                    <td>20 năm</td>
+                    <td>{data?.investmentYear} năm</td>
                   </tr>
                   <tr>
                     <td>Tổng vốn ủy thác</td>
@@ -266,10 +274,10 @@ export const SummaryOfBenefits = () => {
               </div>
               <div className="tom_tat_quyen_middle_three_last">
                 <div>
-                  <CircleData data="Quyền lợi tai nạnnâng cao" />
+                  <CircleData data="Quyền lợi tai nạn nâng cao" />
                 </div>
                 <div>
-                  <CircleData data="Quyền lợi hỗ trợđóng phí" />
+                  <CircleData data="Quyền lợi hỗ trợ đóng phí" />
                 </div>
               </div>
             </div>
@@ -366,9 +374,7 @@ export const SummaryOfBenefits = () => {
                       <td>720.000 đ/ngày</td>
                     </tr>
                     <tr>
-                      <td colSpan={2}>
-                        c. Khi NĐBH phải nằm viện tại khoa CSĐB
-                      </td>
+                      <td colSpan={2}>c. Khi NĐBH phải nằm viện tại khoa CSĐB</td>
                       <td>400%</td>
                       <td>1.200.000 đ/ngày</td>
                     </tr>
@@ -502,9 +508,8 @@ export const SummaryOfBenefits = () => {
                 </table>
               </div>
               <div className="tom_tat_quyen_right_four_bottom">
-                Khi Người được bảo hiểm bị mắc 1 trong 49 bệnh lý nghiêm trọng
-                giai đoạn cuối thì Manulife sẽ chi trả khoản phí bảo hiểm định
-                kỳ quy năm vào mỗi ngày kỷ niệm hợp đồng
+                Khi Người được bảo hiểm bị mắc 1 trong 49 bệnh lý nghiêm trọng giai đoạn cuối thì Manulife sẽ chi trả
+                khoản phí bảo hiểm định kỳ quy năm vào mỗi ngày kỷ niệm hợp đồng
               </div>
             </div>
           </div>
@@ -512,9 +517,7 @@ export const SummaryOfBenefits = () => {
       </Row>
 
       <div className="tom_tat_quyen_bottom">
-        <div className="tom_tat_quyen_bottom_title">
-          Mức tỷ suất đầu tư với lãi suất minh họa - Quỹ Tăng Trưởng
-        </div>
+        <div className="tom_tat_quyen_bottom_title">Mức tỷ suất đầu tư với lãi suất minh họa - Quỹ Tăng Trưởng</div>
         <div className="tom_tat_quyen_bottom_data">
           <table>
             <thead>

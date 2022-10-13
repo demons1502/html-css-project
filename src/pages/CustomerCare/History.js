@@ -29,7 +29,6 @@ export default function History() {
   const [list, setList] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(customerData);
   const columns = [
     {
       title: t('common.date'),
@@ -58,25 +57,12 @@ export default function History() {
       width: '18%',
       render: (record) => {
         if (ARR_INFO_REDIRECT.includes(record.info)) {
-          const t = record.info.toLowerCase();
-          const consult = `?consult_id=${record.consult?.id}`;
-          const survey = `?survey_id=${record.survey?.surveyId}&customer_id=${record.survey?.customerId}&appointment_id=${record.survey?.apptId}`;
-          const solution = `?solution_id=${record.solution?.id}`;
-          const handleOnclickView = () => {
-            if (t === 'advise') {
-              return navigate(`${INFO_PATH[record.info]}${consult}`);
-            }
-            if (t === 'solution') {
-              return navigate(`${INFO_PATH[record.info]}${solution}`);
-            }
-            return navigate(`${INFO_PATH[record.info]}${survey}`);
-          };
           return (
             <div className="d-flex-end">
               {/* <Link to={INFO_PATH[record.info]} className="btn-bgWhite-textGreen-borGreen pd-btn">
                 <span>Xem</span>
               </Link> */}
-              <S.Button size="small" onClick={handleOnclickView}>
+              <S.Button size="small" onClick={() => handleNavigate(record)}>
                 Xem
               </S.Button>
             </div>
@@ -85,6 +71,20 @@ export default function History() {
       },
     },
   ];
+
+  const handleNavigate = (record) => {
+    const type = record.info.toLowerCase();
+    const consult = `?consult_id=${record.consult?.id}`;
+    const survey = `?survey_id=${record.survey?.surveyId}&customer_id=${record.survey?.customerId}&appointment_id=${record.survey?.apptId}`;
+    const solution = `?solution_id=${record.solution?.id}`;
+    if (type === 'advise') {
+      return navigate(`${INFO_PATH[record.info]}${consult}`);
+    }
+    if (type === 'solution') {
+      return navigate(`${INFO_PATH[record.info]}${solution}`);
+    }
+    return navigate(`${INFO_PATH[record.info]}${survey}`);
+  };
 
   const addModal = (detail) => {
     setVisibleModalAddInfo(true);

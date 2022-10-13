@@ -71,15 +71,16 @@ const appointmentSlice = createSlice({
     builder.addCase(getAppointments.fulfilled, (state, action) => {
       state.status = 'success';
       const appointments = action.payload.data.map((i) => {
+        i.customerApptRecords[0].typeId = i.typeId
+        i.customerApptRecords[0].apptId = i.apptId
         return {
           ...i,
           start: formatLocalTime(i.startTime, 0),
           end: formatLocalTime(i.endTime, 1),
           title: getTitleAppointment(i.title),
-          typeId: action.payload.data[0].typeId
+          // i.customerApptRecords[0]: i.typeId 
         };
       });
-      console.log(appointments);
       state.data = appointments;
       // state.data.typeId = action.payload.data[0].typeId
       state.loading = false;

@@ -22,9 +22,9 @@ export default function CustomerCareDashBoard() {
     {
       key: 'action',
       width: 150,
-      render: () => (
+      render: (_, record) => (
         <S.WrapButtonTable $paddingRight="13px">
-          <S.Button $width="87px" $height="30px" $type="ghost" onClick={handleCSKH}>
+          <S.Button $width="87px" $height="30px" $type="ghost" onClick={() => handleCSKH(record)}>
             CSKH
           </S.Button>
         </S.WrapButtonTable>
@@ -65,8 +65,8 @@ export default function CustomerCareDashBoard() {
   const [loading, setLoading] = useState(storeLoading);
   const navigate = useNavigate();
 
-  const handleCSKH = () => {
-    navigate('/customer-care');
+  const handleCSKH = (value) => {
+    navigate(`/customer-care/${value?.customerId}`);
   };
 
   useEffect(() => {

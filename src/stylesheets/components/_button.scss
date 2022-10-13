@@ -1,14 +1,15 @@
 @use "../abstracts/" as *;
 
+
 .btn {
     display: block;
     width: 100%;
     font-size: 16px;
     font-family: $bold-font;
-    color: $bg-button-color-second;
+    background: var(--backgroundColor);
+    color: var(--color);
     text-transform: uppercase;
     border: none;
-    background: none;
     padding: 0;
     cursor: pointer;
     padding-bottom: 20px;

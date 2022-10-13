@@ -59,11 +59,12 @@ const Survey = () => {
 
   useEffect(() => {
     const customerList = appointment?.data?.length > 0 ? appointment.data[0].customerApptRecords : [];
-    dispatch(setData(customerList));
+    const dataFilter = customerList?.filter((item) => item.name.toLowerCase().includes(payload.toLowerCase()));
+    dispatch(setData(dataFilter));
 
     const apptId = appointment?.data?.length > 0 ? appointment.data[0].apptId : 0;
     setApptId(apptId);
-  }, [appointment.data, dispatch]);
+  }, [appointment.data, dispatch, payload]);
 
   useEffect(() => {
     if (paramCustomerId) {

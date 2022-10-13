@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Button, Popover } from "antd";
-import { useTranslation } from "react-i18next";
-import { useSelector, useDispatch } from "react-redux";
-import { getHistoryDetail } from "../../../slices/surveys";
-import { formatDate } from "../../../helper/index";
+import React, { useState, useEffect } from 'react';
+import { Button, Popover } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
+import { getHistoryDetail } from '../../../slices/surveys';
+import { formatDate } from '../../../helper/index';
 import Table from '../../../components/common/TableNormal';
 
 export const HistoryPopup = ({ historyHandler }) => {
@@ -16,15 +16,17 @@ export const HistoryPopup = ({ historyHandler }) => {
   const { selectedCustomer } = customers;
 
   useEffect(() => {
-    const historyData = surveys?.customerHistories?.map((history, i) => {
-      return {
-        surveyId: history?.surveyId,
-        createdAt: formatDate(history?.createdAt),
-        info: history?.hintName,
-      };
-    }).filter((item) => {
-      return item.surveyId !== surveys?.data.surveyId && item.surveyId !== selectedCustomer?.surveyId
-    });
+    const historyData = surveys?.customerHistories
+      ?.map((history, i) => {
+        return {
+          surveyId: history?.surveyId,
+          createdAt: formatDate(history?.createdAt),
+          info: history?.hintName,
+        };
+      })
+      .filter((item) => {
+        return item.surveyId !== surveys?.data.surveyId && item.surveyId !== selectedCustomer?.surveyId;
+      });
     setDataTable(historyData);
   }, [surveys.customerHistories]);
 
@@ -41,13 +43,13 @@ export const HistoryPopup = ({ historyHandler }) => {
     {
       title: 'Ngày',
       key: 'stt',
-      dataIndex: 'createdAt'
+      dataIndex: 'createdAt',
     },
     {
       title: 'Tên gợi nhớ',
       dataIndex: 'info',
       key: 'info',
-    }
+    },
   ];
 
   const content = (
@@ -60,9 +62,9 @@ export const HistoryPopup = ({ historyHandler }) => {
         onRow={(record) => {
           return {
             onClick: () => {
-              getSelectedSurvey(record?.surveyId)
-              setActiveRow(record.surveyId)
-            }
+              getSelectedSurvey(record?.surveyId);
+              setActiveRow(record.surveyId);
+            },
           };
         }}
       />
@@ -79,7 +81,7 @@ export const HistoryPopup = ({ historyHandler }) => {
       title="Lịch sử khảo sát"
     >
       <Button type="primary" className="btn-primary" htmlType="button" onClick={historyHandler}>
-        {t("common.history")}
+        {t('common.history')}
       </Button>
     </Popover>
   );

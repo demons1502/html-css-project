@@ -1,16 +1,13 @@
-import { DeleteOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { CameraOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Form, message, notification } from 'antd';
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Edit from '../../assets/images/icons/components/Edit';
-import LikeIcon from '../../assets/images/icons/likeIcon.svg';
-import IconPlus from '../../assets/images/icons/plus.svg';
-import { CameraOutlined } from '@ant-design/icons';
-import { Button, Input, Upload } from '../../components/styles';
-import { createContent, deleteContent, getDetail, likeContent, updateContent } from '../../slices/managementContent';
-import './financeKnowledge.scss';
-import { uploadFile } from '../../services/manageContent';
 import ModalConfirm from '../../components/ModalConfirm';
+import { Button, Input, Upload } from '../../components/styles';
+import { uploadFile } from '../../services/manageContent';
+import { createContent, deleteContent, getDetail, updateContent } from '../../slices/managementContent';
+import './financeKnowledge.scss';
 
 const QuestionAnswerContent = (props) => {
   const { id, option, setId, addNew, setAddNew, isEdit, setIsEdit } = props;
@@ -90,6 +87,13 @@ const QuestionAnswerContent = (props) => {
     }
   };
 
+  const handleCancel = () => {
+    setAddNew(false);
+    setData(detail?.article);
+    setFileList([{ url: detail?.article?.image }]);
+    setIsEdit(true);
+  };
+
   useEffect(() => {
     const payload = { type: option, id: id };
     id && dispatch(getDetail(payload));
@@ -103,7 +107,6 @@ const QuestionAnswerContent = (props) => {
   useEffect(() => {
     setData(null);
     setFileList(null);
-    setId(null);
   }, [option, addNew]);
 
   useEffect(() => {
@@ -193,7 +196,7 @@ const QuestionAnswerContent = (props) => {
               />
             </div>
             <div className="finance-submit_button">
-              <Button className="btn-danger" disabled={isEdit}>
+              <Button className="btn-danger" disabled={isEdit} onClick={handleCancel}>
                 Hủy
               </Button>
               <Button type="primary" onClick={handleSave} disabled={isEdit}>

@@ -1,91 +1,62 @@
-import { Modal, Empty, Popover } from "antd";
+import { Modal, Empty, Popover, Spin } from "antd";
 import React, { useState, useMemo } from "react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import Table from "../../../components/common/TableNormal";
+import { Table } from "antd";
+// import Table from "../../../components/common/TableNormal";
+// import { LOADING_STATUS } from '../../../ultis/constant';
+import { useDispatch, useSelector } from "react-redux";
+import { getIllustrationByIds } from "../../../slices/financialSolutions";
 
-const dataSource = [
-  {
-    key: 0,
-    date: "12/12/2021",
-    info: "Tên gợi nhớ 01",
-    content: "60.000.000",
-  },
-  {
-    key: 1,
-    date: "12/07/2022",
-    info: "Tên gợi nhớ 02",
-    content: "84.000.000",
-  },
-  {
-    key: 3,
-    date: "12/08/2022",
-    info: "Tên gợi nhớ 03",
-    content: "54.000.000",
-  },
-  {
-    key: 4,
-    date: "12/08/2022",
-    info: "Tên gợi nhớ 03",
-    content: "54.000.000",
-  },
-  {
-    key: 5,
-    date: "12/08/2022",
-    info: "Tên gợi nhớ 03",
-    content: "54.000.000",
-  },
-  {
-    key: 6,
-    date: "12/08/2022",
-    info: "Tên gợi nhớ 03",
-    content: "54.000.000",
-  },
-  {
-    key: 7,
-    date: "12/08/2022",
-    info: "Tên gợi nhớ 03",
-    content: "54.000.000",
-  },
-];
-
-export const HistoryModal = ({ historyList }) => {
+export const HistoryModal = ({ historyList, setIsHistory, setDate, setVersion }) => {
+  const dispatch = useDispatch()
   const { t } = useTranslation();
-  const [dataTable, setDataTable] = useState(dataSource);
-
-  useEffect(()=>{
-    let arr=[]
-    historyList.map((item, index)=>{
+  const [dataTable, setDataTable] = useState([]);
+  const loading = useSelector((state) => state.loading.loading);
+  useEffect(() => {
+    let arr = []
+    historyList.map((item, index) => {
       arr.push({
-        key: index,
-        date: item.date,
-        info: item.info,
-        content: item.content
+        key: item.id,
+        date: item.createdAt,
+        name: item.hintName,
+        total: item.sumInsured
       })
     })
-    // setDataTable()
-  },[historyList])
+    setDataTable(arr)
+  }, [historyList])
   const columns = [
     {
       title: t("Date"),
       dataIndex: "date",
-      key: "date",
+      key: "0",
     },
     {
       title: t("Name"),
-      dataIndex: "info",
-      key: "info",
+      dataIndex: "name",
+      key: "1",
     },
     {
       title: t("Total Amount"),
-      dataIndex: "content",
-      key: "content",
+      dataIndex: "total",
+      key: "2",
     },
   ];
   const table = useMemo(() => {
     if (!!dataTable && dataTable.length > 0) {
       return (
-        <Table dataSource={dataTable} columnTable={columns} rowKey="key"/>
+        // <Spin spinning={loading === LOADING_STATUS.pending}>
+        <Table dataSource={dataTable} columns={columns} pagination={false} size="small"
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: e => { dispatch(getIllustrationByIds(record.key)); setIsHistory(true); setDate(record.date); setVersion(record.versionFE ? record.versionFE : '1.0') }, // click row
+            };
+          }}
+          scroll={{
+            y: 400,
+          }}
+        />
+        // </Spin>
       );
     } else {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
@@ -93,6 +64,6 @@ export const HistoryModal = ({ historyList }) => {
   }, [dataTable]);
 
   return (
-    <div>{table}</div>
+    <div style={{ width: '500px' }}>{table}</div>
   );
 };

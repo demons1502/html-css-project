@@ -10,3 +10,5 @@ export const postSaveFinance = (payload) => sendPost(`finance-solutions`, payloa
 export const getFinanceSolutions = (payload) => sendGet(`finance-solutions/${payload}`);
 export const getCustomer = (payload) => sendGet(`customers/${payload.id}/${payload.typeId}`);
 export const getPreparedIllustration = (payload) => sendPost(`finance-solutions/prepared-illustration`, payload)
+export const getIllustrationHistory=(payload)=>sendGet(`customers/${payload}/illustration-history`)
+export const getIllustrationById=(payload)=> sendGet(`finance-solutions/illustration/${payload}`)

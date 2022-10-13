@@ -9,9 +9,9 @@ import { AddNewConsultant } from '../../../slices/financialConsultant';
 import Reminiscent from './Reminiscent';
 
 const spendingForm = (props) => {
-  const { id, useSelected, setKeywords } = props;
+  const { id, useSelected, setKeywords, apptId } = props;
 
-  const [reminiscent, setReminiscent] = useState(null);
+  const [hintName, setHintName] = useState(null);
   const [checked, setChecked] = useState(true);
   const [open, setOpen] = useState(false);
   const [total, setTotal] = useState(0);
@@ -35,20 +35,22 @@ const spendingForm = (props) => {
     }
 
     const info = {
-      title: reminiscent,
+      title: '',
+      hintName: hintName,
       total: total,
       customerId: id,
       isPotential: checked,
+      apptId: apptId,
       consultAttrs: consultAttrs,
     };
-    if (!reminiscent) {
+    if (!hintName) {
       message.error('Vui lòng nhập tên gợi nhớ', 3);
       return;
     } else {
       dispatch(AddNewConsultant(info));
       form.resetFields();
       setTotal(0);
-      setReminiscent(null);
+      setHintName(null);
       setOpen(false);
     }
   };
@@ -237,8 +239,8 @@ const spendingForm = (props) => {
               <Reminiscent
                 form={form}
                 onOk={onOk}
-                reminiscent={reminiscent}
-                setReminiscent={setReminiscent}
+                hintName={hintName}
+                setHintName={setHintName}
                 setOpen={setOpen}
                 setTotal={setTotal}
               />

@@ -31,7 +31,6 @@ const IllustrateFiduciary = () => {
     return mm + '/' + dd + '/' + yyyy;
   })
   const [isHistory, setIsHistory] = useState(false)
-
   const dataCustomerById = useSelector((state) => state.financialSolution.customerSelect)
   const { historyList, preparedIllustration, history } = useSelector((state) => state.financialSolution)
   useLayoutEffect(() => {
@@ -46,7 +45,6 @@ const IllustrateFiduciary = () => {
         "fundType": typeFund,
         "customerId": userSelected.customerId,
         "result": "string",
-        // "baseYears": dataToSave.investmentYear,
         "baseYears": dataToSave.investmentYear,
         "version": version,
         "interestRate": "string",
@@ -69,7 +67,6 @@ const IllustrateFiduciary = () => {
         isPotential: (dataToSave.values.isPotential == undefined) ? "false" : 'true',
         result: "string",
         hintName: dataToSave.hideName,
-        version: version,
         sumInsured: Number(dataToSave.total),
         baseYears: Number(dataToSave.investmentYear),
         basePremium: 20000000,
@@ -86,7 +83,8 @@ const IllustrateFiduciary = () => {
         healthInsured: 10600000,
         healthInsuredArray: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
         interestRate: dataToSave.investmentYear.toString(),
-        expensePerMonth: "string"
+        expensePerMonth: "string",
+        versionFE: version
       }
       dispatch(postSaveFinances(data))
       setCallSave(false)
@@ -142,7 +140,7 @@ const IllustrateFiduciary = () => {
                 open={isHistoryModalOpen}
                 placement="bottomRight"
                 onOpenChange={(e) => setIsHistoryModalOpen(e)}
-                content={<HistoryModal historyList={historyList} setIsHistory={(e) => setIsHistory(e)} setDate={e=>setDate(e)}/>}
+                content={<HistoryModal historyList={historyList} setIsHistory={(e) => setIsHistory(e)} setDate={e=>setDate(e)} setVersion={e=>setVersion(e)}/>}
                 trigger="click"
               >
                 <Button
@@ -199,7 +197,7 @@ const IllustrateFiduciary = () => {
                 key: '1',
                 children: <FiduciaryValue data={dataToSave} setDataToSave={(e) => setDataToSave(e)}
                   preparedIllustration={preparedIllustration} callSave={callSave} isHistory={isHistory}
-                  dataHistory={history} setIsHistory={(e)=>setIsHistory(e)}
+                  dataHistory={history} setIsHistory={(e)=>setIsHistory(e)} version={version}
                 />,
               },
               {

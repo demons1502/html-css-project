@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Form, Popconfirm, Table, Typography } from "antd";
+import React, { useState, useEffect, useLayoutEffect, Spin } from "react";
+import { Form, Table } from "antd";
 import { InputNumber } from '../../../components/common/Input/styles'
 import { formatDataNumber } from "../../../helper";
+import { versionData } from '../../../helper/version';
+// import { LOADING_STATUS } from '../../../ultis/constant';
+import { useDispatch, useSelector } from "react-redux";
 
 
-export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllustration, setIsHistory, dataHistory }) => {
+export const FiduciaryValue = ({ data, setDataToSave, preparedIllustration, setIsHistory, dataHistory, version }) => {
   const [investmentYear, setInvestmentYear] = useState(20);  //thoi gian uyu thac
   const [percentage, setPercentage] = useState(preparedIllustration.rate || 6.850);  // muc ty suat dau tu minh hoa
   const [totalOfMoney, setTotalOfMoney] = useState(20000000);       //so tien dau tu them
@@ -13,6 +16,12 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   const [columnC, setColumnC] = useState(preparedIllustration.annualBasePremiums || [])
   const [columnD, setColumnD] = useState(preparedIllustration.annualTopUpPremiums || [])
   const [columnT, setColumnT] = useState([50])
+  const [columnL, setColumnL] = useState([85, 75, 20])
+  const [columnN, setCColumnN] = useState([2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+  const [columnJ7, setColumnJ7] = useState(8.70)
+  const [columnR, setColumnR] = useState([90, 75, 60, 45, 30, 15, 0, 0, 0, 0, 0, 0])
+
+  const loading = useSelector((state) => state.loading.loading);
   const columns = [
     {
       title: 'Tuổi',
@@ -116,6 +125,15 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   ]
   const [form] = Form.useForm();
   useEffect(() => {
+    if (version != '1.0') {
+      console.log('asd');
+      const getVersion = versionData.find(item => {
+        item.versionId === version
+      })
+      console.log(getVersion);
+    }
+  }, [version])
+  useEffect(() => {
     if (dataHistory) {
       setInvestmentYear(Number(dataHistory?.baseYears))
       form.setFieldValue('investment_year', Number(dataHistory?.baseYears))
@@ -191,7 +209,6 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   }, [totalOfMoney])
 
   useEffect(() => {
-    console.log('totalOfMoney', totalOfMoney);
     setDataToSave((prev) => {
       prev.additionalInvestmentYear = additionalInvestmentYear;
       prev.investmentYear = investmentYear;
@@ -212,10 +229,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  const columnL = [85, 75, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
-  const columnN = [2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1, 1]
-  const columnJ7 = 8.70
-  const columnR = [90, 75, 60, 45, 30, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,, 0, 0, 0, 0, 0]
+
 
   const setValueColumnT = () => {
     let result = 0
@@ -257,7 +271,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
     return formatDataNumber(totalColumnG.toFixed())
   }
   const calculatorG1 = (i) => {
-    let formatN = columnN[i] ? (100 - columnN[i]) / 100 : (100 - 1) / 100 
+    let formatN = columnN[i] ? (100 - columnN[i]) / 100 : (100 - 1) / 100
     let formatJ7 = (100 + columnJ7) / 100
     totalColumnG = columnD[i] ? (Number(formatN * columnD[i]) + Number(totalColumnG)) * formatJ7 : Number(totalColumnG) * formatJ7
     return formatDataNumber(totalColumnG.toFixed())
@@ -351,7 +365,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
         <thead>
           <tr className="table_top">
             <th colSpan={4}>THỜI GIAN ỦY THÁC</th>
-            <th style={{verticalAlign: 'middle'}}>
+            <th style={{ verticalAlign: 'middle' }}>
               <Form.Item name="investment_year">
                 <InputNumber type="number"
                   style={{ textAlign: 'center', width: 182 }}
@@ -414,7 +428,9 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
         <tbody>
         </tbody>
       </table>
+      {/* <Spin spinning={loading === LOADING_STATUS.pending}> */}
       <Table columns={columns} dataSource={arr} bordered size="small" pagination={false} />
+      {/* </Spin> */}
     </Form>
   );
 };

@@ -354,7 +354,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
             <th style={{verticalAlign: 'middle'}}>
               <Form.Item name="investment_year">
                 <InputNumber type="number"
-                  style={{ textAlign: 'center', width: 152, border:'1px solid gray' }}
+                  style={{ textAlign: 'center', width: 182 }}
                   className="form-input-text"
                   min={1}
                   controls={false}
@@ -374,7 +374,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
             <th>
               <Form.Item name="percent">
                 <InputNumber controls={false} type="number"
-                  style={{ textAlign: 'center', width: 152 }}
+                  style={{ textAlign: 'center', width: 182 }}
                   className="form-input-text"
                   placeholder="0"
                   onChange={(e) => setPercentage(e)}
@@ -384,7 +384,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
             <th>
               <Form.Item name="amount_of_money">
                 <InputNumber controls={false}
-                  style={{ width: 152, textAlign: 'center' }}
+                  style={{ width: 182, textAlign: 'center' }}
                   className="form-input-text"
                   placeholder="0"
                   formatter={(e) =>
@@ -401,7 +401,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
                 <InputNumber type="number"
                   controls={false}
                   max={investmentYear}
-                  style={{ textAlign: 'center', width: 152 }}
+                  style={{ textAlign: 'center', width: 182 }}
                   className="form-input-text"
                   placeholder="0"
                   value={additionalInvestmentYear}

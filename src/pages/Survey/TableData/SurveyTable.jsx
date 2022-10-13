@@ -23,7 +23,7 @@ const CustomerSurveyTable = () => {
   const [apptId, setApptId] = useState(0);
   // const [surveyId, setSurveyId] = useState(0);
   const [open, setOpen] = useState(false);
-  const [isReset, setIsReset] = useState(false);
+  const [isReset, setIsReset] = useState(true);
 
   //get data from redux
   const { surveys, customers, appointment } = useSelector((state) => state);
@@ -57,10 +57,6 @@ const CustomerSurveyTable = () => {
   }, []);
 
   useEffect(() => {
-    setIsReset(true)
-  }, [selectedCustomer, survey]);
-
-  useEffect(() => {
     const apptId = searchParams.get('appointment_id');
     const surveyId = searchParams.get('survey_id');
 
@@ -76,15 +72,17 @@ const CustomerSurveyTable = () => {
   // Change customer
   useEffect(() => {
     if (selectedCustomer?.customerId) {
-      const dataInfos = [...dataTables];
+      const formInfos = [...formValues];
 
-      if (dataInfos.length === 0) {
+      setIsReset(true)
+
+      if (formInfos.length === 0) {
         // Get survey
         if (selectedCustomer?.surveyId) {
           dispatch(getSurveyDetails(selectedCustomer?.surveyId))
         }
       } else {
-        const isIdExist = dataInfos.some((item) => item.customerId === selectedCustomer?.customerId);
+        const isIdExist = formInfos.some((item) => item.customerId === selectedCustomer?.customerId);
         if (!isIdExist && selectedCustomer?.surveyId) {
           dispatch(getSurveyDetails(selectedCustomer?.surveyId))
         }
@@ -118,12 +116,13 @@ const CustomerSurveyTable = () => {
 
       setDataTable(tableValue?.data)
       setFromValue(formValue)
+      resetForm(formValue);
     }
     else {
       const tData =
-      selectedCustomer?.customerId && dataTables?.length > 0
-        ? dataTables?.find((item) => item?.customerId === selectedCustomer?.customerId)
-        : {};
+        selectedCustomer?.customerId && dataTables?.length > 0
+          ? dataTables?.find((item) => item?.customerId === selectedCustomer?.customerId)
+          : {};
       const fData =
         selectedCustomer?.customerId && formValues?.length > 0
           ? formValues?.find((item) => item?.customerId === selectedCustomer?.customerId)
@@ -134,15 +133,9 @@ const CustomerSurveyTable = () => {
       } 
       if (!isEmpty(fData)) {
         setFromValue(fData);
-        reset({
-          other1: fData?.others?.other1,
-          other2: fData?.others?.other1,
-          other3: fData?.others?.other1,
-          other4: fData?.others?.other1,
-          isPotential: fData?.isPotential,
-          hintName: fData?.hintName,
-        });
+        resetForm(fData);
       }
+
     }    
   }, [isHistory]);
 
@@ -161,7 +154,6 @@ const CustomerSurveyTable = () => {
 
       setDataTables(dataInfos);
       setFromValues(formInfos);
-
     }
   }, [surveys?.data]);
 
@@ -170,6 +162,16 @@ const CustomerSurveyTable = () => {
     const survey = !isEmpty(surveys?.survey)? surveys.survey : {}
     const formInfos = [...formValues]
     const formValue = generateFormData(selectedCustomer?.customerId, survey)
+
+
+    reset({
+      other1: formValue?.others?.other1,
+      other2: formValue?.others?.other2,
+      other3: formValue?.others?.other3,
+      other4: formValue?.others?.other4,
+      isPotential: formValue?.isPotential,
+      hintName: formValue?.hintName,
+    }) 
 
     if (!isHistory && selectedCustomer?.customerId) {    
       if (formInfos?.length === 0) {
@@ -184,7 +186,7 @@ const CustomerSurveyTable = () => {
           formInfos[currentIndex] = formValue
         }
       }
-      console.log(formInfos);
+
       setFromValues(formInfos);
     }
     else {
@@ -226,7 +228,6 @@ const CustomerSurveyTable = () => {
     if (!isEmpty(tData)) {
       setDataTable(tData?.data);
     }
-    console.log(dataTables)
   }, [dataTables]);
 
   useEffect(() => {
@@ -267,8 +268,8 @@ const CustomerSurveyTable = () => {
       selectedFormInfo["others"]["other3"] = watchOther3;
       selectedFormInfo["others"]["other4"] = watchOther4;
       formInfos[currentIndex] = selectedFormInfo;
-
-      setIsReset(false)
+      console.log(formInfos)
+      
       setFromValues(formInfos);
     }
   }, [watchOther1, watchOther2, watchOther3, watchOther4, watchPotential, watchHintName]);
@@ -553,6 +554,17 @@ const CustomerSurveyTable = () => {
   const onCancel = () => {
     setOpen(false);
   };
+
+  const resetForm = (formData) => {
+    reset({
+      other1: formData?.others?.other1,
+      other2: formData?.others?.other1,
+      other3: formData?.others?.other1,
+      other4: formData?.others?.other1,
+      isPotential: formData?.isPotential,
+      hintName: formData?.hintName,
+    });
+  }
 
   const content = (
     <div className="closing-container">

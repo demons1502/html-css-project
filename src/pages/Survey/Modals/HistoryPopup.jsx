@@ -18,11 +18,8 @@ export const HistoryPopup = ({ historyHandler }) => {
   useEffect(() => {
     const historyData = surveys?.customerHistories?.map((history, i) => {
       return {
-        id: i + 1,
-        apptId: history?.apptId,
-        customerId: history?.customerId,
         surveyId: history?.surveyId,
-        date: formatDate(history?.createdAt),
+        createdAt: formatDate(history?.createdAt),
         info: history?.hintName,
       };
     }).filter((item) => {
@@ -44,9 +41,7 @@ export const HistoryPopup = ({ historyHandler }) => {
     {
       title: 'Ngày',
       key: 'stt',
-      render: (record) => {
-        return <span>{formatDate(record.date)}</span>;
-      },
+      dataIndex: 'createdAt'
     },
     {
       title: 'Tên gợi nhớ',

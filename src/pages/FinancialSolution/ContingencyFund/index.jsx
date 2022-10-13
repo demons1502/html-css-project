@@ -54,47 +54,6 @@ const ContingencyFund = () => {
     apptId ? dispatch(getAppointmentByIds(apptId)) : getAppointmentNoId();
   }, []);
 
-  // useEffect(() => {
-  //   let arr = []
-  //   arr.push(customerAppRecords?.map(item => {
-  //     return { title: item.customerApptRecords[0].name, apptId: item.apptId, customerApptRecordId: item.customerApptRecords[0].customerApptRecordId, typeId: item.typeId, customerId: item.customerApptRecords[0].customerId }
-  //   }))
-  //   setLists(arr[0])
-  // }, [customerAppRecords])
-  // useEffect(() => {
-  //   let arr = [];
-  //   arr.push(
-  //     customerAppRecords?.map((item) => {
-  //       // dispatch(updateSelectCustomer(item.customerApptRecords[0].customerId))
-  //       return {
-  //         title: item.customerApptRecords[0].name,
-  //         apptId: item.apptId,
-  //         customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
-  //       };
-  //     })
-  //   );
-  //   setLists(arr[0]);
-  // }, [customerAppRecords]);
-  // console.log(customerAppRecords);
-
-  // useEffect(() => {
-  //   const data = [];
-  //   const dataFilter = customerAppRecords.filter((item) =>
-  //     item.customerApptRecords[0].name.toLowerCase().includes(payload.toLowerCase())
-  //   );
-  //   data.push(
-  //     ...dataFilter.map((item) => {
-  //       return {
-  //         title: item.customerApptRecords[0].name,
-  //         apptId: item.apptId,
-  //         customerApptRecordId: item.customerApptRecords[0].customerApptRecordId,
-  //         customerId: item.customerApptRecords[0].customerId,
-  //       };
-  //     })
-  //   );
-  //   setLists(data);
-  // }, [customerAppRecords, payload]);
-
   const appointments = useSelector((state) => state.appointment);
 
   useEffect(() => {
@@ -105,11 +64,10 @@ const ContingencyFund = () => {
       dispatch(getAppointment(apptId));
     } else {
       const params = {
-        titles: ['finance'],
-        // startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
-        // endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
-        startDate: moment().local().format('YYYY-MM-DD HH:mm:ss'),
-        endDate: moment().add(30, 'm').local().format('YYYY-MM-DD HH:mm:ss'),
+        titles: 'finance',
+        isCare: false,
+        startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+        endDate: moment().add(30000, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
       };
 
       dispatch(getAppointments(params));
@@ -121,7 +79,6 @@ const ContingencyFund = () => {
   useEffect(() => {
     const customerList = appointments?.data?.length > 0 ? appointments?.data[0]?.customerApptRecords : null;
     const dataFilter = customerList?.filter((item) => item.name.toLowerCase().includes(payload.toLowerCase()));
-    console.log(customerList);
     setData(dataFilter);
   }, [appointments?.data, payload]);
 
@@ -133,7 +90,6 @@ const ContingencyFund = () => {
       setItemContent(data?.[0]);
     }
   }, [data]);
-
   return (
     <div className="quyduphone">
       {/* quyduphone-nav start */}
@@ -194,7 +150,7 @@ const ContingencyFund = () => {
                   <div className="container-right-header">
                     <h1>Thông tin chi phí</h1>
                   </div>
-                  <ListCalculation typeFund="prevention" userSelected={appointments.data} setKeywords={setKeywords} />
+                  <ListCalculation typeFund="prevention" userSelected={itemContent} setKeywords={setKeywords} />
                 </div>
 
                 {/* container-right end */}

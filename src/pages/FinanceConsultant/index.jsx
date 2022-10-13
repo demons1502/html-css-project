@@ -46,11 +46,10 @@ export default function FinanceConsultant() {
       dispatch(getAppointment(apptId));
     } else {
       const params = {
-        titles: ['consult'],
-        // startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
-        // endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
-        startDate: moment().local().format('YYYY-MM-DD HH:mm:ss'),
-        endDate: moment().add(30, 'm').local().format('YYYY-MM-DD HH:mm:ss'),
+        titles: 'consult',
+        isCare: false,
+        startDate: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+        endDate: moment().add(30, 'm').utc().format('YYYY-MM-DD HH:mm:ss'),
       };
       dispatch(getAppointments(params));
     }
@@ -86,6 +85,8 @@ export default function FinanceConsultant() {
     //   })
     // );
   }, [appointments?.data, searchPayload]);
+
+  console.log(appointments);
 
   useEffect(() => {
     if (customerId) {

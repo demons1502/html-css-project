@@ -66,7 +66,7 @@ export default function CustomerCareDashBoard() {
   const navigate = useNavigate();
 
   const handleCSKH = (value) => {
-    navigate(`/customer-care/${value?.customerId}`);
+    navigate(`/customer-care?customerId=${value?.customerId}`);
   };
 
   useEffect(() => {

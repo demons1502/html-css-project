@@ -25,7 +25,7 @@ export default function MissedAppointment() {
   const handleCSKH = (value) => {
     const customerId = value?.customerApptRecords[0]?.customerId || 0;
     dispatch(setCSKHForAppointments({ customerId, isCare: true }));
-    navigate(`/customer-care/${customerId}`);
+    navigate(`/customer-care?customerId=${customerId}`);
   };
 
   const columns = [

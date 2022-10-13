@@ -18,14 +18,18 @@
                 </div>
                 <div class="contact-area-form">
                     <form action="javascript: void(0)">
-                        <textarea name="message" id="message" placeholder="Write Message..."></textarea>
+                        <textarea rows="4" cols="74" name="message" id="message" placeholder="Write Message..."></textarea>
                         <div class="row">
-                            <div class="col-md-6">
-                                <input type="text" placeholder="Your Name">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="email" placeholder="Your Mail">
-                            </div>
+                            <include src="components/form-input.html" locals='{
+                                "class" : "form-input col-md-6",
+                                "type" : "text",
+                                "placeholder" : "Your Name"
+                            }'></include>
+                            <include src="components/form-input.html" locals='{
+                                "class" : "form-input col-md-6",
+                                "type" : "email",
+                                "placeholder" : "Your Mail"
+                            }'></include>
                         </div>
                         <button>SUBMIT MESSAGE</button>
                     </form>

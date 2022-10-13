@@ -6,8 +6,8 @@ export const getCallScheduleApi = (data) => sendGet(`/${ENDPOINT.customerCall}`,
 export const setNextCallApi = (data) => sendPatch(`/${ENDPOINT.customerCall}/${data.id}`, data);
 export const setDoneCallApi = async (data) =>
   request({
-    url: `${ENDPOINT.customerCall}/records`,
-    method: 'post',
+    url: `${ENDPOINT.customerCall}/${data.customerCallId}`,
+    method: 'patch',
     data,
     enableFlashMessageSuccess: true,
     messageSuccess: 'Hoàn thành cuộc gọi thành công',
@@ -28,7 +28,7 @@ export const sendSMSApi = async (data) =>
 export const sendEmailApi = (data) => sendPost(`/${ENDPOINT.events}/send`, data);
 // MissedAppointment
 export const getMissedAppointmentApi = (data) => sendGet(`/${ENDPOINT.appointments}`, data);
-export const setCSKHForAppointmentApi = (data) => sendPatch(`/${ENDPOINT.customers}/${data.customerId}`, data);
+export const setCSKHForItemAppointmentApi = (data) => sendPatch(`/${ENDPOINT.customers}/${data.customerId}`, data);
 // AppointmentSchedule
 export const getAppointmentScheduleApi = (data) => sendGet(`/${ENDPOINT.appointments}`, data);
 export const updateAppointmentScheduleApi = (data) => sendPatch(`${ENDPOINT.appointments}/${data.apptId}`, data);

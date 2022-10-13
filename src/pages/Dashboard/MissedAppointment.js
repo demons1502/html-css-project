@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PaginationCommon from '../../components/common/Pagination';
-import { getMissedAppointments, setCSKHForAppointments } from '../../slices/dashboard';
+import { getMissedAppointments, setCSKHForItemAppointment } from '../../slices/dashboard';
 import MissedItemDateTime from './commons/MissedAppointment/missed-item-col-date-time';
 import MissedItemName from './commons/MissedAppointment/missed-item-col-name';
 import { limitItem, offsetItem } from './constants';
@@ -24,8 +24,11 @@ export default function MissedAppointment() {
 
   const handleCSKH = (value) => {
     const customerId = value?.customerApptRecords[0]?.customerId || 0;
-    dispatch(setCSKHForAppointments({ customerId, isCare: true }));
-    navigate(`/customer-care?customerId=${customerId}`);
+    const name = value?.customerApptRecords[0]?.name || '';
+    const CUSTOMER_CARE_URL =
+      value.typeId === 1 ? `/customer-care?customerId=${customerId}&name=${name}` : `/customer-care`;
+    dispatch(setCSKHForItemAppointment({ customerId, isCare: true }));
+    navigate(CUSTOMER_CARE_URL);
   };
 
   const columns = [

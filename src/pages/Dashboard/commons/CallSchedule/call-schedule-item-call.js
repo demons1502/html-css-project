@@ -1,5 +1,5 @@
 import { Checkbox, message, Tooltip } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -15,7 +15,7 @@ export default function CallScheduleItemCall(props) {
   const { record } = props;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const checked = moment().format(dateContractFormat) === record.lastCall;
+  const [checked, setChecked] = useState(record.isChecked);
 
   const handleCall = async (value) => {
     dispatch(createCallRecord(Number(value?.customerCallId || 0))).then(({ error }) => {
@@ -28,13 +28,12 @@ export default function CallScheduleItemCall(props) {
   };
 
   const handleCheckCallDone = (e) => {
-    if (!checked && e.target.checked) {
-      const payload = {
-        customerCallId: record?.customerCallId,
-        isInstant: true,
-      };
-      dispatch(setDoneCall(payload));
-    }
+    setChecked(e.target.checked);
+    const payload = {
+      customerCallId: record?.customerCallId,
+      isChecked: e.target.checked,
+    };
+    dispatch(setDoneCall(payload));
   };
 
   return (

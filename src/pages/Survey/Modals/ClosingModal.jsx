@@ -10,16 +10,25 @@ export const ClosingModal = ({ onSubmit }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { control } = useFormContext();
-  const { data } = useSelector((state) => state?.surveys);
+  const { survey } = useSelector((state) => state?.surveys);
+  const [hintName, setHintName] = useState('');
 
   const { customers } = useSelector((state) => state);
-  // const selectedCustomer = customers?.selectedCustomer || {};
+  const { selectedCustomer } = customers;
 
   useEffect(() => {
-    if (!isEmpty(data)) {
+    setHintName(survey?.hintName)
+  }, []);
+  
+  useEffect(() => {
+    if (!isEmpty(survey)) {
       onCancel();
     }
-  }, [data]);
+  }, [survey]);
+
+  useEffect(() => {
+    setHintName(survey?.hintName)
+  }, [selectedCustomer, survey]);
 
   const handleOpenChange = (newOpen) => {
     setOpen(newOpen);
@@ -34,7 +43,7 @@ export const ClosingModal = ({ onSubmit }) => {
       <div className="closing-body">
         <div className="form-group">
           <FieldLabel name="hintName" label="Tên gợi nhớ" />
-          <Input control={control} name="hintName" className="form-control" value={data.hintName} />
+          <Input control={control} name="hintName" className="form-control" value={hintName} />
         </div>
       </div>
       <Divider />
@@ -47,7 +56,7 @@ export const ClosingModal = ({ onSubmit }) => {
 
         <div className="closing-btn">
           <Button type="primary" htmlType="button" className="btn-primary" block onClick={onSubmit}>
-            Tạo
+            Lưu
           </Button>
         </div>
       </div>

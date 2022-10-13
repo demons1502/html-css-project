@@ -1,18 +1,18 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Checkbox, Empty, message } from "antd";
+import { Checkbox, Empty, message, Popover, Divider } from "antd";
 import TableCommon from "../../../components/common/TableNormal";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, FormProvider } from "react-hook-form";
 import { SurveyForm } from "./SurveyForm";
-import { Checkbox as CheckboxControl } from "../../../components/controls";
-import { ClosingModal } from "../Modals/ClosingModal";
-import { createSurvey, getSurveyDetails, updateSurvey } from "../../../slices/surveys";
+import { Checkbox as CheckboxControl, FieldLabel } from "../../../components/controls";
+// import { ClosingModal } from "../Modals/ClosingModal";
+import { createSurvey, getSurveyDetails, updateSurvey, clearSurvey } from "../../../slices/surveys";
 import { isEmpty } from "lodash";
-import { Input} from "../../../components/styles";
+import { Button, Input} from "../../../components/styles";
 import { useSearchParams  } from "react-router-dom";
 
-const CustomerServeyTable = () => {
+const CustomerSurveyTable = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [dataTable, setDataTable] = useState([]);
@@ -21,6 +21,9 @@ const CustomerServeyTable = () => {
   const [formValues, setFromValues] = useState([]);
   const [searchParams] = useSearchParams();
   const [apptId, setApptId] = useState(0);
+  // const [surveyId, setSurveyId] = useState(0);
+  const [open, setOpen] = useState(false);
+  // const hintName = useRef('');
 
   //get data from redux
   const { surveys, customers, appointment } = useSelector((state) => state);
@@ -46,7 +49,20 @@ const CustomerServeyTable = () => {
   const { watch, control, reset } = methods;
 
   useEffect(() => {
+    dispatch(clearSurvey())
+
+    if (selectedCustomer?.customerId && selectedCustomer?.surveyId) {
+      dispatch(getSurveyDetails(selectedCustomer?.surveyId))
+    }
+  }, []);
+
+  useEffect(() => {
+    // hintName.value = survey?.hintName
+  }, [selectedCustomer, survey]);
+
+  useEffect(() => {
     const apptId = searchParams.get('appointment_id');
+    // const surveyId = searchParams.get('survey_id');
 
     if (apptId) {
       setApptId(apptId)
@@ -54,11 +70,12 @@ const CustomerServeyTable = () => {
     else {
       setApptId(appointment && appointment.data.length > 0? appointment.data[0].apptId : 0)
     }
-  }, []);
+
+  }, [searchParams]);
 
   // Change customer
   useEffect(() => {
-    if (isEmpty(surveys?.survey) && selectedCustomer?.customerId) {
+    if (selectedCustomer?.customerId) {
       const dataInfos = [...dataTables];
 
       if (dataInfos.length === 0) {
@@ -96,114 +113,92 @@ const CustomerServeyTable = () => {
   }, [isClearSurvey]);
 
   useEffect(() => {
-    const tData =
-    selectedCustomer?.customerId && dataTables?.length > 0
-      ? dataTables?.find((item) => item?.customerId === selectedCustomer?.customerId)
-      : {};
-    const fData =
-      selectedCustomer?.customerId && formValues?.length > 0
-        ? formValues?.find((item) => item?.id === selectedCustomer?.customerId)
-        : {};
+    if (isHistory) {
+      const formValue = generateFormData(selectedCustomer?.customerId, survey)
+      const tableValue = generateTableData(selectedCustomer?.customerId, survey)
 
-    if (!isEmpty(tData)) {
-      setDataTable(tData?.data);
-    } 
-    if (!isEmpty(fData)) {
-      setFromValue(fData);
-      reset({
-        other1: fData?.others?.other1,
-        other2: fData?.others?.other1,
-        other3: fData?.others?.other1,
-        other4: fData?.others?.other1,
-        isPotential: fData?.isPotential,
-        hintName: fData?.hintName,
-      });
+      setDataTable(tableValue?.data)
+      setFromValue(formValue)
     }
+    else {
+      const tData =
+      selectedCustomer?.customerId && dataTables?.length > 0
+        ? dataTables?.find((item) => item?.customerId === selectedCustomer?.customerId)
+        : {};
+      const fData =
+        selectedCustomer?.customerId && formValues?.length > 0
+          ? formValues?.find((item) => item?.customerId === selectedCustomer?.customerId)
+          : {};
+
+      if (!isEmpty(tData)) {
+        setDataTable(tData?.data);
+      } 
+      if (!isEmpty(fData)) {
+        setFromValue(fData);
+        reset({
+          other1: fData?.others?.other1,
+          other2: fData?.others?.other1,
+          other3: fData?.others?.other1,
+          other4: fData?.others?.other1,
+          isPotential: fData?.isPotential,
+          hintName: fData?.hintName,
+        });
+      }
+    }    
   }, [isHistory]);
 
   //reset form after submit
   useEffect(() => {
     if (!isEmpty(surveys?.data)) {
-      let tData =
-        selectedCustomer?.customerId && dataTables?.length > 0
-        ? dataTables?.find((item) => item?.customerId === selectedCustomer?.customerId)
-        : {};
-      let fData =
-        selectedCustomer?.customerId && formValues?.length > 0
-        ? formValues?.find((item) => item?.id === selectedCustomer?.customerId)
-        : {};
+      const survey = !isEmpty(surveys?.data)? surveys.data : {}
+      const dataInfos = [...dataTables];
+      const formInfos = [...formValues];
+      const tableValue = generateTableData(selectedCustomer?.customerId, survey)
+      const formValue = generateFormData(selectedCustomer?.customerId, survey)
 
-      tData = {
-        ...tData,
-        id: surveys?.data?.surveyId
-      }
+      const currentIndex = formInfos?.findIndex((item) => item?.customerId === selectedCustomer?.customerId);
+      dataInfos[currentIndex] = tableValue
+      formInfos[currentIndex] = formValue
 
-      fData = {
-        ...fData,
-        id: surveys?.data?.surveyId
-      }
-      
-      setDataTable(tData)
-      setFromValue(fData)
+      setDataTables(dataInfos);
+      setFromValues(formInfos);
 
-      // console.log("isClearSurvey", isClearSurvey);
-      // const tableInfos = [...dataTables];
-      // const formInfos = [...formValues];
-      // const currentTableIndex = tableInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
-      // const currentformIndex = formInfos?.findIndex((item) => item?.customerId === surveys?.data?.customerId);
-      // tableInfos[currentTableIndex] = generateTableData(surveys?.data?.customerId, surveys?.data);
-      // formInfos[currentformIndex] = generateFormData(surveys?.data?.customerId, surveys?.data);
-      // setDataTables(tableInfos);
-      // setFromValues(formInfos);
     }
   }, [surveys?.data]);
 
   //generate form data
   useEffect(() => {
-    if (selectedCustomer?.customerId) {
-      const survey = !isEmpty(surveys?.survey)? surveys.survey : null
-      const formInfos = [...formValues]
-      const formValue = generateFormData(selectedCustomer?.customerId, survey)
+    const survey = !isEmpty(surveys?.survey)? surveys.survey : {}
+    const formInfos = [...formValues]
+    const formValue = generateFormData(selectedCustomer?.customerId, survey)
 
+    if (!isHistory && selectedCustomer?.customerId) {    
       if (formInfos?.length === 0) {
-        setFromValue(formValue)
         formInfos.push(formValue);
       } else {
-        const isIdExist = formInfos.some((item) => item?.customerId === selectedCustomer?.customerId);
+        const isIdExist = formInfos.some((item) => item?.customerId == selectedCustomer?.customerId);
         if (!isIdExist) {
-          setFromValue(formValue)
           formInfos.push(formValue);
         }
         else {
-          formInfos.map((item) => {
-            return item?.customerId === selectedCustomer?.customerId ? formValue : item
-          })
+          const currentIndex = formInfos?.findIndex((item) => item?.customerId === selectedCustomer?.customerId);
+          formInfos[currentIndex] = formValue
         }
       }
+      console.log(formInfos);
       setFromValues(formInfos);
     }
-
-    // if (isEmpty(surveys?.survey) && selectedCustomer?.customerId) {
-    //   const formInfos = [...formValues];
-    //   if (formInfos?.length === 0) {
-    //     formInfos.push(generateFormData(selectedCustomer?.customerId));
-    //   } else {
-    //     const isIdExist = formInfos.some((item) => item?.customerId === selectedCustomer?.customerId);
-    //     if (!isIdExist) {
-    //       formInfos.push(generateFormData(selectedCustomer?.customerId));
-    //     }
-    //   }
-    //   setFromValues(formInfos);
-    // }
-  }, [selectedCustomer, surveys?.survey]);
+    else {
+      setFromValue(formValue)
+    }
+  }, [surveys?.survey]);
 
   useEffect(() => {
-    console.log(surveys?.survey)
-    if (selectedCustomer?.customerId) {
-      const survey = !isEmpty(surveys?.survey)? surveys.survey : null
-      const dataInfos = [...dataTables];
-      const tableValue = generateTableData(selectedCustomer?.customerId, survey)
+    const survey = !isEmpty(surveys?.survey)? surveys.survey : {}
+    const dataInfos = [...dataTables];
+    const tableValue = generateTableData(selectedCustomer?.customerId, survey)
 
+    if (!isHistory && selectedCustomer?.customerId) {
       if (dataInfos.length === 0) {
         dataInfos.push(tableValue);
       } else {
@@ -212,28 +207,16 @@ const CustomerServeyTable = () => {
           dataInfos.push(tableValue);
         }
         else {
-          dataInfos.map((item) => {
-            return item?.customerId === selectedCustomer?.customerId ? tableValue : item
-          })
+          const currentIndex = dataInfos?.findIndex((item) => item?.customerId === selectedCustomer?.customerId);
+          dataInfos[currentIndex] = tableValue
         }
       }
       setDataTables(dataInfos);
     }
-
-    // if (isEmpty(surveys?.survey) && selectedCustomer?.customerId) {
-    //   const dataInfos = [...dataTables];
-
-    //   if (dataInfos.length === 0) {
-    //     dataInfos.push(generateTableData(selectedCustomer?.customerId));
-    //   } else {
-    //     const isIdExist = dataInfos.some((item) => item.customerId === selectedCustomer?.customerId);
-    //     if (!isIdExist) {
-    //       dataInfos.push(generateTableData(selectedCustomer?.customerId));
-    //     }
-    //   }
-    //   setDataTables(dataInfos);
-    // }
-  }, [selectedCustomer, surveys?.survey]);
+    else {
+      setDataTable(tableValue?.data)
+    }
+  }, [surveys?.survey]);
 
   useEffect(() => {
     const tData =
@@ -249,7 +232,7 @@ const CustomerServeyTable = () => {
   useEffect(() => {
     const fData =
       selectedCustomer?.customerId && formValues?.length > 0
-        ? formValues?.find((item) => item?.id === selectedCustomer?.customerId)
+        ? formValues?.find((item) => item?.customerId === selectedCustomer?.customerId)
         : {};
     if (!isEmpty(fData)) {
       setFromValue(fData);
@@ -262,7 +245,7 @@ const CustomerServeyTable = () => {
         hintName: fData?.hintName,
       });
     }
-  }, [formValues, selectedCustomer?.customerId]);
+  }, [formValues]);
 
   //for checkbox group
   const watchOther1 = watch("other1", []);
@@ -273,7 +256,8 @@ const CustomerServeyTable = () => {
   const watchHintName = watch("hintName", "");
 
   useEffect(() => {
-    if (isEmpty(surveys?.survey) && formValues?.length > 0) {
+    // if (isEmpty(surveys?.survey) && formValues?.length > 0) {
+    if (!isHistory && formValues?.length > 0) {
       const formInfos = [...formValues];
       const currentIndex = formInfos?.findIndex((item) => item?.customerId === selectedCustomer?.customerId);
       const selectedFormInfo = formInfos[currentIndex];
@@ -284,107 +268,13 @@ const CustomerServeyTable = () => {
       selectedFormInfo["others"]["other3"] = watchOther3;
       selectedFormInfo["others"]["other4"] = watchOther4;
       formInfos[currentIndex] = selectedFormInfo;
+      console.log('set form value')
+      console.log(selectedFormInfo)
       setFromValue(selectedFormInfo);
-      setFromValues(formInfos);
+      // setFromValues(formInfos);
     }
+  // }, [watch]);
   }, [watchOther1, watchOther2, watchOther3, watchOther4, watchPotential, watchHintName]);
-
-  // for   details
-  useEffect(() => {
-    if (!isEmpty(surveys?.survey)) {
-      const tableData = [
-        {
-          key: 1,
-          type: "Quỹ dự phòng đảm bảo tài chính cho người mà anh/chị yêu thương",
-          infulence: "",
-          infulence1: influenceValue?.family === 1 ? 1 : "",
-          infulence2: influenceValue?.family === 2 ? 2 : "",
-          infulence3: influenceValue?.family === 3 ? 3 : "",
-          finance: "",
-          finance1: financeValue?.family?.ans1 === 1 ? 1 : "",
-          finance2: financeValue?.family?.ans1 === 2 ? 2 : "",
-          money: financeValue?.family?.ans2,
-          prior: priorityValue?.family,
-          label: "family",
-        },
-        {
-          key: 2,
-          type: "Quỹ đảm bảo hoàn thành bậc cử nhân",
-          infulence: "",
-          infulence1: influenceValue?.bachelor === 1 ? 1 : "",
-          infulence2: influenceValue?.bachelor === 2 ? 2 : "",
-          infulence3: influenceValue?.bachelor === 3 ? 3 : "",
-          finance: "",
-          finance1: financeValue?.bachelor?.ans1 === 1 ? 1 : "",
-          finance2: financeValue?.bachelor?.ans1 === 2 ? 2 : "",
-          money: financeValue?.bachelor?.ans2,
-          prior: priorityValue?.bachelor,
-          label: "bachelor",
-        },
-        {
-          key: 3,
-          type: "Quỹ khởi nghiệp chắp cánh cho con vào đời",
-          infulence: "",
-          infulence1: influenceValue?.son === 1 ? 1 : "",
-          infulence2: influenceValue?.son === 2 ? 2 : "",
-          infulence3: influenceValue?.son === 3 ? 3 : "",
-          finance: "",
-          finance1: financeValue?.son?.ans1 === 1 ? 1 : "",
-          finance2: financeValue?.son?.ans1 === 2 ? 2 : "",
-          money: financeValue?.son?.ans2,
-          prior: priorityValue?.son,
-          label: "son",
-        },
-        {
-          key: 4,
-          type: "Quỹ lương hưu từ năm 61-85 tuổi",
-          infulence: "",
-          infulence1: influenceValue?.retire === 1 ? 1 : "",
-          infulence2: influenceValue?.retire === 2 ? 2 : "",
-          infulence3: influenceValue?.retire === 3 ? 3 : "",
-          finance: "",
-          finance1: financeValue?.retire?.ans1 === 1 ? 1 : "",
-          finance2: financeValue?.retire?.ans1 === 2 ? 2 : "",
-          money: financeValue?.retire?.ans2,
-          prior: priorityValue?.retire,
-          label: "retire",
-        },
-        {
-          key: 5,
-          type: "Quỹ đầu tư gấp đôi tài sản",
-          infulence: "",
-          infulence1: influenceValue?.doubleAsset === 1 ? 1 : "",
-          infulence2: influenceValue?.doubleAsset === 2 ? 2 : "",
-          infulence3: influenceValue?.doubleAsset === 3 ? 3 : "",
-          finance: "",
-          finance1: financeValue?.doubleAsset?.ans1 === 1 ? 1 : "",
-          finance2: financeValue?.doubleAsset?.ans2 === 2 ? 2 : "",
-          money: financeValue?.doubleAsset?.ans2,
-          prior: priorityValue?.doubleAsset,
-          label: "doubleAsset",
-        },
-      ];
-      setDataTable(tableData);
-      console.log(value)
-      reset({
-        other1: othersValue?.ans1,
-        other2: othersValue?.ans2,
-        other3: othersValue?.ans3,
-        other4: othersValue?.ans4,
-        potential: value?.isPotential,
-        hintName: value?.hintName,
-      });
-    } else {
-      reset({
-        other1: [],
-        other2: [],
-        other3: [],
-        other4: [],
-        potential: false,
-        hintName: "",
-      });
-    }
-  }, [surveys?.survey]);
 
   const handleCheckboxChangeFactory = (rowIndex, columnKey) => (event) => {
     const tableInfos = [...dataTables];
@@ -451,7 +341,6 @@ const CustomerServeyTable = () => {
     {
       title: "Nền tảng của sự giàu có",
       dataIndex: "type",
-      key: "type",
       // width: "25%",
       fixed: "left",
     },
@@ -466,7 +355,6 @@ const CustomerServeyTable = () => {
               dataIndex: "infulence1",
               className:"textaline",
               width: "5rem",
-              key: "infulence1",
               render: (value, record, rowIndex) => (
                 <Checkbox checked={value} value="1" onChange={handleCheckboxChangeFactory(rowIndex, "infulence1")} />
               ),
@@ -480,7 +368,6 @@ const CustomerServeyTable = () => {
               dataIndex: "infulence2",
               className:"textaline",
               width: "5rem",
-              key: "infulence2",
               render: (value, record, rowIndex) => (
                 <Checkbox checked={value} value="2" onChange={handleCheckboxChangeFactory(rowIndex, "infulence2")} />
               ),
@@ -494,7 +381,6 @@ const CustomerServeyTable = () => {
               dataIndex: "infulence3",
               className:"textaline",
               width: "5rem",
-              key: "infulence3",
               render: (value, record, rowIndex) => (
                 <Checkbox
                   className="radius-5"
@@ -517,7 +403,6 @@ const CustomerServeyTable = () => {
           children: [
             {
               dataIndex: "finance1",
-              key: "finance1",
               className:"textaline",
               width: "5rem",
               render: (value, record, rowIndex) => (
@@ -536,7 +421,6 @@ const CustomerServeyTable = () => {
           children: [
             {
               dataIndex: "finance2",
-              key: "finance2",
               className:"textaline",
               width: "6rem",
               render: (value, record, rowIndex) => (
@@ -555,13 +439,10 @@ const CustomerServeyTable = () => {
           children: [
             {
               dataIndex: "money",
-              key: "money",
               className:"textaline",
               width: "5rem",
               render: (value, record, rowIndex) => (
                 <Input
-                  // style={{ backgroundColor: "#F8F8F8", border: 0 }}
-                  className="radius-10"
                   size="large"
                   value={value}
                   onChange={handleInput(rowIndex, "money")}
@@ -576,7 +457,6 @@ const CustomerServeyTable = () => {
       title: "TT ưu tiên",
       dataIndex: "prior",
       width: "5rem",
-      key: "prior",
       render: (value, record, rowIndex) => (
         <Input
           // style={{ backgroundColor: "#F8F8F8", border: 0 }}
@@ -607,7 +487,7 @@ const CustomerServeyTable = () => {
     const submitFormData = {
       apptId: +apptId,
       customerId: selectedCustomer?.customerId,
-      surveyId: 0,
+      // surveyId: 0,
       influence: {
         family: +familyData?.infulence,
         bachelor: +bachelorData?.infulence,
@@ -638,10 +518,10 @@ const CustomerServeyTable = () => {
         },
       },
       others: {
-        ans1: formValue?.others?.other1,
-        ans2: formValue?.others?.other2,
-        ans3: formValue?.others?.other3,
-        ans4: formValue?.others?.other4,
+        other1: formValue?.others?.other1,
+        other2: formValue?.others?.other2,
+        other3: formValue?.others?.other3,
+        other4: formValue?.others?.other4,
       },
       prior: {
         family: +familyData?.prior,
@@ -653,19 +533,53 @@ const CustomerServeyTable = () => {
       hintName: formValue?.hintName,
       isPotential: formValue?.isPotential,
     };
-    console.log(formValues)
+    console.log(formValue)
     if (formValue?.hintName) {
-      if (!formValue.id) {
+      setOpen(false);
+      if (!formValue.surveyId) {
         dispatch(createSurvey(submitFormData));
       }
       else {
-        dispatch(updateSurvey(formValue.id, submitFormData));
+        dispatch(updateSurvey(formValue.surveyId, submitFormData));
       }
       
     } else {
       message.error("Bạn chưa nhập tên gợi nhớ");
     }
   };
+
+  const handleOpenChange = (newOpen) => {
+    setOpen(newOpen);
+  };
+
+  const onCancel = () => {
+    setOpen(false);
+  };
+
+  const content = (
+    <div className="closing-container">
+      <div className="closing-body">
+        <div className="form-group">
+          <FieldLabel name="hintName" label="Tên gợi nhớ" />
+          <Input control={control} name="hintName" className="form-control" />
+        </div>
+      </div>
+      <Divider />
+      <div className="closing-footer">
+        <div className="closing-btn">
+          <Button htmlType="button" className="btn-danger" block onClick={onCancel} onBlur={onCancel}>
+            Hủy
+          </Button>
+        </div>
+
+        <div className="closing-btn">
+          <Button type="primary" htmlType="button" className="btn-primary" block onClick={onSubmit}>
+            Lưu
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <FormProvider {...methods}>
@@ -681,7 +595,19 @@ const CustomerServeyTable = () => {
           </div>
           {selectedCustomer?.customerId && !surveys?.isHistory && (
             <div>
-              <ClosingModal onSubmit={onSubmit} />
+              
+              <Popover
+                placement="bottomRight"
+                content={content}
+                trigger="click"
+                onOpenChange={handleOpenChange}
+                overlayClassName="closing-popover"
+                visible={open}
+              >
+                <Button type="primary" htmlType="button" className="btn-primary finance-btn-small" block>
+                  {t("survey.save")}
+                </Button>
+              </Popover>
             </div>
           )}
           
@@ -691,15 +617,16 @@ const CustomerServeyTable = () => {
   );
 };
 
-export default CustomerServeyTable;
+export default CustomerSurveyTable;
 
-const generateTableData = (customerId, survey = null) => {
-  const priorityValue = survey? JSON.parse(survey.priority) : {}
-  const financeValue = survey? JSON.parse(survey.finance) : {}
-  const influenceValue = survey? JSON.parse(survey.influence) : {}
+const generateTableData = (customerId, survey = {}) => {
+  // console.log(survey)
+  const priorityValue = !isEmpty(survey)? JSON.parse(survey.priority) : {}
+  const financeValue = !isEmpty(survey)? JSON.parse(survey.finance) : {}
+  const influenceValue = !isEmpty(survey)? JSON.parse(survey.influence) : {}
   
   return {
-    id: survey && survey?.surveyId?survey.surveyId: 0,
+    surveyId: !isEmpty(survey)?survey.surveyId:0,
     customerId: customerId,
     data: [
       {
@@ -776,20 +703,20 @@ const generateTableData = (customerId, survey = null) => {
   };
 };
 
-const generateFormData = (customerId, survey = null) => {
-  console.log(survey)
-  const others = survey?.others? JSON.parse(survey?.others) : {}
+const generateFormData = (customerId, survey = {}) => {
+  // console.log(survey)
+  const others = !isEmpty(survey) && survey.others? JSON.parse(survey.others) : {}
 
   return {
-    id: survey && survey?.surveyId?survey.surveyId: 0,
+    surveyId: !isEmpty(survey)?survey.surveyId:0,
     customerId: customerId,
     others: {
-      other1: !isEmpty(others)?  others.ans1 : [],
-      other2: !isEmpty(others)?  others.ans2 : [],
-      other3: !isEmpty(others)?  others.ans3 : [],
-      other4: !isEmpty(others)?  others.ans4 : [],
+      other1: !isEmpty(others)?  others.other1 : [],
+      other2: !isEmpty(others)?  others.other2 : [],
+      other3: !isEmpty(others)?  others.other3 : [],
+      other4: !isEmpty(others)?  others.other4 : [],
     },
-    hintName: survey? survey?.hintName : "",
-    isPotential: survey? survey?.isPotential : false,
+    hintName: !isEmpty(survey)? survey.hintName : "",
+    isPotential: !isEmpty(survey)? survey.isPotential : false,
   };
 };

@@ -79,6 +79,15 @@ export const updateSurvey = createAsyncThunk("surveys/update", async (id, data) 
   }
 });
 
+export const getHistoryDetail = createAsyncThunk("surveys/history", async (id) => {
+  try {
+    const res = await getSurvey(id);
+    return res.data;
+  } catch (error) {
+    return Promise.reject(error.data);
+  }
+});
+
 const surveySlice = createSlice({
   name: "surveys",
   initialState,
@@ -88,7 +97,7 @@ const surveySlice = createSlice({
       state.isClearSurvey = true;
     },
     setHistory: (state, action) => {
-      state.isHistory = action.payload.isHistory;
+      state.isHistory = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -134,12 +143,8 @@ const surveySlice = createSlice({
     builder.addCase(getSurveyDetails.fulfilled, (state, action) => {
       state.isLoading = false;
       state.error = "";
-
-      const survey = {
-        ...action.payload,
-        editable: false
-      }
-      state.survey = survey;
+      state.survey = action.payload;
+      state.isHistory = false;
     });
     builder.addCase(getSurveyDetails.rejected, (state, action) => {
       state.isLoading = false;
@@ -180,6 +185,24 @@ const surveySlice = createSlice({
       state.isError = true;
       state.error = action.error?.message;
       state.companyHistories = [];
+    });
+
+    // set history
+    builder.addCase(getHistoryDetail.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+    });
+    builder.addCase(getHistoryDetail.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.error = "";
+      state.survey = action.payload;
+      state.isHistory = true;
+    });
+    builder.addCase(getHistoryDetail.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.error = action.error?.message;
+      state.survey = {};
     });
 
     // .addCase(getSppechScriptInfo.fulfilled, (state, action) => {

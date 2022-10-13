@@ -1,14 +1,15 @@
 import { ClockCircleOutlined, LeftOutlined } from '@ant-design/icons';
-import { Col, Layout, List, Popover, Row, Typography } from 'antd';
+import { Col, Layout, List, message, Popover, Row, Typography } from 'antd';
 import moment from 'moment';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import calender from '../../assets/images/icons/calendar.svg';
 import Dialogue from '../../components/common/Dialogue';
 import * as S from '../../components/styles';
 import { formatDate } from '../../helper';
+import { getConsultById } from '../../services/financialConsultant';
 import { getAppointment, getAppointments } from '../../slices/appointmentManagement';
 import SearchInputBox from '../Survey/SearchInputBox';
 import HistoryDetail from './components/historyDetail';
@@ -24,13 +25,13 @@ export default function FinanceConsultant() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [apptId, setApptId] = useState(null);
   const [customerId, setCustomerId] = useState(null);
+  const [consultId, setConsultId] = useState(null);
   const [data, setData] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const appointments = useSelector((state) => state.appointment);
-
-  // console.log(customerId);
+  const { me } = useSelector((state) => state.auth);
 
   const handleSelect = (item) => {
     setSelectItem(item);
@@ -52,6 +53,21 @@ export default function FinanceConsultant() {
       dispatch(getAppointments(params));
     }
     customerId && setCustomerId(customerId);
+  }, [searchParams]);
+
+  useEffect(() => {
+    const consultId = searchParams.get('consult_id');
+    const fetchData = async () => {
+      try {
+        const res = await getConsultById(consultId);
+        console.log(res.data);
+        setHistory(res.data);
+      } catch (err) {
+        message.error(err.response.data, 3);
+      }
+    };
+    consultId && consultId !== 'undefined' && fetchData();
+    customerId && setConsultId(consultId);
   }, [searchParams]);
 
   useEffect(() => {
@@ -85,7 +101,7 @@ export default function FinanceConsultant() {
         <h3 className="title">{t('financial consultant.title')}</h3>
         <div className="financialConsultant-container">
           <Row gutter={[16, 10]} justify="start" align="stretch">
-            <Col lg={15} md={24} sm={24} xs={24}>
+            <Col lg={me?.isDefaultHelper ? 15 : 24} md={24} sm={24} xs={24}>
               <Layout.Content>
                 <div className="content-div-1">
                   <div className="container-left">
@@ -102,7 +118,7 @@ export default function FinanceConsultant() {
                             onClick={() => handleSelect(customer)}
                             className={`${customer === selectItem ? 'active' : ''}`}
                           >
-                            <Typography.Text ellipsis>{customer?.name}</Typography.Text>
+                            <Typography.Text ellipsis>{customer?.name || customer.title}</Typography.Text>
                           </List.Item>
                         )}
                       />
@@ -142,6 +158,7 @@ export default function FinanceConsultant() {
                           {/* <img src={left_arrow} alt="calender" height={12} style={{ marginRight: '5px' }} /> */}
                           <LeftOutlined className="icon" />
                         </div>
+
                         <div className="right">
                           <img src={calender} alt="calender" height={16} style={{ marginRight: '5px' }} />
                           <span>Ngày: {formatDate(history?.createdAt)}</span>
@@ -161,19 +178,20 @@ export default function FinanceConsultant() {
                 </div>
               </Layout.Content>
             </Col>
-
-            <Col lg={9} md={24} sm={24} xs={24}>
-              <Layout.Content className="manageContent">
-                <div className="content-div-2">
-                  <Dialogue
-                    type="consult"
-                    title={t('financial consultant.process title')}
-                    customerId={customerId || selectItem?.customerId}
-                    keywords={keywords}
-                  />
-                </div>
-              </Layout.Content>
-            </Col>
+            {me?.isDefaultHelper && (
+              <Col lg={9} md={24} sm={24} xs={24}>
+                <Layout.Content className="manageContent">
+                  <div className="content-div-2">
+                    <Dialogue
+                      type="consult"
+                      title={t('financial consultant.process title')}
+                      customerId={customerId || selectItem?.customerId}
+                      keywords={keywords}
+                    />
+                  </div>
+                </Layout.Content>
+              </Col>
+            )}
           </Row>
         </div>
       </div>

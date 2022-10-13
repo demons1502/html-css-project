@@ -24,7 +24,7 @@ const Survey = () => {
   const dispatch = useDispatch();
   const [payload, setPayload] = useState('');
   const { customers, surveys } = useSelector((state) => state);
-  const appointments = useSelector((state) => state.appointment);
+  const appointment = useSelector((state) => state.appointment);
   const [searchParams, setSearchParams] = useSearchParams();
   // const [customerList, setCustomerList] = useState([]);
   // const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -32,22 +32,21 @@ const Survey = () => {
   const { me } = useSelector((state) => state.auth);
   const [apptId, setApptId] = useState(0);
 
-  useEffect(() => {
-    if (!isEmpty(surveys?.survey)) {
-      const filteredCustomer = data?.filter((customer) => customer?.customerId === selectedCustomer?.customerId);
-      // setCustomerList(filteredCustomer);
-    } else {
-      // setCustomerList(data);
-    }
-  }, [customers, surveys?.survey]);
+  const paramApptId = searchParams.get('appointment_id');
+  const paramCustomerId = searchParams.get('customer_id');
+
+  // useEffect(() => {
+  //   if (!isEmpty(surveys?.survey)) {
+  //     const filteredCustomer = data?.filter((customer) => customer?.customerId === selectedCustomer?.customerId);
+  //     // setCustomerList(filteredCustomer);
+  //   } else {
+  //     // setCustomerList(data);
+  //   }
+  // }, [customers, surveys?.survey]);
 
   useEffect(() => {
-    const apptId = searchParams.get('appointment_id');
-    const customerId = searchParams.get('customer_id');
-
-    if (apptId) {
-      setApptId(apptId)
-      dispatch(getAppointment(apptId));
+    if (paramApptId) {
+      dispatch(getAppointment(paramApptId));
     }
     else {
       const params = {
@@ -57,25 +56,23 @@ const Survey = () => {
       }
       dispatch(getAppointments(params));
     }
-    if (customerId) {
-      dispatch(setSelectedCustomer(customerId));
-    }
   }, []);
 
   useEffect(() => {
-    const customerList = appointments?.data?.length > 0 ? appointments.data[0].customerApptRecords : []
+    const customerList = appointment?.data?.length > 0 ? appointment.data[0].customerApptRecords : []
     dispatch(setData(customerList))
 
-    const apptId = appointments?.data?.length > 0? appointments.data[0].apptId : 0
+    const apptId = appointment?.data?.length > 0? appointment.data[0].apptId : 0
     setApptId(apptId)
-  }, [appointments.data, dispatch]);
-
-  // useEffect(() => {
-  //   customerList && setSelectedCustomer(customerList[0])
-  // }, [customerList]);
+  }, [appointment.data, dispatch]);
 
   useEffect(() => {
-    data?.length > 0 && dispatch(setSelectedCustomer(data[0]?.customerId));
+    if (paramCustomerId) {
+      dispatch(setSelectedCustomer(paramCustomerId));
+    }
+    else {
+      data?.length > 0 && dispatch(setSelectedCustomer(data[0]?.customerId));
+    }    
   }, [data, dispatch]);
 
   const handleSelectCustomer = (id) => {
@@ -84,8 +81,7 @@ const Survey = () => {
 
   const backToSurvey = () => {
     // dispatch(clearSurvey());
-    dispatch(setHistory({isHistory: false}));
-    
+    dispatch(setHistory(false));  
   };
 
   const historyHandler = () => {
@@ -101,7 +97,6 @@ const Survey = () => {
     navigate('/appointment-management');
   };
 
-  console.log(surveys?.isHistory)
   return (
     <Fragment>
       <div className="survey">

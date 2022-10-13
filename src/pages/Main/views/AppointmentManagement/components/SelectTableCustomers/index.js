@@ -78,11 +78,6 @@ const SelectTableCustomers = ({ customer, handleChangeValue, keyForm, companyId 
       },
     },
     {
-      title: 'Công ty',
-      dataIndex: 'companyText',
-      key: 'companyText',
-    },
-    {
       title: 'Ngày sinh',
       dataIndex: 'dob',
       key: 'dob',
@@ -135,7 +130,7 @@ const SelectTableCustomers = ({ customer, handleChangeValue, keyForm, companyId 
       open={ openDropDown }
       dropdownRender={ TableDropDown }
       dropdownStyle={ { minWidth: 800 } }
-      allowClear={ true }
+      disabled={ valueSeach?.fullName ? true : false }
     >
       <TableDropDown />
     </S.Select>

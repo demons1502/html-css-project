@@ -26,8 +26,8 @@ export default function SignedContract() {
 
   useEffect(() => {
     const payload = {
-      from: decodeURIComponent(startDate.format(dateContractFormat)),
-      to: decodeURIComponent(endDate.format(dateContractFormat)),
+      from: decodeURIComponent(startDate.utc().format(dateContractFormat)),
+      to: decodeURIComponent(endDate.utc().format(dateContractFormat)),
     };
     dispatch(getSignedContracts(payload));
   }, [dispatch, startDate, endDate]);

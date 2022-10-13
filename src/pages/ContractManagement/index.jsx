@@ -14,6 +14,7 @@ import { EditOutlined } from '@ant-design/icons';
 export default function ContractManagement() {
   const dispatch = useDispatch()
   const { data, totalItem, refreshData } = useSelector((state) => state.contractManagement)
+  console.log(data);
   const [visibleModal, setVisibleModal] = useState(false)
   const [dataEdit, setDataEdit] = useState(null)
   const [titleModal, setTitleModal] = useState('')

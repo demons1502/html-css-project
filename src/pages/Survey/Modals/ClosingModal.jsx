@@ -10,18 +10,25 @@ export const ClosingModal = ({ onSubmit }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { control } = useFormContext();
-  const { data } = useSelector((state) => state?.surveys);
+  const { survey } = useSelector((state) => state?.surveys);
+  const [hintName, setHintName] = useState('');
 
   const { customers } = useSelector((state) => state);
-  const selectedCustomer = customers?.selectedCustomer || {};
-
-  console.log("survey data", data);
+  const { selectedCustomer } = customers;
 
   useEffect(() => {
-    if (!isEmpty(data)) {
+    setHintName(survey?.hintName)
+  }, []);
+  
+  useEffect(() => {
+    if (!isEmpty(survey)) {
       onCancel();
     }
-  }, [data]);
+  }, [survey]);
+
+  useEffect(() => {
+    setHintName(survey?.hintName)
+  }, [selectedCustomer, survey]);
 
   const handleOpenChange = (newOpen) => {
     setOpen(newOpen);
@@ -36,7 +43,7 @@ export const ClosingModal = ({ onSubmit }) => {
       <div className="closing-body">
         <div className="form-group">
           <FieldLabel name="hintName" label="Tên gợi nhớ" />
-          <Input control={control} name="hintName" className="form-control" />
+          <Input control={control} name="hintName" className="form-control" value={hintName} />
         </div>
       </div>
       <Divider />
@@ -49,7 +56,7 @@ export const ClosingModal = ({ onSubmit }) => {
 
         <div className="closing-btn">
           <Button type="primary" htmlType="button" className="btn-primary" block onClick={onSubmit}>
-            Tạo
+            Lưu
           </Button>
         </div>
       </div>
@@ -64,7 +71,7 @@ export const ClosingModal = ({ onSubmit }) => {
       overlayClassName="closing-popover"
       visible={open}
     >
-      <Button type="primary" htmlType="button" className="btn-primary finance-btn-small" block disabled={!selectedCustomer?.customerId}>
+      <Button type="primary" htmlType="button" className="btn-primary finance-btn-small" block>
         {t("survey.save")}
       </Button>
     </Popover>

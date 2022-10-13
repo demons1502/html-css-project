@@ -18,8 +18,6 @@ export default function FinanceConsultant() {
 
   const consults = useSelector((state) => state.consultReducer);
   const loading = useSelector((state) => state.loading.loading);
-  console.log(consults);
-  console.log(consults);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -140,7 +138,7 @@ export default function FinanceConsultant() {
       </div>
       <div className="contract_list">
         <Spin spinning={loading === LOADING_STATUS.pending}>
-          <TableCommon dataSource={consults.data.data} columnTable={columns} />
+          <TableCommon dataSource={consults.data.data} columnTable={columns} rowKey="customerId" />
         </Spin>
         <Pagination total={consults.data.count} setPaginate={setPaginate} />
       </div>

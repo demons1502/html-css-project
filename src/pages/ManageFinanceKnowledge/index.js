@@ -1,18 +1,14 @@
-import { Button, Col, Layout, List, message, notification, Row, Segmented, Spin, Typography } from 'antd';
+import { Button, Col, Layout, List, Row, Segmented, Spin, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import IconPlus from '../../assets/images/icons/plus.svg';
 import Pagination from '../../components/common/Pagination';
-import ModalConfirm from '../../components/ModalConfirm';
 import * as S from '../../components/styles';
 import Title from '../../components/Title';
-import { uploadFile } from '../../services/manageContent';
-import { createContent, deleteContent, retrieveData, updateContent } from '../../slices/managementContent';
+import { retrieveData } from '../../slices/managementContent';
 import { DEFAULT_SIZE, LOADING_STATUS, MANAGEMENT_CONTENT } from '../../ultis/constant';
 import FinanceKnowledge from './FinanceKnowledge';
-import FinanceKnowledgeContent from './FinanceKnowledgeContent';
-import QuestionAnswerContent from './QuestionAnswerContent';
 import QuestionContent from './QuestionContent';
 
 const ManageFinanceKnowledge = () => {
@@ -22,7 +18,7 @@ const ManageFinanceKnowledge = () => {
   const loading = useSelector((state) => state.loading.loading);
 
   const [option, setOption] = useState('articles');
-  const [paginate, setPaginate] = useState({ limit: DEFAULT_SIZE, offset: 0 });
+  const [paginate, setPaginate] = useState({ limit: DEFAULT_SIZE, offset: 1 });
   const [isEdit, setIsEdit] = useState(true);
   const [addNew, setAddNew] = useState(false);
   const [id, setId] = useState(null);
@@ -38,12 +34,16 @@ const ManageFinanceKnowledge = () => {
     setOption(e);
   };
 
-  useEffect(() => {}, [id]);
+  useEffect(() => {
+    const offset = (paginate.offset - 1) * paginate.limit;
+    const params = { limit: paginate.limit, offset: offset };
+    //fetch data
+    option && dispatch(retrieveData({ type: option, params: params }));
+  }, [option, contents.isReload, paginate]);
 
   useEffect(() => {
-    //fetch data
-    option && dispatch(retrieveData({ type: option, params: paginate }));
-  }, [option, contents.isReload, paginate]);
+    !id && setIsEdit(false);
+  }, [id]);
 
   return (
     <div className="manageFinanceKnowledge">

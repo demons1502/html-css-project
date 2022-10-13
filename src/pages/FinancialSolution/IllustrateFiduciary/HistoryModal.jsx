@@ -6,7 +6,7 @@ import Table from "../../../components/common/TableNormal";
 import { useDispatch } from "react-redux";
 import { getIllustrationByIds } from "../../../slices/financialSolutions";
 
-export const HistoryModal = ({ historyList }) => {
+export const HistoryModal = ({ historyList, setIsHistory }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation();
   const [dataTable, setDataTable] = useState([]);
@@ -47,7 +47,7 @@ export const HistoryModal = ({ historyList }) => {
         <Table dataSource={dataTable} columnTable={columns}
           onRow={(record, rowIndex) => {
             return {
-              onClick: e => { dispatch(getIllustrationByIds(record.key)) }, // click row
+              onClick: e => { dispatch(getIllustrationByIds(record.key)); setIsHistory(true) }, // click row
             };
           }}
           scroll={{

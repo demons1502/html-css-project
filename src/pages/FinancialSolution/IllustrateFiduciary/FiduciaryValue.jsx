@@ -4,7 +4,7 @@ import { InputNumber } from '../../../components/common/Input/styles'
 import { formatDataNumber } from "../../../helper";
 
 
-export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllustration, callSave }) => {
+export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllustration, setIsHistory, dataHistory }) => {
   const [investmentYear, setInvestmentYear] = useState(20);  //thoi gian uyu thac
   const [percentage, setPercentage] = useState(preparedIllustration.rate || 6.850);  // muc ty suat dau tu minh hoa
   const [totalOfMoney, setTotalOfMoney] = useState(20000000);       //so tien dau tu them
@@ -13,61 +13,6 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   const [columnC, setColumnC] = useState(preparedIllustration.annualBasePremiums || [])
   const [columnD, setColumnD] = useState(preparedIllustration.annualTopUpPremiums || [])
   const [columnT, setColumnT] = useState([50])
-
-  const [form] = Form.useForm();
-  useEffect(() => {
-    let lengthColumnD = columnD.length
-    if (lengthColumnD != additionalInvestmentYear) {
-      setAdditionalInvestmentYear(lengthColumnD)
-      form.setFieldValue('additional_investment_year', lengthColumnD)
-    }
-  }, [columnD])
-
-  useEffect(() => {
-    setColumnC(preparedIllustration?.annualBasePremiums)
-    setColumnD(preparedIllustration?.annualTopUpPremiums)
-    form.setFieldValue('amount_of_money', 20000000)
-    setTotalOfMoney(20000000)
-    form.setFieldValue('additional_investment_year', preparedIllustration.topUpYears)
-    setAdditionalInvestmentYear(preparedIllustration.topUpYears)
-  }, [preparedIllustration])
-
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
-  useEffect(() => {
-    setInvestmentYear(data.investmentYear)
-    setPercentage(data.percentage)
-    setTotalOfMoney(data.total)
-    setAdditionalInvestmentYear(data.additionalInvestmentYear)
-  }, [data])
-
-  const inputColumnD = (record, index) => {
-    let arr = [...columnD]
-    if (record == null) {
-      arr[index.key] = 0
-      // form.setFieldValue('additional_investment_year', additionalInvestmentYear - 1)
-      // setAdditionalInvestmentYear(additionalInvestmentYear - 1)
-    }
-    else {
-      arr[index.key] = record
-    }
-    setColumnD(arr)
-  }
-
-  const inputColumnC = (record, index) => {
-    let arr = [...columnC]
-    if (record == null) {
-      arr[index.key] = 0
-
-    }
-    else {
-      arr[index.key] = record
-    }
-    setColumnC(arr)
-  }
-
   const columns = [
     {
       title: 'Tuổi',
@@ -169,23 +114,78 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
       ]
     }
   ]
+  const [form] = Form.useForm();
+  useEffect(() => {
+    if(dataHistory){
+      setInvestmentYear(Number(dataHistory?.baseYears))
+      form.setFieldValue('investment_year', Number(dataHistory?.baseYears))
+      setPercentage(Number(dataHistory?.rate))
+      form.setFieldValue('percent', Number(dataHistory?.rate))
+      setTotalOfMoney(Number(dataHistory?.sumInsured.faceAmount))
+      form.setFieldValue('amount_of_money', Number(dataHistory?.sumInsured.faceAmount))
+      setAdditionalInvestmentYear(Number(dataHistory?.topUpYears))
+      form.setFieldValue('additional_investment_year', Number(dataHistory?.topUpYears))
+      setColumnC(dataHistory?.annualBasePremiums)
+      setColumnD(dataHistory?.annualTopUpPremiums)
+    }
+  }, [dataHistory])
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+  const inputColumnD = (record, index) => {
+    // let arr = [...columnD]
+    // if (record == null) {
+    //   arr[index.key] = 0
+    //   form.setFieldValue('additional_investment_year', additionalInvestmentYear - 1)
+    //   setAdditionalInvestmentYear(additionalInvestmentYear - 1)
+    // }
+    // else {
+    //   arr[index.key] = record
+    // }
+    // setColumnD(arr)
+  }
 
   useEffect(() => {
-    let arr = [...columnD]
+    let lengthColumnD = columnD.length
+    if (lengthColumnD != additionalInvestmentYear) {
+      setAdditionalInvestmentYear(lengthColumnD)
+      form.setFieldValue('additional_investment_year', lengthColumnD)
+    }
+  }, [columnD])
+
+  useEffect(() => {
+    console.log('go1');
+    setColumnC(preparedIllustration?.annualBasePremiums)
+    setColumnD(preparedIllustration?.annualTopUpPremiums)
+    form.setFieldValue('amount_of_money', preparedIllustration.basePremium)
+    setTotalOfMoney(preparedIllustration.basePremium)
+    form.setFieldValue('additional_investment_year', preparedIllustration.topUpYears)
+    setAdditionalInvestmentYear(preparedIllustration.topUpYears)
+    form.setFieldValue('percent', preparedIllustration.rate)
+    setPercentage(preparedIllustration.rate)
+  }, [preparedIllustration])
+
+  const inputColumnC = (record, index) => {
+    let arr = [...columnC]
+    if (record == null) {
+      arr[index.key] = 0
+    }
+    else {
+      arr[index.key] = record
+    }
+    setColumnC(arr)
+  }
+
+  useEffect(() => {
+    let arrD = [...columnD]
     if (columnD.length < additionalInvestmentYear) {
       const lengthOfArr = investmentYear < additionalInvestmentYear ? investmentYear : additionalInvestmentYear
       for (let i = columnD.length; i < lengthOfArr; i++) {
-        arr.push(totalOfMoney)
+        arrD.push(totalOfMoney)
       }
     }
     else if (columnD.length > additionalInvestmentYear) {
-      arr.splice(0, columnD.length - additionalInvestmentYear)
+      arrD.splice(0, columnD.length - additionalInvestmentYear)
     }
-    setColumnD(arr)
+    setColumnD(arrD)
   }, [additionalInvestmentYear])
 
   useEffect(() => {
@@ -194,7 +194,10 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
   }, [totalOfMoney])
 
   useEffect(() => {
+    console.log('totalOfMoney', totalOfMoney);
+    setIsHistory(false)
     setDataToSave((prev) => {
+      console.log(prev);
       prev.additionalInvestmentYear = additionalInvestmentYear;
       prev.investmentYear = investmentYear;
       prev.percentage = percentage;
@@ -205,8 +208,15 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
         ...prev
       })
     })
-  }, [callSave])
+  }, [investmentYear, percentage, totalOfMoney, additionalInvestmentYear, columnC, columnD])
   //[investmentYear, percentage, totalOfMoney, additionalInvestmentYear, columnC, columnD]
+
+  const onFinish = (values) => {
+    console.log("Success:", values);
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
   const columnL = [85, 75, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   const columnN = [2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
   const columnJ7 = 8.70
@@ -294,7 +304,7 @@ export const FiduciaryValue = ({ nameCustomer, data, setDataToSave, preparedIllu
 
   const calculatorJ1 = (i) => {
     let rate = (100 + bankRate) / 100
-    let total = columnD[i] ?  Number(columnC[i]) +  Number(columnD[i]) :  Number(columnC[i])
+    let total = columnD[i] ? Number(columnC[i]) + Number(columnD[i]) : Number(columnC[i])
     const result = (total + totalBankInterest) * rate
     totalBankInterest = result
     return formatDataNumber(result.toFixed())

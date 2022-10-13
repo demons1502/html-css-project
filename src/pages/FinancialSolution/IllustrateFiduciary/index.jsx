@@ -31,10 +31,12 @@ const IllustrateFiduciary = () => {
     var yyyy = today.getFullYear();
     return mm + '/' + dd + '/' + yyyy;
   })
+  const [isHistory, setIsHistory] = useState(false)
+  const [dataHistory, setDataHistory] = useState([])
 
   const dataCustomerById = useSelector((state) => state.financialSolution.customerSelect)
   const { historyList, preparedIllustration, history } = useSelector((state) => state.financialSolution)
-
+  console.log(history);
   useLayoutEffect(() => {
     dispatch(updateSelectCustomer({ total: total, typeFund: typeFund, userSelected: userSelected, values: values }))
     dispatch(getCustomerByIdAndType({ id: userSelected.customerId, typeId: userSelected.typeId }))
@@ -42,17 +44,21 @@ const IllustrateFiduciary = () => {
   }, [])
   // console.log(dataToSave);
   useEffect(() => {
-    let params = {
-      "fundType": typeFund,
-      "customerId": userSelected.customerId,
-      "result": "string",
-      "baseYears": dataToSave.investmentYear,
-      "version": version,
-      "interestRate": "string",
-      "expensePerMonth": "string"
+    if(!isHistory){
+      let params = {
+        "fundType": typeFund,
+        "customerId": userSelected.customerId,
+        "result": "string",
+        // "baseYears": dataToSave.investmentYear,
+        "baseYears": dataToSave.investmentYear,
+        "version": version,
+        "interestRate": "string",
+        "expensePerMonth": "string"
+      }
+      dispatch(getPreparedIllustrations(params))
     }
-    dispatch(getPreparedIllustrations(params))
   }, [location?.state, dataToSave?.investmentYear])
+  //
 
   useEffect(() => {//call api history
     // dispatch(getFinanceSolution(id))
@@ -60,22 +66,23 @@ const IllustrateFiduciary = () => {
 
   }, [dataCustomerById])
 
-  useEffect(() => {
-    history ?
-      setDataToSave(prev => {
-        prev.additionalInvestmentYear = history.topUpYears
-        prev.annualBasePremiums = history.annualBasePremiums
-        prev.annualTopUpPremiums = history.annualTopUpPremiums
-        prev.investmentYear = history.baseYears
-        prev.percentage = history.rate
-        prev.total = history.sumInsured.faceAmount
-        return ({
-          ...prev
-        })
-      })
-      // setVersion(history.version)
-      : null
-  }, [history])
+  // useEffect(() => {
+  //   history ?
+  //     setDataToSave(prev => {
+  //       prev.additionalInvestmentYear = history.topUpYears
+  //       prev.annualBasePremiums = history.annualBasePremiums
+  //       prev.annualTopUpPremiums = history.annualTopUpPremiums
+  //       prev.investmentYear = history.baseYears
+  //       prev.percentage = history.rate
+  //       prev.total = history.sumInsured.faceAmount
+  //       return ({
+  //         ...prev
+  //       })
+  //     })
+  //     // setVersion(history.version)
+  //     : null
+  // }, [history])
+
   useEffect(() => {
     if (callSave) {
       let data = {
@@ -117,7 +124,7 @@ const IllustrateFiduciary = () => {
     setIsHistoryModalOpen(!isHistoryModalOpen);
   }
 
-  console.log(dataToSave);
+  // console.log(dataToSave);
   useEffect(() => {
   }, [dataToSave])
 
@@ -162,7 +169,7 @@ const IllustrateFiduciary = () => {
                 open={isHistoryModalOpen}
                 placement="bottomRight"
                 onOpenChange={(e) => setIsHistoryModalOpen(e)}
-                content={<HistoryModal historyList={historyList} />}
+                content={<HistoryModal historyList={historyList} setIsHistory={(e) => setIsHistory(e)} />}
                 trigger="click"
               >
                 <Button
@@ -217,7 +224,10 @@ const IllustrateFiduciary = () => {
               {
                 label: 'Minh họa giá trị ủy thác',
                 key: '1',
-                children: <FiduciaryValue data={dataToSave} setDataToSave={(e) => setDataToSave(e)} preparedIllustration={preparedIllustration} callSave={callSave}/>,
+                children: <FiduciaryValue data={dataToSave} setDataToSave={(e) => setDataToSave(e)}
+                  preparedIllustration={preparedIllustration} callSave={callSave} isHistory={isHistory}
+                  dataHistory={history} setIsHistory={(e)=>setIsHistory(e)}
+                />,
               },
               {
                 label: 'Tóm tắt quyền lợi bằng bông hoa',

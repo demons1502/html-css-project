@@ -9,7 +9,7 @@ import { AddNewConsultant } from '../../../slices/financialConsultant';
 import Reminiscent from './Reminiscent';
 
 const spendingForm = (props) => {
-  const { id, useSelected, setKeywords } = props;
+  const { id, useSelected, setKeywords, apptId } = props;
 
   const [reminiscent, setReminiscent] = useState(null);
   const [checked, setChecked] = useState(true);
@@ -39,6 +39,7 @@ const spendingForm = (props) => {
       total: total,
       customerId: id,
       isPotential: checked,
+      apptId: apptId,
       consultAttrs: consultAttrs,
     };
     if (!reminiscent) {

@@ -53,8 +53,12 @@ const SelectTable = ({ typeId, customer, handleChangeValue, keyForm, disabled })
   }, [customer]);
 
   const handleSearch = (newValue) => {
-    fetch(newValue, typeId, setData);
-    setOpenDropDown(true);
+    if (newValue !== '') {
+      fetch(newValue, typeId, setData);
+      setOpenDropDown(true);
+    } else {
+      setData([]);
+    }
   };
 
   const handleChange = (newValue) => {

@@ -50,7 +50,7 @@ const SelectTableCustomers = ({ customer, handleChangeValue, keyForm, companyId 
   }, [customer]);
 
   const handleSearch = (newValue) => {
-    if (newValue) {
+    if (newValue !== '') {
       fetch(newValue, setData, companyId);
       setOpenDropDown(true);
     } else {

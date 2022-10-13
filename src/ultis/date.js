@@ -1,12 +1,12 @@
 import moment from 'moment';
 
-export const getMonday = (d) => {
-  const first = d.getDate() - d.getDay() - 6;
+export const getMonday = (date) => {
+  const first = date.getDate() - date.getDay() - 6;
   return moment(new Date(d.setDate(first)));
 };
 
-export const formatLocalTime = (d, second) => {
-  return new Date(moment(d).utc().add(second, 'seconds').format('YYYY-MM-DDTHH:mm:ss'));
+export const formaTimeUtc = (date) => {
+  return new Date(moment(date).utc().format('YYYY-MM-DDTHH:mm:ss'));
 };
 
 export const convertDay = (day) => {

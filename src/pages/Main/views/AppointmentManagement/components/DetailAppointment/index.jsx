@@ -101,7 +101,7 @@ export const DetailAppointment = ({ info }) => {
             <S.ItemMiddleContent>
               <S.ItemMiddleTitle>Thời gian:</S.ItemMiddleTitle>
               <S.ItemMiddleText time>
-                { `${moment(info.startTime).utc().format('HH:ss')} (${minutes})p` }
+                { `${moment(info.startTime).utc().format('HH:mm')} (${minutes})p` }
               </S.ItemMiddleText>
             </S.ItemMiddleContent>
           </S.ItemMiddle>

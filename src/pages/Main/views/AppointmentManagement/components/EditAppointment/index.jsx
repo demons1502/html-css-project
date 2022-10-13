@@ -70,17 +70,17 @@ export const EditAppointment = ({ open, handleCancel, info }) => {
   const onFinish = (values) => {
     const subCustomerIds = values?.users && values?.users.length !== 0 ? values?.users.map((i) => i.customerId) : [];
 
-    const startTime = moment(values.date).format('YYYY-MM-DD ') + moment(values.startTime).format('HH:mm:ss');
+    const startTime = moment(values.date).format('YYYY-MM-DD ') + moment(values.startTime).add(1, 'seconds').format('HH:mm:ss');
 
     const endTime =
-      moment(values.date).format('YYYY-MM-DD ') + moment(values.endTime).subtract(1, 'seconds').format('HH:mm:ss');
+      moment(values.date).format('YYYY-MM-DD ') + moment(values.endTime).format('HH:mm:ss');
 
     const data = {
       typeId: info.typeId,
       customerId: getCustomerId(),
       title: title,
-      startTime: startTime,
-      endTime: endTime,
+      startTime: moment.utc(startTime).format(),
+      endTime: moment.utc(endTime).format(),
       location: values.location,
       note: values.note,
       subCustomerIds: subCustomerIds,

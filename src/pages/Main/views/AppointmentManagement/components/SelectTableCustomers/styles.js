@@ -31,7 +31,7 @@ export const Select = styled(AntSelect)`
   }
   & .ant-select-selection-item {
     font-weight: 600;
-    font-size: 13px;
+    font-size: 14px;
     color: #333333;
   }
 

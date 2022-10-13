@@ -10,9 +10,9 @@ import SelectTableCustomers from '../SelectTableCustomers/index';
 //STYLES
 import * as S from './styles';
 
-const FormUsers = ({ form, companyId, customerApptRecords, open }) => {
+const FormUsers = ({ form, companyId }) => {
   const [customer, setCustomer] = useState([]);
-  const initialValue = [{ fullName: '', phone: '', birthday: '' }];
+  const initialValue = [{ fullName: '', phone: '', birthday: '', gender: '' }];
   const fields = form.getFieldsValue();
   let { users } = fields;
 
@@ -63,7 +63,7 @@ const FormUsers = ({ form, companyId, customerApptRecords, open }) => {
                   name={ [name, 'phone'] }
                   rules={ [{ required: true, message: 'Vui lòng nhập số điện' }] }
                 >
-                  <S.WrapInput disabled={ customer[key].phone ? true : false } placeholder="SĐT" />
+                  <S.WrapInput disabled={ customer ? customer[key]?.phone ? true : false : false } placeholder="SĐT" />
                 </Form.Item>
               </Col>
               <Col span={ 6 }>
@@ -72,7 +72,7 @@ const FormUsers = ({ form, companyId, customerApptRecords, open }) => {
                   name={ [name, 'gender'] }
                   rules={ [{ required: true, message: 'Vui lòng nhập giới tính' }] }
                 >
-                  <S.WrapSelect disabled={ customer[key].gender ? true : false } placeholder="Giới tính">
+                  <S.WrapSelect disabled={ customer ? customer[key]?.gender ? true : false : false } placeholder="Giới tính">
                     <S.WrapSelect.Option value={ 1 }>Nam</S.WrapSelect.Option>
                     <S.WrapSelect.Option value={ 2 }>Nữ</S.WrapSelect.Option>
                     <S.WrapSelect.Option value={ 3 }>Khác</S.WrapSelect.Option>
@@ -86,7 +86,7 @@ const FormUsers = ({ form, companyId, customerApptRecords, open }) => {
                   rules={ [{ required: true, message: 'Vui lòng nhập ngày sinh' }] }
                 >
                   <S.WrapDatePicker
-                    disabled={ customer[key].birthday ? true : false }
+                    disabled={ customer ? customer[key]?.birthday ? true : false : false }
                     suffixIcon={ null }
                     style={ { width: '100%', height: '40px' } }
                     placeholder="DD/MM/YYYY"

@@ -7,7 +7,7 @@ import {
   getAppointmentApi,
 } from '../services/appointment';
 import { getTitleAppointment } from '../ultis/appointment';
-import { formatLocalTime } from '../ultis/date';
+import { formaTimeUtc } from '../ultis/date';
 
 const initialState = {
   data: [],
@@ -75,14 +75,12 @@ const appointmentSlice = createSlice({
         i.customerApptRecords[0].apptId = i.apptId
         return {
           ...i,
-          start: formatLocalTime(i.startTime, 0),
-          end: formatLocalTime(i.endTime, 1),
+          start: formaTimeUtc(i.startTime),
+          end: formaTimeUtc(i.endTime),
           title: getTitleAppointment(i.title),
-          // i.customerApptRecords[0]: i.typeId 
         };
       });
       state.data = appointments;
-      // state.data.typeId = action.payload.data[0].typeId
       state.loading = false;
     });
     builder.addCase(getAppointments.rejected, (state) => {
@@ -101,8 +99,8 @@ const appointmentSlice = createSlice({
       const data = action.payload;
       const appointment = {
         ...data,
-        start: formatLocalTime(data.startTime, 0),
-        end: formatLocalTime(data.endTime, 1),
+        start: formaTimeUtc(data.startTime),
+        end: formaTimeUtc(data.endTime),
         title: getTitleAppointment(data.title)
       };
       const appointments = [...state.data, { ...appointment }];
@@ -124,8 +122,8 @@ const appointmentSlice = createSlice({
       const data = action.payload;
       const appointment = {
         ...data,
-        start: formatLocalTime(data.startTime, 0),
-        end: formatLocalTime(data.endTime, 1),
+        start: formaTimeUtc(data.startTime),
+        end: formaTimeUtc(data.endTime),
         title: getTitleAppointment(data.title)
       };
       let appointments = [...state.data];
@@ -164,8 +162,8 @@ const appointmentSlice = createSlice({
       const data = action.payload;
       const appointment = {
         ...data,
-        start: formatLocalTime(data.startTime),
-        end: formatLocalTime(data.endTime),
+        start: formaTimeUtc(data.startTime),
+        end: formaTimeUtc(data.endTime),
         title: getTitleAppointment(data.title)
       };
       const appointments = [{ ...appointment }, ...state.data];

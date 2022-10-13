@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Checkbox, Empty, message, Popover, Divider } from "antd";
 import TableCommon from "../../../components/common/TableNormal";
 import { useDispatch, useSelector } from "react-redux";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, Controller } from "react-hook-form";
 import { SurveyForm } from "./SurveyForm";
 import { Checkbox as CheckboxControl, FieldLabel } from "../../../components/controls";
 // import { ClosingModal } from "../Modals/ClosingModal";
@@ -23,7 +23,7 @@ const CustomerSurveyTable = () => {
   const [apptId, setApptId] = useState(0);
   // const [surveyId, setSurveyId] = useState(0);
   const [open, setOpen] = useState(false);
-  // const hintName = useRef('');
+  const [isReset, setIsReset] = useState(false);
 
   //get data from redux
   const { surveys, customers, appointment } = useSelector((state) => state);
@@ -57,12 +57,12 @@ const CustomerSurveyTable = () => {
   }, []);
 
   useEffect(() => {
-    // hintName.value = survey?.hintName
+    setIsReset(true)
   }, [selectedCustomer, survey]);
 
   useEffect(() => {
     const apptId = searchParams.get('appointment_id');
-    // const surveyId = searchParams.get('survey_id');
+    const surveyId = searchParams.get('survey_id');
 
     if (apptId) {
       setApptId(apptId)
@@ -79,7 +79,6 @@ const CustomerSurveyTable = () => {
       const dataInfos = [...dataTables];
 
       if (dataInfos.length === 0) {
-        // dispatch(getSurveyDetails(208))
         // Get survey
         if (selectedCustomer?.surveyId) {
           dispatch(getSurveyDetails(selectedCustomer?.surveyId))
@@ -227,6 +226,7 @@ const CustomerSurveyTable = () => {
     if (!isEmpty(tData)) {
       setDataTable(tData?.data);
     }
+    console.log(dataTables)
   }, [dataTables]);
 
   useEffect(() => {
@@ -236,7 +236,7 @@ const CustomerSurveyTable = () => {
         : {};
     if (!isEmpty(fData)) {
       setFromValue(fData);
-      reset({
+      isReset && reset({
         other1: fData?.others?.other1,
         other2: fData?.others?.other1,
         other3: fData?.others?.other1,
@@ -256,7 +256,6 @@ const CustomerSurveyTable = () => {
   const watchHintName = watch("hintName", "");
 
   useEffect(() => {
-    // if (isEmpty(surveys?.survey) && formValues?.length > 0) {
     if (!isHistory && formValues?.length > 0) {
       const formInfos = [...formValues];
       const currentIndex = formInfos?.findIndex((item) => item?.customerId === selectedCustomer?.customerId);
@@ -268,12 +267,10 @@ const CustomerSurveyTable = () => {
       selectedFormInfo["others"]["other3"] = watchOther3;
       selectedFormInfo["others"]["other4"] = watchOther4;
       formInfos[currentIndex] = selectedFormInfo;
-      console.log('set form value')
-      console.log(selectedFormInfo)
-      setFromValue(selectedFormInfo);
-      // setFromValues(formInfos);
+
+      setIsReset(false)
+      setFromValues(formInfos);
     }
-  // }, [watch]);
   }, [watchOther1, watchOther2, watchOther3, watchOther4, watchPotential, watchHintName]);
 
   const handleCheckboxChangeFactory = (rowIndex, columnKey) => (event) => {
@@ -478,6 +475,7 @@ const CustomerSurveyTable = () => {
   }, [dataTable]);
 
   const onSubmit = () => {
+    console.log(dataTable)
     const familyData = dataTable.find((data) => data.label === "family");
     const bachelorData = dataTable.find((data) => data.label === "bachelor");
     const sonData = dataTable.find((data) => data.label === "son");
@@ -486,42 +484,42 @@ const CustomerSurveyTable = () => {
 
     const submitFormData = {
       apptId: +apptId,
-      customerId: selectedCustomer?.customerId,
+      customerId: +selectedCustomer?.customerId,
       // surveyId: 0,
       influence: {
-        family: +familyData?.infulence,
-        bachelor: +bachelorData?.infulence,
-        son: +sonData?.infulence,
-        retire: +retireData?.infulence,
-        doubleAsset: +doubleAssetData?.infulence,
+        family: familyData?.infulence,
+        bachelor: bachelorData?.infulence,
+        son: sonData?.infulence,
+        retire: retireData?.infulence,
+        doubleAsset: doubleAssetData?.infulence,
       },
       finance: {
         family: {
-          ans1: +familyData?.finance,
-          ans2: +familyData?.money,
+          ans1: familyData?.finance,
+          ans2: familyData?.money,
         },
         bachelor: {
-          ans1: +bachelorData?.finance,
-          ans2: +bachelorData?.money,
+          ans1: bachelorData?.finance,
+          ans2: bachelorData?.money,
         },
         son: {
-          ans1: +sonData?.finance,
-          ans2: +sonData?.money,
+          ans1: sonData?.finance,
+          ans2: sonData?.money,
         },
         retire: {
-          ans1: +retireData?.finance,
-          ans2: +retireData?.money,
+          ans1: retireData?.finance,
+          ans2: retireData?.money,
         },
         doubleAsset: {
-          ans1: +doubleAssetData?.finance,
-          ans2: +doubleAssetData?.money,
+          ans1: doubleAssetData?.finance,
+          ans2: doubleAssetData?.money,
         },
       },
       others: {
-        other1: formValue?.others?.other1,
-        other2: formValue?.others?.other2,
-        other3: formValue?.others?.other3,
-        other4: formValue?.others?.other4,
+        ans1: formValue?.others?.other1?formValue.others.other1.toString() : '',
+        ans2: formValue?.others?.other2?formValue.others.other2.toString() : '',
+        ans3: formValue?.others?.other3?formValue.others.other3.toString() : '',
+        ans4: formValue?.others?.other4?formValue.others.other4.toString() : '',
       },
       prior: {
         family: +familyData?.prior,
@@ -533,14 +531,14 @@ const CustomerSurveyTable = () => {
       hintName: formValue?.hintName,
       isPotential: formValue?.isPotential,
     };
-    console.log(formValue)
+    console.log(submitFormData)
     if (formValue?.hintName) {
       setOpen(false);
       if (!formValue.surveyId) {
         dispatch(createSurvey(submitFormData));
       }
       else {
-        dispatch(updateSurvey(formValue.surveyId, submitFormData));
+        dispatch(updateSurvey({id: formValue.surveyId, data: submitFormData}));
       }
       
     } else {
@@ -561,7 +559,12 @@ const CustomerSurveyTable = () => {
       <div className="closing-body">
         <div className="form-group">
           <FieldLabel name="hintName" label="Tên gợi nhớ" />
-          <Input control={control} name="hintName" className="form-control" />
+          <Controller
+            control={control}
+            name="hintName"
+            render={({field}) => <Input {...field} className="form-control" />}
+          >
+          </Controller>
         </div>
       </div>
       <Divider />
@@ -594,8 +597,7 @@ const CustomerSurveyTable = () => {
             <CheckboxControl control={control} name="isPotential" label="Không còn tiềm năng" />
           </div>
           {selectedCustomer?.customerId && !surveys?.isHistory && (
-            <div>
-              
+            <div>              
               <Popover
                 placement="bottomRight"
                 content={content}
@@ -632,13 +634,13 @@ const generateTableData = (customerId, survey = {}) => {
       {
         key: 1,
         type: "Quỹ dự phòng đảm bảo tài chính cho người mà anh/chị yêu thương",
-        infulence: "",
-        infulence1: influenceValue?.family === 1 ? 1 : "",
-        infulence2: influenceValue?.family === 2 ? 2 : "",
-        infulence3: influenceValue?.family === 3 ? 3 : "",
-        finance: "",
-        finance1: financeValue?.family?.ans1 === 1 ? 1 : "",
-        finance2: financeValue?.family?.ans1 === 2 ? 2 : "",
+        infulence: influenceValue?.family,
+        infulence1: influenceValue?.family === '1' ? '1' : "",
+        infulence2: influenceValue?.family === '2' ? '2' : "",
+        infulence3: influenceValue?.family === '3' ? '3' : "",
+        finance: financeValue?.family?.ans1,
+        finance1: financeValue?.family?.ans1 === '1' ? '1' : "",
+        finance2: financeValue?.family?.ans1 === '2' ? '2' : "",
         money: financeValue?.family?.ans2,
         prior: priorityValue?.family,
         label: "family",
@@ -646,13 +648,13 @@ const generateTableData = (customerId, survey = {}) => {
       {
         key: 2,
         type: "Quỹ đảm bảo hoàn thành bậc cử nhân",
-        infulence: "",
-        infulence1: influenceValue?.bachelor === 1 ? 1 : "",
-        infulence2: influenceValue?.bachelor === 2 ? 2 : "",
-        infulence3: influenceValue?.bachelor === 3 ? 3 : "",
-        finance: "",
-        finance1: financeValue?.bachelor?.ans1 === 1 ? 1 : "",
-        finance2: financeValue?.bachelor?.ans1 === 2 ? 2 : "",
+        infulence: influenceValue?.bachelor,
+        infulence1: influenceValue?.bachelor === '1' ? '1' : "",
+        infulence2: influenceValue?.bachelor === '2' ? '2' : "",
+        infulence3: influenceValue?.bachelor === '3' ? '3' : "",
+        finance: financeValue?.bachelor?.ans1,
+        finance1: financeValue?.bachelor?.ans1 === '1' ? '1' : "",
+        finance2: financeValue?.bachelor?.ans1 === '2' ? '2' : "",
         money: financeValue?.bachelor?.ans2,
         prior: priorityValue?.bachelor,
         label: "bachelor",
@@ -660,13 +662,13 @@ const generateTableData = (customerId, survey = {}) => {
       {
         key: 3,
         type: "Quỹ khởi nghiệp chắp cánh cho con vào đời",
-        infulence: "",
-        infulence1: influenceValue?.son === 1 ? 1 : "",
-        infulence2: influenceValue?.son === 2 ? 2 : "",
-        infulence3: influenceValue?.son === 3 ? 3 : "",
-        finance: "",
-        finance1: financeValue?.son?.ans1 === 1 ? 1 : "",
-        finance2: financeValue?.son?.ans1 === 2 ? 2 : "",
+        infulence: influenceValue?.son,
+        infulence1: influenceValue?.son === '1' ? '1' : "",
+        infulence2: influenceValue?.son === '2' ? '2' : "",
+        infulence3: influenceValue?.son === '3' ? '3' : "",
+        finance: financeValue?.son?.ans1,
+        finance1: financeValue?.son?.ans1 === '1' ? '1' : "",
+        finance2: financeValue?.son?.ans1 === '2' ? '2' : "",
         money: financeValue?.son?.ans2,
         prior: priorityValue?.son,
         label: "son",
@@ -674,13 +676,13 @@ const generateTableData = (customerId, survey = {}) => {
       {
         key: 4,
         type: "Quỹ lương hưu từ năm 61-85 tuổi",
-        infulence: "",
-        infulence1: influenceValue?.retire === 1 ? 1 : "",
-        infulence2: influenceValue?.retire === 2 ? 2 : "",
-        infulence3: influenceValue?.retire === 3 ? 3 : "",
-        finance: "",
-        finance1: financeValue?.retire?.ans1 === 1 ? 1 : "",
-        finance2: financeValue?.retire?.ans1 === 2 ? 2 : "",
+        infulence: influenceValue?.retire,
+        infulence1: influenceValue?.retire === '1' ? '1' : "",
+        infulence2: influenceValue?.retire === '2' ? '2' : "",
+        infulence3: influenceValue?.retire === '3' ? '3' : "",
+        finance: financeValue?.retire?.ans1,
+        finance1: financeValue?.retire?.ans1 === '1' ? '1' : "",
+        finance2: financeValue?.retire?.ans1 === '2' ? '2' : "",
         money: financeValue?.retire?.ans2,
         prior: priorityValue?.retire,
         label: "retire",
@@ -689,12 +691,12 @@ const generateTableData = (customerId, survey = {}) => {
         key: 5,
         type: "Quỹ đầu tư gấp đôi tài sản",
         infulence: "",
-        infulence1: influenceValue?.doubleAsset === 1 ? 1 : "",
-        infulence2: influenceValue?.doubleAsset === 2 ? 2 : "",
-        infulence3: influenceValue?.doubleAsset === 3 ? 3 : "",
-        finance: "",
-        finance1: financeValue?.doubleAsset?.ans1 === 1 ? 1 : "",
-        finance2: financeValue?.doubleAsset?.ans2 === 2 ? 2 : "",
+        infulence1: influenceValue?.doubleAsset === '1' ? '1' : "",
+        infulence2: influenceValue?.doubleAsset === '2' ? '2' : "",
+        infulence3: influenceValue?.doubleAsset === '3' ? '3' : "",
+        finance: financeValue?.doubleAsset?.ans1,
+        finance1: financeValue?.doubleAsset?.ans1 === '1' ? '1' : "",
+        finance2: financeValue?.doubleAsset?.ans2 === '2' ? '2' : "",
         money: financeValue?.doubleAsset?.ans2,
         prior: priorityValue?.doubleAsset,
         label: "doubleAsset",
@@ -711,10 +713,10 @@ const generateFormData = (customerId, survey = {}) => {
     surveyId: !isEmpty(survey)?survey.surveyId:0,
     customerId: customerId,
     others: {
-      other1: !isEmpty(others)?  others.other1 : [],
-      other2: !isEmpty(others)?  others.other2 : [],
-      other3: !isEmpty(others)?  others.other3 : [],
-      other4: !isEmpty(others)?  others.other4 : [],
+      other1: !isEmpty(others)?  others.ans1.split(',') : [],
+      other2: !isEmpty(others)?  others.ans2.split(',') : [],
+      other3: !isEmpty(others)?  others.ans3.split(',') : [],
+      other4: !isEmpty(others)?  others.ans4.split(',') : [],
     },
     hintName: !isEmpty(survey)? survey.hintName : "",
     isPotential: !isEmpty(survey)? survey.isPotential : false,

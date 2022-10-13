@@ -65,7 +65,7 @@ export const getCompanyHistoryById = createAsyncThunk("surveys/company-history",
 //   }
 // });
 
-export const updateSurvey = createAsyncThunk("surveys/update", async (id, data) => {
+export const updateSurvey = createAsyncThunk("surveys/update", async ({id, data}) => {
   try {
     const res = await patchSurvey(id, data);
     if (res?.status === 201 || res?.status === 200) {

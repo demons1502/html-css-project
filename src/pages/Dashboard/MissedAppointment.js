@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PaginationCommon from '../../components/common/Pagination';
-import { getMissedAppointments } from '../../slices/dashboard';
+import { getMissedAppointments, setCustomerCareForItemAppointment } from '../../slices/dashboard';
 import MissedItemDateTime from './commons/MissedAppointment/missed-item-col-date-time';
 import MissedItemName from './commons/MissedAppointment/missed-item-col-name';
 import { limitItem, offsetItem } from './constants';
@@ -23,7 +23,12 @@ export default function MissedAppointment() {
   const navigate = useNavigate();
 
   const handleCSKH = (value) => {
-    navigate(`/customer-care/${value?.customerApptRecords[0]?.customerId}`);
+    const customerId = value?.customerApptRecords[0]?.customerId || 0;
+    const name = value?.customerApptRecords[0]?.name || '';
+    const CUSTOMER_CARE_URL =
+      value.typeId === 1 ? `/customer-care?customerId=${customerId}&name=${name}` : `/customer-care`;
+    dispatch(setCustomerCareForItemAppointment({ customerId, isCare: true }));
+    navigate(CUSTOMER_CARE_URL);
   };
 
   const columns = [
@@ -57,6 +62,7 @@ export default function MissedAppointment() {
       limit,
       offset,
       endDate: decodeURIComponent(moment().utc()),
+      isCare: false,
     };
     dispatch(getMissedAppointments(payload));
   }, [dispatch, limit, offset]);

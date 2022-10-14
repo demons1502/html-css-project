@@ -100,7 +100,7 @@ export default function AppointmentItemCard(props) {
                   <S.TextP span={24}>Thời gian:</S.TextP>
                   <S.WrapTextItem $fontWeight="600" $lineHeight="15px" span={24}>
                     {moment(startTime).format(hhmmFormat)} (
-                    {Math.round(moment(endTime).diff(moment(startTime), 'minutes', true))}p)
+                    {moment(endTime).diff(moment(startTime), 'minutes')}p)
                   </S.WrapTextItem>
                 </Row>
               </S.WrapBorderRight>

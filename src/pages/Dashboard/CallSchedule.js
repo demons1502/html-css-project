@@ -110,10 +110,6 @@ export default function CallSchedule() {
       key: 'note',
       render: (_, record) => <CallScheduleItemNote props={record} />,
     },
-    // {
-    //   dataIndex: 'customer',
-    //   render: ({ phone1, phone2, phone3 }) => <CallScheduleItemCall record={{ phone1, phone2, phone3 }} />,
-    // },
     {
       width: 100,
       key: 'action',
@@ -122,6 +118,7 @@ export default function CallSchedule() {
           record={{
             customerCallId: record.id,
             lastCall: record.lastCall,
+            isChecked: record.isChecked,
             phone1: record?.customer?.phone1,
             phone2: record?.customer?.phone2,
             phone3: record?.customer?.phone3,

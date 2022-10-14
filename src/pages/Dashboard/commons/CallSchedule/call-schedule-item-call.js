@@ -1,23 +1,21 @@
 import { Checkbox, message, Tooltip } from 'antd';
-import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import call from '../../../../assets/images/icons/callDashboard.svg';
-import * as S from '../../styles';
 import { createCallRecord } from '../../../../slices/customerCall';
-import moment from 'moment';
-import { dateContractFormat } from '../../constants';
 import { setDoneCall } from '../../../../slices/dashboard';
 import { RESPONSE_STATUS } from '../../../../ultis/constant';
+import * as S from '../../styles';
 
 export default function CallScheduleItemCall(props) {
   const { t } = useTranslation();
   const { record } = props;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const customerCall = useSelector(state => state.customerCall);
-  const checked = moment().format(dateContractFormat) === record.lastCall;
+  const [checked, setChecked] = useState(record.isChecked);
+  const customerCall = useSelector((state) => state.customerCall);
 
   useEffect(() => {
     const res = customerCall?.newCallRecordResponse;
@@ -27,20 +25,19 @@ export default function CallScheduleItemCall(props) {
     if (res?.status === RESPONSE_STATUS.FAILED) {
       message.error('Không thể tạo cuộc gọi');
     }
-  }, [customerCall?.newCallRecordResponse])
+  }, [customerCall?.newCallRecordResponse]);
 
   const handleCall = async (value) => {
     dispatch(createCallRecord(Number(value?.customerCallId || 0)));
   };
 
   const handleCheckCallDone = (e) => {
-    if (!checked && e.target.checked) {
-      const payload = {
-        customerCallId: record?.customerCallId,
-        isInstant: true,
-      };
-      dispatch(setDoneCall(payload));
-    }
+    setChecked(e.target.checked);
+    const payload = {
+      customerCallId: record?.customerCallId,
+      isChecked: e.target.checked,
+    };
+    dispatch(setDoneCall(payload));
   };
 
   return (

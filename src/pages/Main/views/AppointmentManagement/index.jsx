@@ -24,8 +24,8 @@ const Appointment = () => {
   const [event, setEvent] = useState();
   const [openAppointment, setOpenAppointment] = useState(false);
   const [customer, setCustomer] = useState({});
-  const startDate = moment().clone().weekday(0).format('YYYY-MM-DD 00:00:00');
-  const endDate = moment().clone().weekday(6).format('YYYY-MM-DD 23:59:59');
+  const startDate = moment().utc().clone().weekday(0).format('YYYY-MM-DD 00:00:00');
+  const endDate = moment().utc().clone().weekday(6).format('YYYY-MM-DD 23:59:59');
 
   useEffect(() => {
     dispatch(
@@ -100,21 +100,21 @@ const Appointment = () => {
   return (
     <S.WrapContainer>
       <S.WrapTitle>Quản lý lịch hẹn</S.WrapTitle>
-      <Row gutter={[8, 16]}>
-        <Col lg={16} md={24} sm={24}>
-          <CalendarCustom eventActive={event} handleEvent={handleEvent} />
+      <Row gutter={ [8, 16] }>
+        <Col lg={ 16 } md={ 24 } sm={ 24 }>
+          <CalendarCustom eventActive={ event } handleEvent={ handleEvent } />
         </Col>
-        <Col lg={8} md={24} sm={24}>
-          <InformationAppointment info={event} />
+        <Col lg={ 8 } md={ 24 } sm={ 24 }>
+          <InformationAppointment info={ event } />
         </Col>
       </Row>
       <CreateAppointment
-        open={openAppointment}
-        handleCancel={() => {
+        open={ openAppointment }
+        handleCancel={ () => {
           setOpenAppointment(false);
-        }}
-        customerInfo={customer}
-        outsideLink={true}
+        } }
+        customerInfo={ customer }
+        outsideLink={ true }
       />
     </S.WrapContainer>
   );

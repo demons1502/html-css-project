@@ -20,7 +20,8 @@ export const WrapSelect = styled(Select)`
     height: 40px !important;
     align-items: center;
     & .ant-select-selection-item {
-      font-weight: 700;
+      font-weight: 600;
+      color: #333333;
     }
   }
   &.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector{
@@ -36,6 +37,7 @@ export const WrapDatePicker = styled(DatePicker)`
   height: 40px !important; 
   >.ant-picker-input>input[disabled]{
     color: #333333;
+    font-weight: 600;
   }
 `;
 

@@ -11,6 +11,9 @@ import * as S from './styles';
 
 export const GroupButton = ({ handleOpenEdit, handleDelete, info }) => {
   const navigate = useNavigate();
+  const nowDate = new Date();
+  const endEnd = new Date(info.endTime)
+
   const { customerApptRecords } = info
   const handleFinacial = () => {
     navigate(`/advise/survey?appointment_id=${info.apptId}`);
@@ -20,28 +23,34 @@ export const GroupButton = ({ handleOpenEdit, handleDelete, info }) => {
     navigate(`/advise/finance-consultant?appointment_id=${info.apptId}`);
   };
 
-  const checkCustomer = () => {
-    const consults = customerApptRecords.every(i => i.consultId !== null)
-    const survey = customerApptRecords.every(i => i.surveyId !== null)
-    return { consults: consults, survey: survey }
+  const checkLink = (key) => {
+    const value = customerApptRecords.every(i => i[key] !== null)
+    return endEnd.getTime() < nowDate.getTime()
+      ? value ? true : false
+      : true
   }
 
   return (
     <S.WrapContainer>
       <S.WrapLeft>
-        { checkCustomer().consults &&
+        { checkLink('consultId') &&
           <S.Button onClick={ handleFinanceConsultant } type="primary">
             Tư vấn
           </S.Button>
         }
-        { checkCustomer().survey &&
+
+        { checkLink('surveyId') &&
           <S.Button onClick={ handleFinacial } type="primary">
             Khảo sát
           </S.Button>
         }
-        <S.Button onClick={ () => navigate('/advise/financial-solutions') } type="primary">
-          Giải pháp
-        </S.Button>
+
+        { checkLink('solutionId') &&
+          <S.Button onClick={ () => navigate(`/advise/financial-solutions?appointment_id=${info.apptId}`) } type="primary">
+            Giải pháp
+          </S.Button>
+        }
+
       </S.WrapLeft>
       <S.WrapRight>
         <S.ButtonIcon onClick={ handleOpenEdit } type="text" icon={ <Edit color="#D3D3D3" /> }></S.ButtonIcon>

@@ -1,6 +1,17 @@
 @use "../abstracts/" as *;
 
 .btn {
+  &-ChangePhoto {
+    border: none;
+    cursor: pointer;
+    padding: 16px;
+    color: var(--color);
+    border-radius: var(--border-radius);
+    background-color: var(--backgroundColor);
+    &:hover {
+      color: $icon-color;
+    }
+  }
   display: block;
   width: 100%;
   font-size: 16px;
@@ -10,7 +21,6 @@
   border-radius: var(--border-radius);
   text-transform: uppercase;
   border: none;
-  padding: 0;
   cursor: pointer;
   padding: 10px;
   border-bottom: 2px solid $icon-color;

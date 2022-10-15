@@ -1,0 +1,73 @@
+<section class="login bg-image "
+    style="background-image: url('assets/images/brooke-lark-08bOYnH_r_E-unsplash\ 2.png');">
+    <div class="mask d-flex align-items-center gradient-custom-3">
+        <div class="container">
+            <div class="row d-flex justify-content-end align-items-center">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <div class="login-card mb-5 p-5 mt-5">
+                        <div class="login-card-body body">
+                            <div class="d-flex justify-content-center">
+                                <figure class="body-img px-3">
+                                    <img src="assets/images/online-registration 1.png" class="" alt="">
+                                </figure>
+                            </div>
+
+                            <form class="body-form">
+
+                                <include src="components/form-input.html" locals='{
+                                    "type" : "text",
+                                    "classInput" : "form-control form-control-lg mb-4",
+                                    "placeholder" : "Your Name",
+                                    "boxShadow" : "box-shadow: 0px 0px 6px $box-search-color"
+                                }'></include>
+
+                                <include src="components/form-input.html" locals='{
+                                    "type" : "gmail",
+                                    "classInput" : "form-control form-control-lg mb-4",
+                                    "placeholder" : "Your Gmail",
+                                    "boxShadow" : "box-shadow: 0px 0px 6px $box-search-color"
+                                }'></include>
+
+                                <include src="components/form-input.html" locals='{
+                                    "type" : "password",
+                                    "classInput" : "form-control form-control-lg mb-4",
+                                    "placeholder" : "Your Password",
+                                    "boxShadow" : "box-shadow: 0px 0px 6px $box-search-color"
+                                }'></include>
+
+                                <include src="components/form-input.html" locals='{
+                                    "type" : "password",
+                                    "classInput" : "form-control form-control-lg mb-4",
+                                    "placeholder" : "Confrim Password",
+                                    "boxShadow" : "box-shadow: 0px 0px 6px $box-search-color"
+                                }'></include>
+
+                                <div class="body-btn row ">
+                                    <div class="button-login d-flex justify-content-center col-md-6">
+                                        <include src="components/button.html" locals='{
+                                            "class" : "btn-name btn btn-success btn-block btn-sm text-body",
+                                            "backgroundColor" : "#8c99dd",
+                                            "color" : "",
+                                            "boderRadius" : "20px",
+                                            "button" : "Login"
+                                        }'></include>
+                                    </div>
+                                    <div class="button-login d-flex justify-content-center col-md-6">
+                                        <include src="components/button.html" locals='{
+                                            "class" : "btn-pass btn btn-success btn-block btn-sm  text-body",
+                                            "backgroundColor" : "#b7b7b7",
+                                            "color" : "",
+                                            "boderRadius" : "20px",
+                                            "button" : "Register"
+                                        }'></include>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

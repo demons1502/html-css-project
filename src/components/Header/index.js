@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Avatar, Dropdown, Menu, Layout } from 'antd';
 import { useTranslation } from 'react-i18next';
 import InputSearch from '../common/InputSearch';
+import ModalSearch from '../ModalSearch';
 
 import { logout } from '../../slices/auth';
 import Logo from '../../assets/images/logo.png';
@@ -23,6 +24,7 @@ export default function Header() {
   const [payload, setPayload] = useState({});
   const titlesHeader = [t('common.slogan'), t('common.support')];
   const [openSearch, setopenSearch] = useState(false);
+  const [isOpenResultModal, setIsOpenResultModal] = useState(false);
   const [title, setTitle] = useState(titlesHeader[0]);
   const [curNewtitle, setCurNewtitle] = useState(-1);
   const { me } = useSelector((state) => state.auth);
@@ -47,6 +49,7 @@ export default function Header() {
 
   const hanldOpenSearch = () => {
     console.log('dsadsadas');
+    setIsOpenResultModal((prev) => !prev);
     width < 1024 && setopenSearch(!openSearch)
   }
 
@@ -80,34 +83,35 @@ export default function Header() {
   );
 
   return (
-    <Header className='header'>
-      <div className='header__left'>
-        <img src={ Logo } alt='' />
-        <span>{ t('common.manulife') }</span>
+    <Header className="header">
+      <div className="header__left">
+        <img src={Logo} alt="" />
+        <span>{t('common.manulife')}</span>
       </div>
-      <div className='header__center'>
-        <p>{ title }</p>
+      <div className="header__center">
+        <p>{title}</p>
       </div>
 
-      <div className='header__right'>
+      <div className="header__right">
         <InputSearch
-          onClick={ hanldOpenSearch }
-          classStyle={ width < 1024 ? !openSearch ? 'input-narrow-mode' : 'input-focused' : 'input-item-search-dark' }
-          setPayload={ setPayload }
+          onClick={hanldOpenSearch}
+          classStyle={width < 1024 ? (!openSearch ? 'input-narrow-mode' : 'input-focused') : 'input-item-search-dark'}
+          setPayload={setPayload}
         />
 
-        <div className='header__right__user'>
-          <span className='header__right__user__name'>{ me.fullname }</span>
-          <Dropdown overlay={ menu } placement="bottomRight">
-            <div className='header__right__user__avatar'>
-              <Avatar size={ 30 } src={ !me.avatar ? AvantarDefault : me.avatar } />
-              <div className='header__right__user__box-icon'>
-                <img src={ ArrowDownIcon } alt='' />
+        <div className="header__right__user">
+          <span className="header__right__user__name">{me.fullname}</span>
+          <Dropdown overlay={menu} placement="bottomRight">
+            <div className="header__right__user__avatar">
+              <Avatar size={30} src={!me.avatar ? AvantarDefault : me.avatar} />
+              <div className="header__right__user__box-icon">
+                <img src={ArrowDownIcon} alt="" />
               </div>
             </div>
           </Dropdown>
         </div>
 
+        <ModalSearch isVisible={isOpenResultModal} />
       </div>
     </Header>
   );

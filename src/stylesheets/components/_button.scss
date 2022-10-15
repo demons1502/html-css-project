@@ -1,22 +1,22 @@
 @use "../abstracts/" as *;
 
-
 .btn {
-    display: block;
-    width: 100%;
-    font-size: 16px;
-    font-family: $bold-font;
-    background: var(--backgroundColor);
-    color: var(--color);
-    text-transform: uppercase;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    padding-bottom: 20px;
-    border-bottom: 2px solid $icon-color;
-    margin-top: 16px;
-    transition: 0.3s linear;
-    &:hover {
-      color: $icon-color;
-    }
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  font-family: $bold-font;
+  background-color: var(--backgroundColor);
+  color: var(--color);
+  border-radius: var(--border-radius);
+  text-transform: uppercase;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 2px solid $icon-color;
+  margin-top: 16px;
+  transition: 0.3s linear;
+  &:hover {
+    color: $icon-color;
   }
+}

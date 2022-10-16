@@ -61,9 +61,7 @@ let count = document.querySelector("#count");
 // button click
 let clicked = false;
 
-likeIcon.className = "fa-regular fa-thumbs-up";
-
-likeBtn.addEventListener("click", () => {
-      likeIcon.classList.toggle("fas");
+likeIcon?.classList.add("fa-regular", "fa-thumbs-up");
+likeBtn?.addEventListener("click", () => {
+  likeIcon.classList.toggle("fas");
 });
-

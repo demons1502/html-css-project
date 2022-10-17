@@ -33,9 +33,12 @@
     <div class="blog-toolbar__item">
         <nav>
             <ul class="pagination">
-                <li class="page-item"><a class="page-link active" href="javascript: void(0)">1</a></li>
-                <li class="page-item"><a class="page-link" href="javascript: void(0)">2</a></li>
-                <li class="page-item"><a class="page-link" href="javascript: void(0)">3</a></li>
+                <include src="./components/list.html" locals='{
+                  "classLi" : "page-item",
+                  "classLink" : "page-link",
+                  "list": "[1,2,3]"
+                  }'>
+                  </include>
                 <li class="page-item">
                     <a class="page-link rounded-0" href="javascript: void(0)" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>

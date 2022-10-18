@@ -1,0 +1,35 @@
+<div id="modal-container">
+    <div class="popup" id="modal">
+        <div class="modal-header">
+            <figure class="d-flex justify-content-center">
+                <img src="assets/images/404-tick.png" alt="">
+            </figure>
+        </div>
+        <h4>Success</h4>
+
+        <div class="modal-body">
+            <p class="d-flex justify-content-center">Woah, successfully completed.</p>
+            <div class="row">
+                <div class="d-flex justify-content-center col-md-6">
+                    <include src="components/button.html" locals='{
+                    "class" : "btn  btn-block btn-Cancel",
+                    "onClick" : "closePopup()",
+                    "backgroundColor" : "#D0DEEB",
+                    "button" : "Cancel",
+                    "color" : "#9BA9B9",
+                    "boderRadius" : ""
+                    }'></include>
+                </div>
+                <div class="d-flex justify-content-center col-md-6">
+                    <include src="components/button.html" locals='{
+                    "class" : "btn  btn-block",
+                    "backgroundColor" : "#6fd649",
+                    "button" : "Login",
+                    "color" : "#FFF",
+                    "boderRadius" : ""
+                    }'></include>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

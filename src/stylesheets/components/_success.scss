@@ -1,0 +1,56 @@
+@use "../abstracts/" as *;
+
+#modal-container {
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.1);
+  visibility: hidden;
+  transition: transform 0.4s, top 0.4s;
+}
+#modal-container.show {
+  opacity: 1;
+  pointer-events: all;
+  visibility: visible;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1);
+}
+#modal {
+  border-radius: 10px;
+  background-color: $background-color;
+  max-width: 500px;
+  position: relative;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: transform 0.4s, top 0.4s;
+  .modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 20px;
+
+    img {
+      width: 100px;
+      margin-top: -50px;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+  }
+  h4 {
+    text-align: center;
+    font-size: 38px;
+    margin: 30px 0 10px;
+    color: $text-color-title;
+    font-family: $bold-font;
+  }
+  .modal-body {
+    p {
+      color: $text-color-modal;
+    }
+  }
+}

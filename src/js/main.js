@@ -54,6 +54,7 @@ $(document).ready(function () {
     ],
   });
 });
+// like button
 const likeBtn = document.querySelector(".like__button");
 let likeIcon = document.querySelector("#icon");
 let count = document.querySelector("#count");
@@ -64,4 +65,16 @@ let clicked = false;
 likeIcon?.classList.add("fa-regular", "fa-thumbs-up");
 likeBtn?.addEventListener("click", () => {
   likeIcon.classList.toggle("fas");
+});
+//success register
+const btn_register = document.querySelector(".btn-Register");
+const btn_Cancel = document.querySelector(".btn-Cancel");
+const modal_container = document.getElementById("modal-container");
+
+btn_register.addEventListener("click", () => {
+  //add class Show
+  modal_container.classList.add("show");
+});
+btn_Cancel.addEventListener("click", () => {
+  modal_container.classList.remove("show");
 });

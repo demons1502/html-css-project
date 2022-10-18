@@ -1,6 +1,10 @@
 @use "../abstracts/" as *;
 
 .header {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  background-color: $background-color;
   &-logo {
     &-content {
       font-family: $bold-font;

@@ -1,7 +1,26 @@
 @use "../abstracts/" as *;
 
 .footer-logo {
-    img {
-        width: auto;
+  img {
+    width: auto;
+  }
+}
+.footer-main {
+  &__list {
+    flex: 1;
+    ul {
+      list-style-type: none;
+      padding: 0;
     }
+  }
+  &__title {
+    margin-bottom: 24px;
+  }
+  &__link {
+    display: block;
+    padding-bottom: 12px;
+    text-transform: capitalize;
+    text-decoration: none;
+    color: $text-color;
+  }
 }

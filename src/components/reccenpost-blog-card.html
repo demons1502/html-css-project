@@ -8,5 +8,13 @@
         <h5 class="card-title">{{ cardTitle }}</h5>
         <p class="card-text">{{ cardText }}</p>
         <p class="card-text"><small class="text-muted">{{ cardTime }}</small></p>
+        <div class="d-flex justify-content-center">
+            <include src="components/button.html" locals='{
+            "class" : "btn-ChangePhoto btn-success btn-block",
+            "backgroundColor" : "#b7b7b7",
+            "button" : "Read more",
+            "boderRadius" : "20px"
+        }'></include>
+        </div>
     </div>
 </div>

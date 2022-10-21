@@ -10,3 +10,8 @@
           }
     }
 }
+@include tablet{
+    .leaf {
+        display: none;
+    }
+}

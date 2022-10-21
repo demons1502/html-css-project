@@ -1,22 +1,25 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 .login {
-  &-card {
-    background-color: $bg-card-color;
-    border-radius: 30px;
-    box-shadow: 0px 0px 6px $box-search-color;
-  }
-  &-body {
-    figure {
-      border-radius: 30px;
-      background-color: $bg-img-color;
-      box-shadow: 0px 0px 6px $box-search-color;
+    &-card {
+        background-color: $bg-card-color;
+        border-radius: 30px;
+        box-shadow: 0px 0px 6px $box-search-color;
     }
-  }
-  h5 {
-    font-family: Poppins-bold;
-  }
+    .body {
+        figure {
+            border-radius: 30px;
+            background-color: $bg-img-color;
+            box-shadow: 0px 0px 6px $box-search-color;
+        }
+        &-img-register {
+          margin-top: -20%;
+        }
+    }
+    h5 {
+        font-family: Poppins-bold;
+    }
 }
 .bg-image {
-  background-size: cover;
+    background-size: cover;
 }

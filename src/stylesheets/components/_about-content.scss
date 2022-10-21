@@ -1,61 +1,67 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 .about-page {
-  &-title {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    line-height: 2;
-  }
-  &-button {
-    &__restaurant {
-      button {
-        padding: 10px 15px;
-        font-size: 18px;
-        font-family: $primary-font;
-        border: none;
-        outline: none;
-        border-radius: 35px;
-        cursor: pointer;
-        margin-bottom: 20px;
-        box-shadow: 0px 0px 6px $box-search-color;
-        a {
-          color: $text-color;
-          margin-right: 5px;
-          text-decoration: none;
-          &:hover {
-            color: $hover-color;
-          }
+    &-title {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        h2 {
+            font-family: $bold-font;
+            line-height: 80px;
+            letter-spacing: 5%;
+            vertical-align: top;
         }
-      }
     }
-    &__aboutus {
-      button {
-        padding: 10px 15px;
-        font-size: 18px;
-        font-family: $primary-font;
-        border: none;
-        outline: none;
-        border-radius: 35px;
-        cursor: pointer;
-        margin-bottom: 20px;
-        box-shadow: 0px 0px 6px $box-search-color;
-        a {
-          color: $text-color;
-          margin-right: 5px;
-          text-decoration: none;
-          &:hover {
-            color: $hover-color;
-          }
+    &-button {
+        &__restaurant {
+            button {
+                padding: 10px 15px;
+                font-size: 18px;
+                font-family: $primary-font;
+                border: none;
+                outline: none;
+                border-radius: 35px;
+                cursor: pointer;
+                margin-bottom: 20px;
+                box-shadow: 0px 0px 6px $box-search-color;
+                a {
+                    color: $text-color;
+                    margin-right: 5px;
+                    text-decoration: none;
+                    &:hover {
+                        color: $hover-color;
+                    }
+                }
+            }
         }
-      }
+        &__aboutus {
+            button {
+                padding: 10px 15px;
+                font-size: 18px;
+                font-family: $primary-font;
+                border: none;
+                outline: none;
+                border-radius: 35px;
+                cursor: pointer;
+                margin-bottom: 20px;
+                box-shadow: 0px 0px 6px $box-search-color;
+                a {
+                    color: $text-color;
+                    margin-right: 5px;
+                    text-decoration: none;
+                    &:hover {
+                        color: $hover-color;
+                    }
+                }
+            }
+        }
     }
-  }
-  &-img {
-    &__food3 {
-      img {
-        width: auto;
-      }
+    &-img {
+        &__food2 {
+            .dool {
+                margin-top: -50%;
+            }
+        }
     }
-  }
 }

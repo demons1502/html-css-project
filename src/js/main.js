@@ -78,3 +78,62 @@ btn_register.addEventListener("click", () => {
 btn_Cancel.addEventListener("click", () => {
   modal_container.classList.remove("show");
 });
+// btnRegister = () => {
+//   let ui =` <div class="login-card login loginform mb-5 p-5" id="login">
+//   <div class="login-card-body body">
+//       <div class="d-flex justify-content-center ">
+//           <figure class="body-img">
+//               <img src="assets/images/handshake 1.png" alt="">
+//           </figure>
+//       </div>
+//       <h5 class="body-text text-uppercase text-center mb-3">Welcome back</h5>
+//       <form class="body-form" action="">
+//           <include src="components/form-input.html" locals='{
+//                                   "type" : "text",
+//                                   "classInput" : "form-control form-control-lg mb-4",
+//                                   "placeholder" : "Your Name",
+//                                   "boxShadow" : "box-shadow: 0px 0px 6px $box-search-color"
+//                               }'></include>
+
+//           <include src="components/form-input.html" locals='{
+//                                   "type" : "password",
+//                                   "classInput" : "form-control form-control-lg mb-4",
+//                                   "placeholder" : "Your Password",
+//                                   "boxShadow" : "box-shadow: 0px 0px 6px $box-search-color"
+//                               }'></include>
+
+//           <div class="form-check mb-2 row">
+//               <div class="col-md-5">
+//                   <input class="form-check-input" type="checkbox" value="" id="form2Example3cg" />
+//                   <label class="form-check-label" for="form2Example3g">
+//                       Remember me
+//                   </label>
+//               </div>
+//           </div>
+//           <div class="body-btn row ">
+//               <div class="button-login d-flex justify-content-center col-md-6">
+//                   <include src="components/button.html" locals='{
+//                                           "class" : "btnlogin btn btn-success btn-block btn-sm text-body",
+//                                           "backgroundColor" : "#8c99dd",
+//                                           "color" : "",
+//                                           "boderRadius" : "20px",
+//                                           "button" : "Login"
+//                                       }'></include>
+//               </div>
+//               <div class="button-login d-flex justify-content-center col-md-6">
+//                   <include src="components/button.html" locals='{
+//                                           "class" : "btnRegister btn btn-success btn-block btn-sm  text-body",
+//                                           "backgroundColor" : "#b7b7b7",
+//                                           "color" : "",
+//                                           "boderRadius" : "20px",
+//                                           "button" : "Register"
+//                                       }'></include>
+//               </div>
+//           </div>
+//       </form>
+//   </div>
+// </div>
+// `;
+//   login.append(ui);
+// }
+

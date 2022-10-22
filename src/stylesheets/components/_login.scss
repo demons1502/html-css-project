@@ -1,7 +1,11 @@
 @use "../abstracts/" as *;
 
+// #register {
+//   visibility: hidden;
+// }
 .login {
   &-card {
+    // display: none;
     background-color: $bg-card-color;
     border-radius: 30px;
     box-shadow: 0px 0px 6px $box-search-color;
@@ -20,3 +24,28 @@
 .bg-image {
   background-size: cover;
 }
+// .loginform {
+//   display: block;
+// }
+// .registerform {
+//   display: block;
+// }
+// #login.active {
+//   visibility: hidden;
+// }
+// #register.active {
+// visibility: hidden;
+// opacity: 0;
+// pointer-events: none;
+// }
+// #login {
+//   visibility: hidden;
+// }
+// #register {
+//   visibility: visible;
+// }
+// .showregister {
+//   visibility: visible;
+//   opacity: 1;
+//   pointer-events: all;
+// }

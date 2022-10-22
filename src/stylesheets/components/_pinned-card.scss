@@ -6,8 +6,7 @@
 }
 .review {
   img {
-    width: 100%;
-    object-fit: cover;
+    margin-top: -30px;
   }
   &-card {
     background-color: $background-color-card;

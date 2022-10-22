@@ -1,36 +1,56 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 .header {
-  position: fixed;
-  top: 0;
-  z-index: 1;
-  background-color: $background-color;
-  &-logo {
-    &-content {
-      font-family: $bold-font;
-      font-size: 25px;
-      line-height: 38px;
-      color: $text-logo;
-    }
-  }
-  &-nav {
-    &-list {
-      list-style-type: none;
-      background-color: $background-color-second;
-      padding: 21px 28px;
-      border-radius: 27px;
-      li {
-        a {
-          text-decoration: none;
-          color: $text-color;
+    position: fixed;
+    top: 0;
+    z-index: 999999999;
+    background-color: $background-color;
+    &-logo {
+        &-content {
+            font-family: $bold-font;
+            font-size: 25px;
+            line-height: 38px;
+            color: $text-logo;
         }
-        padding: 10px 32px;
-        border-radius: 27px;
-        transition: all ease-in-out 0.5s;
-        &:hover {
-          background-color: $background-color;
-        }
-      }
     }
-  }
+    &-nav {
+        &-list {
+            list-style-type: none;
+            background-color: $background-color-second;
+            padding: 21px 28px;
+            border-radius: 27px;
+            li {
+                a {
+                    text-decoration: none;
+                    color: $text-color;
+                    display: block;
+                }
+                padding: 10px 32px;
+                border-radius: 27px;
+                transition: all ease-in-out 0.5s;
+                &:hover {
+                    background-color: $background-color;
+                }
+            }
+        }
+    }
+}
+.menu__actions {
+    display: none;
+    background: $background-color;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+@include desktop {
+    .header-nav {
+        flex-direction: column;
+        text-align: center;
+    }
+    #toggle {
+        display: block;
+    }
+    nav {
+        display: none;
+    }
 }

@@ -4,19 +4,20 @@
 
 // Media-Query Mixin
 @mixin tablet {
-  @media screen and (min-width: $medium) {
+  @media screen and (max-width: $medium) {
     @content;
   }
 }
 
 @mixin desktop {
-  @media screen and (min-width: $extra-lager) {
+  @media screen and (max-width: $lager) {
     @content;
   }
 }
 
 @mixin extra-desktop {
-  @media screen and (min-width: $extra-lager-larger) {
+  @media screen and (max-width: $extra-lager-larger) {
     @content;
   }
 }
+

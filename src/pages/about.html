@@ -1,49 +1,33 @@
 <main>
-    <include src="./components/line-blog.html"></include>
-    <include src="components/tittle-search.html"></include>
-    <include src="./components/about-content.html"></include>
-    <include src="./components/line-blog.html"></include>
-    <div class="container ">
-        <div class="about-card row m-5 d-flex">
-            <div class="about-card__body col-md-6 flex-column text-center">
-                <div class="body-card  p-5">
-                    <include src="components/about-card-title.html" locals='{
-                        "cardtitle": "help"
-                        }'></include>
-                        <include src="components/about-card-content.html" locals='{
-                        "link" : "javascript: void(0)",
-                        "cardcontent": "Help Center"
-                        }'></include>
-                        <include src="components/about-card-content.html" locals='{
-                        "link" : "javascript: void(0)",
-                        "cardcontent": "Video Tutorials"
-                        }'></include>
-                        <include src="components/about-card-content.html" locals='{
-                        "link" : "javascript: void(0)",
-                        "cardcontent": "Help Center"
-                        }'></include> 
+    <Section class="py-5 my-5">
+        <include src="components/line-blog.html"></include>
+        <include src="components/tittle-search.html"></include>
+        <include src="./components/about-content.html"></include>
+        <include src="./components/line-blog.html"></include>
+        <div class="container ">
+            <div class="about-card row m-5 d-flex">
+                <div class="about-card__body col-md-6 col-sm-12 flex-column text-center mb-5">
+                    <div class="body-card p-5">
+                        <include src="./components/list-card.html" locals='{
+                            "classTitle" : "list-title",
+                            "classList" : "about-card__title",
+                            "title": "help",
+                            "list": "[`Help Center`, `Video Tutorials`, `Help Center`]"
+                            }'></include>
+                    </div>
                 </div>
-            </div>
-            <div class="about-card__body col-md-6 flex-column text-center">
-                <div class="body-card  p-5">
-                    <include src="components/about-card-title.html" locals='{
-                        "cardtitle": "Developers"
-                        }'></include>
-                        <include src="components/about-card-content.html" locals='{
-                        "link" : "javascript: void(0)",
-                        "cardcontent": "Md. Majharul Islam"
-                        }'></include>
-                        <include src="components/about-card-content.html" locals='{
-                        "link" : "javascript: void(0)",
-                        "cardcontent": "Tanjila Islam"
-                        }'></include>
-                        <include src="components/about-card-content.html" locals='{
-                        "link" : "javascript: void(0)",
-                        "cardcontent": ""
-                        }'></include>
+                <div class="about-card__body col-md-6 col-sm-12 flex-column text-center">
+                    <div class="body-card p-5 d-flex justify-content-center ">
+                        <include src="./components/list-card.html" locals='{
+                            "classTitle" : "list-title",
+                            "classList" : "about-card__title",
+                            "title": "Developers",
+                            "list": "[`Md. Majharul Islam`, `Tanjila Islam`,`Mlưila`]"
+                            }'></include>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <include src="./components/line-blog.html"></include>
+        <include src="./components/line-blog.html"></include>
+    </Section>
 </main>

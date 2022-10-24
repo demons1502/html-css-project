@@ -1,4 +1,4 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 .about-card-content {
     a {
@@ -7,10 +7,10 @@
         text-decoration: none;
         &:hover {
             color: $hover-color;
-          }
+        }
     }
 }
-@include tablet{
+@include tablet {
     .leaf {
         display: none;
     }

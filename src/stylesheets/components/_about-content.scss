@@ -7,10 +7,45 @@
         flex-direction: column;
 
         h2 {
-            font-family: $bold-font;
+            font-family: $Playfair-Display-font;
+            font-weight: bold;
+            font-size: 64px;
             line-height: 80px;
+            line-height: 125%;
+            text-align: left;
+            vertical-align: Top;
             letter-spacing: 5%;
+            word-spacing: 18px;
+            width: 702px;
+            height: 173px;
+        }
+        @include tablet {
+            h2 {
+                width: auto;
+                font-size: 40px;
+                margin: 0 auto 23px;
+            }
+        }
+        p {
+            font-family: $primary-font;
+            font-style: $Playfair-Display-font;
+            font-size: 22px;
+            line-height: 46px;
+            line-height: 210%;
+            text-align: left;
             vertical-align: top;
+            letter-spacing: 5%;
+            left: 118px;
+            top: 546px;
+            width: 419px;
+            height: 214px;
+            color: #6b6b6b;
+        }
+        @include tablet {
+            p {
+                width: auto;
+                margin: 0 auto 23px;
+            }
         }
     }
     &-button {
@@ -58,9 +93,17 @@
         }
     }
     &-img {
+        &__food {
+            border-radius: 50%;
+        }
         &__food2 {
             .dool {
                 margin-top: -50%;
+            }
+        }
+        @include tablet {
+            .dool {
+                display: none;
             }
         }
     }

@@ -1,6 +1,5 @@
-<include src="components/line-blog.html"></include>
-<include src="components/tittle-search.html"></include>
 <section class="contact-area py-5 my-5 ">
+    <include src="components/tittle-search.html"></include>
     <div class="container">
         <div class="row">
             <figure class="col-lg-6 contact-area-img">
@@ -10,16 +9,8 @@
                 <div class="section-title contact-area-title mb-4 text-center">
                     <h2>CONTACT US ABOUT</h2>
                 </div>
-                <div class="contact-area-info__list mb-3">
-                    <ul>
-                        <li><i class="fas fa-map-marker-alt"></i>470 Trần Đại Nghĩa-Ngũ Hành Sơn-Đà Nẵng</li>
-                        <li><i class="fas fa-envelope"></i>mailencutephomaique@gmail.com</li>
-                    </ul>
-                </div>
                 <div class="contact-area-form">
                     <form action="javascript: void(0)">
-                        <textarea cols="10" rows="4" class="w-100 custom-textarea " name="message" id="message"
-                            placeholder="Write Message..."></textarea>
                         <div class="row">
                             <include src="components/form-input.html" locals='{
                                 "class" : "form-input col-md-6",
@@ -32,6 +23,8 @@
                                 "placeholder" : "Your Mail"
                             }'></include>
                         </div>
+                        <textarea cols="10" rows="3" class="w-100 custom-textarea " name="message" id="message"
+                            placeholder="Write Message..."></textarea>
                         <include src="components/button.html" locals='{
                             "class" : "btn",
                             "backgroundColor" : "none",
@@ -39,6 +32,12 @@
                             "button" : "SUBMIT MESSAGE"
                         }'></include>
                     </form>
+                </div>
+                <div class="contact-area-info__list mb-3 mt-4">
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i>470 Trần Đại Nghĩa-Ngũ Hành Sơn-Đà Nẵng</li>
+                        <li><i class="fas fa-envelope"></i>mailencutephomaique@gmail.com</li>
+                    </ul>
                 </div>
             </div>
         </div>

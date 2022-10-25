@@ -10,6 +10,17 @@
   src: url(../assets/fonts/Poppins-bold.ttf);
 }
 
+@font-face {
+  font-family: $SemiBold-font;
+  src: url(../assets/fonts/Poppins-SemiBold.ttf);
+}
+
+@font-face {
+  font-family: $Playfair-Display-font;
+  src: url(../assets/fonts/PlayfairDisplay-Regular.ttf);
+
+}
+
 body {
   font-family: $primary-font;
   font-weight: 400;

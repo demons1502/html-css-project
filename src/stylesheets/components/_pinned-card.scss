@@ -1,34 +1,30 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 .slick-next::before,
 .slick-prev::before {
-  color: $text-color;
+    color: $text-color;
 }
 .review {
-  img {
-    margin-top: -30px;
-  }
-  &-card {
-    background-color: $background-color-card;
-    padding: 10px 32px;
-    border-radius: 27px;
-    &-reviewers__rating {
-      $percent: calc(var(--rating) / 5 * 100%);
-      font-size: calc(0.73 * 24px);
-      &::before {
-        content: "★★★★★";
-        font-size: 25px;
-        background: -webkit-linear-gradient(
-          0deg,
-          $icon-color $percent,
-          $text-color calc(100% - $percent)
-        );
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
+    img {
+        margin-top: -30px;
     }
-    &-reviewers__info {
-      font-family: $bold-font;
+    &-card {
+        background-color: $background-color-card;
+        padding: 10px 32px;
+        border-radius: 27px;
+        &-reviewers__rating {
+            $percent: calc(var(--rating) / 5 * 100%);
+            font-size: calc(0.73 * 24px);
+            &::before {
+                content: '★★★★★';
+                font-size: 25px;
+                background: -webkit-linear-gradient(0deg, $icon-color $percent, $text-color calc(100% - $percent));
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+        &-reviewers__info {
+            font-family: $bold-font;
+        }
     }
-  }
 }

@@ -1,21 +1,21 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 .slider {
-  width: 90%;
-  margin: auto;
-  padding: 20px 0;
-  img {
-    width: 100%;
-    object-fit: cover;
-  }
-  &-item {
-    figure {
-      width: 80%;
-      margin: auto;
+    width: 90%;
+    margin: auto;
+    padding: 20px 0;
+    img {
+        width: 100%;
+        object-fit: cover;
     }
-  }
-  &-wrapper {
-    background: linear-gradient($background-color, $background-color-second);
-    border-radius: 30px;
-  }
+    &-item {
+        figure {
+            width: 80%;
+            margin: auto;
+        }
+    }
+    &-wrapper {
+        background: linear-gradient($background-color, $background-color-second);
+        border-radius: 30px;
+    }
 }

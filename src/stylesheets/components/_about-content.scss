@@ -20,8 +20,10 @@
         }
         @include tablet {
             h2 {
+                letter-spacing: 2%;
+                line-height: 2;
                 width: auto;
-                font-size: 40px;
+                font-size: 30px;
             }
         }
         p {
@@ -40,8 +42,10 @@
         }
         @include tablet {
             p {
+                letter-spacing: 2%;
+                font-size: 17px;
                 width: auto;
-                margin: 0 auto 23px;
+                margin-bottom: 60px;
             }
         }
     }

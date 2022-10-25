@@ -21,3 +21,13 @@
   }
 }
 
+@mixin  line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: $background-color;
+  color: $color-line;
+  padding: 0 15px;
+}
+

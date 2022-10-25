@@ -1,20 +1,37 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 .line {
     position: relative;
     height: 1px;
     width: 100%;
     margin: 36px 0;
-    background-color: #d4d4d4;
+    background-color: $text-color;
 }
 
 .line::before {
+    @include line ;
+}
+.line-blog::before {
+    content: url(../assets/images/find\ 1\ \(1\).jpg);
+    @include line ;
+}
+.line-about::before {
     content: url(../assets/images/about\ 1.jpg);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    color: #232836;
-    padding: 0 15px;
+    @include line ;
+}
+.line-about-develop::before {
+    content: url(../assets/images/team\ 1.jpg);
+    @include line ;
+}
+.line-contact::before {
+    content: url(../assets/images/about\ 1.jpg);
+    @include line ;
+}
+.line-detail-blog::before {
+    content: url(../assets/images/newsfeed\ 1.png);
+    @include line ;
+}
+.line-profile::before {
+    content: url(../assets/images/find\ 1\ \(1\).jpg);
+    @include line ;
 }

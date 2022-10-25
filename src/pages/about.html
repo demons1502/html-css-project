@@ -1,9 +1,13 @@
 <main>
     <Section class="py-5 my-5">
-        <include src="components/line-blog.html"></include>
+        <include src="components/line-blog.html" locals='{
+            "line" : "line-about"
+        }'></include>
         <include src="components/tittle-search.html"></include>
         <include src="./components/about-content.html"></include>
-        <include src="./components/line-blog.html"></include>
+        <include src="components/line-blog.html" locals='{
+            "line" : "line-about-develop"
+        }'></include>
         <div class="container ">
             <div class="about-card row m-5 d-flex">
                 <div class="about-card__body col-md-6 col-sm-12 flex-column text-center mb-5">
@@ -28,6 +32,6 @@
                 </div>
             </div>
         </div>
-        <include src="./components/line-blog.html"></include>
+        <include src="components/line-blog.html"></include>
     </Section>
 </main>
